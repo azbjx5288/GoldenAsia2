@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -51,16 +51,16 @@ public class ChartTrendFragment extends BaseFragment implements CompoundButton.O
     private static final int LIST_HISTORY_CODE_ID = 1;
     private static final int FIRST_PAGE = 1;
 
-    @Bind(R.id.scrollview_frame)
+    @BindView(R.id.scrollview_frame)
     PtrClassicFrameLayout scrollviewLayout;
-    @Bind(R.id.scrollview)
+    @BindView(R.id.scrollview)
     ScrollView scrollview;
-    @Bind(R.id.linearLayout)
+    @BindView(R.id.linearLayout)
     LinearLayout linearLayout;
 
-    @Bind(R.id.amountText)
+    @BindView(R.id.amountText)
     TextView amountText;
-    @Bind(R.id.isNeedLink)
+    @BindView(R.id.isNeedLink)
     CheckBox isNeedLink;
 
     private Lottery lottery;

@@ -13,7 +13,7 @@ import com.goldenasia.lottery.data.GgcCardEntity;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -108,11 +108,11 @@ public class GgcCardListAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.imageView)
+        @BindView(R.id.imageView)
         ImageView imageView;
-        @Bind(R.id.number)
+        @BindView(R.id.number)
         TextView number;
-        @Bind(R.id.prize)
+        @BindView(R.id.prize)
         TextView prize;
 
         ViewHolder(View view) {

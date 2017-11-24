@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.goldenasia.lottery.base.Preferences;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 /**
  * Created by Alashi on 2015/12/18.
@@ -22,6 +23,8 @@ public class FragmentLauncher extends AppCompatActivity {
 
     /** 调用startActivityFromFragment的Fragment，避免源码的bug */
     private Fragment fragmentCaller;
+
+    Fragment fragment=null;
 
     public static void launch(Context context, Class<? extends Fragment> fragment) {
         launch(context, fragment.getName());
@@ -79,13 +82,15 @@ public class FragmentLauncher extends AppCompatActivity {
         String fragmentName = getIntent().getStringExtra(KEY_FRAGMENT_NAME);
         Preferences.saveString(this, "debug_last_launch_fragment", fragmentName);
         Log.i(TAG, "onCreate " + fragmentName);
-        Fragment fragment = Fragment.instantiate(this, fragmentName);
+        fragment= Fragment.instantiate(this, fragmentName);
         fragment.setArguments(getIntent().getExtras());
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(android.R.id.content, fragment);
         //ft.replace(android.R.id.content, fragment);
         //ft.commit();
         ft.commitAllowingStateLoss();
+        //统计应用启动数据
+        PushAgent.getInstance(this).onAppStart();
     }
 
     @Override
@@ -102,5 +107,9 @@ public class FragmentLauncher extends AppCompatActivity {
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+   public Fragment getfragmentCaller(){
+        return fragment;
     }
 }

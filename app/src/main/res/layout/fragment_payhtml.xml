@@ -44,19 +44,38 @@
 
     </RelativeLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_marginTop="200dp" />
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/progressBarRelativeLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:visibility="gone"-->
+        <!--android:gravity="center">-->
 
+        <!--<ProgressBar-->
+            <!--android:layout_marginTop="-10dp"-->
+            <!--android:id="@+id/progressBar"-->
+            <!--style="?android:attr/progressBarStyleLarge"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/progressBarText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/progressBar"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:text="加载中..."-->
+            <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--</RelativeLayout>-->
 
     <org.apache.cordova.CordovaWebView
         android:id="@+id/payWebView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
+
 
 </LinearLayout>

@@ -14,7 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -73,13 +73,13 @@ public class WithdrawalAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.serial_number)
+        @BindView(R.id.serial_number)
         TextView serialNumber;
-        @Bind(R.id.take_amount)
+        @BindView(R.id.take_amount)
         TextView takeAmount;
-        @Bind(R.id.take_time)
+        @BindView(R.id.take_time)
         TextView takeTime;
-        @Bind(R.id.take_status)
+        @BindView(R.id.take_status)
         TextView takeStatus;
 
         public ViewHolder(View view) {

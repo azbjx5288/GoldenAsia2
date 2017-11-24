@@ -267,17 +267,14 @@ public class SyxwCommonGame extends Game {
     //乐选三
     public static void SDLX3(Game game) {
         createLexuanLayout(game, 11, new String[]{"第一位", "第二位", "第三位"});
-//        game.setSupportInput(true);
     }
     //乐选四
     public static void SDLX4(Game game) {
         createPicklayout(game, new String[]{"乐选四"});
-//        game.setSupportInput(true);
     }
     //乐选五
     public static void SDLX5(Game game) {
         createPicklayout(game, new String[]{"乐选五"});
-//        game.setSupportInput(true);
     }
 
     //前二组选胆拖
@@ -408,22 +405,6 @@ public class SyxwCommonGame extends Game {
         pickNumber2.setColumnAreaHideOrShow(false);
 
         game.getTopLayout().addView(view1);
-    }
-    //乐选二
-    public static void SDLX2Input(Game game) {
-        addInputLayout(game, game.getColumn());
-    }
-    //乐选三
-    public static void SDLX3Input(Game game) {
-        addInputLayout(game, game.getColumn());
-    }
-    //乐选四
-    public static void SDLX4Input(Game game) {
-        addInputLayout(game, game.getColumn());
-    }
-    //乐选五
-    public static void SDLX5Input(Game game) {
-        addInputLayout(game, game.getColumn());
     }
 
     //前三直选 SDQSZX

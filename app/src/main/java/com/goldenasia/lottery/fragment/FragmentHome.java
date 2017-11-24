@@ -17,7 +17,7 @@ import com.goldenasia.lottery.pattern.VersionChecker;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created on 2016/01/04.
@@ -30,9 +30,9 @@ public class FragmentHome extends BaseFragment implements RadioGroup.OnCheckedCh
         .OnPageChangeListener {
     private static final String TAG = FragmentHome.class.getSimpleName();
 
-    @Bind(R.id.radioGroupHome)
+    @BindView(R.id.radioGroupHome)
     RadioGroup radioGroup;
-    @Bind(R.id.viewPagerHome)
+    @BindView(R.id.viewPagerHome)
     ViewPager viewPager;
 
     private List<Fragment> fragments = new ArrayList<Fragment>();

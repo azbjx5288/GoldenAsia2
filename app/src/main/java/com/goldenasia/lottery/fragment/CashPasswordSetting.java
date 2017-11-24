@@ -22,7 +22,7 @@ import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.ChangePasswordCommand;
 import com.goldenasia.lottery.data.UserInfo;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -30,11 +30,11 @@ import butterknife.OnClick;
  * Created by Alashi on 2016/5/2.
  */
 public class CashPasswordSetting extends BaseFragment {
-    @Bind(R.id.now_password)
+    @BindView(R.id.now_password)
     EditText nowPassword;
-    @Bind(R.id.new_password)
+    @BindView(R.id.new_password)
     EditText newPassword;
-    @Bind(R.id.new_password_verify)
+    @BindView(R.id.new_password_verify)
     EditText newPasswordVerify;
 
     @Override

@@ -297,5 +297,55 @@
         android:textColor="@color/app_font_dark_color"
         android:textSize="@dimen/text_size_tiny"
     />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="中奖金额"
+            android:textColor="@color/app_font_dark_color"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:padding="3dp"
+            android:text="一等奖[牛1、牛3、牛5、牛7、牛9]:26.667元"
+            android:textColor="@color/app_font_dark_color"
+            android:textSize="12sp"
+             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:padding="3dp"
+            android:text="二等奖[牛牛]:26.3321元"
+            android:textColor="@color/app_font_dark_color"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:padding="3dp"
+            android:text="三等奖[牛2、牛4、牛6、牛8]:26.1337元"
+            android:textColor="@color/app_font_dark_color"
+            android:textSize="12sp"
+             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:padding="3dp"
+            android:text="四等奖[杂牌]:4.7687元"
+            android:textColor="@color/app_font_dark_color"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
 </LinearLayout>

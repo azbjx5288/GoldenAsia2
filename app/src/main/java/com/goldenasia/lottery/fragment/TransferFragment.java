@@ -16,7 +16,7 @@ import com.goldenasia.lottery.component.TabPageAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -28,9 +28,9 @@ public class TransferFragment extends BaseFragment implements RadioGroup.OnCheck
         .OnPageChangeListener{
     private static final String TAG = TransferFragment.class.getSimpleName();
 
-    @Bind(R.id.radioGroupTransfer)
+    @BindView(R.id.radioGroupTransfer)
     RadioGroup radioGroup;
-    @Bind(R.id.viewPagerTransfer)
+    @BindView(R.id.viewPagerTransfer)
     ViewPager viewPager;
 
     private List<Fragment> fragments = new ArrayList<Fragment>();

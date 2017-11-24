@@ -11,7 +11,7 @@ import com.goldenasia.lottery.data.GaGameListResponse;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -86,17 +86,17 @@ public class GameGAHistoryAdapter extends BaseAdapter
     
     static class ViewHolder
     {
-        @Bind(R.id.item_1)
+        @BindView(R.id.item_1)
         TextView item_1;
-        @Bind(R.id.item_2)
+        @BindView(R.id.item_2)
         TextView item_2;
-        @Bind(R.id.item_3)
+        @BindView(R.id.item_3)
         TextView item_3;
-        @Bind(R.id.item_4)
+        @BindView(R.id.item_4)
         TextView item_4;
-        @Bind(R.id.item_5)
+        @BindView(R.id.item_5)
         TextView item_5;
-        @Bind(R.id.item_6)
+        @BindView(R.id.item_6)
         TextView item_6;
         
         public ViewHolder(View view)

@@ -45,7 +45,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Gan on 2017/10/24.
@@ -58,23 +58,22 @@ public class FragmentHistoryGA extends BaseFragment implements RadioGroup.OnChec
 
     private static final int FIRST_PAGE = 1;//服务器分页从1开始
 
-    @Bind(R.id.refreshLayout)
+    @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ListView listView;
-    @Bind(R.id.total_money)
+    @BindView(R.id.total_money)
     TextView totalMoneyTextView;
-
-    @Bind(R.id.radioGroup)
+    @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
-
-    @Bind(R.id.gaRadioButton)
+    @BindView(R.id.gaRadioButton)
     RadioButton lotteryRadioButton;
-    @Bind(R.id.timeRadioButton)
+    @BindView(R.id.timeRadioButton)
     RadioButton timeRadioButton;
 
     private GameGAHistoryAdapter adapter;
-    private List<GaGameListResponse.ListBean> items = new ArrayList();
+    private List<GaGameListResponse.ListBean> items = new ArrayList();//根据时间查询出来的ALL数据
+    private List<GaGameListResponse.ListBean> itemsByGameId = new ArrayList();//符合当前选择游戏的数据  用于计算总盈亏
     private int totalCount;
     private int page = FIRST_PAGE;
     private boolean isLoading;
@@ -134,19 +133,20 @@ public class FragmentHistoryGA extends BaseFragment implements RadioGroup.OnChec
         listView.addHeaderView(LayoutInflater.from(getActivity()).inflate(R.layout.item_game_ga_history_head,
                 listView, false));//添加头部
         listView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mCurrentTimeSelectStart= TimeUtils.getStringDayBegin();
-        mCurrentTimeSelectEnd=TimeUtils.getStringDayEnd();
+        mCurrentTimeSelectStart= TimeUtils.getBeginStringOfYesterday();
+        mCurrentTimeSelectEnd=TimeUtils.getEndStringOfYesterday();
         if (page == FIRST_PAGE) {
             //默认不加载缓存的数据
             loadGAList(false, FIRST_PAGE);
         }
 
         initPopupWindow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     /**
@@ -204,7 +204,7 @@ public class FragmentHistoryGA extends BaseFragment implements RadioGroup.OnChec
                 mCurrentQueryConditionType = TIME_SELECT;
 
                 lotteryList = new ArrayList<GaBean>();
-                String[] timeStates = new String[]{"今天", "昨天", "近七天","当月"};
+                String[] timeStates = new String[]{"昨天","近3天","近7天","近15天","当月","近35天"};
                 for (int i = 0; i < timeStates.length; i++) {
                     gaBean = new GaBean();
                     gaBean.setLotteryId(i);
@@ -241,16 +241,18 @@ public class FragmentHistoryGA extends BaseFragment implements RadioGroup.OnChec
                 mCurrentLotterySelectId = gaBean.getLotteryId();
                 lotteryRadioButton.setText(gaBean.getCname());
                 mSelectGaTypePosition=mCurrentLotterySelectId;
+                refreshListView();
 
+                refreshTotalMoney();
             } else if (mCurrentQueryConditionType == TIME_SELECT) {
                 selectPositionToTimeSelected(gaBean.getLotteryId());
                 timeRadioButton.setText(gaBean.getCname());
                 mSelectTimePosition=gaBean.getLotteryId();
-
+                loadGAList(false, FIRST_PAGE);
             }else{
 
             }
-            loadGAList(false, FIRST_PAGE);
+
             adapterPopupWindow.dismiss();
         });
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
@@ -259,21 +261,29 @@ public class FragmentHistoryGA extends BaseFragment implements RadioGroup.OnChec
 
     private void selectPositionToTimeSelected(int position) {
         switch (position){
-            case 0://"今天"
-                mCurrentTimeSelectStart=TimeUtils.getStringDayBegin();
-                mCurrentTimeSelectEnd=TimeUtils.getStringDayEnd();
+            case 0://"昨天"
+                mCurrentTimeSelectStart=TimeUtils.getBeginStringOfYesterday();
+                mCurrentTimeSelectEnd=TimeUtils.getEndStringOfYesterday();
                 break;
-            case 1://"昨天"
-                mCurrentTimeSelectStart=TimeUtils.getStringBeginDayOfYesterday();
-                mCurrentTimeSelectEnd=TimeUtils.getStringEndDayOfYesterDay();
+            case 1://"近3天"
+                mCurrentTimeSelectStart=TimeUtils.getLatelyStringOfThree();
+                mCurrentTimeSelectEnd=TimeUtils.getEndStringOfToday();
                 break;
-            case 2://"近七天"
-                mCurrentTimeSelectStart=TimeUtils.getStringBeginDayOfSeven();
-                mCurrentTimeSelectEnd=TimeUtils.getStringDayEnd();
+            case 2://"近7天"
+                mCurrentTimeSelectStart=TimeUtils.getLatelyStringOfSeven();
+                mCurrentTimeSelectEnd=TimeUtils.getEndStringOfToday();
                 break;
-            case 3://"当月"
+            case 3://"近15天"
+                mCurrentTimeSelectStart=TimeUtils.getLatelyStringOf15();
+                mCurrentTimeSelectEnd=TimeUtils.getEndStringOfToday();
+                break;
+            case 4://"当月"
                 mCurrentTimeSelectStart=TimeUtils.getStringBeginDayOfCurrentMonth();
-                mCurrentTimeSelectEnd=TimeUtils.getStringDayEnd();
+                mCurrentTimeSelectEnd=TimeUtils.getEndStringOfToday();
+                break;
+            case 5://"近35天"
+                mCurrentTimeSelectStart=TimeUtils.getLatelyStringOf35();
+                mCurrentTimeSelectEnd=TimeUtils.getEndStringOfToday();
                 break;
             default:
         }
@@ -282,8 +292,8 @@ public class FragmentHistoryGA extends BaseFragment implements RadioGroup.OnChec
     private void refreshTotalMoney() {
         double totalMoney=0.0;
 
-        for(int  i=0;i<items.size();i++){
-            GaGameListResponse.ListBean  bean=items.get(i);
+        for(int  i=0;i<itemsByGameId.size();i++){
+            GaGameListResponse.ListBean  bean=itemsByGameId.get(i);
             double winLost=Double.parseDouble(bean.getGa_win_lose());
             totalMoney+=winLost;
         }
@@ -293,6 +303,26 @@ public class FragmentHistoryGA extends BaseFragment implements RadioGroup.OnChec
 
         totalMoneyTextView.setText(Html.fromHtml(payamtStr));
     }
+
+    private void refreshListView() {
+        if(mCurrentLotterySelectId==-1){
+            itemsByGameId.clear();
+            itemsByGameId.addAll(items);
+            adapter.setData(items);
+
+        }else{
+            itemsByGameId.clear();
+            for(int  i=0;i<items.size();i++){
+                GaGameListResponse.ListBean bean=items.get(i);
+                if(mCurrentLotterySelectId==Integer.parseInt(bean.getGame_id())){
+                    itemsByGameId.add(bean);
+                }
+            }
+            adapter.setData(itemsByGameId);
+        }
+
+    }
+
     private RestCallback restCallback = new RestCallback() {
         @Override
         public boolean onRestComplete(RestRequest request, RestResponse response) {
@@ -326,7 +356,8 @@ public class FragmentHistoryGA extends BaseFragment implements RadioGroup.OnChec
                         }
                         items.addAll(GaGameListResponse.getList());
                     }
-                    adapter.setData(items);
+
+                    refreshListView();
 
                     refreshTotalMoney();
                     break;

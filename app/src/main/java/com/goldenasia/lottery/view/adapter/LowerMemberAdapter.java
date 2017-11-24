@@ -11,7 +11,7 @@ import com.goldenasia.lottery.data.LowerMember;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -68,13 +68,13 @@ public class LowerMemberAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.lower_username)
+        @BindView(R.id.lower_username)
         TextView lowerUsername;
-        @Bind(R.id.enroltime)
+        @BindView(R.id.enroltime)
         TextView enroltime;
-        @Bind(R.id.lower_status)
+        @BindView(R.id.lower_status)
         TextView lowerStatus;
-        @Bind(R.id.lower_money)
+        @BindView(R.id.lower_money)
         TextView lowerMoney;
 
         ViewHolder(View view) {

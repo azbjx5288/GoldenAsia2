@@ -12,7 +12,7 @@ import com.goldenasia.lottery.data.GgcMoneyNumberEntity;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -70,9 +70,9 @@ public class GgcCodeAdapter extends BaseAdapter
 
     static class ViewHolder
     {
-        @Bind(R.id.number)
+        @BindView(R.id.number)
         TextView number;
-        @Bind(R.id.money)
+        @BindView(R.id.money)
         TextView money;
 
         ViewHolder(View view)

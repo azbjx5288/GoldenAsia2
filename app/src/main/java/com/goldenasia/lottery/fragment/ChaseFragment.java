@@ -51,7 +51,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -70,25 +70,25 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
     private static final int TRACK_TURNED_PAGE_PICK = 3;
     private static final int TRACK_PROMPT_TIP = 4;
 
-    @Bind(R.id.mode_radiogroup)
+    @BindView(R.id.mode_radiogroup)
     RadioGroup modeRadiogroup;
-    @Bind(R.id.definition)
+    @BindView(R.id.definition)
     RadioButton definition;
-    @Bind(R.id.interest)
+    @BindView(R.id.interest)
     RadioButton interest;
-    @Bind(R.id.chase_timing)
+    @BindView(R.id.chase_timing)
     View chaseTiming;
-    @Bind(R.id.plan_ruleview)
+    @BindView(R.id.plan_ruleview)
     View planLayout;
-    @Bind(R.id.chaseTitle)
+    @BindView(R.id.chaseTitle)
     View chaseTitle;
-    @Bind(R.id.chaselistview)
+    @BindView(R.id.chaselistview)
     ViewGroup chaseLVLayout;
-    @Bind(R.id.chase_mete)
+    @BindView(R.id.chase_mete)
     TextView chaseMete;
-    @Bind(R.id.chase_total)
+    @BindView(R.id.chase_total)
     TextView chaseTotal;
-    @Bind(R.id.plan_buybutton)
+    @BindView(R.id.plan_buybutton)
     Button buybutton;
 
     private TitleTimingSalesView timingView;
@@ -258,15 +258,17 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
             tipDialog("温馨提示", "倍数和追号期数不能为0", 0);
             return;
         }
-        this.bonus = /*userCentre.getBonusMode(lottery.getLotteryId()) == 0 */!(cart.getPrizeMode()>0)? traceIssue
-                .getBasePrize()  : traceIssue.getMaxPrize();
+//        this.bonus = /*userCentre.getBonusMode(lottery.getLotteryId()) == 0 */!()?   : ;
+        if (cart.getPrizeMode() > 0) {
+            this.bonus = traceIssue.getMaxPrize() * cart.getLucreMode().getFactor();
+        } else {
+            this.bonus = traceIssue.getBasePrize() * cart.getLucreMode().getFactor();
+        }
         serialsList = getIssueSerials();
         if (serialsList.size() > 0) {
             for (int i = 0, size = serialsList.size(); i < size; i++) {
-                View view = LayoutInflater.from(chaseLVLayout.getContext()).inflate(R.layout
-                        .fragment_chase_item, null, false);
-                ChaseRowView chaseRowView = new ChaseRowView(view, serialsList.get(i), bonus, i,
-                        tagType);
+                View view = LayoutInflater.from(chaseLVLayout.getContext()).inflate(R.layout.fragment_chase_item, null, false);
+                ChaseRowView chaseRowView = new ChaseRowView(view, serialsList.get(i), bonus, i, tagType);
                 chaseRowView.setOnInvestmentListener((int newQuantity) ->
                 {
                     if (multipleArray.size() == size) {
@@ -391,7 +393,7 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
         command.setLotteryId(lottery.getLotteryId());
         command.setIssue(timingView.getIssue());
 //        command.setPrizeMode(!(userCentre.getBonusMode(lottery.getLotteryId()) == 0));
-        command.setPrizeMode(cart.getPrizeMode()>0?1:0);
+        command.setPrizeMode(cart.getPrizeMode() > 0 ? 1 : 0);
         command.setModes(cart.getLucreMode().getModes());
         command.setCodes(cart.getCodeStr());
         command.setMultiple(cart.getMultiple());
@@ -660,7 +662,7 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
         if (Double.isInfinite(d)) {
             BigDecimal bg = new BigDecimal(0.00);
             return bg.setScale(3, BigDecimal.ROUND_HALF_UP);
-        }else {
+        } else {
             BigDecimal bg = new BigDecimal(d);
             return bg.setScale(3, BigDecimal.ROUND_HALF_UP);
         }
@@ -740,10 +742,10 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
                 double totalProfit = (mustBonus - totalCost) / totalCost * 100; //计算净利率
                 if (totalProfit < rule.getGainMode()) {
                     double predict = 0;
-                    int plus =0;
-                    if(i!=0){
-                        plus = multipleArray.get(i-1);
-                    }else{
+                    int plus = 0;
+                    if (i != 0) {
+                        plus = multipleArray.get(i - 1);
+                    } else {
                         plus = multipleArray.get(i);
                     }
                     while (true) {
@@ -806,10 +808,10 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
                 if (i < rule.getIssueGap()) {
                     if (totalProfit < rule.getAgoValue()) {
                         double predict = 0;
-                        int plus =0;
-                        if(i!=0){
-                            plus = multipleArray.get(i-1);
-                        }else{
+                        int plus = 0;
+                        if (i != 0) {
+                            plus = multipleArray.get(i - 1);
+                        } else {
                             plus = multipleArray.get(i);
                         }
                         while (true) {
@@ -837,10 +839,10 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
                 } else if (i >= rule.getIssueGap()) {
                     if (totalProfit < rule.getLaterValue()) {
                         double predict = 0;
-                        int plus =0;
-                        if(i!=0){
-                            plus = multipleArray.get(i-1);
-                        }else{
+                        int plus = 0;
+                        if (i != 0) {
+                            plus = multipleArray.get(i - 1);
+                        } else {
                             plus = multipleArray.get(i);
                         }
                         while (true) {
@@ -901,10 +903,10 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
                 }
                 double total = mustBonus - totalCost;
                 if (total < rule.getGainMode()) {
-                    int plus =0;
-                    if(i!=0){
-                        plus = multipleArray.get(i-1);
-                    }else{
+                    int plus = 0;
+                    if (i != 0) {
+                        plus = multipleArray.get(i - 1);
+                    } else {
                         plus = multipleArray.get(i);
                     }
                     while (true) {
@@ -935,7 +937,7 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
                     }
                 }
                 double totalProfit = (total / totalCost) * 100;
-                row.updateData(mustBonus, multipleArray.get(i), totalCost, cost,keepThree(totalProfit).intValue());
+                row.updateData(mustBonus, multipleArray.get(i), totalCost, cost, keepThree(totalProfit).intValue());
             } else {
                 stopString.append(i).append(",");
             }
@@ -949,6 +951,7 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
 
     /**
      * 均衡型 (利润)
+     *
      * @param rule
      */
     private double balancedIncomeType(ChaseRuleData rule) {
@@ -971,10 +974,10 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
                 double total = mustBonus - totalCost;
                 if (i < rule.getIssueGap()) {
                     if (total < rule.getAgoValue()) {
-                        int plus =0;
-                        if(i!=0){
-                            plus = multipleArray.get(i-1);
-                        }else{
+                        int plus = 0;
+                        if (i != 0) {
+                            plus = multipleArray.get(i - 1);
+                        } else {
                             plus = multipleArray.get(i);
                         }
                         while (true) {
@@ -1006,10 +1009,10 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
                     }
                 } else if (i >= rule.getIssueGap()) {
                     if (total < rule.getLaterValue()) {
-                        int plus =0;
-                        if(i!=0){
-                            plus = multipleArray.get(i-1);
-                        }else{
+                        int plus = 0;
+                        if (i != 0) {
+                            plus = multipleArray.get(i - 1);
+                        } else {
                             plus = multipleArray.get(i);
                         }
                         while (true) {

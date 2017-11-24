@@ -15,7 +15,7 @@ import com.goldenasia.lottery.base.net.RestRequest;
 import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.data.ChangePasswordCommand;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -24,9 +24,9 @@ import butterknife.OnClick;
  */
 public class LoginPasswordSetting extends BaseFragment {
 
-    @Bind(R.id.now_password) EditText nowPassword;
-    @Bind(R.id.new_password) EditText newPassword;
-    @Bind(R.id.new_password_verify) EditText newPasswordVerify;
+    @BindView(R.id.now_password) EditText nowPassword;
+    @BindView(R.id.new_password) EditText newPassword;
+    @BindView(R.id.new_password_verify) EditText newPasswordVerify;
 
     @Nullable
     @Override

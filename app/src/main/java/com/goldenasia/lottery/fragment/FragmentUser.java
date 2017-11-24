@@ -20,6 +20,8 @@ import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.data.LogoutCommand;
+import com.goldenasia.lottery.data.LowerMemberCommand;
+import com.goldenasia.lottery.data.LowerMemberList;
 import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.data.UserInfoCommand;
 import com.goldenasia.lottery.db.MmcWinHistoryDao;
@@ -28,7 +30,7 @@ import com.goldenasia.lottery.pattern.VersionChecker;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import q.rorbin.badgeview.QBadgeView;
@@ -42,27 +44,27 @@ import q.rorbin.badgeview.QBadgeView;
  */
 
 public class FragmentUser extends BaseFragment {
-    private static final String TAG = FragmentHistory.class.getSimpleName();
+    private static final String TAG = FragmentUser.class.getSimpleName();
     private static final int ID_LOGOUT = 1;
 
     private static final int ID_USER_INFO = 2;
 
     private static final int ID_LOWER_MEMBER = 3;
 
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     TextView userName;
-    @Bind(R.id.user_balance)
+    @BindView(R.id.user_balance)
     TextView userBalance;
-    @Bind(R.id.lower_member_count)
+    @BindView(R.id.lower_member_count)
     TextView lowerMemberCount;//下级管理的数量
 
     private UserInfo userInfo;
 
-    @Bind(R.id.only_agency_show)
+    @BindView(R.id.only_agency_show)
     LinearLayout onlyAgencyShow;
-    @Bind(R.id.notice)
+    @BindView(R.id.notice)
     RelativeLayout noticeRelativeLayout;
-    @Bind(R.id.feeback)
+    @BindView(R.id.feeback)
     RelativeLayout feebackRelativeLayout;
 
 
@@ -87,9 +89,6 @@ public class FragmentUser extends BaseFragment {
 
         }
         executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
-
-        executeCommand(new UserInfoCommand(), restCallback, ID_LOWER_MEMBER);
-
     }
 
     @Override
@@ -97,8 +96,17 @@ public class FragmentUser extends BaseFragment {
         super.onResume();
 //        new QBadgeView(getActivity()).bindTarget(feebackRelativeLayout).setBadgeNumber(5);
 //        new QBadgeView(getActivity()).bindTarget(noticeRelativeLayout).setBadgeNumber(0);
+        loadLowerMember();
 
+    }
 
+    private void loadLowerMember() {
+        LowerMemberCommand command = new LowerMemberCommand();
+        command.setUsername(userInfo.getUserName());
+        command.setCurPage(1);
+        command.setRange(1);
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, restCallback, ID_LOWER_MEMBER, this);
+        restRequest.execute();
     }
 
     @OnClick({R.id.service_center, R.id.settings, R.id.withdraw_deposit, R.id.transfer,R.id.notice, R.id.recharge,
@@ -149,14 +157,12 @@ public class FragmentUser extends BaseFragment {
                 launchFragmentForResult(RegisterSetting.class, null, 1);//立即开户
                 break;
             case R.id.member_report:
-                MemberReportMainFragment.launch(this);
+                //MemberReportMainFragment.launch(this);
+                String username = GoldenAsiaApp.getUserCentre().getUserName();
+                MemberReportMainFragment2.launch(this,username);
                 break;
             case R.id.station_letter:            //站内信
-//                ArrayList<Class> arrays = new ArrayList();
-//                arrays.add(WriteEmailFragment.class);
-//                arrays.add(InBoxFragment.class);
-//                arrays.add(OutBoxFragment.class);
-//                TwoTableFragment.launch(getActivity(), "站内信", new String[]{"写邮件", "收件箱", "发件箱"}, arrays);
+                launchFragment(FragmentMessageBox.class);
                 break;
             case R.id.version:
                 new VersionChecker(this).startCheck(true);
@@ -207,9 +213,12 @@ public class FragmentUser extends BaseFragment {
                 if (userInfo != null) {
                     userName.setText(userInfo.getNickName());
                     userBalance.setText(String.format("账号余额：%.4f", userInfo.getBalance()));
-                }else if (request.getId() == ID_LOGOUT) {
-                    handleExit();
                 }
+            }else if(request.getId() ==ID_LOWER_MEMBER){
+                int totalCount = ((LowerMemberList) response.getData()).getUsersCount();
+                lowerMemberCount.setText(String.valueOf(totalCount>=1?totalCount-1:0));
+            }else if (request.getId() == ID_LOGOUT) {
+                handleExit();
             }
             return true;
         }
@@ -246,6 +255,5 @@ public class FragmentUser extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

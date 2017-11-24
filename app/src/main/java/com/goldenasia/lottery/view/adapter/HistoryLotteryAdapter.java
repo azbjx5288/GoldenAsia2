@@ -12,7 +12,7 @@ import com.goldenasia.lottery.data.LotteriesHistory;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -131,17 +131,17 @@ public class HistoryLotteryAdapter extends BaseAdapter {
 
     // 依据item的layout
     static class ViewHolder {
-        @Bind(R.id.lottery_history_title)
+        @BindView(R.id.lottery_history_title)
         TextView title;
-        @Bind(R.id.lottery_history_issue)
+        @BindView(R.id.lottery_history_issue)
         TextView issue;
-        @Bind(R.id.lottery_history_code)
+        @BindView(R.id.lottery_history_code)
         LinearLayout ballList;
-        @Bind(R.id.lottery_trend_other_list)
+        @BindView(R.id.lottery_trend_other_list)
         LinearLayout otherList;
-        @Bind(R.id.lottery_other_more)
+        @BindView(R.id.lottery_other_more)
         View otherMore;
-        @Bind(R.id.lottery_history_bet)
+        @BindView(R.id.lottery_history_bet)
         View historyBet;
 
         TextView[] ballTexts;
@@ -172,5 +172,4 @@ public class HistoryLotteryAdapter extends BaseAdapter {
             }
         }
     }
-
 }

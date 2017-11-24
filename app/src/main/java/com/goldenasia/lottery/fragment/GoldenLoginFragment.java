@@ -30,7 +30,10 @@ import com.goldenasia.lottery.util.SharedPreferencesUtils;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import butterknife.Bind;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -47,17 +50,17 @@ public class GoldenLoginFragment extends BaseFragment {
     private String account;
     private String pass;
 
-    @Bind(R.id.login_edit_account)
+    @BindView(R.id.login_edit_account)
     EditText userName;
-    @Bind(R.id.login_edit_password)
+    @BindView(R.id.login_edit_password)
     EditText password;
-   /* @Bind(R.id.login_account_edit_clear)
+   /* @BindView(R.id.login_account_edit_clear)
     View userNameClear;
-    @Bind(R.id.login_password_edit_clear)
+    @BindView(R.id.login_password_edit_clear)
     View passwordClear;*/
-    @Bind(R.id.save)
+    @BindView(R.id.save)
     CheckBox save;
-    @Bind(R.id.login_login_btn)
+    @BindView(R.id.login_login_btn)
     Button loginBtn;
 
     @Nullable
@@ -216,7 +219,25 @@ public class GoldenLoginFragment extends BaseFragment {
             Toast.makeText(getContext(), "请输入用户名", Toast.LENGTH_LONG).show();
             return false;
         }
+        if (!(userName.getText().toString().charAt(0) <= 'Z' && userName.getText().toString().charAt(0) >= 'A'
+                || userName.getText().toString().charAt(0) <= 'z' && userName.getText().toString().charAt(0) >=
+                'a')) {
+            Toast.makeText(getContext(), "用户名必须以字母开头", Toast.LENGTH_LONG).show();
+            return false;
+        }
 
+        String userNameReg="^[A-Za-z0-9_]+$";//英文和数字
+        Pattern pAll= Pattern.compile(userNameReg);
+        Matcher mAll = pAll.matcher(userName.getText().toString());
+
+        if (!mAll.matches()) {
+            Toast.makeText(getContext(), "用户名只能是字母或者数字或者下划线", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(userName.getText().toString().length()>16||userName.getText().toString().length()<5){
+            Toast.makeText(getContext(), "用户名只能是长度为5-16位", Toast.LENGTH_LONG).show();
+            return false;
+        }
         if (TextUtils.isEmpty(password.getText().toString())) {
             if (BuildConfig.DEBUG) {
                 //测试版本时，自动填写密码为"a123456"
@@ -233,6 +254,5 @@ public class GoldenLoginFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

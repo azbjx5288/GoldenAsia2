@@ -30,7 +30,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
@@ -47,15 +47,15 @@ public class GgcBuySucceedFragment extends BaseFragment
     private static final int AUTO_ID = 1;
     private static final int BACK_RESULT = 1;
 
-    @Bind(R.id.toast)
+    @BindView(R.id.toast)
     TextView toast;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     GridView list;
-    @Bind(R.id.auto)
+    @BindView(R.id.auto)
     Button auto;
-    @Bind(R.id.amount)
+    @BindView(R.id.amount)
     TextView amount;
-    @Bind(R.id.buy)
+    @BindView(R.id.buy)
     Button buy;
 
     private Lottery lottery;
@@ -121,7 +121,6 @@ public class GgcBuySucceedFragment extends BaseFragment
     public void onDestroyView()
     {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.auto, R.id.buy})

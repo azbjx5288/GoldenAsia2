@@ -217,6 +217,8 @@ public class ConstantInformation
         sLotteryLogo.put(103, new int[]{R.drawable.id_lottery_lfd, R.drawable.id_lottery_lfd_rest});
         //骰宝
         sLotteryLogo.put(104, new int[]{R.drawable.id_lottery_tb, R.drawable.id_lottery_tb_rest});
+        //俄罗斯轮盘
+        sLotteryLogo.put(105, new int[]{R.drawable.id_lottery_elslp, R.drawable.id_lottery_elslp});
         //西施早餐
         sLotteryLogo.put(106, new int[]{R.drawable.ic_ga_brnn, R.drawable.ic_ga_brnn});
         //21点
@@ -225,6 +227,8 @@ public class ConstantInformation
         sLotteryLogo.put(108, new int[]{R.drawable.id_lottery_ysz, R.drawable.id_lottery_ysz_rest});
         //水果机
         sLotteryLogo.put(109, new int[]{R.drawable.sgj, R.drawable.sgj1});
+        //百人牛牛
+        sLotteryLogo.put(110, new int[]{R.drawable.brnn, R.drawable.brnn});
         //多人百家乐
         sLotteryLogo.put(111, new int[]{R.drawable.ga_duorenbjl, R.drawable.ga_duorenbjl});
         //龙虎斗
@@ -233,6 +237,10 @@ public class ConstantInformation
         sLotteryLogo.put(113, new int[]{R.drawable.qwnn01, R.drawable.qwnn01});
         //江苏骰宝
         sLotteryLogo.put(114, new int[]{R.drawable.jstb01, R.drawable.jstb01});
+        //德州扑克
+        sLotteryLogo.put(115, new int[]{R.drawable.id_lottery_dzpk, R.drawable.id_lottery_dzpk});
+        //三国水果机
+        sLotteryLogo.put(116, new int[]{R.drawable.id_lottery_sgsgj, R.drawable.id_lottery_sgsgj});
 
         //支付logo
         rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});
@@ -243,6 +251,7 @@ public class ConstantInformation
         rechargeLogo.put(5, new int[]{8, 0, R.drawable.pay_weixin_icon});
         rechargeLogo.put(6, new int[]{9, 0, R.drawable.zfb_icon});
         rechargeLogo.put(7, new int[]{1, 100, R.drawable.pay_wyzz_icon});
+        rechargeLogo.put(8, new int[]{5, 0, R.drawable.jd_icon});//京东支付 id=5
         
         transferList.add(new Platform(0, "主钱包", "JYZ"));
         /*transferArray.put(1, new String[]{"pt", "PT游戏"});

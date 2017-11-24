@@ -21,7 +21,7 @@
         <RadioButton
             android:id="@+id/timeRadioButton"
             style="@style/historyRadioButton"
-            android:text="今天" />
+            android:text="昨天" />
 
     </RadioGroup>
 

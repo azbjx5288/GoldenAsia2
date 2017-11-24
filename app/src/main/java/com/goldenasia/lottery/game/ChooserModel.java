@@ -3,7 +3,6 @@ package com.goldenasia.lottery.game;
 import android.content.Context;
 import android.database.DataSetObservable;
 import android.os.AsyncTask;
-import android.support.v4.os.AsyncTaskCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
@@ -71,8 +70,7 @@ public class ChooserModel extends DataSetObservable {
 
     private ChooserModel(Context context, String historyFileName) {
         this.context = context.getApplicationContext();
-        if (!TextUtils.isEmpty(historyFileName)
-                && !historyFileName.endsWith(HISTORY_FILE_EXTENSION)) {
+        if (!TextUtils.isEmpty(historyFileName) && !historyFileName.endsWith(HISTORY_FILE_EXTENSION)) {
             this.historyFileName = historyFileName + HISTORY_FILE_EXTENSION;
         } else {
             this.historyFileName = historyFileName;
@@ -186,8 +184,10 @@ public class ChooserModel extends DataSetObservable {
         }
         mHistoricalRecordsChanged = false;
         if (!TextUtils.isEmpty(historyFileName)) {
-            AsyncTaskCompat.executeParallel(new PersistHistoryAsyncTask(), new ArrayList<>(mHistoricalRecords), historyFileName);
-        }
+            PersistHistoryAsyncTask asyncTask=new PersistHistoryAsyncTask();
+            asyncTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, 0);
+//            AsyncTaskCompat.executeParallel(new PersistHistoryAsyncTask(), new ArrayList<>(mHistoricalRecords), historyFileName);
+    }
     }
 
     private void pruneExcessiveHistoricalRecordsIfNeeded() {
@@ -350,8 +350,8 @@ public class ChooserModel extends DataSetObservable {
         @Override
         @SuppressWarnings("unchecked")
         public Void doInBackground(Object... args) {
-            List<HistoricalRecord> historicalRecords = (List<HistoricalRecord>) args[0];
-            String hostoryFileName = (String) args[1];
+            List<HistoricalRecord> historicalRecords =  mHistoricalRecords;
+            String hostoryFileName = historyFileName;
 
             FileOutputStream fos = null;
 

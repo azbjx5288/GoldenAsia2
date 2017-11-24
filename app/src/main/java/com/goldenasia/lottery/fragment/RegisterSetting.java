@@ -19,7 +19,10 @@ import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.Register;
 
-import butterknife.Bind;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -29,21 +32,21 @@ import butterknife.OnClick;
 public class RegisterSetting extends BaseFragment {
     private static final String TAG = RegisterSetting.class.getSimpleName();
 
-    @Bind(R.id.reg_edituser)
+    @BindView(R.id.reg_edituser)
     EditText regEdituser;
-    @Bind(R.id.proxy)
+    @BindView(R.id.proxy)
     RadioButton proxy;
-    @Bind(R.id.user)
+    @BindView(R.id.user)
     RadioButton user;
-    @Bind(R.id.testuser)
+    @BindView(R.id.testuser)
     RadioButton testUser;
-    @Bind(R.id.user_type)
+    @BindView(R.id.user_type)
     RadioGroup userType;
-    @Bind(R.id.reg_editpass)
+    @BindView(R.id.reg_editpass)
     EditText regEditpass;
-    @Bind(R.id.reg_surepass)
+    @BindView(R.id.reg_surepass)
     EditText regSurepass;
-    @Bind(R.id.nickname)
+    @BindView(R.id.nickname)
     EditText nickname;
 
     private Register registerData;
@@ -126,6 +129,19 @@ public class RegisterSetting extends BaseFragment {
             return false;
         }
 
+        String userNameReg="^[A-Za-z0-9_]+$";//英文和数字
+        Pattern pAll= Pattern.compile(userNameReg);
+        Matcher mAll = pAll.matcher(regEdituser.getText().toString());
+        if (!mAll.matches()) {
+            Toast.makeText(getContext(), "用户名只能是字母或者数字或者下划线", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(regEdituser.getText().toString().length()>16||regEdituser.getText().toString().length()<5){
+            Toast.makeText(getContext(), "用户名只能是长度为5-16位", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
         if (TextUtils.isEmpty(nickname.getText().toString())) {
             Toast.makeText(getContext(), "请输入昵称", Toast.LENGTH_LONG).show();
             return false;
@@ -163,6 +179,5 @@ public class RegisterSetting extends BaseFragment {
     public void onDestroyView() {
         getActivity().finish();
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

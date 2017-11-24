@@ -18,7 +18,7 @@ import com.goldenasia.lottery.data.Lottery;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * 历史开奖
@@ -28,9 +28,9 @@ import butterknife.Bind;
 public class HistoryCodeFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener,ViewPager.OnPageChangeListener{
     private static final String TAG = HistoryCodeFragment.class.getSimpleName();
 
-    @Bind(R.id.history_code_viewpager)
+    @BindView(R.id.history_code_viewpager)
     ViewPager viewPager;
-    @Bind(R.id.history_radioGroup)
+    @BindView(R.id.history_radioGroup)
     RadioGroup radioGroup;
     private Lottery lottery;
     private List<Fragment> fragments = new ArrayList<Fragment>();

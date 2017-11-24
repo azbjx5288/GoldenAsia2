@@ -36,7 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by ACE-PC on 2017/2/16.
@@ -47,9 +47,9 @@ public class UserRebateModify extends BaseFragment {
     private static final int RECBATE_TRACE_ID = 1;
     private static final int REG_TRACE_ID = 2;
 
-    @Bind(R.id.userinfo_username)
+    @BindView(R.id.userinfo_username)
     TextView userInfoUserName;
-    @Bind(R.id.modifybates_layout)
+    @BindView(R.id.modifybates_layout)
     LinearLayout rebateList;
 
     private HashMap<String, JsonString> rangeMap = new HashMap<>();

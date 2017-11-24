@@ -2,19 +2,20 @@ package com.goldenasia.lottery.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
-import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.base.net.RestCallback;
 import com.goldenasia.lottery.base.net.RestRequest;
 import com.goldenasia.lottery.base.net.RestRequestManager;
@@ -27,14 +28,13 @@ import com.goldenasia.lottery.data.LowerTips;
 import com.goldenasia.lottery.data.LowerTipsCommand;
 import com.goldenasia.lottery.data.SendMsgCommand;
 import com.goldenasia.lottery.game.PromptManager;
-import com.goldenasia.lottery.user.UserCentre;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -46,41 +46,45 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
     private static final int TRACE_SENDMSG_COMMAND = 1;
     private static final int TRACE_LOWER_ID = 2;
 
-    @Bind(R.id.follower)
+    @BindView(R.id.follower)
     RadioButton follower;
-    @Bind(R.id.manner_radiogroup)
+    @BindView(R.id.manner_radiogroup)
     RadioGroup mannerRadiogroup;
-    @Bind(R.id.addressee)
+    @BindView(R.id.addressee)
     ContactCloudEditTextImpl addresseeText;
-    @Bind(R.id.add_user)
+    @BindView(R.id.add_user)
     ImageView addUser;
-    @Bind(R.id.title_text)
+    @BindView(R.id.title_text)
     EditText titleText;
-    @Bind(R.id.multiline_text)
+    @BindView(R.id.multiline_text)
     EditText multilineText;
-    @Bind(R.id.scrollView)
+    @BindView(R.id.scrollView)
     CustomScrollView scrollView;
-    @Bind(R.id.submit)
+    @BindView(R.id.submit)
     Button submit;
+    @BindView(R.id.send_member)
+    LinearLayout send_member;
 
     private SendMsgCommand sendMsgCommand;
-    private UserCentre userCentre;
     private List<LowerTips> lowerList = new ArrayList<>();
     private HashMap<Integer, Boolean> map = new HashMap<>(0);//记录选择的位置
+    private TagCloudViewEdit userTagCloud;
+    private List<String> tags = new ArrayList<>();;
+
+    private boolean hasAddUser=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_writeemail, container, false);
+        return inflateView(inflater, container,"写邮件", R.layout.fragment_writeemail);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userCentre = GoldenAsiaApp.getUserCentre();
         follower.setChecked(true);
         mannerRadiogroup.setOnCheckedChangeListener(this);
 
-        addresseeText.setOnFocusChangeListener((View v, boolean hasFocus) -> {
+        /*addresseeText.setOnFocusChangeListener((View v, boolean hasFocus) -> {
             if (!hasFocus) {
                 List<String> textSpan = addresseeText.getAllReturnStringList();
                 if (textSpan.size() > 0) {
@@ -90,8 +94,21 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
                     }
                 }
             }
-        });
+        });*/
         init();
+    }
+
+    private  String  getSelectUser(){
+        StringBuilder  sb=new StringBuilder ();
+        for (int i = 0; i < lowerList.size(); i++) {
+            if(map.get(i)){
+                sb.append(lowerList.get(i).getUserId()).append(",");
+            }
+        }
+        if(!"".equals(sb.toString())){
+            sb.deleteCharAt(sb.length()-1);
+        }
+        return sb.toString();
     }
 
     /**
@@ -113,6 +130,7 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
 
     @Override
     public void onDestroyView() {
+        getActivity().finish();
         super.onDestroyView();
     }
 
@@ -121,9 +139,11 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
         //child=发给下级用户，parent为发给上级代理。
         switch (checkedId) {
             case R.id.prefect:
+                send_member.setVisibility(View.GONE);
                 sendMsgCommand.setTarget("parent");
                 break;
             case R.id.follower:
+                send_member.setVisibility(View.VISIBLE);
                 sendMsgCommand.setTarget("child");
                 break;
             case R.id.ownership:
@@ -131,19 +151,14 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
                 break;
         }
     }
-    TagCloudViewEdit userTagCloud;
-    List<String> tags;
+
     @OnClick(R.id.add_user)
     public void addUser() {
         if(lowerList.size()==0){
             showToast("请稍等,正在加载数据");
             return;
         }
-        tags = new ArrayList<>();
-        for (int i = 0; i < lowerList.size(); i++) {
-            tags.add(lowerList.get(i).getUsername());
-            map.put(i, false);
-        }
+        hasAddUser=true;
 
         View view=LayoutInflater.from(getContext()).inflate(R.layout.user_cloud_choose, null, false);
         userTagCloud=(TagCloudViewEdit)view.findViewById(R.id.tag_cloud_view);
@@ -157,7 +172,7 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
                 List<String> textSpan = addresseeText.getAllReturnStringList();
                 int index=textSpan.indexOf(lowerTips.getUsername());
                 if(index!=-1){
-                    showToast("止用户已经被选择");
+                    showToast("该用户已经被选择");
                 }else{
                     textSpan.add(textSpan.size(),lowerTips.getUsername());
                     if (textSpan.size()>0) {
@@ -177,21 +192,7 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
      * 定点标签记录和view变化
      **/
     private void bindPositionView(int position) {
-        for (int i = 0; i < lowerList.size(); i++) {
-            if (i == position) {
-                if (map.get(i)) {
-                    map.put(i, false);
-                } else {
-                    map.put(i, true);
-                }
-            } else {
-                if (map.get(i)) {
-                    map.put(i, true);
-                } else {
-                    map.put(i, false);
-                }
-            }
-        }
+        map.put(position, true);
         userTagCloud.setTagsByPosition(map, tags);
         for (int i = 0; i < lowerList.size(); i++) {
             if (map.get(i)) {
@@ -202,13 +203,16 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
 
     @OnClick(R.id.submit)
     public void sendemail() {
-        String addressee = "";//addresseeText.getText.toString();
         String title = titleText.getText().toString();
         String multiline = multilineText.getText().toString();
 
-        if (addressee.isEmpty()) {
-            showToast("请输入用户名", Toast.LENGTH_SHORT);
-            return;
+        if("child".equals(sendMsgCommand.getTarget())){
+                String addressee =hasAddUser?getSelectUser():"";
+                if(TextUtils.isEmpty(addressee)){
+                    showToast("请输入用户名", Toast.LENGTH_SHORT);
+                    return;
+                }
+            sendMsgCommand.setSelectChild(addressee);
         }
 
         if (title.isEmpty()) {
@@ -220,7 +224,7 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
             showToast("请输入邮件内容", Toast.LENGTH_SHORT);
             return;
         }
-        sendMsgCommand.setSelectChild(addressee);
+
         sendMsgCommand.setTitle(title);
         sendMsgCommand.setContent(multiline);
 
@@ -237,11 +241,10 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
     }
 
     /**
-     * 获取db 数据
+     * 返回当前用户下级列表
      */
     private void loadMemberInfo() {
         LowerTipsCommand command = new LowerTipsCommand();
-        command.setUsername(userCentre.getUserName());
         TypeToken typeToken = new TypeToken<RestResponse<ArrayList<LowerTips>>>() {
         };
         RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback, TRACE_LOWER_ID, this);
@@ -255,8 +258,16 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
                 case TRACE_LOWER_ID:
                     if (response != null && response.getData() instanceof ArrayList) {
                         lowerList = (ArrayList) response.getData();
-                        addresseeText.setFindInput(lowerList);
+                        addresseeText.setFindInput(lowerList);//57212
+
+                        for (int i = 0; i < lowerList.size(); i++) {
+                            tags.add(lowerList.get(i).getUsername());
+                            map.put(i, false);
+                        }
                     }
+                    break;
+                case TRACE_SENDMSG_COMMAND:
+                    showToast(response.getErrStr());
                     break;
             }
             return true;

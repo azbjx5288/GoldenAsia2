@@ -16,7 +16,7 @@ import com.goldenasia.lottery.util.UiUtils;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -103,9 +103,9 @@ public class HistoryBetPopupWindowAdapter extends BaseAdapter {
 
     static class ViewHolder {
 
-        @Bind(R.id.layout)
+        @BindView(R.id.layout)
         LinearLayout layout;
-        @Bind(R.id.textView)
+        @BindView(R.id.textView)
         TextView textView;
 
         public ViewHolder(View view) {

@@ -324,6 +324,7 @@ function isLegalCode(codes) {
                 case 'ZTWS':    //正特尾数
                 case 'TMSB':    //特码色波
                 case 'NIUNIU':
+                case 'ZONGX':
                     parts = codes[0].split('_');
                     singleNum = parts.length;
                     isDup = singleNum > 1 ? 1 : 0;
@@ -469,7 +470,7 @@ function isLegalCode(codes) {
                     }
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
-
+                case 'QSIZUX12': //前四组选12
                 case 'ZUX20':    //组选20
                 case 'ZUX12':    //组选12
                 case 'QSIZUX12':

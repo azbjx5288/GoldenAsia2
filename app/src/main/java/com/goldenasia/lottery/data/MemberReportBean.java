@@ -14,6 +14,25 @@ public class MemberReportBean {
     private String item_7;
     private String item_8;
     private String item_9;
+    private String item_10;
+
+    private String level;
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getItem_10() {
+        return item_10;
+    }
+
+    public void setItem_10(String item_10) {
+        this.item_10 = item_10;
+    }
 
     public String getItem_1() {
         return item_1;

@@ -36,7 +36,7 @@ import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.util.ToastUtils;
 import com.google.gson.reflect.TypeToken;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -45,23 +45,23 @@ import butterknife.OnClick;
  */
 public class AlipayTransferFragment extends BaseFragment
 {
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.bank_name)
+    @BindView(R.id.bank_name)
     TextView bankName;
-    @Bind(R.id.user_name)
+    @BindView(R.id.user_name)
     TextView userName;
-    @Bind(R.id.copy_name)
+    @BindView(R.id.copy_name)
     Button copyName;
-    @Bind(R.id.account)
+    @BindView(R.id.account)
     TextView account;
-    @Bind(R.id.copy_account)
+    @BindView(R.id.copy_account)
     Button copyAccount;
-    @Bind(R.id.step)
+    @BindView(R.id.step)
     Button step;
-    @Bind(R.id.tip)
+    @BindView(R.id.tip)
     TextView tip;
-    @Bind(R.id.warn_tip)
+    @BindView(R.id.warn_tip)
     TextView warnTip;
     
     private AlipayTransferBean bean;
@@ -133,7 +133,6 @@ public class AlipayTransferFragment extends BaseFragment
     public void onDestroyView()
     {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
     
     private RestCallback restCallback = new RestCallback()

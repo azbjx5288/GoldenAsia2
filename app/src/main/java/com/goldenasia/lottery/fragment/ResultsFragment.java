@@ -28,7 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by ACE-PC on 2016/3/7.
@@ -39,9 +39,9 @@ public class ResultsFragment extends BaseFragment {
 
     private static final int LIST_HISTORY_CODE_ID = 1;
 
-    @Bind(R.id.refresh_history_listviewcode)
+    @BindView(R.id.refresh_history_listviewcode)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.history_lottery_listviewcode)
+    @BindView(R.id.history_lottery_listviewcode)
     ListView listView;
 
     private static final int FIRST_PAGE = 1;

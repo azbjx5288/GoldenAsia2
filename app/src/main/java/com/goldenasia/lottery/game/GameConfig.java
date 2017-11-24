@@ -58,9 +58,10 @@ public class GameConfig
             case "QSHHZX":
             case "SXHHZX":
             case "ZSHHZX":
-            case "RSHHZX":
                 return new DsGame(activity, method, lottery);
-            
+            case "RSHHZX":
+                return new DsRSHHZXGame(activity, method, lottery);
+
             case "NIUNIU":
                 return new CowCowGame(method);
         }
@@ -164,6 +165,9 @@ public class GameConfig
             //正码任选
             case "ZMRX":
                 return new LhcZmrxGame(method);
+            //总肖
+            case "ZONGX":
+                return new LhcZongXGame(method);
         }
         return new NonsupportLhcGame(method);
     }

@@ -29,7 +29,7 @@ import com.goldenasia.lottery.game.PromptManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -43,9 +43,9 @@ public class BalanceDetailsFragment extends BaseFragment {
      */
     private static final int FIRST_PAGE = 1;
 
-    @Bind(R.id.refreshLayout)
+    @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ListView listView;
 
     private int totalCount;
@@ -220,13 +220,13 @@ public class BalanceDetailsFragment extends BaseFragment {
     };
 
     static class ViewHolder {
-        @Bind(R.id.name)
+        @BindView(R.id.name)
         TextView name;
-        @Bind(R.id.rebates)
+        @BindView(R.id.rebates)
         TextView rebates;
-        @Bind(R.id.prize)
+        @BindView(R.id.prize)
         TextView money;
-        @Bind(R.id.time)
+        @BindView(R.id.time)
         TextView time;
 
         public ViewHolder(View convertView) {

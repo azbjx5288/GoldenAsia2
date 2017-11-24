@@ -16,7 +16,7 @@ import com.goldenasia.lottery.R;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -115,7 +115,7 @@ public class GgcMethodPopupWindow extends PopupWindow
 
     static class ViewHolder
     {
-        @Bind(R.id.method_name)
+        @BindView(R.id.method_name)
         TextView methodName;
 
         ViewHolder(View view)

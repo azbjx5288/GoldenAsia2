@@ -20,25 +20,23 @@ import com.goldenasia.lottery.app.FragmentLauncher;
 import com.goldenasia.lottery.data.GaBean;
 import com.goldenasia.lottery.util.WindowUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * Created By Sakura
  */
-public class GAGameFragment extends BaseFragment
-{
+public class GAGameFragment extends BaseFragment {
 
     private String url;
 
-    @Bind(R.id.ga_web)
+    @BindView(R.id.ga_web)
     WebView webView;
-    @Bind(R.id.loading_layout)
+    @BindView(R.id.loading_layout)
     LinearLayout loadingLayout;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         setFitSystem(false);
         super.onCreate(savedInstanceState);
     }
@@ -56,20 +54,17 @@ public class GAGameFragment extends BaseFragment
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
     }
 
-    private void init()
-    {
+    private void init() {
         Bundle bundle;
         bundle = getActivity().getIntent().getExtras();
         GaBean gaBean = (GaBean) bundle.getSerializable("GaBean");
         url = gaBean.getUrl();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
         }
         webView.setOverScrollMode(WebView.OVER_SCROLL_ALWAYS);
@@ -86,18 +81,15 @@ public class GAGameFragment extends BaseFragment
         webSettings.setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JsInterface(), "androidJs");
         webView.loadUrl(url);
-        webView.setWebViewClient(new WebViewClient()
-        {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url)
-            {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
             }
 
             @Override
-            public void onPageFinished(WebView view, String url)
-            {
+            public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 loadingLayout.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
@@ -105,24 +97,24 @@ public class GAGameFragment extends BaseFragment
         });
     }
 
-    public static void launch(BaseFragment fragment, GaBean gaBean)
-    {
+    public static void launch(BaseFragment fragment, GaBean gaBean) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("GaBean", gaBean);
         FragmentLauncher.launch(fragment.getActivity(), GAGameFragment.class, bundle);
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         webView.destroy();
         super.onDestroyView();
     }
 
     private class JsInterface {
-        /** 给网页调用，网页点“离开”游戏时使用 --> androidJs.finishGame()*/
+        /**
+         * 给网页调用，网页点“离开”游戏时使用 --> androidJs.finishGame()
+         */
         @JavascriptInterface
-        public void finishGame(){
+        public void finishGame() {
             getActivity().finish();
         }
     }

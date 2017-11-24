@@ -16,7 +16,7 @@ import com.goldenasia.lottery.component.TabPageAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * 快速提现界面
@@ -24,9 +24,9 @@ import butterknife.Bind;
  */
 public class WithdrawDepositFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
 
-    @Bind(R.id.radioGroup)
+    @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     ViewPager viewPager;
     private List<Fragment> fragments = new ArrayList<>();
 

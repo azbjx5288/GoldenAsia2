@@ -29,7 +29,7 @@ import com.goldenasia.lottery.data.UserInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * 两页Table的页面
@@ -38,9 +38,9 @@ import butterknife.Bind;
 public class TwoTableFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, ViewPager
         .OnPageChangeListener {
 
-    @Bind(R.id.radioGroup)
+    @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     ViewPager viewPager;
 
     private boolean status=true;

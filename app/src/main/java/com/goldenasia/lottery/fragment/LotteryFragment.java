@@ -42,7 +42,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
@@ -51,35 +51,34 @@ import butterknife.OnItemClick;
  * Created by Sakura on 2017/3/14.
  */
 
-public class LotteryFragment extends BaseFragment
-{
+public class LotteryFragment extends BaseFragment {
     private static final String TAG = LotteryFragment.class.getSimpleName();
-    
+
     private static final int LOTTERY_TRACE_ID = 1;
     private static final int BANNER_LIST_ID = 2;
-    
-    @Bind(R.id.ssc_gridview)
+
+    @BindView(R.id.ssc_gridview)
     ScrollGridView sscGridview;
-    @Bind(R.id.syxw_gridview)
+    @BindView(R.id.syxw_gridview)
     ScrollGridView syxwGridview;
-    @Bind(R.id.ks_gridview)
+    @BindView(R.id.ks_gridview)
     ScrollGridView ksGridview;
-    @Bind(R.id.low_gridview)
+    @BindView(R.id.low_gridview)
     ScrollGridView lowGridview;
-    @Bind(R.id.others_gridview)
+    @BindView(R.id.others_gridview)
     ScrollGridView othersGridview;
-    @Bind(R.id.edit_favourite)
+    @BindView(R.id.edit_favourite)
     ImageView editFavourite;
-    @Bind(R.id.scrollView)
+    @BindView(R.id.scrollView)
     ScrollView scrollView;
-    /*@Bind(R.id.box_bottom_layout)
+    /*@BindView(R.id.box_bottom_layout)
     LinearLayout boxBottomLayout;*/
-    
+
     private TextView sscDesc;
     private TextView syxwDesc;
     private TextView ksDesc;
     private TextView lowDesc;
-    
+
     private ImageAdapter sscAdapter;
     private ImageAdapter syxwAdapter;
     private ImageAdapter ksAdapter;
@@ -94,20 +93,18 @@ public class LotteryFragment extends BaseFragment
     private ArrayList<Lottery> othersLotteryList = new ArrayList<>();
     private ArrayList<Lottery> favouriteLotteryList = new ArrayList<>();
     private ArrayList<Notice> notices;
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lottery, container,
                 false);
         ButterKnife.bind(this, view);
         return view;
     }
-    
+
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //new VersionChecker(this).startCheck();
         cycleViewPager = (CycleViewPager) getActivity().getFragmentManager()
@@ -116,9 +113,8 @@ public class LotteryFragment extends BaseFragment
         loadBanner();
         initGridView();
     }
-    
-    private void initView()
-    {
+
+    private void initView() {
         View sscLayout = findViewById(R.id.ssc);
         ImageView sscImage = (ImageView) sscLayout.findViewById(R.id.icon);
         sscImage.setImageResource(R.drawable.ic_group_ssc);
@@ -127,7 +123,7 @@ public class LotteryFragment extends BaseFragment
         sscDesc = (TextView) sscLayout.findViewById(R.id.desc);
         sscDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
                 .app_main_support));
-        
+
         View syxwLayout = findViewById(R.id.syxw);
         ImageView syxwImage = (ImageView) syxwLayout.findViewById(R.id.syxw)
                 .findViewById(R.id.icon);
@@ -137,7 +133,7 @@ public class LotteryFragment extends BaseFragment
         syxwDesc = (TextView) syxwLayout.findViewById(R.id.desc);
         syxwDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
                 .app_main_support));
-        
+
         View ksLayout = findViewById(R.id.ks);
         ImageView ksImage = (ImageView) ksLayout.findViewById(R.id.ks)
                 .findViewById(R.id.icon);
@@ -147,7 +143,7 @@ public class LotteryFragment extends BaseFragment
         ksDesc = (TextView) ksLayout.findViewById(R.id.desc);
         ksDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
                 .app_main_support));
-        
+
         View lowLayout = findViewById(R.id.low);
         ImageView lowImage = (ImageView) lowLayout.findViewById(R.id.low)
                 .findViewById(R.id.icon);
@@ -161,39 +157,33 @@ public class LotteryFragment extends BaseFragment
         /*scrollView.setFocusable(false);
         scrollView.smoothScrollTo(0, 20);*/
     }
-    
-    private void loadBanner()
-    {
+
+    private void loadBanner() {
         BannerListCommand command = new BannerListCommand();
         command.setPageName("index");
-        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<Notice>>>()
-        {};
+        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<Notice>>>() {
+        };
         RestRequest restRequest = RestRequestManager.createRequest
                 (getActivity(), command, typeToken, restCallback,
                         BANNER_LIST_ID, this);
         RestResponse restResponse = restRequest.getCache();
-        if (restResponse != null && restResponse.getData() instanceof ArrayList)
-        {
+        if (restResponse != null && restResponse.getData() instanceof ArrayList) {
             updateBanner((ArrayList<Notice>) restResponse.getData());
         }
         restRequest.execute();
     }
-    
-    private void updateBanner(ArrayList<Notice> notices)
-    {
+
+    private void updateBanner(ArrayList<Notice> notices) {
         this.notices = notices;
-        if (notices == null || notices.size() == 0)
-        {
+        if (notices == null || notices.size() == 0) {
             return;
         }
         initialize();
     }
-    
+
     @SuppressLint("NewApi")
-    private void initialize()
-    {
-        if (notices == null || notices.size() == 0)
-        {
+    private void initialize() {
+        if (notices == null || notices.size() == 0) {
             return;
         }
         UserCentre userCentre = GoldenAsiaApp.getUserCentre();
@@ -202,8 +192,7 @@ public class LotteryFragment extends BaseFragment
         views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl
                 (notices.get(notices.size() - 1).getContent()), /*notices.get
                 (notices.size() - 1).getTitle()*/""));
-        for (int i = 0, size = notices.size(); i < size; i++)
-        {
+        for (int i = 0, size = notices.size(); i < size; i++) {
             views.add(ViewFactory.getImageView(getActivity(), userCentre
                     .getUrl(notices.get(i).getContent()), /*notices
                     .get(i).getTitle()*/""));
@@ -212,17 +201,16 @@ public class LotteryFragment extends BaseFragment
         views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl
                 (notices.get(0).getContent()), /*notices.get
                 (0).getTitle()*/""));
-        
+
         cycleViewPager.setCycle(true);
         cycleViewPager.setData(views, mAdCycleViewListener);
         cycleViewPager.setWheel(true);
     }
-    
+
     /**
      * 彩种大厅展示
      */
-    private void initGridView()
-    {
+    private void initGridView() {
         //实现GridView
         sscAdapter = new ImageAdapter();
         sscAdapter.setExpandable(true);
@@ -236,27 +224,22 @@ public class LotteryFragment extends BaseFragment
         othersAdapter.setExpandable(false);
         lotteryListLoad();
     }
-    
+
     @OnClick(R.id.edit_favourite)
-    public void onEdit()
-    {
+    public void onEdit() {
         CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
         builder.setContentView(popupFavourite());
         builder.setTitle("所有彩种");
         builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
-        {
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 editFavourite();
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
-        {
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i)
-            {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
@@ -264,9 +247,8 @@ public class LotteryFragment extends BaseFragment
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
-    
-    private View popupFavourite()
-    {
+
+    private View popupFavourite() {
         View convertView = LayoutInflater.from(getActivity()).inflate(R
                 .layout.popup_favourite, null);
         GridView gridView = (GridView) convertView.findViewById(R.id
@@ -274,39 +256,32 @@ public class LotteryFragment extends BaseFragment
         FavouriteAdapter adapter = new FavouriteAdapter();
         adapter.setData(lotteryList);
         gridView.setAdapter(adapter);
-        
+
         return convertView;
     }
-    
-    private void editFavourite()
-    {
-        if (favouriteLotteryList != null && favouriteLotteryList.size() > 0)
-        {
-            
+
+    private void editFavourite() {
+        if (favouriteLotteryList != null && favouriteLotteryList.size() > 0) {
+
         }
     }
-    
-    private void initFavourite()
-    {
+
+    private void initFavourite() {
         /*if (SharedPreferencesUtils.getBoolean(getActivity(),
         ConstantInformation.FAVOURITE_INFO, "IS_FIRST"))
         {
             int size = ConstantInformation.CURRENT_LOTTERY_ID_LIST.size();
         }*/
     }
-    
+
     @OnClick({R.id.ssc, R.id.syxw, R.id.ks, R.id.low})
-    public void onExpand(View view)
-    {
-        switch (view.getId())
-        {
+    public void onExpand(View view) {
+        switch (view.getId()) {
             case R.id.ssc:
-                if (sscGridview.getVisibility() == View.VISIBLE)
-                {
+                if (sscGridview.getVisibility() == View.VISIBLE) {
                     sscGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.GONE);
-                } else
-                {
+                } else {
                     sscGridview.setVisibility(View.VISIBLE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     syxwGridview.setVisibility(View.GONE);
@@ -315,12 +290,10 @@ public class LotteryFragment extends BaseFragment
                 }
                 break;
             case R.id.syxw:
-                if (syxwGridview.getVisibility() == View.VISIBLE)
-                {
+                if (syxwGridview.getVisibility() == View.VISIBLE) {
                     syxwGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.GONE);
-                } else
-                {
+                } else {
                     syxwGridview.setVisibility(View.VISIBLE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     sscGridview.setVisibility(View.GONE);
@@ -329,12 +302,10 @@ public class LotteryFragment extends BaseFragment
                 }
                 break;
             case R.id.ks:
-                if (ksGridview.getVisibility() == View.VISIBLE)
-                {
+                if (ksGridview.getVisibility() == View.VISIBLE) {
                     ksGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.GONE);
-                } else
-                {
+                } else {
                     ksGridview.setVisibility(View.VISIBLE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     sscGridview.setVisibility(View.GONE);
@@ -343,12 +314,10 @@ public class LotteryFragment extends BaseFragment
                 }
                 break;
             case R.id.low:
-                if (lowGridview.getVisibility() == View.VISIBLE)
-                {
+                if (lowGridview.getVisibility() == View.VISIBLE) {
                     lowGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.GONE);
-                } else
-                {
+                } else {
                     lowGridview.setVisibility(View.VISIBLE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     sscGridview.setVisibility(View.GONE);
@@ -358,45 +327,37 @@ public class LotteryFragment extends BaseFragment
                 break;
         }
     }
-    
+
     @OnItemClick(R.id.ssc_gridview)
-    public void onSscClick(int position)
-    {
+    public void onSscClick(int position) {
         launchLottery(sscLotteryList, position);
     }
-    
+
     @OnItemClick(R.id.syxw_gridview)
-    public void onSyxwClick(int position)
-    {
+    public void onSyxwClick(int position) {
         launchLottery(syxwLotteryList, position);
     }
-    
+
     @OnItemClick(R.id.ks_gridview)
-    public void onKsClick(int position)
-    {
+    public void onKsClick(int position) {
         launchLottery(ksLotteryList, position);
     }
-    
+
     @OnItemClick(R.id.low_gridview)
-    public void onLowClick(int position)
-    {
+    public void onLowClick(int position) {
         launchLottery(lowLotteryList, position);
     }
-    
+
     @OnItemClick(R.id.others_gridview)
-    public void onItemClick(int position)
-    {
+    public void onItemClick(int position) {
         launchLottery(othersLotteryList, position);
     }
-    
-    private void launchLottery(ArrayList<Lottery> list, int position)
-    {
-        if (list.size() > 0)
-        {
+
+    private void launchLottery(ArrayList<Lottery> list, int position) {
+        if (list.size() > 0) {
             Lottery lottery = list.get(position);
             if (lottery.isAvailable())
-                switch (lottery.getLotteryId())
-                {
+                switch (lottery.getLotteryId()) {
                     case 15://亚洲妙妙彩
                         GameTableFragment.launchMmc(LotteryFragment.this,
                                 lottery);
@@ -413,101 +374,81 @@ public class LotteryFragment extends BaseFragment
                         GameTableFragment.launch(LotteryFragment.this, lottery);
                         break;
                 }
-            else
-            {
+            else {
                 tipDialog(lottery.getStopReason());
             }
-        } else
-        {
+        } else {
             tipDialog("数据正在加载请稍等");
         }
     }
-    
+
     private CycleViewPager.ImageCycleViewListener mAdCycleViewListener = new
-            CycleViewPager.ImageCycleViewListener()
-    {
-        @Override
-        public void onImageClick(int position, View imageView)
-        {
-            if (TextUtils.isEmpty(notices.get(position).getLink()))
-            {
-            } else
-            {
-                Bundle bundle = new Bundle();
-                bundle.putString("url", notices.get(position).getLink());
-                launchFragment(WebViewFragment.class, bundle);
-            }
-        }
-    };
-    
+            CycleViewPager.ImageCycleViewListener() {
+                @Override
+                public void onImageClick(int position, View imageView) {
+                    if (TextUtils.isEmpty(notices.get(position).getLink())) {
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url", notices.get(position).getLink());
+                        launchFragment(WebViewFragment.class, bundle);
+                    }
+                }
+            };
+
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
-        if (cycleViewPager != null)
-        {
+        if (cycleViewPager != null) {
             cycleViewPager.onDestroyView();
         }
     }
-    
+
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
-    
+
     //为GridView定义自己的适配器
-    public class ImageAdapter extends BaseAdapter
-    {
+    public class ImageAdapter extends BaseAdapter {
         private ArrayList<Lottery> data;
         private boolean isExpandable;
-        
-        private void setData(ArrayList<Lottery> data)
-        {
+
+        private void setData(ArrayList<Lottery> data) {
             this.data = data;
             notifyDataSetChanged();
         }
-        
-        public boolean isExpandable()
-        {
+
+        public boolean isExpandable() {
             return isExpandable;
         }
-        
-        public void setExpandable(boolean expandable)
-        {
+
+        public void setExpandable(boolean expandable) {
             isExpandable = expandable;
         }
-        
-        private class GirdHolder
-        {
+
+        private class GirdHolder {
             ImageView logo;
             TextView name;
             ImageView hot_lab;
             ImageView new_lab;
         }
-        
-        public int getCount()
-        {
+
+        public int getCount() {
             return data.size();
         }
-        
-        public Object getItem(int position)
-        {
+
+        public Object getItem(int position) {
             return null;
         }
-        
-        public long getItemId(int position)
-        {
+
+        public long getItemId(int position) {
             return position;
         }
-        
+
         // create a new ImageView for each item referenced by the Adapter
-        public View getView(int position, View convertView, ViewGroup parent)
-        {
+        public View getView(int position, View convertView, ViewGroup parent) {
             GirdHolder holder;
-            if (convertView == null)
-            {
+            if (convertView == null) {
                 convertView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_fragment_home_gridview, null);
                 if (isExpandable)
@@ -519,55 +460,47 @@ public class LotteryFragment extends BaseFragment
                 holder.hot_lab = (ImageView) convertView.findViewById(R.id.hot_lab);
                 holder.new_lab = (ImageView) convertView.findViewById(R.id.new_lab);
                 convertView.setTag(holder);
-            } else
-            {
+            } else {
                 holder = (GirdHolder) convertView.getTag();
             }
-            
-            if (data != null && data.size() > 0)
-            {
+
+            if (data != null && data.size() > 0) {
                 Lottery lottery = data.get(position);
                 holder.logo.setImageResource(ConstantInformation
                         .getLotteryLogo(lottery.getLotteryId(), lottery
                                 .isAvailable()));
                 holder.name.setText(lottery.getCname());
-                if (lottery.isHot())
-                {
+                if (lottery.isHot()) {
                     holder.hot_lab.setVisibility(View.VISIBLE);
                     holder.new_lab.setVisibility(View.GONE);
-                } else if (lottery.isNew())
-                {
+                } else if (lottery.isNew()) {
                     holder.hot_lab.setVisibility(View.GONE);
                     holder.new_lab.setVisibility(View.VISIBLE);
-                } else
-                {
+                } else {
                     holder.hot_lab.setVisibility(View.GONE);
                     holder.new_lab.setVisibility(View.GONE);
                 }
                 convertView.setId(lottery.getLotteryId());
-            } else
-            {
+            } else {
                 holder.logo.setImageResource(R.drawable.jia);
                 holder.name.setText("");
             }
-            
+
             return convertView;
         }
     }
-    
-    private void lotteryListLoad()
-    {
+
+    private void lotteryListLoad() {
         LotteryMenuCommand lotteryListCommand = new LotteryMenuCommand();
         lotteryListCommand.setLotteryID(0);
-        TypeToken typeToken = new TypeToken<RestResponse<LotteryMenu>>()
-        {};
+        TypeToken typeToken = new TypeToken<RestResponse<LotteryMenu>>() {
+        };
         RestRequest restRequest = RestRequestManager.createRequest
                 (getActivity(), lotteryListCommand, typeToken, restCallback,
                         LOTTERY_TRACE_ID, this);
         RestResponse restResponse = restRequest.getCache();
         if (restResponse != null && restResponse.getData() instanceof
-                LotteryMenu)
-        {
+                LotteryMenu) {
             LotteryMenu lotteryMenu = (LotteryMenu) restResponse.getData();
             if (lotteryMenu.getSsc() != null)
                 sscLotteryList = lotteryMenu.getSsc();
@@ -588,34 +521,31 @@ public class LotteryFragment extends BaseFragment
             //othersAdapter.notifyDataSetChanged();
             sscAdapter.setData(sscLotteryList);
             sscGridview.setAdapter(sscAdapter);
-            
+
             syxwAdapter.setData(syxwLotteryList);
             syxwGridview.setAdapter(syxwAdapter);
-            
+
             ksAdapter.setData(ksLotteryList);
             ksGridview.setAdapter(ksAdapter);
-            
+
             lowAdapter.setData(lowLotteryList);
             lowGridview.setAdapter(lowAdapter);
-            
+
             othersAdapter.setData(othersLotteryList);
             othersGridview.setAdapter(othersAdapter);
-            
+
             sscDesc.setText("畅销组合/" + sscLotteryList.size() + "个");
             syxwDesc.setText("震撼开售/" + syxwLotteryList.size() + "个");
             ksDesc.setText("人品爆发/" + ksLotteryList.size() + "个");
         }
         restRequest.execute();
     }
-    
-    private RestCallback restCallback = new RestCallback<ArrayList<?>>()
-    {
+
+    private RestCallback restCallback = new RestCallback<ArrayList<?>>() {
         @Override
         public boolean onRestComplete(RestRequest request, RestResponse
-                response)
-        {
-            switch (request.getId())
-            {
+                response) {
+            switch (request.getId()) {
                 case LOTTERY_TRACE_ID:
                     LotteryMenu lotteryMenu = (LotteryMenu) response.getData();
                     if (lotteryMenu.getSsc() != null)
@@ -637,19 +567,19 @@ public class LotteryFragment extends BaseFragment
                     //othersAdapter.notifyDataSetChanged();
                     sscAdapter.setData(sscLotteryList);
                     sscGridview.setAdapter(sscAdapter);
-                    
+
                     syxwAdapter.setData(syxwLotteryList);
                     syxwGridview.setAdapter(syxwAdapter);
-                    
+
                     ksAdapter.setData(ksLotteryList);
                     ksGridview.setAdapter(ksAdapter);
-                    
+
                     lowAdapter.setData(lowLotteryList);
                     lowGridview.setAdapter(lowAdapter);
-                    
+
                     othersAdapter.setData(othersLotteryList);
                     othersGridview.setAdapter(othersAdapter);
-                    
+
                     sscDesc.setText("畅销组合/" + sscLotteryList.size() + "个");
                     syxwDesc.setText("热门组合/" + syxwLotteryList.size() + "个");
                     ksDesc.setText("震撼开售/" + ksLotteryList.size() + "个");
@@ -661,18 +591,15 @@ public class LotteryFragment extends BaseFragment
             }
             return true;
         }
-        
+
         @Override
         public boolean onRestError(RestRequest request, int errCode, String
-                errDesc)
-        {
-            if (errCode == 7003)
-            {
+                errDesc) {
+            if (errCode == 7003) {
                 Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast
                         .LENGTH_LONG).show();
                 return true;
-            } else if (errCode == 7006)
-            {
+            } else if (errCode == 7006) {
                 CustomDialog dialog = PromptManager.showCustomDialog
                         (getActivity(), "重新登录", errDesc, "重新登录", errCode);
                 dialog.setCancelable(false);
@@ -681,12 +608,11 @@ public class LotteryFragment extends BaseFragment
             }
             return false;
         }
-        
+
         @Override
         public void onRestStateChanged(RestRequest request, @RestRequest
-                .RestState int state)
-        {
-            
+                .RestState int state) {
+
         }
     };
 }

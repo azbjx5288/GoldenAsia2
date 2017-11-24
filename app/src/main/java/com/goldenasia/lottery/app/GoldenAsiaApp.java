@@ -1,7 +1,7 @@
 package com.goldenasia.lottery.app;
 
 import android.app.Application;
-import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -18,14 +18,18 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
 
 /**
  * Created by Alashi on 2015/12/22.
  */
 public class GoldenAsiaApp extends Application
 {
+    private static final String TAG = GoldenAsiaApp.class.getName();
+
     private static GoldenAsiaApp sApp;
-    
+
     //public static final String BASEURL = "http://ai.xym8.com";//正式服
     public static final String BASEURL = "http://ta.w956.com";//新测试服
     //public static final String BASEURL = "http://ta.jinyazhou88.org";//测试服
@@ -35,7 +39,7 @@ public class GoldenAsiaApp extends Application
     private UserCentre userCentre;
     
     public static RequestQueue mQueues;
-    
+
     @Override
     public void onCreate()
     {
@@ -43,8 +47,7 @@ public class GoldenAsiaApp extends Application
         sApp = this;
         //运行时，出现Crash，将log写到sd卡；
         CrashHandler.getInstance().init(this);
-        MultiDex.install(this);
-        
+
         if (BuildConfig.DEBUG)
         {
             MobclickAgent.setDebugMode(true);
@@ -60,8 +63,29 @@ public class GoldenAsiaApp extends Application
         userCentre = new UserCentre(this, BASEURL);
         mQueues = Volley.newRequestQueue(getApplicationContext());
         configImageLoader();
+
+        registerUmPush();
     }
-    
+
+    //注册友盟推送服务
+    private void registerUmPush() {
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
+                Log.d(TAG, "deviceToken="+deviceToken);
+            }
+
+            @Override
+            public void onFailure(String s, String s1) {
+                Log.d(TAG, "onFailure");
+            }
+        });
+    }
+
     /**
      * 配置ImageLoader
      */

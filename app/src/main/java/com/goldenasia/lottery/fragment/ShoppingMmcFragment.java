@@ -52,7 +52,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -72,11 +72,11 @@ public class ShoppingMmcFragment extends BaseFragment {
     private static final int TRACK_TURNED_PAGE_PICK = 3;
     private static final int CUSTOMER_OPEN = 1;
 
-    @Bind(R.id.shopping_list)
+    @BindView(R.id.shopping_list)
     ListView shoppingList;
-    @Bind(R.id.lottery_shopping_buy)
+    @BindView(R.id.lottery_shopping_buy)
     Button shoppingBuyButton;
-    @Bind(R.id.chase_mmc_button)
+    @BindView(R.id.chase_mmc_button)
     ImageButton chaseMmcButton;
 
     private View viewLayout;
@@ -181,7 +181,6 @@ public class ShoppingMmcFragment extends BaseFragment {
         if (toastHandler != null) {
             toastHandler.removeCallbacks(toastRunnable);
         }
-        ButterKnife.unbind(this);
     }
 
     @OnClick(R.id.chase_mmc_button)

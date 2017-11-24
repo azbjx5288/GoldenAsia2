@@ -248,7 +248,7 @@
     <string name="forget_password">"忘记密码 ?"</string>
     <string name="ga_history_total_win_lost" formatted="false">
         <![CDATA[
-            总盈亏：<font color="#ff0000">PAYAMT</font> 元
+            总盈亏：<font color="#ee7e45">PAYAMT</font>
         ]]>
     </string>
 </resources>

@@ -86,6 +86,14 @@
         android:textColor="@color/text_dark" />
 
     <View style="@style/vertical_divide_line" />
+    <TextView
+        android:layout_width="72.5dp"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:text="下级佣金"
+        android:textColor="@color/text_dark" />
+
+    <View style="@style/vertical_divide_line" />
 
 
     <TextView

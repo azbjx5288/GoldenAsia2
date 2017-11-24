@@ -49,7 +49,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import in.srain.cube.util.LocalDisplay;
 import in.srain.cube.views.loadmore.LoadMoreContainer;
@@ -74,15 +74,15 @@ public class ShoppingFragment extends BaseFragment {
     private static final int TRACK_TURNED_PAGE_RECHARGE = 2;
     private static final int TRACK_TURNED_PAGE_PICK = 3;
 
-    @Bind(R.id.load_more_list_view_ptr_frame)
+    @BindView(R.id.load_more_list_view_ptr_frame)
     PtrClassicFrameLayout ptrFrameLayout;
-    @Bind(R.id.load_more_list_view_container)
+    @BindView(R.id.load_more_list_view_container)
     LoadMoreListViewContainer loadMoreListViewContainer;
-    @Bind(R.id.shopping_list)
+    @BindView(R.id.shopping_list)
     ListView shoppingList;
-    @Bind(R.id.lottery_shopping_buy)
+    @BindView(R.id.lottery_shopping_buy)
     Button shopping_buy;
-    @Bind(R.id.floating_tips)
+    @BindView(R.id.floating_tips)
     Button floatingTips;
 
     private TitleTimingSalesView timingView;

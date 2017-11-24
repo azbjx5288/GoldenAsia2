@@ -13,7 +13,7 @@ import com.goldenasia.lottery.material.Ticket;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShoppingMmcAdapter extends BaseAdapter
@@ -88,13 +88,13 @@ public class ShoppingMmcAdapter extends BaseAdapter
 
     static class ViewHolder
     {
-        @Bind(R.id.shopping_item_method)
+        @BindView(R.id.shopping_item_method)
         TextView playName;
-        @Bind(R.id.shopping_item_code)
+        @BindView(R.id.shopping_item_code)
         TextView code;
-        @Bind(R.id.shopping_item_notenum)
+        @BindView(R.id.shopping_item_notenum)
         TextView noteNumber;
-        @Bind(R.id.shopping_item_delete)
+        @BindView(R.id.shopping_item_delete)
         ImageButton delButton;
 
         public ViewHolder(View view)

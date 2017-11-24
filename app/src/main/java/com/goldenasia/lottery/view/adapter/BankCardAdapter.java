@@ -11,7 +11,7 @@ import com.goldenasia.lottery.data.BindCardDetail;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -64,9 +64,9 @@ public class BankCardAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.bank_name)
+        @BindView(R.id.bank_name)
         TextView bankName;
-        @Bind(R.id.bank_card)
+        @BindView(R.id.bank_card)
         TextView bankCard;
 
         ViewHolder(View view) {

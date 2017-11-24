@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <TextView
+            android:id="@+id/textView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="23dp"
+            android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc_selector"
+            android:gravity="center"
+            android:text="234肖"
+            android:hint="0"
+            android:clickable="true"
+            android:textColor="@color/selector_game_panel_oval"
+            android:textSize="@dimen/ball_text_size"/>
+        <TextView
+            android:id="@+id/textView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="23dp"
+            android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc_selector"
+            android:gravity="center"
+            android:text="5肖"
+            android:hint="1"
+            android:textColor="@color/selector_game_panel_oval"
+            android:textSize="@dimen/ball_text_size"/>
+        <TextView
+            android:id="@+id/textView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="23dp"
+            android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc_selector"
+            android:gravity="center"
+            android:text="6肖"
+            android:hint="2"
+            android:textColor="@color/selector_game_panel_oval"
+            android:textSize="@dimen/ball_text_size"/>
+        <TextView
+            android:id="@+id/textView04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="23dp"
+            android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc_selector"
+            android:gravity="center"
+            android:text="7肖"
+            android:hint="3"
+            android:textColor="@color/selector_game_panel_oval"
+            android:textSize="@dimen/ball_text_size"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+        <TextView
+            android:id="@+id/textView05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="23dp"
+            android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc_selector"
+            android:gravity="center"
+            android:text="单"
+            android:hint="4"
+            android:textColor="@color/selector_game_panel_oval"
+            android:textSize="@dimen/ball_text_size"/>
+        <TextView
+            android:id="@+id/textView06"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="23dp"
+            android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc_selector"
+            android:gravity="center"
+            android:text="双"
+            android:hint="5"
+            android:textColor="@color/selector_game_panel_oval"
+            android:textSize="@dimen/ball_text_size"/>
+
+    </LinearLayout>
+
+</LinearLayout>

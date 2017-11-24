@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -43,14 +43,14 @@ import butterknife.OnClick;
 public class WithdrawListFragment extends BaseFragment implements View.OnClickListener {
     private static final int WITHDRAW_TRACE_ID = 1;
 
-    @Bind(R.id.refresh_withdraw_listview)
+    @BindView(R.id.refresh_withdraw_listview)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.withdraw_listview)
+    @BindView(R.id.withdraw_listview)
     ListView withdrawLV;
 
-    @Bind(R.id.edit_startdate)
+    @BindView(R.id.edit_startdate)
     TextView startdate;
-    @Bind(R.id.edit_enddate)
+    @BindView(R.id.edit_enddate)
     TextView enddate;
 
     private static final int FIRST_PAGE = 1;

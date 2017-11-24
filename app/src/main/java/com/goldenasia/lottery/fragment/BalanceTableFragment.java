@@ -14,7 +14,7 @@ import android.widget.RadioGroup;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * 资金明细table页
@@ -22,9 +22,9 @@ import butterknife.Bind;
  */
 public class BalanceTableFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener {
 
-    @Bind(R.id.radioGroup)
+    @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     ViewPager viewPager;
 
     private int [] ids = new int[]{ R.id.radioButton1, R.id.radioButton2, R.id.radioButton3,R.id.radioButton4, R.id.radioButton5,R.id.radioButton6};

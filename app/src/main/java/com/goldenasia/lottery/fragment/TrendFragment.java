@@ -22,7 +22,7 @@ import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.data.GaBean;
 import com.goldenasia.lottery.util.WindowUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -33,9 +33,9 @@ public class TrendFragment extends BaseFragment
 
     private String url;
 
-    @Bind(R.id.ga_web)
+    @BindView(R.id.ga_web)
     WebView webView;
-    @Bind(R.id.loading_layout)
+    @BindView(R.id.loading_layout)
     LinearLayout loadingLayout;
 
     @Override

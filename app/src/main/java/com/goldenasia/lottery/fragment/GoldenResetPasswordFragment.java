@@ -19,7 +19,7 @@ import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.ForgetPwdStep2Command;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -29,11 +29,11 @@ public class GoldenResetPasswordFragment extends BaseFragment {
 
     private String nvpair;
 
-    @Bind(R.id.password)
+    @BindView(R.id.password)
     EditText password;
-    @Bind(R.id.password2)
+    @BindView(R.id.password2)
     EditText password2;
-    @Bind(R.id.reset_password_submit)
+    @BindView(R.id.reset_password_submit)
     Button mResetPasswordSubmit;
 
     @Nullable
@@ -42,7 +42,7 @@ public class GoldenResetPasswordFragment extends BaseFragment {
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reset_password, container, false);
         ButterKnife.bind(this, view);
-        return inflateView(inflater, container, "重置密码", R.layout.fragment_reset_password);
+        return inflateView(inflater, container, "重置登录密码", R.layout.fragment_reset_password);
     }
 
     @Override
@@ -160,6 +160,5 @@ public class GoldenResetPasswordFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

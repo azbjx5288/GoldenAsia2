@@ -19,10 +19,11 @@ import com.goldenasia.lottery.fragment.Splash3Fragment;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SplashActivity extends FragmentActivity implements ViewPager.OnPageChangeListener
@@ -33,7 +34,7 @@ public class SplashActivity extends FragmentActivity implements ViewPager.OnPage
      */
     private static Boolean isSameVersion;
     
-    @Bind(R.id.viewPager)
+    @BindView(R.id.viewPager)
     ViewPager viewPager;
     
     private ArrayList<Fragment> fragments;
@@ -48,6 +49,8 @@ public class SplashActivity extends FragmentActivity implements ViewPager.OnPage
         
         init();
         verify();
+        //统计应用启动数据
+        PushAgent.getInstance(this).onAppStart();
     }
     
     private void init()

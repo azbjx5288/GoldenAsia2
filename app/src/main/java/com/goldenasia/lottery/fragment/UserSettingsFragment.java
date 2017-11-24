@@ -34,7 +34,7 @@ public class UserSettingsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflateView(inflater, container, "快速充值", R.layout.user_settings_fragment);
+        View view = inflateView(inflater, container, "设置", R.layout.user_settings_fragment);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -55,7 +55,7 @@ public class UserSettingsFragment extends BaseFragment {
                 launchFragment(BankCardSetting.class);
                 break;
             case R.id.push_notification:
-                new VersionChecker(this).startCheck(true);
+                launchFragment(PushNotificationFragment.class);
                 break;
 
 

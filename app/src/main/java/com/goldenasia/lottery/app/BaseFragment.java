@@ -1,6 +1,7 @@
 package com.goldenasia.lottery.app;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,7 @@ import com.goldenasia.lottery.util.WindowUtils;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Alashi on 2015/12/18.
@@ -52,8 +54,8 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     private TextView globalNetState;
     private ImageButton homeBtn;
     protected LinearLayout actionBarMenuLayout;
-
     private boolean fitSystem = true;
+    private Unbinder unbinder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     @CallSuper
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
     }
 
     protected View inflateView(LayoutInflater inflater, @Nullable ViewGroup container, String title, @LayoutRes int resource) {
@@ -85,11 +87,14 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         actionBarMenuLayout = (LinearLayout) top.findViewById(R.id.action_bar_menu_layout);
         titleBarTitle.setText(title);
         if (homeButton) {
-            top.findViewById(android.R.id.home).setOnClickListener((View v) ->{
-                InputMethodManager imm = (InputMethodManager)top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(top,InputMethodManager.SHOW_FORCED);
-                imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
-                getActivity().finish();
+            top.findViewById(android.R.id.home).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputMethodManager imm = (InputMethodManager) top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(top, InputMethodManager.SHOW_FORCED);
+                    imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
+                    getActivity().finish();
+                }
             });
         } else {
             top.findViewById(android.R.id.home).setVisibility(View.GONE);
@@ -121,11 +126,14 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         homeBtn = (ImageButton) top.findViewById(R.id.home_btn);
         titleBarTitle.setText(title);
         if (homeButton) {
-            homeBtn.setOnClickListener((View v) ->{
-                InputMethodManager imm = (InputMethodManager)top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(top,InputMethodManager.SHOW_FORCED);
-                imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
-                getActivity().finish();
+            homeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputMethodManager imm = (InputMethodManager) top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(top, InputMethodManager.SHOW_FORCED);
+                    imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
+                    getActivity().finish();
+                }
             });
         } else {
             homeBtn.setVisibility(View.GONE);
@@ -157,11 +165,14 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         homeBtn = (ImageButton) top.findViewById(R.id.home_btn);
         titleBarTitle.setText(title);
         if (homeButton) {
-            homeBtn.setOnClickListener((View v) ->{
-                InputMethodManager imm = (InputMethodManager)top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(top,InputMethodManager.SHOW_FORCED);
-                imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
-                getActivity().finish();
+            homeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputMethodManager imm = (InputMethodManager) top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(top, InputMethodManager.SHOW_FORCED);
+                    imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
+                    getActivity().finish();
+                }
             });
         } else {
             homeBtn.setVisibility(View.GONE);
@@ -243,7 +254,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         GoldenAsiaApp.getNetStateHelper().removeListener(this);
         RestRequestManager.cancelAll(this);
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     @CallSuper
@@ -253,7 +264,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         super.onPause();
         MobclickAgent.onPageEnd(this.getClass().getName());
     }
-    
+
     public void setSupportBackButton(boolean showHomeAsUp) {
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(showHomeAsUp);
@@ -321,14 +332,14 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         if (!isAdded()) {
             return;
         }
-        LoadingDialog.show(getActivity(),msg);
+        LoadingDialog.show(getActivity(), msg);
     }
 
-    public void showTimeProgress(String msg,int time) {
+    public void showTimeProgress(String msg, int time) {
         if (!isAdded()) {
             return;
         }
-        LoadingDialog.show(getActivity(),msg);
+        LoadingDialog.show(getActivity(), msg);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -360,9 +371,12 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     };
 
     public void hideWaitProgress() {
-        new Thread(() -> {
-            spandTimeMethod();
-            handler.sendEmptyMessage(0);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                spandTimeMethod();
+                handler.sendEmptyMessage(0);
+            }
         }).start();
     }
 
@@ -408,6 +422,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
 
     /**
      * 错误参数与成功参数提示窗
+     *
      * @param msg
      */
     public void tipDialog(String msg) {
@@ -415,19 +430,25 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         builder.setMessage(msg);
         builder.setTitle("温馨提示");
         builder.setLayoutSet(DialogLayout.SINGLE);
-        builder.setPositiveButton("知道了", (dialog, which) -> {
-            dialog.dismiss();
+        builder.setPositiveButton("知道了", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
         });
         builder.create().show();
     }
 
-    public void tipDialog(String title , View view) {
+    public void tipDialog(String title, View view) {
         CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
         builder.setContentView(view);
         builder.setTitle(title);
         builder.setLayoutSet(DialogLayout.SINGLE);
-        builder.setPositiveButton("选好了", (dialog, which) -> {
-            dialog.dismiss();
+        builder.setPositiveButton("选好了", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
         });
         builder.create().show();
     }

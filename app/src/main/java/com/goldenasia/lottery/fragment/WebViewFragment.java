@@ -19,7 +19,7 @@ import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created By Sakura
@@ -28,9 +28,9 @@ public class WebViewFragment extends BaseFragment
 {
     private String url;
     
-    @Bind(R.id.webView)
+    @BindView(R.id.webView)
     WebView webView;
-    @Bind(R.id.loading_layout)
+    @BindView(R.id.loading_layout)
     LinearLayout loadingLayout;
     
     @Override

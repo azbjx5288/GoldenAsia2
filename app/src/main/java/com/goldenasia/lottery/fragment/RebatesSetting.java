@@ -29,7 +29,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -39,9 +39,9 @@ public class RebatesSetting extends BaseFragment
 {
     private static final String TAG = RebatesSetting.class.getSimpleName();
     
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ListView listView;
-    @Bind(R.id.refreshLayout)
+    @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
     
     private ArrayList<Lottery> lotteryList;
@@ -183,9 +183,9 @@ public class RebatesSetting extends BaseFragment
     
     static class ViewHolder
     {
-        @Bind(R.id.mtogbtnlab)
+        @BindView(R.id.mtogbtnlab)
         TextView mtogbtnlab;
-        @Bind(R.id.mtogbtn)
+        @BindView(R.id.mtogbtn)
         SwitchButton mtogbtn;
         
         public ViewHolder(View convertView)

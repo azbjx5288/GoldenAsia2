@@ -43,7 +43,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.ArrayList;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
@@ -54,8 +54,7 @@ import butterknife.OnItemClick;
  *
  * @author Sakura
  */
-public class ShoppingGgcFragment extends BaseFragment
-{
+public class ShoppingGgcFragment extends BaseFragment {
     private static final String TAG = ShoppingGgcFragment.class.getSimpleName();
 
     private static final int USER_INFO_ID = 1;
@@ -65,31 +64,31 @@ public class ShoppingGgcFragment extends BaseFragment
     private static final int TRACK_TURNED_PAGE_RECHARGE = 2;
     private static final int TRACK_TURNED_PAGE_PICK = 3;
 
-    @Bind(R.id.card_list_for_sale)
+    @BindView(R.id.card_list_for_sale)
     LinearLayout cardListForSale;
-    @Bind(R.id.two)
+    @BindView(R.id.two)
     TextView two;
-    @Bind(R.id.five)
+    @BindView(R.id.five)
     TextView five;
-    @Bind(R.id.ten)
+    @BindView(R.id.ten)
     TextView ten;
-    @Bind(R.id.twenty)
+    @BindView(R.id.twenty)
     TextView twenty;
-    @Bind(R.id.all)
+    @BindView(R.id.all)
     TextView all;
-    @Bind(R.id.clear)
+    @BindView(R.id.clear)
     TextView clear;
-    @Bind(R.id.buy)
+    @BindView(R.id.buy)
     Button buy;
-    @Bind(R.id.cart)
+    @BindView(R.id.cart)
     GridView cart;
-    @Bind(R.id.price)
+    @BindView(R.id.price)
     TextView priceTextView;
-    @Bind(R.id.amount)
+    @BindView(R.id.amount)
     TextView amountTextView;
-    @Bind(R.id.total_price)
+    @BindView(R.id.total_price)
     TextView totalTextView;
-    @Bind(R.id.lottery_shopping_balance)
+    @BindView(R.id.lottery_shopping_balance)
     TextView lotteryShoppingBalance;
 
     private Lottery lottery;
@@ -112,16 +111,14 @@ public class ShoppingGgcFragment extends BaseFragment
     private SlideViewHelper slideViewHelper;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflateView(inflater, container, "", R.layout.shopping_ggc_fragment);
         ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         slideViewHelper = new SlideViewHelper(view);
         initData();
@@ -129,8 +126,7 @@ public class ShoppingGgcFragment extends BaseFragment
         notifyInfo();
     }
 
-    private void initData()
-    {
+    private void initData() {
         lottery = (Lottery) getArguments().getSerializable("lottery");
         packageId = (String) getArguments().getSerializable("packageId");
         scrapeType = (String) getArguments().getSerializable("scrapeType");
@@ -148,8 +144,7 @@ public class ShoppingGgcFragment extends BaseFragment
         cart.setAdapter(cartAdapter);
     }
 
-    private void initInfo()
-    {
+    private void initInfo() {
         setTitle(lottery.getCname());
         lotteryShoppingBalance.setText(String.format("余额：%.3f", userCentre.getUserInfo().getBalance()));
         executeCommand(new UserInfoCommand(), restCallback, USER_INFO_ID);
@@ -157,32 +152,27 @@ public class ShoppingGgcFragment extends BaseFragment
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser)
-    {
+    public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser)
-        {
+        if (isVisibleToUser) {
             executeCommand(new UserInfoCommand(), restCallback, USER_INFO_ID);
             executeCommand(ggcCardListCommand, restCallback, CARD_LIST_ID);
         }
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
-    private void tipDialog(String title, String msg, final int track)
-    {
+    private void tipDialog(String title, String msg, final int track) {
         CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
         builder.setMessage(msg);
         builder.setTitle(title);
-        switch (track){
+        switch (track) {
             case TRACK_TURNED_PAGE_RECHARGE:
                 builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
-                builder.setNegativeButton("知道了",(dialog, which) ->{
+                builder.setNegativeButton("知道了", (dialog, which) -> {
                     dialog.dismiss();
                     if (track == TRACK_TURNED_PAGE_PICK) {
                         getActivity().finish();
@@ -202,18 +192,14 @@ public class ShoppingGgcFragment extends BaseFragment
         builder.create().show();
     }
 
-    private RestCallback restCallback = new RestCallback()
-    {
+    private RestCallback restCallback = new RestCallback() {
         @Override
-        public boolean onRestComplete(RestRequest request, RestResponse response)
-        {
-            switch (request.getId())
-            {
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            switch (request.getId()) {
                 case USER_INFO_ID:
                     UserInfo userInfo = (UserInfo) response.getData();
                     userCentre.setUserInfo(userInfo);
-                    if (userInfo != null)
-                    {
+                    if (userInfo != null) {
                         lotteryShoppingBalance.setText(String.format("余额：%.3f", userInfo.getBalance()));
                     }
                     break;
@@ -227,8 +213,7 @@ public class ShoppingGgcFragment extends BaseFragment
                     break;
                 case BUY_ID:
                     buyBean = (GgcBuyBean) response.getData();
-                    if (buyBean != null)
-                    {
+                    if (buyBean != null) {
                         slideViewHelper.clearChecked();
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("buyBean", buyBean);
@@ -242,18 +227,15 @@ public class ShoppingGgcFragment extends BaseFragment
         }
 
         @Override
-        public boolean onRestError(RestRequest request, int errCode, String errDesc)
-        {
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
             buy.setEnabled(true);
             buy.setBackgroundResource(R.drawable.button_type);
-            if (errCode == 7006)
-            {
+            if (errCode == 7006) {
                 CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
                 dialog.setCancelable(false);
                 dialog.show();
                 return true;
-            } else if (errCode == 2220)
-            {
+            } else if (errCode == 2220) {
                 showToast(errDesc, Toast.LENGTH_LONG);
                 MobclickAgent.reportError(getActivity(), unusualInfo);
                 Log.e(TAG, unusualInfo);
@@ -264,16 +246,13 @@ public class ShoppingGgcFragment extends BaseFragment
         }
 
         @Override
-        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state)
-        {
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
         }
     };
 
     @OnClick({R.id.two, R.id.five, R.id.ten, R.id.twenty, R.id.all, R.id.clear, R.id.buy})
-    public void onClick(View view)
-    {
-        switch (view.getId())
-        {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.two:
                 buyMultipleCard(2);
                 break;
@@ -298,19 +277,15 @@ public class ShoppingGgcFragment extends BaseFragment
                 break;
             case R.id.buy:
                 // ①判断：购物车中是否有投注
-                if (cartAdapter.getCount() != 0)
-                {
+                if (cartAdapter.getCount() != 0) {
                     // ②判断：用户是否登录——被动登录
-                    if (userCentre.isLogin())
-                    {
+                    if (userCentre.isLogin()) {
                         submitBuy();
-                    } else
-                    {
+                    } else {
                         // 提示用户：登录去；界面跳转：用户登录界面
                         tipDialog("温馨提示", "请重新登录", TRACK_TURNED_PAGE_LOGIN);
                     }
-                } else
-                {
+                } else {
                     // 提示用户需要选择一注
                     tipDialog("温馨提示", "您需要选择一张卡片", TRACK_TURNED_PAGE_PICK);
                 }
@@ -319,11 +294,9 @@ public class ShoppingGgcFragment extends BaseFragment
     }
 
 
-    private void submitBuy()
-    {
+    private void submitBuy() {
         // ③判断：用户的余额是否满足投注需求
-        if (price * cartAdapter.getCount() <= userCentre.getUserInfo().getBalance())
-        {
+        if (price * cartAdapter.getCount() <= userCentre.getUserInfo().getBalance()) {
             // ④界面跳转：跳转到购买成功界面
             final PayGgcCommand payGgcCommand = new PayGgcCommand();
             payGgcCommand.setPackage_id(packageId);
@@ -332,74 +305,62 @@ public class ShoppingGgcFragment extends BaseFragment
             int length = cartAdapter.getCount();
             ArrayList<String> values = slideViewHelper.getCheckCard();
             int num = 0;
-            for (Map.Entry<String, String> item : cardListEntity.getCards().entrySet())
-            {
-                if (values.contains(item.getValue()))
-                {
+            for (Map.Entry<String, String> item : cardListEntity.getCards().entrySet()) {
+                if (values.contains(item.getValue())) {
                     stringBuilder.append(item.getKey());
                     num++;
-                    if (num != length)
-                    {
+                    if (num != length) {
                         stringBuilder.append(",");
                     }
                 }
             }
             payGgcCommand.setSc_ids(stringBuilder.toString());
             unusualInfo = ConstantInformation.gatherGgcInfo(getActivity(), payGgcCommand);
-            TypeToken typeToken = new TypeToken<RestResponse<GgcBuyBean>>()
-            {};
+            TypeToken typeToken = new TypeToken<RestResponse<GgcBuyBean>>() {
+            };
             RestRequestManager.executeCommand(getActivity(), payGgcCommand, typeToken, restCallback, BUY_ID,
                     this);
-        } else
-        {
+        } else {
             // 提示用户：充值去；界面跳转：用户充值界面
             tipDialog("温馨提示", "请充值", TRACK_TURNED_PAGE_RECHARGE);
         }
     }
 
     @OnItemClick(R.id.cart)
-    public void cancelOrder(int position)
-    {
+    public void cancelOrder(int position) {
         slideViewHelper.cancel(cartAdapter.getItem(position));
         cartAdapter.setData(slideViewHelper.getCheckCard(), scrapeType);
         notifyInfo();
     }
 
-    private void initSaleCard()
-    {
+    private void initSaleCard() {
         cards = new ArrayList<>();
-        for (String cardId : cardListEntity.getCards().values())
-        {
+        for (String cardId : cardListEntity.getCards().values()) {
             cards.add(cardId);
         }
         slideViewHelper.setCardIds(cards);
     }
 
-    private void buyMultipleCard(int num)
-    {
+    private void buyMultipleCard(int num) {
         boolean isPick = slideViewHelper.pick(num);
-        if (!isPick)
-        {
+        if (!isPick) {
             ToastUtils.showShortToast(getActivity(), "本卡包数量不足");
         }
         cartAdapter.setData(slideViewHelper.getCheckCard(), scrapeType);
         notifyInfo();
     }
 
-    private void notifyInfo()
-    {
+    private void notifyInfo() {
         priceTextView.setText("面值：" + price + "元");
         amountTextView.setText("数量：" + cartAdapter.getCount() + "张");
         totalTextView.setText("总金额：" + price * cartAdapter.getCount() + "元");
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         cartAdapter.setData(slideViewHelper.getCheckCard(), scrapeType);
-        switch (resultCode)
-        {
+        switch (resultCode) {
             case ConstantInformation.REFRESH_RESULT:
                 initData();
                 initInfo();

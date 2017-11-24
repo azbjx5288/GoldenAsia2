@@ -18,7 +18,7 @@ import com.goldenasia.lottery.data.ForgetPwdStep1Command;
 import com.goldenasia.lottery.data.FindPasswordResponse;
 import com.goldenasia.lottery.util.DigestUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,11 +30,11 @@ import butterknife.OnClick;
 public class GoldenFindPasswordFragment extends BaseFragment {
     private static final String TAG = GoldenFindPasswordFragment.class.getSimpleName();
 
-    @Bind(R.id.find_edit_account)
+    @BindView(R.id.find_edit_account)
     EditText mUserName;
-    @Bind(R.id.fund_password)
+    @BindView(R.id.fund_password)
     EditText mPassword;
-    @Bind(R.id.find_password_submit)
+    @BindView(R.id.find_password_submit)
     Button mFindPasswordSubmit;
 
     @Nullable
@@ -43,7 +43,7 @@ public class GoldenFindPasswordFragment extends BaseFragment {
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_find_password, container, false);
         ButterKnife.bind(this, view);
-        return inflateView(inflater, container, "找回密码", R.layout.fragment_find_password);
+        return inflateView(inflater, container, "找回登录密码", R.layout.fragment_find_password);
     }
 
     @Override
@@ -126,6 +126,5 @@ public class GoldenFindPasswordFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

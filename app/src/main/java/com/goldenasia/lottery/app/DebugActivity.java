@@ -35,6 +35,7 @@ import com.goldenasia.lottery.fragment.GoldenLoginFragment;
 import com.goldenasia.lottery.fragment.NoticeListFragment;
 import com.goldenasia.lottery.fragment.ShoppingFragment;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.message.PushAgent;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -78,6 +79,8 @@ public class DebugActivity extends AppCompatActivity implements View.OnClickList
         String connect = GoldenAsiaApp.getNetStateHelper().isConnected()?
                 "网络连接：可以": "网络连接：无网络";
         logView.setText(connect);
+        //统计应用启动数据
+        PushAgent.getInstance(this).onAppStart();
     }
 
     private void loadData() {

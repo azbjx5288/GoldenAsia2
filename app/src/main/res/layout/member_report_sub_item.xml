@@ -86,6 +86,15 @@
         android:textColor="@color/text_middle" />
     <View
         style="@style/vertical_divide_line" />
+    <TextView
+        android:id="@+id/item_10"
+        android:layout_width="72.5dp"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:text="XX"
+        android:textColor="@color/text_middle" />
+    <View
+        style="@style/vertical_divide_line" />
 
 
     <TextView

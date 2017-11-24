@@ -32,7 +32,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 
@@ -40,70 +40,61 @@ import butterknife.OnItemClick;
  * Created by Sakura on 2017/3/14.
  */
 
-public class GaFragment extends BaseFragment
-{
+public class GaFragment extends BaseFragment {
     private static final String TAG = GaFragment.class.getSimpleName();
-    
+
     private static final int GA_TRACE_ID = 1;
     private static final int BANNER_LIST_ID = 2;
-    
-    @Bind(R.id.ga_listview)
+
+    @BindView(R.id.ga_listview)
     ListView gaListview;
-    
+
     private CycleViewPager cycleViewPager;
     private GaAdapter gaAdapter;
     private ArrayList<GaBean> gaList = new ArrayList<>();
     private ArrayList<Notice> notices;
-    
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ga, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
-    
+
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         cycleViewPager = (CycleViewPager) getActivity().getFragmentManager().findFragmentById(R.id
                 .fragment_cycle_viewpager_content_ga);
         loadBanner();
         initListView();
     }
-    
-    private void loadBanner()
-    {
+
+    private void loadBanner() {
         BannerListCommand command = new BannerListCommand();
         command.setPageName("ga");
-        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<Notice>>>()
-        {};
+        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<Notice>>>() {
+        };
         RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback,
                 BANNER_LIST_ID, this);
         RestResponse restResponse = restRequest.getCache();
-        if (restResponse != null && restResponse.getData() instanceof ArrayList)
-        {
+        if (restResponse != null && restResponse.getData() instanceof ArrayList) {
             updateBanner((ArrayList<Notice>) restResponse.getData());
         }
         restRequest.execute();
     }
-    
-    private void updateBanner(ArrayList<Notice> notices)
-    {
+
+    private void updateBanner(ArrayList<Notice> notices) {
         this.notices = notices;
-        if (notices == null || notices.size() == 0)
-        {
+        if (notices == null || notices.size() == 0) {
             return;
         }
         initialize();
     }
-    
+
     @SuppressLint("NewApi")
-    private void initialize()
-    {
-        if (notices == null || notices.size() == 0)
-        {
+    private void initialize() {
+        if (notices == null || notices.size() == 0) {
             return;
         }
         UserCentre userCentre = GoldenAsiaApp.getUserCentre();
@@ -111,65 +102,55 @@ public class GaFragment extends BaseFragment
         // 将最后一个view添加进来
         views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl(notices.get(notices.size() - 1)
                 .getContent()), /*notices.get(notices.size() - 1).getTitle()*/""));
-        for (int i = 0, size = notices.size(); i < size; i++)
-        {
+        for (int i = 0, size = notices.size(); i < size; i++) {
             views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl(notices.get(i).getContent()), /*notices
                     .get(i).getTitle()*/""));
         }
         // 将第一个view添加进来
         views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl(notices.get(0).getContent()), /*notices.get
                 (0).getTitle()*/""));
-        
+
         cycleViewPager.setCycle(true);
         cycleViewPager.setData(views, mAdCycleViewListener);
         cycleViewPager.setWheel(true);
     }
-    
+
     /**
      * 彩种大厅展示
      */
-    private void initListView()
-    {
+    private void initListView() {
         gaAdapter = new GaAdapter();
         gaListLoad();
     }
-    
+
     @OnItemClick(R.id.ga_listview)
-    public void onItemClick(int position)
-    {
+    public void onItemClick(int position) {
         GaBean gaBean = gaList.get(position);
         GAGameFragment.launch(GaFragment.this, gaBean);
     }
-    
-    private void gaListLoad()
-    {
+
+    private void gaListLoad() {
         GaListCommand gaListCommand = new GaListCommand();
-        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<GaBean>>>()
-        {};
+        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<GaBean>>>() {
+        };
         RestRequest restRequest = RestRequestManager.createRequest(getActivity(), gaListCommand, typeToken,
                 restCallback, GA_TRACE_ID, this);
         RestResponse restResponse = restRequest.getCache();
-        if (restResponse != null && restResponse.getData() instanceof ArrayList)
-        {
+        if (restResponse != null && restResponse.getData() instanceof ArrayList) {
             gaList = (ArrayList<GaBean>) restResponse.getData();
-            if (gaList != null && gaList.size() > 0)
-            {
+            if (gaList != null && gaList.size() > 0) {
                 gaAdapter.setData(gaList);
                 gaListview.setAdapter(gaAdapter);
             }
         }
         restRequest.execute();
     }
-    
-    private CycleViewPager.ImageCycleViewListener mAdCycleViewListener = new CycleViewPager.ImageCycleViewListener()
-    {
+
+    private CycleViewPager.ImageCycleViewListener mAdCycleViewListener = new CycleViewPager.ImageCycleViewListener() {
         @Override
-        public void onImageClick(int position, View imageView)
-        {
-            if (TextUtils.isEmpty(notices.get(position).getLink()))
-            {
-            } else
-            {
+        public void onImageClick(int position, View imageView) {
+            if (TextUtils.isEmpty(notices.get(position).getLink())) {
+            } else {
                 /*String encode = Base64.encodeToString(GoldenAsiaApp.getUserCentre().getUserID().getBytes(),
                         Base64.DEFAULT);*/
                 /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(notices.get(position).getLink() +
@@ -183,35 +164,27 @@ public class GaFragment extends BaseFragment
             }
         }
     };
-    
+
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
-        if (cycleViewPager != null)
-        {
+        if (cycleViewPager != null) {
             cycleViewPager.onDestroyView();
         }
     }
-    
+
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
-    
-    private RestCallback restCallback = new RestCallback<ArrayList<?>>()
-    {
+
+    private RestCallback restCallback = new RestCallback<ArrayList<?>>() {
         @Override
-        public boolean onRestComplete(RestRequest request, RestResponse response)
-        {
-            switch (request.getId())
-            {
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            switch (request.getId()) {
                 case GA_TRACE_ID:
                     gaList = (ArrayList<GaBean>) response.getData();
-                    if (gaList != null && gaList.size() > 0)
-                    {
+                    if (gaList != null && gaList.size() > 0) {
                         gaAdapter.setData(gaList);
                         gaListview.setAdapter(gaAdapter);
                     }
@@ -223,16 +196,13 @@ public class GaFragment extends BaseFragment
             }
             return true;
         }
-        
+
         @Override
-        public boolean onRestError(RestRequest request, int errCode, String errDesc)
-        {
-            if (errCode == 7003)
-            {
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (errCode == 7003) {
                 Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
                 return true;
-            } else if (errCode == 7006)
-            {
+            } else if (errCode == 7006) {
                 CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
                 dialog.setCancelable(false);
                 dialog.show();
@@ -240,11 +210,10 @@ public class GaFragment extends BaseFragment
             }
             return false;
         }
-        
+
         @Override
-        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state)
-        {
-            
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+
         }
     };
 }

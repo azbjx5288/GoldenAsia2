@@ -6,7 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,11 +16,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import com.goldenasia.lottery.data.RechargeConfig;
 import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.util.DownPicUtil;
 import com.goldenasia.lottery.util.SaveImageUtils;
+import com.umeng.message.PushAgent;
 
 import org.apache.cordova.CordovaChromeClient;
 import org.apache.cordova.CordovaInterface;
@@ -60,12 +62,12 @@ public class PayHtml extends Activity implements View.OnClickListener, CordovaIn
     // Plugin to call when activity result is received
     protected int activityResultRequestCode;
     protected CordovaPlugin activityResultCallback;
-    
+
     protected CordovaPreferences prefs = new CordovaPreferences();
     protected Whitelist internalWhitelist = new Whitelist();
     protected Whitelist externalWhitelist = new Whitelist();
     protected ArrayList<PluginEntry> pluginEntries;
-    
+
     private String url = "";
     
     @Override
@@ -82,22 +84,17 @@ public class PayHtml extends Activity implements View.OnClickListener, CordovaIn
             url = GoldenAsiaApp.BASEURL + "/?c=fin&a=recharge&id=" + rechargeConfig.getDtId() +
                     "&encry=" + Base64.encodeToString(GsonHelper.toJson(payInfo).getBytes(),
                     Base64.DEFAULT) + "&trade_type=" + rechargeConfig.getTradeType() + "&frm=4";
-
-            Uri content_url = Uri.parse(url);
-            Intent intent = new Intent(Intent.ACTION_VIEW,content_url);
-//            intent.setAction("android.intent.action.VIEW");
-//            intent.setData(content_url);
-            startActivity(intent);
-
             init();
         }
+        //统计应用启动数据
+        PushAgent.getInstance(this).onAppStart();
     }
-    
+
     protected CordovaWebViewClient makeWebViewClient(CordovaWebView webView)
     {
         return webView.makeWebViewClient(this);
     }
-    
+
     protected CordovaChromeClient makeChromeClient(CordovaWebView webView)
     {
         return webView.makeWebChromeClient(this);
@@ -185,7 +182,7 @@ public class PayHtml extends Activity implements View.OnClickListener, CordovaIn
             appView.onResume();
         }
     }
-    
+
     private void init()
     {
         ImageButton home = (ImageButton) findViewById(android.R.id.home);
@@ -198,20 +195,6 @@ public class PayHtml extends Activity implements View.OnClickListener, CordovaIn
         service.setOnClickListener(this);
         
         appView = (CordovaWebView) findViewById(R.id.payWebView);
-        ProgressBar progressBar= (ProgressBar) findViewById(R.id.progressBar);
-//        appView.setWebChromeClient(new WebChromeClient() {
-//            @Override
-//            public void onProgressChanged(WebView view, int newProgress){
-//                super.onProgressChanged(view, newProgress);
-//                if (newProgress == 100) {
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                } else {
-//                    if (View.INVISIBLE == progressBar.getVisibility()) {
-//                        progressBar.setVisibility(View.VISIBLE);
-//                    }
-//                    progressBar.setProgress(newProgress);
-//                }
-//            }});
         WebSettings settings = appView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -226,16 +209,21 @@ public class PayHtml extends Activity implements View.OnClickListener, CordovaIn
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);// 排版适应屏幕
         // 缩放按钮
         settings.setDisplayZoomControls(false);
-        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
+        }
+
         internalWhitelist.addWhiteListEntry("*", false);
         externalWhitelist.addWhiteListEntry("tel:*", false);
         externalWhitelist.addWhiteListEntry("sms:*", false);
-        
+
         prefs.set("loglevel", "DEBUG");
         
         appView.init(this, makeWebViewClient(appView), makeChromeClient(appView), pluginEntries,
                 internalWhitelist, externalWhitelist, prefs);
-        
+
+//        RelativeLayout progressBarRelativeLayout= (RelativeLayout) findViewById(R.id.progressBarRelativeLayout);
         appView.setWebViewClient(new CordovaWebViewClient(this, appView)
         {
             @Override
@@ -243,6 +231,31 @@ public class PayHtml extends Activity implements View.OnClickListener, CordovaIn
             {
                 view.loadUrl(url);
                 return true;
+            }
+
+//            @Override
+//            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+//                Log.i(TAG,"onPageStarted(WebView view, String url, Bitmap favicon) url="+url);
+//                appView.setVisibility(View.GONE);
+//                progressBarRelativeLayout.setVisibility(View.VISIBLE);
+//            }
+
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+//                super.onPageFinished(view, url);
+//                Log.i(TAG,"onPageFinished(WebView view, String url) url="+url);
+////                progressBarRelativeLayout.setVisibility(View.GONE);
+//                appView.setVisibility(View.VISIBLE);
+//            }
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error){
+                //注意：super句话一定要删除，或者注释掉，否则又走handler.cancel()默认的不支持https的了。
+                //super.onReceivedSslError(view, handler, error);
+                //handler.cancel(); // Android默认的处理方式
+                //handler.handleMessage(Message msg); // 进行其他处理
+
+                handler.proceed(); // 接受所有网站的证书
             }
         });
         appView.addJavascriptInterface(new JavaScriptInterface(), "android");

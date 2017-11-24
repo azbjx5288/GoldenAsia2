@@ -37,6 +37,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -52,7 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -62,21 +63,21 @@ import butterknife.OnClick;
 
 public class QRCodeFragment extends Activity {
     private static final String TAG = QRCodeFragment.class.getSimpleName();
-    @Bind(android.R.id.home)
+    @BindView(android.R.id.home)
     ImageButton home;
-    @Bind(android.R.id.title)
+    @BindView(android.R.id.title)
     TextView title;
-    @Bind(R.id.web_html)
+    @BindView(R.id.web_html)
     WebView webHtml;
-    @Bind(R.id.image)
+    @BindView(R.id.image)
     ImageView image;
-    @Bind(R.id.qrcode)
+    @BindView(R.id.qrcode)
     LinearLayout qrcodeLayout;
-    @Bind(R.id.recharge_orders)
+    @BindView(R.id.recharge_orders)
     TextView rechargeOrders;
-    @Bind(R.id.recharge_payamt)
+    @BindView(R.id.recharge_payamt)
     TextView rechargePayamt;
-    @Bind(R.id.qrcode_tip)
+    @BindView(R.id.qrcode_tip)
     TextView qrcodeTip;
 
 
@@ -174,6 +175,8 @@ public class QRCodeFragment extends Activity {
             scanner(srcjpg);
         }
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        //统计应用启动数据
+        PushAgent.getInstance(this).onAppStart();
     }
 
     private void scanner(String imageStr) {
@@ -243,7 +246,6 @@ public class QRCodeFragment extends Activity {
             webHtml.destroy();
         }
         super.onDestroy();
-        ButterKnife.unbind(this);
     }
 
     //扫码 处理方法

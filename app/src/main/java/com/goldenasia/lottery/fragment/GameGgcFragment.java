@@ -33,7 +33,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
@@ -47,15 +47,15 @@ public class GameGgcFragment extends BaseFragment {
 
     private static final int ID_METHOD_LIST = 1;
 
-    @Bind(R.id.loading_layout)
+    @BindView(R.id.loading_layout)
     LinearLayout loadingLayout;
-    @Bind(R.id.package_list_view)
+    @BindView(R.id.package_list_view)
     GridView packageListView;
-    @Bind(R.id.my_package)
+    @BindView(R.id.my_package)
     ImageView myPackage;
-    @Bind(R.id.title_text_layout)
+    @BindView(R.id.title_text_layout)
     LinearLayout titleTextLayout;
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
 
     private Lottery lottery;
@@ -128,7 +128,6 @@ public class GameGgcFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick(android.R.id.home)
@@ -245,9 +244,9 @@ public class GameGgcFragment extends BaseFragment {
     }
 
     static class ViewHolder {
-        @Bind(R.id.card_image)
+        @BindView(R.id.card_image)
         ImageView cardImage;
-        @Bind(R.id.card_amount)
+        @BindView(R.id.card_amount)
         TextView cardAmount;
 
         ViewHolder(View view) {

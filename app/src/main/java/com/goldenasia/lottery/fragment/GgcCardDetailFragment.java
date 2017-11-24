@@ -41,7 +41,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -56,29 +56,29 @@ public class GgcCardDetailFragment extends BaseFragment
     private static final int AUTO_ID = 2;
     private static final int AUTO_OPEN_ORDER = 0x123;
 
-    @Bind(android.R.id.home)
+    @BindView(android.R.id.home)
     ImageButton home;
-    @Bind(R.id.auto)
+    @BindView(R.id.auto)
     TextView auto;
-    @Bind(R.id.left_pic)
+    @BindView(R.id.left_pic)
     EraseView leftPic;
-    @Bind(R.id.right_pic)
+    @BindView(R.id.right_pic)
     EraseView rightPic;
-    @Bind(R.id.prize_code)
+    @BindView(R.id.prize_code)
     EraseView prizeCode;
-    @Bind(R.id.my_code)
+    @BindView(R.id.my_code)
     EraseView myCode;
-    @Bind(R.id.left_base)
+    @BindView(R.id.left_base)
     ImageView leftBase;
-    @Bind(R.id.right_base)
+    @BindView(R.id.right_base)
     ImageView rightBase;
-    @Bind(R.id.prize_base)
+    @BindView(R.id.prize_base)
     LinearLayout prizeBase;
-    @Bind(R.id.my_base)
+    @BindView(R.id.my_base)
     GridView myBase;
-    @Bind(R.id.base)
+    @BindView(R.id.base)
     RelativeLayout base;
-    @Bind(R.id.toast)
+    @BindView(R.id.toast)
     TextView toast;
 
     private String cardId;
@@ -162,7 +162,6 @@ public class GgcCardDetailFragment extends BaseFragment
         prizeCode.destroy();
         myCode.destroy();
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick({android.R.id.home, R.id.auto})

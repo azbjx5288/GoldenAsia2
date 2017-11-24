@@ -20,7 +20,7 @@ import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.FeedBackCommand;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -32,16 +32,16 @@ public class FeedbackFragment extends BaseFragment {
 
     private static final int ID_SUBMIT_INFO =1 ;
 
-    @Bind(R.id.add_content)
+    @BindView(R.id.add_content)
     EditText mAddContentEditText;
 
-    @Bind(R.id.residual_number)
+    @BindView(R.id.residual_number)
     TextView residualNumber;
 
-    @Bind(R.id.feeback_back)
+    @BindView(R.id.feeback_back)
     Button mFeebackBackButton;
 
-    @Bind(R.id.feeback_submit)
+    @BindView(R.id.feeback_submit)
     Button mFeebackSubmitButton;
 
     @Nullable

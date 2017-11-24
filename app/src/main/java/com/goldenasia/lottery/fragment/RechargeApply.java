@@ -3,7 +3,6 @@ package com.goldenasia.lottery.fragment;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +27,6 @@ import com.android.volley.VolleyError;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
-import com.goldenasia.lottery.base.net.GsonHelper;
 import com.goldenasia.lottery.base.net.JsonValidator;
 import com.goldenasia.lottery.base.net.RestCallback;
 import com.goldenasia.lottery.base.net.RestRequest;
@@ -41,10 +38,8 @@ import com.goldenasia.lottery.base.net.VolleyRequest;
 import com.goldenasia.lottery.component.AdaptHighListView;
 import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.data.AlipayTransferBean;
-import com.goldenasia.lottery.data.PayInfo;
 import com.goldenasia.lottery.data.RechargeConfig;
 import com.goldenasia.lottery.data.RechargeConfigCommand;
-import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.Recharge;
@@ -59,7 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -76,34 +71,34 @@ public class RechargeApply extends BaseFragment {
     private static final String TAG = RechargeApply.class.getSimpleName();
 
     private static final int TRACE_RECHARGE_CONFIG_COMMAND = 1;
-    @Bind(R.id.recharge_username)
+    @BindView(R.id.recharge_username)
     TextView username;
-    @Bind(R.id.edit_orderamount)
+    @BindView(R.id.edit_orderamount)
     EditText editOrderamount;
-    @Bind(R.id.basic_layout)
+    @BindView(R.id.basic_layout)
     LinearLayout basicLayout;
 
-    @Bind(R.id.mode_label_tip)
+    @BindView(R.id.mode_label_tip)
     TextView modeLabelTip;
-    @Bind(R.id.recharge_method)
+    @BindView(R.id.recharge_method)
     ScrollView methodLayout;
-    @Bind(R.id.recharge_type)
+    @BindView(R.id.recharge_type)
     AdaptHighListView listView;
-    @Bind(R.id.submit_layout)
+    @BindView(R.id.submit_layout)
     LinearLayout submitLayout;
-    @Bind(R.id.btn_submit)
+    @BindView(R.id.btn_submit)
     Button btnSubmit;
-    @Bind(R.id.empty_view)
+    @BindView(R.id.empty_view)
     TextView emptyView;
-    @Bind(R.id.hint)
+    @BindView(R.id.hint)
     TextView hint;
-    @Bind(R.id.mode_label)
+    @BindView(R.id.mode_label)
     TextView modeLabel;
-    @Bind(R.id.true_name)
+    @BindView(R.id.true_name)
     EditText trueName;
-    @Bind(R.id.transfer)
+    @BindView(R.id.transfer)
     LinearLayout transfer;
-    @Bind(R.id.tip)
+    @BindView(R.id.tip)
     TextView tip;
 
     private RechargeAdapter rechargeAdapter;
@@ -184,22 +179,11 @@ public class RechargeApply extends BaseFragment {
             }
             if (isMethod) {
                 if (cardRecharge.isHref()) {
-//                    Intent mIntent = new Intent(getActivity(), PayHtml.class);
-//                    Bundle mBundle = new Bundle();
-//                    mBundle.putSerializable("rconfig", cardRecharge);
-//                    mIntent.putExtras(mBundle);
-//                    startActivity(mIntent);
-
-                    //浏览器形式打开
-                    UserInfo userInfo = GoldenAsiaApp.getUserCentre().getUserInfo();
-                    PayInfo payInfo = new PayInfo(userInfo.getUserName(), userInfo.getUserId());
-                    String url = GoldenAsiaApp.BASEURL + "/?c=fin&a=recharge&id=" + cardRecharge.getDtId() +
-                            "&encry=" + Base64.encodeToString(GsonHelper.toJson(payInfo).getBytes(),
-                            Base64.DEFAULT) + "&trade_type=" + cardRecharge.getTradeType() + "&frm=4";
-                    Uri content_url = Uri.parse(url);
-                    Intent intent = new Intent(Intent.ACTION_VIEW,content_url);
-                    startActivity(intent);
-
+                    Intent mIntent = new Intent(getActivity(), PayHtml.class);
+                    Bundle mBundle = new Bundle();
+                    mBundle.putSerializable("rconfig", cardRecharge);
+                    mIntent.putExtras(mBundle);
+                    startActivity(mIntent);
                     return;
                 } else {
                     isMethod = false;
@@ -599,7 +583,6 @@ public class RechargeApply extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     /**

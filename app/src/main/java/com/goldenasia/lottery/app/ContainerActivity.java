@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.goldenasia.lottery.R;
@@ -15,13 +14,10 @@ import com.goldenasia.lottery.fragment.FragmentHistory;
 import com.goldenasia.lottery.fragment.FragmentHome;
 import com.goldenasia.lottery.fragment.FragmentUser;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import q.rorbin.badgeview.QBadgeView;
 
 /**
  * Created on 2016/01/04.
@@ -41,8 +37,6 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
     private Drawable[] selectedIcon;
     private List<Fragment> fragments = new ArrayList<Fragment>();
 
-    RadioButton btnMeBtn;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,13 +44,14 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
         init();
         initView();
         selectPage(0); // 默认选中首页
+        //统计应用启动数据
+        PushAgent.getInstance(this).onAppStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-//        new QBadgeView(ContainerActivity.this).bindTarget(btnMeBtn).setBadgeNumber(5);
     }
 
     @Override
@@ -93,7 +88,6 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
     private void initView() {
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
-        btnMeBtn = (RadioButton) findViewById(R.id.btn_me);
         mRadioGroup.setOnCheckedChangeListener(this);
         TabPageAdapter tabPageAdapter = new TabPageAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(tabPageAdapter);

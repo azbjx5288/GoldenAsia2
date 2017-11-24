@@ -2,6 +2,7 @@ package com.goldenasia.lottery.pattern;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -23,7 +24,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -136,31 +137,40 @@ public class ChaseMmcWinView {
             builder.setTitleHideOrShow(false);
             builder.setBottomHideOrShow(false);
             CustomDialog dialog = builder.create();
-            dialog.setOnDismissListener((d) -> {
-                        if (onCancelListener != null) {
-                            onCancelListener.onCancel();
-                        }
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    if (onCancelListener != null) {
+                        onCancelListener.onCancel();
                     }
-            );
+                }
+            });
             dialog.show();
 
 
             winnersLayout = (LinearLayout) view.findViewById(R.id.winners_layout);
 
             positiveButton = (Button) view.findViewById(R.id.positiveButton);
-            positiveButton.setOnClickListener((View v) -> {
-                if (onPlayAgainListener != null) {
-                    onPlayAgainListener.onPlayAgain();
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    if (onPlayAgainListener != null) {
+                        onPlayAgainListener.onPlayAgain();
+                    }
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
             });
 
             doubleButton = (Button) view.findViewById(R.id.doubleButton);
-            doubleButton.setOnClickListener((View v) -> {
-                if (onPlayDoubleListner != null) {
-                    onPlayDoubleListner.onPlayDouble();
+            doubleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onPlayDoubleListner != null) {
+                        onPlayDoubleListner.onPlayDouble();
+                    }
+                    dialog.dismiss();
                 }
-                dialog.dismiss();
             });
 
             /*if (isSingleTip())
@@ -237,13 +247,13 @@ public class ChaseMmcWinView {
         }
 
         static class ViewHolder {
-            @Bind(R.id.mmc_win_row)
+            @BindView(R.id.mmc_win_row)
             LinearLayout mmcWinRow;
-            @Bind(R.id.mmc_order)
+            @BindView(R.id.mmc_order)
             TextView mmcOrder;
-            @Bind(R.id.mmc_code)
+            @BindView(R.id.mmc_code)
             TextView mmcCode;
-            @Bind(R.id.mmc_win)
+            @BindView(R.id.mmc_win)
             TextView mmcWin;
 
             public ViewHolder(View view) {
@@ -264,6 +274,4 @@ public class ChaseMmcWinView {
             void onPlayDouble();
         }
     }
-
-
 }

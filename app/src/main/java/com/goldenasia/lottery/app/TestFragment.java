@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * 测试专用
@@ -26,7 +26,7 @@ import butterknife.Bind;
 public class TestFragment extends BaseFragment{
     private static final String TAG = TestFragment.class.getSimpleName();
 
-    @Bind(R.id.button)
+    @BindView(R.id.button)
     Button button;
     @Nullable
     @Override

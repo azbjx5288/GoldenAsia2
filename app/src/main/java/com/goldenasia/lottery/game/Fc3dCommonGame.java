@@ -1,6 +1,5 @@
 package com.goldenasia.lottery.game;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.pattern.ManualInputView;
 import com.goldenasia.lottery.pattern.OnAddListner;
 import com.goldenasia.lottery.pattern.PickNumber;
+import com.goldenasia.lottery.view.NumberGroupView;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
@@ -132,7 +132,7 @@ public class Fc3dCommonGame extends Game {
                         notes = chooseArray.size();
                     }
                     ArrayList<String> codeArray = new ArrayList<>();
-                    for (int i =0,size= chooseArray.size(); i<size; i++) {
+                    for (int i = 0, size = chooseArray.size(); i < size; i++) {
                         StringBuilder codeBuilder = new StringBuilder();
                         for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
                             codeBuilder.append(chooseArray.get(i)[j]);
@@ -192,13 +192,16 @@ public class Fc3dCommonGame extends Game {
     public static void QEZUX(Game game) {
         createPicklayout(game, new String[]{"前二组选"});
         final PickNumber pickNumber = game.pickNumbers.get(0);
-        pickNumber.setChooseItemClickListener(() -> {
-            ArrayList<Integer> numList = pickNumber.getCheckedNumber();
-            if (numList.size() > 7) {
-                game.onCustomDialog("当前最多只能选择7个号码");
-                OTHERRandom(game);
+        pickNumber.setChooseItemClickListener(new NumberGroupView.OnChooseItemClickListener() {
+            @Override
+            public void onChooseItemClick() {
+                ArrayList<Integer> numList = pickNumber.getCheckedNumber();
+                if (numList.size() > 7) {
+                    game.onCustomDialog("当前最多只能选择7个号码");
+                    OTHERRandom(game);
+                }
+                game.notifyListener();
             }
-            game.notifyListener();
         });
     }
 
@@ -227,19 +230,23 @@ public class Fc3dCommonGame extends Game {
         createPicklayout(game, new String[]{"百位", "十位", "个位"});
     }
 
-    /**==========================================手工录入===================================================*/
+    /**
+     * ==========================================手工录入===================================================
+     */
     //直选 SXZX
-     public static void SXZXInput(Game game) {
-         addInputLayout(game,game.getColumn());
-     }
+    public static void SXZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
     //前二直选 QEZX
-     public static void QEZXInput(Game game) {
-         addInputLayout(game,game.getColumn());
-     }
+    public static void QEZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
     //后二直选 EXZX
-     public static void EXZXInput(Game game) {
-         addInputLayout(game,game.getColumn());
-     }
+    public static void EXZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
 
     //直选随机 SXZX
     public static void SXZXRandom(Game game) {
@@ -311,7 +318,7 @@ public class Fc3dCommonGame extends Game {
         game.notifyListener();
     }
 
-    public static void OTHERRandom(Game game){
+    public static void OTHERRandom(Game game) {
         for (PickNumber pickNumber : game.pickNumbers) {
             pickNumber.onRandom(random(0, 9, 7));
         }

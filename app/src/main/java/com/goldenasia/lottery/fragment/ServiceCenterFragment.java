@@ -34,7 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -46,9 +46,9 @@ public class ServiceCenterFragment extends BaseFragment {
 
     private static final String TAG = ServiceCenterFragment.class.getSimpleName();
 
-    @Bind(R.id.webView)
+    @BindView(R.id.webView)
     WebView webView;
-    @Bind(R.id.net_prompt)
+    @BindView(R.id.net_prompt)
     TextView netPrompt;
 
     private UserInfo userInfo;

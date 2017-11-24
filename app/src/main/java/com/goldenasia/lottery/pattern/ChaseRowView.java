@@ -89,11 +89,11 @@ public class ChaseRowView implements QuantityView.OnQuantityChangeListener {
             multipleText.setText(String.valueOf(multiple));
         }
 
-        current.setText(String.format("%.2f", cost));               //当前投入
-        investput.setText(String.format("%.2f", grandTotal));       //累计投入
-        deficit.setText(String.format("%.2f", bonus));              //当前奖金
+        current.setText(String.format("%.3f", cost));               //当前投入
+        investput.setText(String.format("%.3f", grandTotal));       //累计投入
+        deficit.setText(String.format("%.3f", bonus));              //当前奖金
         double total = bonus - grandTotal;               //奖金 * 倍数－累计投入＝中奖盈亏
-        chaseTotal.setText(String.format("%.2f", total));           //利润率
+        chaseTotal.setText(String.format("%.3f", total));           //利润率
         interestrate.setText(String.format("%3d%%", totalProfit));
     }
 

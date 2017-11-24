@@ -34,7 +34,7 @@ import com.goldenasia.lottery.util.NumbericUtils;
 import com.goldenasia.lottery.view.adapter.TransferAdapter;
 import com.google.gson.reflect.TypeToken;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -47,23 +47,23 @@ public class TransferPlatformFragment extends BaseFragment {
     private static final int TRACE_TRANSFER_ROUTE = 1;
     private static final int TRACE_TRANSFER_SUBMIT = 2;
 
-    @Bind(R.id.image_from)
+    @BindView(R.id.image_from)
     ImageView imageFrom;
-    @Bind(R.id.image_to)
+    @BindView(R.id.image_to)
     ImageView imageTo;
-    @Bind(R.id.transfer_amount)
+    @BindView(R.id.transfer_amount)
     EditText transferAmount;
-    @Bind(R.id.funds_password)
+    @BindView(R.id.funds_password)
     EditText fundsPassword;
-    @Bind(R.id.btn_submit)
+    @BindView(R.id.btn_submit)
     Button btnSubmit;
-    @Bind(R.id.from_funds)
+    @BindView(R.id.from_funds)
     TextView fromFunds;
-    @Bind(R.id.to_funds)
+    @BindView(R.id.to_funds)
     TextView toFunds;
-    @Bind(R.id.text_from)
+    @BindView(R.id.text_from)
     TextView textFrom;
-    @Bind(R.id.text_to)
+    @BindView(R.id.text_to)
     TextView textTo;
 
     private BubblePopupWindow adapterPopupWindow;

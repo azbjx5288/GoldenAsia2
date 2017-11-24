@@ -16,7 +16,7 @@ import com.goldenasia.lottery.view.adapter.HistoryCodeMmcAdapter;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Gan on 2017/9/29.
@@ -26,7 +26,7 @@ import butterknife.Bind;
 public class ResultsMmcFragment extends BaseFragment {
     private static final String TAG = ResultsMmcFragment.class.getSimpleName();
 
-    @Bind(R.id.history_lottery_listviewcode)
+    @BindView(R.id.history_lottery_listviewcode)
     ListView listView;
     private HistoryCodeMmcAdapter adapter;
     private MmcWinHistoryDao mMmcWinHistoryDao;

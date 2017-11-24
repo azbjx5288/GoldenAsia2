@@ -33,10 +33,10 @@ public class ContactCloudEditTextImpl extends CloudEditText {
 
     @Override
     public boolean checkInputSpan(String showText, String returnText) {
-        boolean result = isUserName(returnText);
-        if (!result) {
+        boolean result =true;// isUserName(returnText);
+        /* if (!result) {
             Toast.makeText(getContext(), "请输入用户名(多个用户用回车分隔)", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         LowerTips lowerTips=null;
         for(LowerTips lower:lowerList){
@@ -47,17 +47,17 @@ public class ContactCloudEditTextImpl extends CloudEditText {
         if(lowerTips!=null){
             int indexExist=getAllReturnStringList().indexOf(lowerTips);
             if(indexExist!=-1){
-                Toast.makeText(getContext(), "止用户已经被选择", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "该用户已经被选择", Toast.LENGTH_SHORT).show();
             }else{
                 int index = lowerList.indexOf(lowerTips);
                 if (index != -1) {
                     return result;
                 }else{
-                    Toast.makeText(getContext(), "止用户不存在", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "该用户不存在", Toast.LENGTH_SHORT).show();
                 }
             }
         }else{
-            Toast.makeText(getContext(), "止用户不存在", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "该用户不存在", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -71,10 +71,10 @@ public class ContactCloudEditTextImpl extends CloudEditText {
         this.lowerList = lowerList;
     }
 
-    private boolean isUserName(String text) {
+   /* private boolean isUserName(String text) {
         String str = "^[a-z]\\w{4,9}$";
         Pattern p = Pattern.compile(str);
         Matcher m = p.matcher(text);
         return m.matches();
-    }
+    }*/
 }

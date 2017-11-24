@@ -7,9 +7,4 @@ import com.goldenasia.lottery.base.net.RequestConfig;
  */
 @RequestConfig(api = "?c=user&a=sendMsg&op=getChilds")
 public class LowerTipsCommand {
-    private String username;
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }

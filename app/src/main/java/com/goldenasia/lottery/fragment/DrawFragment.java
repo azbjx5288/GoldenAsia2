@@ -32,7 +32,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -47,23 +47,23 @@ public class DrawFragment extends BaseFragment {
 
     private static final int INVALID_INDEX = -1;
 
-    @Bind(R.id.scrollView)
+    @BindView(R.id.scrollView)
     ScrollView scrollView;
-    @Bind(R.id.prize)
+    @BindView(R.id.prize)
     TextView money;
-    @Bind(R.id.card_number)
+    @BindView(R.id.card_number)
     TextView cardNumber;
-    @Bind(R.id.card_area)
+    @BindView(R.id.card_area)
     TextView cardArea;
-    @Bind(R.id.card_branch)
+    @BindView(R.id.card_branch)
     TextView cardBranch;
-    @Bind(R.id.fund_password)
+    @BindView(R.id.fund_password)
     EditText fundPassword;
-    @Bind(R.id.draw_money)
+    @BindView(R.id.draw_money)
     EditText drawMoneyEditText;
-    @Bind(R.id.card_info)
+    @BindView(R.id.card_info)
     ViewGroup cardInfo;
-    @Bind(R.id.card_info_no_card)
+    @BindView(R.id.card_info_no_card)
     View cardInfoNoCard;
 
     private ArrayList<CardDetail> cardDetails;

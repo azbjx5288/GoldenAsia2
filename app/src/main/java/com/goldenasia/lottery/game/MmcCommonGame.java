@@ -24,6 +24,16 @@ public class MmcCommonGame extends Game {
 
     public MmcCommonGame(Method method) {
         super(method);
+        switch (method.getName()) {
+            case "RSZS":
+            case "RSZL":
+                isDigital = true;
+                setHasRandom(false);
+                break;
+            default:
+                isDigital = false;
+                setHasRandom(true);
+        }
     }
 
     @Override
@@ -39,6 +49,8 @@ public class MmcCommonGame extends Game {
 
     public String getWebViewCode() {
         JsonArray jsonArray = new JsonArray();
+        if (isDigital)
+            jsonArray.add(transformDigitJsonArray(digits));
         for (PickNumber pickNumber : pickNumbers) {
             jsonArray.add(transform(pickNumber.getCheckedNumber(), true, true));
         }
@@ -47,6 +59,8 @@ public class MmcCommonGame extends Game {
 
     public String getSubmitCodes() {
         StringBuilder builder = new StringBuilder();
+        if (isDigital)
+            builder.append(transformDigit(digits));
         for (int i = 0, size = pickNumbers.size(); i < size; i++) {
             builder.append(transform(pickNumbers.get(i).getCheckedNumber(), true, false));
             if (i != size - 1) {
@@ -90,6 +104,29 @@ public class MmcCommonGame extends Game {
         }
         //为了 亚洲秒秒彩增加以下玩法的单式投注 而添加的
         game.setColumn(name.length);
+    }
+
+    public static View createDigitPickLayout(ViewGroup container) {
+        return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column_digits, null, false);
+    }
+
+    private static void addViewLayout(Game game,View[] views){
+        ViewGroup topLayout = game.getTopLayout();
+        for (View view : views) {
+            topLayout.addView(view);
+        }
+        game.setColumn(views.length);
+    }
+
+    private static void createDigitPicklayout(Game game, String[] name,int digit) {
+        View[] views = new View[name.length];
+        for (int i = 0; i < name.length; i++) {
+            View view = createDigitPickLayout(game.getTopLayout());
+            game.initDigitPanel(view,digit);
+            addPickNumber2Game(game, view, name[i]);
+            views[i] = view;
+        }
+        addViewLayout(game,views);
     }
 
 
@@ -236,6 +273,25 @@ public class MmcCommonGame extends Game {
         game.setSupportInput(true);
     }
 
+    //前四组选4 QSIZUX4
+    public static void QSIZUX4(Game game) {
+        createPicklayout(game, new String[]{"三重号位", "单号位"});
+    }
+    //前四组选6 QSIZUX6
+    public static void QSIZUX6(Game game) {
+        createPicklayout(game, new String[]{"二重号位"});
+    }
+
+     //前四组选12 QSIZUX12
+    public static void QSIZUX12(Game game) {
+        createPicklayout(game, new String[]{"二重号位", "单号位"});
+    }
+
+    //前四组选24 QSIZUX24
+    public static void QSIZUX24(Game game) {
+        createPicklayout(game, new String[]{"组选24"});
+    }
+
     //后四组选12 ZUX12
     public static void ZUX12(Game game) {
         createPicklayout(game, new String[]{"二重号位", "单号位"});
@@ -302,13 +358,21 @@ public class MmcCommonGame extends Game {
     //任三直选 RSZX
     public static void RSZX(Game game) {
         createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
-        game.setSupportInput(true);
+//        game.setSupportInput(true);
     }
 
     //任二直选 REZX
     public static void REZX(Game game) {
         createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
-        game.setSupportInput(true);
+//        game.setSupportInput(true);
+    }
+    //任三组三 RSZS
+    public static void RSZS(Game game) {
+        createDigitPicklayout(game, new String[]{"任三组三"},3);
+    }
+    //任三组六 RSZL
+    public static void RSZL(Game game) {
+        createDigitPicklayout(game, new String[]{"任三组六"},3);
     }
 
     //后三一码不定位 YMBDW
@@ -384,6 +448,11 @@ public class MmcCommonGame extends Game {
     //三星报喜 SXBX
     public static void SXBX(Game game) {
         createPicklayout(game, new String[]{"胆码"});
+    }
+
+    //前二包胆 QEZUXBD
+    public static void QEZUXBD(Game game) {
+        createPicklayout(game, new String[]{"前二包胆"});
     }
 
     //后一直选 YXZX

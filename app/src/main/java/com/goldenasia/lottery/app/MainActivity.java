@@ -14,8 +14,9 @@ import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.fragment.GoldenLoginFragment;
 import com.goldenasia.lottery.util.WindowUtils;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity
      */
     private static Boolean isSameVersion;
     
-    @Bind(R.id.count_down)
+    @BindView(R.id.count_down)
     TextView countDown;
     
     private CountDownTimer countDownTimer;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity
         };
         
         countDownTimer.start();
+
+        PushAgent.getInstance(this).onAppStart();
     }
     
     private void skip()

@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -45,19 +45,19 @@ public class AddBankCard extends BaseFragment {
     private static final int BINDCARD_TRACE_ID = 1;
     private static final int BANKNAME_TRACE_ID = 2;
 
-    @Bind(R.id.bank_area)
+    @BindView(R.id.bank_area)
     RelativeLayout bankArea;
-    @Bind(R.id.choose_bank)
+    @BindView(R.id.choose_bank)
     TextView chooseBank;
-    @Bind(R.id.card_number)
+    @BindView(R.id.card_number)
     EditText cardNumber;
-    @Bind(R.id.province)
+    @BindView(R.id.province)
     TextView province;
-    @Bind(R.id.city)
+    @BindView(R.id.city)
     TextView city;
-    @Bind(R.id.detailed)
+    @BindView(R.id.detailed)
     EditText detailed;
-    @Bind(R.id.security_password)
+    @BindView(R.id.security_password)
     EditText securityPassword;
 
     private List<BankOpen> bankOpens=new ArrayList<>();;
@@ -143,7 +143,6 @@ public class AddBankCard extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
     @OnClick(R.id.submitbank)
     public void submitbank(){

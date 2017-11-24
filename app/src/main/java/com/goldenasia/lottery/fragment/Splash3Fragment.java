@@ -18,7 +18,7 @@ import com.goldenasia.lottery.base.Preferences;
 import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.material.ConstantInformation;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -26,100 +26,83 @@ import butterknife.OnClick;
  * Created by Sakura on 2017/5/10.
  */
 
-public class Splash3Fragment extends BaseFragment
-{
+public class Splash3Fragment extends BaseFragment {
     private static final int REQUEST_CODE = 1001;
     /**
      * 在cache与BuildConfig.VERSION_CODE版本不一致时，需要重新登录
      */
     private static Boolean isSameVersion;
-    
-    @Bind(R.id.enter)
+
+    @BindView(R.id.enter)
     TextView enter;
-    
-    public TextView getEnter()
-    {
+
+    public TextView getEnter() {
         return enter;
     }
-    
-    public void setEnter(TextView enter)
-    {
+
+    public void setEnter(TextView enter) {
         this.enter = enter;
     }
-    
+
     private OnEnterListner onEnterListner;
-    
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState)
-    {
+            savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_splash3, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
-    
+
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
-    
+
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
-    
-    public interface OnEnterListner
-    {
+
+    public interface OnEnterListner {
         void onEnter();
     }
-    
-    public void setOnEnterListner(OnEnterListner onEnterListner)
-    {
+
+    public void setOnEnterListner(OnEnterListner onEnterListner) {
         this.onEnterListner = onEnterListner;
     }
-    
-    public boolean isInSameVersion()
-    {
-        if (isSameVersion == null)
-        {
+
+    public boolean isInSameVersion() {
+        if (isSameVersion == null) {
             isSameVersion = Preferences.getInt(getActivity(), ConstantInformation.APP_INFO, 0) == BuildConfig.VERSION_CODE;
         }
         return isSameVersion;
     }
-    
-    private void skip()
-    {
-        if (!isInSameVersion())
-        {
+
+    private void skip() {
+        if (!isInSameVersion()) {
             GoldenAsiaApp.getUserCentre().logout();
             RestRequestManager.cancelAll();
-            
+
             Preferences.saveInt(getActivity(), ConstantInformation.APP_INFO, BuildConfig.VERSION_CODE);
             isSameVersion = true;
         }
-        
-        if (GoldenAsiaApp.getUserCentre().isLogin())
-        {
+
+        if (GoldenAsiaApp.getUserCentre().isLogin()) {
             startActivityForResult(new Intent(getActivity(), ContainerActivity.class), REQUEST_CODE);
-        } else
-        {
+        } else {
             FragmentLauncher.launchForResult(getActivity(), GoldenLoginFragment.class.getName(), null, REQUEST_CODE);
         }
     }
-    
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         getActivity().finish();
     }
-    
+
     @OnClick(R.id.enter)
-    public void onViewClicked()
-    {
+    public void onViewClicked() {
         skip();
     }
 }

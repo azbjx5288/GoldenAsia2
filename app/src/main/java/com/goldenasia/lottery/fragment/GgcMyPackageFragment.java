@@ -32,13 +32,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 
-public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener
-{
+public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
     private static final String TAG = GgcMyPackageFragment.class.getSimpleName();
 
     private static final int CARD_LIST_COMMAND = 1;
@@ -49,17 +48,17 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
      */
     private static final int FIRST_PAGE = 1;
 
-    @Bind(R.id.refreshLayout)
+    @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.grid)
+    @BindView(R.id.grid)
     GridView gridView;
-    @Bind(R.id.radioGroup)
+    @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
-    @Bind(R.id.auto)
+    @BindView(R.id.auto)
     Button auto;
-    @Bind(R.id.amount)
+    @BindView(R.id.amount)
     TextView amount;
-    @Bind(R.id.buy)
+    @BindView(R.id.buy)
     Button buy;
 
     private GgcCardListAdapter adapter;
@@ -73,49 +72,40 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
     private GgcMyCardList myCardList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflateView(inflater, container, true, "我的卡包", R.layout.fragment_ggc_my_package);
         ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        typeToken = new TypeToken<RestResponse<GgcMyCardList>>() {};
+        typeToken = new TypeToken<RestResponse<GgcMyCardList>>() {
+        };
         radioGroup.setOnCheckedChangeListener(this);
         refreshLayout.setColorSchemeColors(Color.parseColor("#ff0000"), Color.parseColor("#00ff00"), Color.parseColor
                 ("#0000ff"), Color.parseColor("#f234ab"));
         refreshLayout.setOnRefreshListener(() -> {
-            if (isCovered())
-            {
+            if (isCovered()) {
                 loadCoveredList(false, FIRST_PAGE);
-            } else
-            {
+            } else {
                 loadScrapedList(false, FIRST_PAGE);
             }
         });
         final int endTrigger = 2; // load more content 2 dataList before the end
-        gridView.setOnScrollListener(new AbsListView.OnScrollListener()
-        {
+        gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView arg0, int arg1)
-            {
+            public void onScrollStateChanged(AbsListView arg0, int arg1) {
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-            {
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (gridView.getCount() != 0 && dataList.size() < totalCount && gridView.getLastVisiblePosition() >=
-                        (gridView.getCount() - 1) - endTrigger)
-                {
-                    if (isCovered())
-                    {
+                        (gridView.getCount() - 1) - endTrigger) {
+                    if (isCovered()) {
                         loadCoveredList(false, page + 1);
-                    } else
-                    {
+                    } else {
                         loadScrapedList(false, page + 1);
                     }
 
@@ -128,37 +118,30 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-        if (page == FIRST_PAGE)
-        {
-            if (isCovered())
-            {
+        if (page == FIRST_PAGE) {
+            if (isCovered()) {
                 loadCoveredList(isFirstTime, FIRST_PAGE);
-            } else
-            {
+            } else {
                 loadScrapedList(isFirstTime, FIRST_PAGE);
             }
         }
         isFirstTime = false;
     }
 
-    private void initData()
-    {
+    private void initData() {
         GgcMyCardListCommand listCommand = new GgcMyCardListCommand();
         listCommand.setStatus(0);
         RestRequestManager.executeCommand(getActivity(), listCommand, typeToken, restCallback, CARD_LIST_COMMAND, this);
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId)
-    {
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
         refreshLayout.setRefreshing(false);
         isLoading = false;
         dataList.clear();
-        switch (checkedId)
-        {
+        switch (checkedId) {
             case R.id.covered:
                 auto.setEnabled(true);
                 loadCoveredList(false, FIRST_PAGE);
@@ -170,10 +153,8 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
         }
     }
 
-    private void loadCoveredList(boolean withCache, int curPage)
-    {
-        if (isLoading)
-        {
+    private void loadCoveredList(boolean withCache, int curPage) {
+        if (isLoading) {
             return;
         }
         page = curPage;
@@ -182,26 +163,21 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
         command.setPage(curPage);
         RestRequest restRequest = RestRequestManager.executeCommand(getActivity(), command, typeToken, restCallback,
                 CARD_LIST_COMMAND, this);
-        if (withCache)
-        {
+        if (withCache) {
             RestResponse restResponse = restRequest.getCache();
-            if (restResponse != null && restResponse.getData() instanceof GgcMyCardList)
-            {
+            if (restResponse != null && restResponse.getData() instanceof GgcMyCardList) {
                 myCardList = (GgcMyCardList) restResponse.getData();
                 dataList.addAll(myCardList.getCards());
                 totalCount = dataList.size();
                 adapter.setData(dataList);
-            } else
-            {
+            } else {
                 adapter.setData(null);
             }
         }
     }
 
-    private void loadScrapedList(boolean withCache, int curPage)
-    {
-        if (isLoading)
-        {
+    private void loadScrapedList(boolean withCache, int curPage) {
+        if (isLoading) {
             return;
         }
         page = curPage;
@@ -210,25 +186,21 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
         command.setPage(curPage);
         RestRequest restRequest = RestRequestManager.executeCommand(getActivity(), command, typeToken, restCallback,
                 CARD_LIST_COMMAND, this);
-        if (withCache)
-        {
+        if (withCache) {
             RestResponse restResponse = restRequest.getCache();
-            if (restResponse != null && restResponse.getData() instanceof GgcMyCardList)
-            {
+            if (restResponse != null && restResponse.getData() instanceof GgcMyCardList) {
                 myCardList = (GgcMyCardList) restResponse.getData();
                 dataList.addAll(myCardList.getCards());
                 totalCount = dataList.size();
                 adapter.setData(dataList);
-            } else
-            {
+            } else {
                 adapter.setData(null);
             }
         }
     }
 
     @OnItemClick(R.id.grid)
-    public void onItemClick(int position)
-    {
+    public void onItemClick(int position) {
         GgcCardEntity entity = (GgcCardEntity) adapter.getItem(position);
         String cardId = entity.getSc_id();
         Bundle bundle = new Bundle();
@@ -237,40 +209,30 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (isCovered())
-        {
+        if (isCovered()) {
             loadCoveredList(false, FIRST_PAGE);
-        } else
-        {
+        } else {
             loadScrapedList(false, FIRST_PAGE);
         }
     }
 
-    private boolean isCovered()
-    {
+    private boolean isCovered() {
         return radioGroup.getCheckedRadioButtonId() == R.id.covered;
     }
 
-    private RestCallback restCallback = new RestCallback()
-    {
+    private RestCallback restCallback = new RestCallback() {
         @Override
-        public boolean onRestComplete(RestRequest request, RestResponse response)
-        {
-            switch (request.getId())
-            {
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            switch (request.getId()) {
                 case CARD_LIST_COMMAND:
                     myCardList = (GgcMyCardList) response.getData();
-                    if (myCardList == null)
-                    {
+                    if (myCardList == null) {
                         dataList.clear();
-                    } else
-                    {
+                    } else {
                         totalCount = myCardList.getItemCount();
-                        if (page == FIRST_PAGE)
-                        {
+                        if (page == FIRST_PAGE) {
                             dataList.clear();
                         }
                         dataList.addAll(myCardList.getCards());
@@ -288,14 +250,11 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
         }
 
         @Override
-        public boolean onRestError(RestRequest request, int errCode, String errDesc)
-        {
-            if (errCode == 7003)
-            {
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (errCode == 7003) {
                 Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
                 return true;
-            } else if (errCode == 7006)
-            {
+            } else if (errCode == 7006) {
                 CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
                 dialog.setCancelable(false);
                 dialog.show();
@@ -305,10 +264,8 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
         }
 
         @Override
-        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state)
-        {
-            if ((request.getId() == CARD_LIST_COMMAND))
-            {
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+            if ((request.getId() == CARD_LIST_COMMAND)) {
                 refreshLayout.setRefreshing(state == RestRequest.RUNNING);
                 isLoading = state == RestRequest.RUNNING;
             }
@@ -316,31 +273,26 @@ public class GgcMyPackageFragment extends BaseFragment implements RadioGroup.OnC
     };
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.auto, R.id.buy})
-    public void onClick(View view)
-    {
-        switch (view.getId())
-        {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.auto:
-                if (dataList != null)
-                {
+                if (dataList != null) {
                     int length = dataList.size();
                     StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < length; i++)
-                    {
+                    for (int i = 0; i < length; i++) {
                         stringBuilder.append(String.valueOf(dataList.get(i).getSc_id()));
                         if (i < length - 1)
                             stringBuilder.append(",");
                     }
                     GgcAutoScrapeCommand command = new GgcAutoScrapeCommand();
                     command.setScIds(stringBuilder.toString());
-                    TypeToken typeToken = new TypeToken<RestResponse<ArrayList<GgcCardEntity>>>() {};
+                    TypeToken typeToken = new TypeToken<RestResponse<ArrayList<GgcCardEntity>>>() {
+                    };
                     RestRequestManager.executeCommand(getActivity(), command, typeToken, restCallback, AUTO_COMMAND,
                             this);
                 }

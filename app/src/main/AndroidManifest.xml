@@ -48,6 +48,10 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="main"/>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="0ee9d610de22bd97e6a7f044f842529e" >
+        </meta-data>
 
         <!-- 使用AndroidAutoLayout框架必须进行设置 -->
         <!--
@@ -95,10 +99,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".app.DinPayResultActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"/>
         <activity
             android:name=".fragment.QRCodeFragment"
             android:configChanges="keyboardHidden|orientation"

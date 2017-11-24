@@ -14,7 +14,7 @@ import com.goldenasia.lottery.util.UiUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -80,15 +80,15 @@ public class HistoryCodeMmcAdapter extends BaseAdapter {
         return convertView;
     }
     static class ViewHolder {
-        @Bind(R.id.historycode_count)
+        @BindView(R.id.historycode_count)
         TextView count;
-        @Bind(R.id.historycode_code)
+        @BindView(R.id.historycode_code)
         TextView code;
-        @Bind(R.id.bet_money)
+        @BindView(R.id.bet_money)
         TextView betMoney;
-        @Bind(R.id.win_money)
+        @BindView(R.id.win_money)
         TextView winMoney;
-        @Bind(R.id.ll_history_result_item_mmc)
+        @BindView(R.id.ll_history_result_item_mmc)
         LinearLayout llHistoryResult;
 
 

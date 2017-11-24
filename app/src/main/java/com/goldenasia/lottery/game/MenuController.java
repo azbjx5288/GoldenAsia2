@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -31,9 +31,9 @@ import butterknife.ButterKnife;
 public class MenuController {
     private static final String TAG = MenuController.class.getSimpleName();
 
-    @Bind(R.id.tableMenu)
+    @BindView(R.id.tableMenu)
     TableMenu tableMenu;
-    @Bind(R.id.preference)
+    @BindView(R.id.preference)
     TagCloudView preference;
 
   /*  @Bind(R.id.game_preference_1) TextView preference1;

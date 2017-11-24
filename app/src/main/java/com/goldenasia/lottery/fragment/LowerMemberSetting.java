@@ -12,13 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.app.FragmentLauncher;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.base.net.RestCallback;
 import com.goldenasia.lottery.base.net.RestRequest;
@@ -30,7 +33,6 @@ import com.goldenasia.lottery.data.LowerMemberCommand;
 import com.goldenasia.lottery.data.LowerMemberList;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
-import com.goldenasia.lottery.user.UserCentre;
 import com.goldenasia.lottery.util.ToastUtils;
 import com.goldenasia.lottery.view.adapter.LowerMemberAdapter;
 
@@ -38,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -46,35 +48,47 @@ import butterknife.OnClick;
  * Created by ACE-PC on 2016/5/2.
  */
 public class LowerMemberSetting extends BaseFragment {
-    @Bind(R.id.lower_search)
+    @BindView(R.id.lower_search)
     EditText lowerSearch;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ListView list;
-    @Bind(R.id.refreshLayout)
+    @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.search)
+    @BindView(R.id.search)
     Button search;
+
+    @BindView(R.id.no_lowermember)
+    RelativeLayout noLowermember;
 
     private static final int FIRST_PAGE = 1;
 
     private int page = FIRST_PAGE;
-    private UserCentre userCentre;
     private int totalCount;
     private boolean isLoading;
     private List items = new ArrayList();
     private LowerMemberAdapter adapter;
 
+    private String username;
+
+    public static void launch(BaseFragment fragment,  String username) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        FragmentLauncher.launch(fragment.getActivity(), LowerMemberSetting.class, bundle);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.lower_member_setting, container, false);
-        ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userCentre = GoldenAsiaApp.getUserCentre();
+        username=getArguments().getString("username");
+        if(TextUtils.isEmpty(username)) {
+            username = GoldenAsiaApp.getUserCentre().getUserName();
+        }
         refreshLayout.setColorSchemeColors(Color.parseColor("#ff0000"), Color.parseColor("#00ff00"), Color.parseColor
                 ("#0000ff"), Color.parseColor("#f234ab"));
         refreshLayout.setOnRefreshListener(() -> lowerLoad(false, FIRST_PAGE));
@@ -101,6 +115,11 @@ public class LowerMemberSetting extends BaseFragment {
         /*list.setOnItemClickListener((AdapterView<?> parent, View v, int position, long id) ->
                 UserRebateModify.launch(LowerMemberSetting.this,(LowerMember)items.get(position-1))
         );*/
+
+        //该用户下的下级
+        list.setOnItemClickListener((AdapterView<?> parent, View v, int position, long id) ->
+                LowerMemberSetting.launch(LowerMemberSetting.this,((LowerMember)items.get(position-1)).getUsername())
+        );
 
         lowerLoad(true, FIRST_PAGE);
 
@@ -178,7 +197,7 @@ public class LowerMemberSetting extends BaseFragment {
         }
         this.page = page;
         LowerMemberCommand command = new LowerMemberCommand();
-        command.setUsername(userCentre.getUserName());
+        command.setUsername(username);
         command.setCurPage(this.page);
         command.setRange(0);
         RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, restCallback, 0, this);
@@ -194,7 +213,7 @@ public class LowerMemberSetting extends BaseFragment {
                     List<LowerMember> lowerMembers = lowerMemberList.getUsers();
                     LowerMember lowerMember = null;
                     for (LowerMember lower : lowerMembers) {
-                        if (userCentre.getUserInfo().getUserName().equals(lower.getUsername())) {
+                        if (username.equals(lower.getUsername())) {
                             lowerMember = lower;
                         }
                     }
@@ -206,13 +225,23 @@ public class LowerMemberSetting extends BaseFragment {
                         }
                     }
                     totalCount = lowerMemberList.getUsersCount();
-                    adapter.setData(items);
+                    if(items.size()>0){
+                        adapter.setData(items);
+                    }else{
+                        noLowerMemberShowHints();
+                    }
                 }
             } else {
                 adapter.setData(null);
             }
         }
         restRequest.execute();
+    }
+
+    //没有下级的情况
+    private void noLowerMemberShowHints() {
+        refreshLayout.setVisibility(View.GONE);
+        noLowermember.setVisibility(View.VISIBLE);
     }
 
     private RestCallback restCallback = new RestCallback() {
@@ -225,7 +254,7 @@ public class LowerMemberSetting extends BaseFragment {
             List<LowerMember> lowerMembers = ((LowerMemberList) response.getData()).getUsers();
             LowerMember lowerMember = null;
             for (LowerMember lower : lowerMembers) {
-                if (userCentre.getUserInfo().getUserName().equals(lower.getUsername())) {
+                if (username.equals(lower.getUsername())) {
                     lowerMember = lower;
                 }
             }
@@ -236,7 +265,11 @@ public class LowerMemberSetting extends BaseFragment {
                     items.remove(index);
                 }
             }
-            adapter.setData(items);
+            if(items.size()>0){
+                adapter.setData(items);
+            }else{
+                noLowerMemberShowHints();
+            }
             return true;
         }
 
@@ -264,6 +297,5 @@ public class LowerMemberSetting extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

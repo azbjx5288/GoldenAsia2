@@ -46,7 +46,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -60,15 +60,15 @@ public class GameMmcFragment extends BaseFragment implements OnSelectedListener,
     private static final int ID_METHOD_LIST = 1;
 
     WebView webView;
-    @Bind(android.R.id.title)
+    @BindView(android.R.id.title)
     TextView titleView;
-    @Bind(R.id.pick_notice)
+    @BindView(R.id.pick_notice)
     TextView pickNoticeView;
-    @Bind(R.id.pick_game_layout)
+    @BindView(R.id.pick_game_layout)
     LinearLayout pickGameLayout;
-    @Bind(R.id.choose_done_button)
+    @BindView(R.id.choose_done_button)
     Button chooseDoneButton;
-    @Bind(R.id.lottery_choose_bottom)
+    @BindView(R.id.lottery_choose_bottom)
     RelativeLayout chooseBottomLayout;
 
     private Lottery lottery;
@@ -182,7 +182,6 @@ public class GameMmcFragment extends BaseFragment implements OnSelectedListener,
             webView.destroy();
         }
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick(android.R.id.home)

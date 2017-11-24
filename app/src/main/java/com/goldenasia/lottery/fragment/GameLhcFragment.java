@@ -43,7 +43,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -57,23 +57,23 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
     private static final int FLAG_MIN_PRIZE = 0;
 
     WebView webView;
-    @Bind(R.id.pick_game_layout)
+    @BindView(R.id.pick_game_layout)
     LinearLayout pickGameLayout;
-    @Bind(R.id.manualinput_layout)
+    @BindView(R.id.manualinput_layout)
     LinearLayout manualinputLayout;
-    @Bind(R.id.pick_random)
+    @BindView(R.id.pick_random)
     Button pickRandom;
-    @Bind(R.id.pick_clear)
+    @BindView(R.id.pick_clear)
     IconButton pickClear;
-    @Bind(R.id.pick_notice)
+    @BindView(R.id.pick_notice)
     TextView pickNotice;
-    @Bind(R.id.choose_done_button)
+    @BindView(R.id.choose_done_button)
     Button chooseDoneButton;
-    @Bind(R.id.lottery_choose_bottom)
+    @BindView(R.id.lottery_choose_bottom)
     RelativeLayout lotteryChooseBottom;
-    @Bind(R.id.prize_mode_layout)
+    @BindView(R.id.prize_mode_layout)
     RelativeLayout prizeModeLayout;
-    @Bind(R.id.prize_mode_show)
+    @BindView(R.id.prize_mode_show)
     TextView prizeModeShow;
 
     private TitleTimingView timingView;
@@ -218,7 +218,6 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
         if (shoppingCart != null)
             shoppingCart.setPrizeMode(-1);
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     /**

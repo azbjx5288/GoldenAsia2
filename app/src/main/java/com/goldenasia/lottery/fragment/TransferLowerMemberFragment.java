@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -43,7 +44,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -58,17 +59,19 @@ public class TransferLowerMemberFragment extends BaseFragment {
     private static final int TRACE_TRANSFER_SUBMIT = 2;//转账
 
 
-    @Bind(R.id.account_name)
+    @BindView(R.id.account_name)
     EditText accountName;
-    @Bind(R.id.transfer_amount)
+    @BindView(R.id.transfer_amount)
     EditText transferAmount;
-    @Bind(R.id.funds_password)
+    @BindView(R.id.funds_password)
     EditText fundsPassword;
 
-    @Bind(R.id.btn_submit)
+    @BindView(R.id.btn_submit)
     Button btnSubmit;
-    @Bind(R.id.text_lower_member)
+    @BindView(R.id.text_lower_member)
     EditText lowerMember;
+    @BindView(R.id.image_from)
+    ImageView mImageFrom;
 
     private int lowerMemberUserId=-1;//对方用户ID
     private String lowerMemberUserName;//对方用户Name
@@ -85,7 +88,6 @@ public class TransferLowerMemberFragment extends BaseFragment {
     private int page = FIRST_PAGE;
     private int totalCount;
     ListView issuenoList=null;
-    SwipeRefreshLayout refreshLayout=null;
     final int endTrigger = 2; // load more content 2 items before the end
 
     @Override
@@ -123,10 +125,6 @@ public class TransferLowerMemberFragment extends BaseFragment {
             adapterPopupWindow.dismiss();
         });
          issuenoList = (ListView) rootView.findViewById(R.id.issueNoList);
-         refreshLayout = (android.support.v4.widget.SwipeRefreshLayout) rootView.findViewById(R.id.refreshLayout);
-        refreshLayout.setColorSchemeColors(Color.parseColor("#ff0000"), Color.parseColor("#00ff00"), Color.parseColor
-                ("#0000ff"), Color.parseColor("#f234ab"));
-        refreshLayout.setOnRefreshListener(() -> netLoadPopupWindow( FIRST_PAGE));
 
         issuenoList.setAdapter(mAdapter);
 
@@ -149,6 +147,7 @@ public class TransferLowerMemberFragment extends BaseFragment {
     @OnClick({R.id.image_from})
     public void showPopupWindow(View v) {
         mClickView=v;
+        mImageFrom.setEnabled(false);
         netLoadPopupWindow(FIRST_PAGE);
     }
 
@@ -170,6 +169,10 @@ public class TransferLowerMemberFragment extends BaseFragment {
 
         mTransferAmount=transferAmount.getText().toString();
         double drawMoney = Double.parseDouble(mTransferAmount);
+        if(drawMoney<=0){
+            Toast.makeText(getActivity(), "转账金额无效", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (VerifyMoney(drawMoney)) {
             Toast.makeText(getActivity(), "整数位最大8位，小数两位", Toast.LENGTH_SHORT).show();
             return;
@@ -220,7 +223,9 @@ public class TransferLowerMemberFragment extends BaseFragment {
                         }
 
                         for (LowerMember lower : lowerMembers) {
-                            if (!userCentre.getUserInfo().getUserName().equals(lower.getUsername())) {
+                            if (!userCentre.getUserInfo().getUserName().equals(lower.getUsername())//去掉当前用户
+                                    &&lower.getStatus()==8//去掉冻结用户 status=8表示正常，不等于8的不显示出来
+                            ) {
                                 Platform platform = new Platform(lower.getUserId(),lower.getUsername(),lower.getUsername());
                                 items.add(platform);
                             }
@@ -230,7 +235,6 @@ public class TransferLowerMemberFragment extends BaseFragment {
                         if("".equals(searchInfo)) { //不是模糊查询
                             if(items.size()>0){
                                 mAdapter.setData(items,lowerMemberUserId);
-                                setListViewHeightBasedOnChildren(issuenoList,refreshLayout);
                                 if(page == FIRST_PAGE) {
                                     adapterPopupWindow.showArrowTo(mClickView, BubbleStyle.ArrowDirection.Up);
                                 }
@@ -252,14 +256,13 @@ public class TransferLowerMemberFragment extends BaseFragment {
                             }
                             if(findList.size()>0){
                                 mAdapter.setData(findList,lowerMemberUserId);
-                                setListViewHeightBasedOnChildren(issuenoList,refreshLayout);
                                 adapterPopupWindow.showArrowTo(mClickView, BubbleStyle.ArrowDirection.Up);
                             }else{
                                 tipDialog("当前用户没有下级...");
                                 return true;
                             }
                         }
-
+                        mImageFrom.setEnabled(true);
                     }
                     break;
                 case TRACE_TRANSFER_SUBMIT:

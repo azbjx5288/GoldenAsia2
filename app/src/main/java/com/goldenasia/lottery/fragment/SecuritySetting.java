@@ -21,7 +21,7 @@ import com.goldenasia.lottery.data.EditSecurityCommand;
 import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.data.UserInfoCommand;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -32,23 +32,23 @@ public class SecuritySetting extends BaseFragment {
     private static final int ID_USER_INFO = 1;
     private static final int ID_SUBMIT_INFO  = 2;
 
-    @Bind(R.id.state_empty)
+    @BindView(R.id.state_empty)
     LinearLayout stateEmpty;
-    @Bind(R.id.state_empty_name)
+    @BindView(R.id.state_empty_name)
     EditText stateEmptyName;
-    @Bind(R.id.new_password)
+    @BindView(R.id.new_password)
     EditText newPassword;
-    @Bind(R.id.new_password_verify)
+    @BindView(R.id.new_password_verify)
     EditText newPasswordVerify;
-    @Bind(R.id.state_empty_mail)
+    @BindView(R.id.state_empty_mail)
     EditText stateEmptyMail;
 
-    @Bind(R.id.state_done)
+    @BindView(R.id.state_done)
     LinearLayout stateDone;
-    @Bind(R.id.name)
+    @BindView(R.id.name)
     TextView name;
 
-    @Bind(R.id.bottom)
+    @BindView(R.id.bottom)
     LinearLayout bottom;
 
     @Nullable
@@ -150,7 +150,9 @@ public class SecuritySetting extends BaseFragment {
             } else if (request.getId() == ID_USER_INFO) {
                 UserInfo userInfo = ((UserInfo) response.getData());
                 GoldenAsiaApp.getUserCentre().setUserInfo(userInfo);
-                name.setText(userInfo.getRealName());
+                if(userInfo.getRealName().length()>0){
+                    name.setText(userInfo.getRealName().subSequence(0,1)+"***");//显示姓名的第一个字加三个*
+                }
                 updateUI(TextUtils.isEmpty(userInfo.getRealName()));
             }
             return false;

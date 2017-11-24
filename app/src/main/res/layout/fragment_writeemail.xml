@@ -48,12 +48,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="invisible"
                     android:text="所有" />
 
             </RadioGroup>
 
 
             <LinearLayout
+                android:id="@+id/send_member"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -63,8 +65,8 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
                     android:gravity="center_vertical|center"
-                    android:textSize="14sp"
-                    android:text="收件人:" />
+                    android:text="收件人:"
+                    android:textSize="14sp" />
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -75,16 +77,16 @@
                         android:id="@+id/addressee"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="35dp"
                         android:layout_gravity="center_vertical"
                         android:layout_toLeftOf="@+id/v_choose_contact"
                         android:background="@drawable/shape_rounded_bg"
                         android:hint="输入用户名(多个用户回车分隔)"
                         android:inputType="text|textMultiLine"
-                        android:paddingTop="2dp"
-                        android:paddingLeft="2dp"
+                        android:minHeight="35dp"
                         android:paddingBottom="2dp"
+                        android:paddingLeft="2dp"
                         android:paddingRight="20dp"
+                        android:paddingTop="2dp"
                         android:textColorHint="@color/ggc_bg" />
 
                     <ImageView
@@ -94,7 +96,7 @@
                         android:layout_gravity="right|center_vertical"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/background_round_bg"
-                        android:src="@drawable/add"/>
+                        android:src="@drawable/add" />
                 </FrameLayout>
             </LinearLayout>
 

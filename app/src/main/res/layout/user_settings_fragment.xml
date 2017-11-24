@@ -55,7 +55,6 @@
     <RelativeLayout
         android:id="@+id/push_notification"
         style="@style/tabUserItemLinearLayout"
-        android:visibility="gone"
         android:layout_below="@+id/card_setting_line"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
@@ -68,7 +67,6 @@
 
     <View
         android:id="@+id/push_notification_line"
-        android:visibility="gone"
         android:layout_below="@+id/push_notification"
         style="@style/horizontal_divide_line" />
 

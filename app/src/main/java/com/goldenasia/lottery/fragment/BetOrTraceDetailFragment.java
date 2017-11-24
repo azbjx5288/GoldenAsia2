@@ -37,7 +37,7 @@ import com.goldenasia.lottery.game.PromptManager;
 
 import java.util.Arrays;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -51,9 +51,9 @@ public class BetOrTraceDetailFragment extends BaseFragment {
     private static final int CANCEL_PACKAGE_ID = 3;
     private static final int CANCEL_TRACE_ID = 4;
 
-    @Bind(R.id.webView)
+    @BindView(R.id.webView)
     WebView webView;
-    @Bind(R.id.button)
+    @BindView(R.id.button)
     Button button;
 
     private boolean isBet;

@@ -20,7 +20,6 @@ import com.cpiz.android.bubbleview.BubbleStyle;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
 import com.goldenasia.lottery.app.FragmentLauncher;
-import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.base.net.RestCallback;
 import com.goldenasia.lottery.base.net.RestRequest;
 import com.goldenasia.lottery.base.net.RestRequestManager;
@@ -30,7 +29,8 @@ import com.goldenasia.lottery.data.Bet;
 import com.goldenasia.lottery.data.BetListCommand;
 import com.goldenasia.lottery.data.BetListResponse;
 import com.goldenasia.lottery.data.Lottery;
-import com.goldenasia.lottery.data.LotteryListCommand;
+import com.goldenasia.lottery.data.LotteryMenu;
+import com.goldenasia.lottery.data.LotteryMenuCommand;
 import com.goldenasia.lottery.data.Trace;
 import com.goldenasia.lottery.data.TraceListCommand;
 import com.goldenasia.lottery.data.TraceListResponse;
@@ -41,12 +41,10 @@ import com.goldenasia.lottery.view.adapter.HistoryBetPopupWindowAdapter;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnItemClick;
 
 /**
@@ -66,19 +64,19 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
 
     private boolean isBet;
 
-    @Bind(R.id.refreshLayout)
+    @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ListView listView;
 
-    @Bind(R.id.radioGroup)
+    @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
 
-    @Bind(R.id.lotteryRadioButton)
+    @BindView(R.id.lotteryRadioButton)
     RadioButton lotteryRadioButton;
-    @Bind(R.id.timeRadioButton)
+    @BindView(R.id.timeRadioButton)
     RadioButton timeRadioButton;
-    @Bind(R.id.stateRadioButton)
+    @BindView(R.id.stateRadioButton)
     RadioButton stateRadioButton;
 
     private GameHistoryAdapter adapter;
@@ -166,13 +164,9 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
         });
         adapter = new GameHistoryAdapter(view.getContext());
         listView.setAdapter(adapter);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mCurrentTimeSelectStart=TimeUtils.getDayBegin();
-        mCurrentTimeSelectEnd= TimeUtils.getDayEnd();
+        mCurrentTimeSelectStart=TimeUtils.getBeginDateOfToday();
+        mCurrentTimeSelectEnd= TimeUtils.getEndDateOfToday();
         if (page == FIRST_PAGE) {
 //            if (isBet) {
 //                loadBetList(isFirstTime, FIRST_PAGE);
@@ -191,12 +185,19 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
         initPopupWindow();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     /**
      * 彩票种类信息查询
      */
     private void loadLotteryList() {
-        LotteryListCommand command = new LotteryListCommand();
-        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<Lottery>>>() {
+        LotteryMenuCommand command = new LotteryMenuCommand();
+        command.setLotteryID(0);
+        TypeToken typeToken = new TypeToken<RestResponse<LotteryMenu>>() {
         };
         RestRequestManager.executeCommand(getActivity(), command, typeToken, restCallback, LOTTERY_LIST_COMMAND, this);
     }
@@ -331,7 +332,7 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
                 mCurrentQueryConditionType = TIME_SELECT;
 
                 lotteryList = new ArrayList<Lottery>();
-                String[] timeStates = new String[]{"今天", "昨天", "七天内"};
+                String[] timeStates = new String[]{"今天", "昨天", "近7天"};
                 for (int i = 0; i < timeStates.length; i++) {
                     lottery = new Lottery();
                     lottery.setLotteryId(i);
@@ -470,16 +471,16 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
     private void selectPositionToTimeSelected(int position) {
         switch (position){
             case 0://"今天"
-                mCurrentTimeSelectStart=TimeUtils.getDayBegin();
-                mCurrentTimeSelectEnd=TimeUtils.getDayEnd();
+                mCurrentTimeSelectStart=TimeUtils.getBeginDateOfToday();
+                mCurrentTimeSelectEnd=TimeUtils.getEndDateOfToday();
                 break;
             case 1://"昨天"
-                mCurrentTimeSelectStart=TimeUtils.getBeginDayOfYesterday();
-                mCurrentTimeSelectEnd=TimeUtils.getEndDayOfYesterDay();
+                mCurrentTimeSelectStart=TimeUtils.getBeginDateOfYesterday();
+                mCurrentTimeSelectEnd=TimeUtils.getEndDateOfYesterday();
                 break;
-            case 2://"七天内"
-                mCurrentTimeSelectStart=TimeUtils.getSevenTodayStartTime();
-                mCurrentTimeSelectEnd=TimeUtils.getDayEnd();
+            case 2://"近7天"
+                mCurrentTimeSelectStart=TimeUtils.getLatelyDateOfSeven();
+                mCurrentTimeSelectEnd=TimeUtils.getEndDateOfToday();
                 break;
             default:
                 ;
@@ -492,16 +493,40 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
         public boolean onRestComplete(RestRequest request, RestResponse response) {
             switch (request.getId()) {
                 case LOTTERY_LIST_COMMAND: { //彩票种类信息查询
-                    ArrayList<Lottery> lotteryList = (ArrayList<Lottery>) response.getData();
+                    LotteryMenu lotteryMenu = (LotteryMenu) response.getData();
+
+                     ArrayList<Lottery> lotteryList = new ArrayList<>();
+                     ArrayList<Lottery> sscLotteryList = new ArrayList<>();
+                     ArrayList<Lottery> syxwLotteryList = new ArrayList<>();
+                     ArrayList<Lottery> ksLotteryList = new ArrayList<>();
+                     ArrayList<Lottery> lowLotteryList = new ArrayList<>();
+                     ArrayList<Lottery> othersLotteryList = new ArrayList<>();
+
                     Lottery  headLottery=new Lottery();
                     headLottery.setLotteryId(-1);
                     headLottery.setCname("选择彩种");
                     lotteryList.add(0,headLottery);
 
+                    if (lotteryMenu.getSsc() != null)
+                        sscLotteryList = lotteryMenu.getSsc();
+                    if (lotteryMenu.getSyxw() != null)
+                        syxwLotteryList = lotteryMenu.getSyxw();
+                    if (lotteryMenu.getKs() != null)
+                        ksLotteryList = lotteryMenu.getKs();
+                    if (lotteryMenu.getLow() != null)
+                        lowLotteryList = lotteryMenu.getLow();
+                    if (lotteryMenu.getOthers() != null)
+                        othersLotteryList = lotteryMenu.getOthers();
+                    lotteryList.addAll(sscLotteryList);
+                    lotteryList.addAll(syxwLotteryList);
+                    lotteryList.addAll(ksLotteryList);
+                    lotteryList.addAll(lowLotteryList);
+                    lotteryList.addAll(othersLotteryList);
+
                     mTransferAdapter.setData(lotteryList, mSelectLotteryPosition);
 
                     adapterPopupWindow.showArrowTo(mCheckedView, BubbleStyle.ArrowDirection.Up,1);
-                    GoldenAsiaApp.getUserCentre().setLotteryList(lotteryList);
+
                     timeRadioButton.setEnabled(true);
                     stateRadioButton.setEnabled(true);
                     break;

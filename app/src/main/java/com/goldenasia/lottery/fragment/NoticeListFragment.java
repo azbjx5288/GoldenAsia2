@@ -25,7 +25,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 
@@ -35,9 +35,9 @@ import butterknife.OnItemClick;
 public class NoticeListFragment extends BaseFragment {
     private static final String TAG = NoticeListFragment.class.getSimpleName();
 
-    @Bind(R.id.refreshLayout)
+    @BindView(R.id.refreshLayout)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.list)
+    @BindView(R.id.list)
     ListView listView;
 
     private ArrayList<Notice> notices;
@@ -141,9 +141,9 @@ public class NoticeListFragment extends BaseFragment {
     }
 
     static class ViewHolder {
-        @Bind(R.id.title)
+        @BindView(R.id.title)
         TextView title;
-        @Bind(R.id.time)
+        @BindView(R.id.time)
         TextView time;
 
         public ViewHolder(View convertView) {

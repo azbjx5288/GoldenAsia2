@@ -16,7 +16,7 @@ import com.goldenasia.lottery.BuildConfig;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created By Sakura
@@ -26,9 +26,9 @@ public class PayStepFragment extends BaseFragment
 
     private String url;
 
-    @Bind(R.id.ga_web)
+    @BindView(R.id.ga_web)
     WebView webView;
-    @Bind(R.id.loading_layout)
+    @BindView(R.id.loading_layout)
     LinearLayout loadingLayout;
 
     @Override

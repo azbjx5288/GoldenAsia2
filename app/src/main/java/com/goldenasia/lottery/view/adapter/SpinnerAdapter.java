@@ -14,7 +14,7 @@ import com.goldenasia.lottery.material.Ticket;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SpinnerAdapter extends BaseAdapter {
@@ -58,7 +58,7 @@ public class SpinnerAdapter extends BaseAdapter {
 
 
     static class ViewHolder {
-        @Bind(R.id.textView)
+        @BindView(R.id.textView)
         TextView noteNumber;
 
         public ViewHolder(View view) {

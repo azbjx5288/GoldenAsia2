@@ -42,7 +42,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -56,23 +56,23 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     private static final int ID_METHOD_LIST = 1;
 
 
-    @Bind(R.id.title_name)
+    @BindView(R.id.title_name)
     TextView titleName;
-    @Bind(android.R.id.title)
+    @BindView(android.R.id.title)
     TextView titleView;
-    @Bind(R.id.manual_input_botton)
+    @BindView(R.id.manual_input_botton)
     ImageView manualInputBotton;
-    @Bind(R.id.radioGroup)
+    @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
-    @Bind(R.id.lotteryRadioButton)
+    @BindView(R.id.lotteryRadioButton)
     RadioButton lotteryRadioButton;
-    @Bind(R.id.trendRadioButton)
+    @BindView(R.id.trendRadioButton)
     RadioButton trendRadioButton;
-    @Bind(R.id.methodRadioButton)
+    @BindView(R.id.methodRadioButton)
     RadioButton methodRadioButton;
-    @Bind(R.id.viewpager)
+    @BindView(R.id.viewpager)
     CustomViewPager viewPager;
-    @Bind(R.id.trend)
+    @BindView(R.id.trend)
     ImageView trend;
 
     private MenuController menuController;
@@ -358,7 +358,6 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick(android.R.id.home)

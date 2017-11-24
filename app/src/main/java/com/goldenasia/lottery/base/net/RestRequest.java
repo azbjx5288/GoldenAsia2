@@ -276,8 +276,12 @@ public class RestRequest implements Response.ErrorListener, Response.Listener<Re
             }
         }
 
-        Toast.makeText(context, /*"出错了：[ " +*/ errCode + ", " + errDesc /*+ " ]"*/,
-                errCode < 0 ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
+        /*屏蔽 7012 这种错误的 弹出*/
+        //7012	USER_INVALID	不合法或无效用户
+        if(errCode!=7012){
+            Toast.makeText(context, /*"出错了：[ " +*/ errCode + ", " + errDesc /*+ " ]"*/,
+                    errCode < 0 ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
+        }
     }
 
     /**

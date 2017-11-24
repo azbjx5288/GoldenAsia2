@@ -28,7 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created on 2016/1/19.
@@ -42,9 +42,9 @@ public class FragmentLotteryTrend extends BaseFragment {
     private static final int LOTTERY_HISTORY_TRACE_ID = 1;
     private static final int LOTTERY_TRACE_ID = 2;
 
-    @Bind(R.id.refresh_history_listview)
+    @BindView(R.id.refresh_history_listview)
     SwipeRefreshLayout refreshLayout;
-    @Bind(R.id.history_lottery_listview)
+    @BindView(R.id.history_lottery_listview)
     ListView historyLV;
 
     private List<List<LotteriesHistory>> historyList;

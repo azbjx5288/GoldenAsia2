@@ -29,7 +29,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -39,11 +39,11 @@ import butterknife.OnClick;
 public class BankCardSetting extends BaseFragment {
     private static final int BANKCARD_TRACE_ID = 1;
 
-    @Bind(R.id.bindcard_list)
+    @BindView(R.id.bindcard_list)
     ListView bindcardList;
-    @Bind(R.id.perfectbut)
+    @BindView(R.id.perfectbut)
     Button perfectbut;
-    @Bind(R.id.tip)
+    @BindView(R.id.tip)
     TextView tip;
 
     private List items = new ArrayList();
@@ -83,7 +83,6 @@ public class BankCardSetting extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.add_bankcardbut,R.id.perfectbut})

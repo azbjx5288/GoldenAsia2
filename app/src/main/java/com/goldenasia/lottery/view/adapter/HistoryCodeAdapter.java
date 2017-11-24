@@ -12,7 +12,7 @@ import com.goldenasia.lottery.data.IssueEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -69,9 +69,9 @@ public class HistoryCodeAdapter extends BaseAdapter {
         return convertView;
     }
     static class ViewHolder {
-        @Bind(R.id.historycode_issue)
+        @BindView(R.id.historycode_issue)
         TextView issue;
-        @Bind(R.id.historycode_code)
+        @BindView(R.id.historycode_code)
         TextView code;
 
         public ViewHolder(View view) {

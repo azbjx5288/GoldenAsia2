@@ -22,7 +22,7 @@ import com.goldenasia.lottery.data.NoticeDetail;
 import com.goldenasia.lottery.data.NoticeDetailCommand;
 import com.goldenasia.lottery.game.PromptManager;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * 公告或banner的详情页
@@ -30,11 +30,11 @@ import butterknife.Bind;
  */
 public class NoticeDetailsFragment extends BaseFragment {
 
-    @Bind(R.id.title)
+    @BindView(R.id.title)
     TextView title;
-    @Bind(R.id.time)
+    @BindView(R.id.time)
     TextView time;
-    @Bind(R.id.content)
+    @BindView(R.id.content)
     TextView content;
 
     public static void launch(BaseFragment fragment, boolean isNotice, Notice notice) {

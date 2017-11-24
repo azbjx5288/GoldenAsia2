@@ -13,7 +13,7 @@ import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -27,27 +27,27 @@ import static com.goldenasia.lottery.R.id.others;
 
 public class CowCowGame extends Game
 {
-    @Bind(cow_cow)
+    @BindView(cow_cow)
     TextView cowCow;
-    @Bind(R.id.cow_1)
+    @BindView(R.id.cow_1)
     TextView cow1;
-    @Bind(R.id.cow_2)
+    @BindView(R.id.cow_2)
     TextView cow2;
-    @Bind(R.id.cow_3)
+    @BindView(R.id.cow_3)
     TextView cow3;
-    @Bind(R.id.cow_4)
+    @BindView(R.id.cow_4)
     TextView cow4;
-    @Bind(R.id.cow_5)
+    @BindView(R.id.cow_5)
     TextView cow5;
-    @Bind(R.id.cow_6)
+    @BindView(R.id.cow_6)
     TextView cow6;
-    @Bind(R.id.cow_7)
+    @BindView(R.id.cow_7)
     TextView cow7;
-    @Bind(R.id.cow_8)
+    @BindView(R.id.cow_8)
     TextView cow8;
-    @Bind(R.id.cow_9)
+    @BindView(R.id.cow_9)
     TextView cow9;
-    @Bind(R.id.other)
+    @BindView(R.id.other)
     TextView other;
     private ArrayList<String> pickCowList;
     private int[] cowList = new int[]{R.id.cowcow, R.id.cow1, R.id.cow2, R.id.cow3, R.id.cow4, R.id.cow5, R.id.cow6,

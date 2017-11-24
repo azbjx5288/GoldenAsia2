@@ -12,8 +12,8 @@ import java.util.GregorianCalendar;
 
 public class TimeUtils {
 
-    //获取当天的开始时间
-    public static Date getDayBegin() {
+    //某天的开始时间---获取当天的开始时间
+    public static Date getBeginDateOfToday() {
         Calendar cal = new GregorianCalendar();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -22,8 +22,16 @@ public class TimeUtils {
         return cal.getTime();
     }
 
-    //获取当天的结束时间
-    public static Date getDayEnd() {
+    //某天的开始时间---获取昨天的开始时间
+    public static Date getBeginDateOfYesterday() {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DATE, -1);
+        return cal.getTime();
+    }
+
+    //某天的结束时间---获取当天的结束时间
+    public static Date getEndDateOfToday() {
         Calendar cal = new GregorianCalendar();
         cal.set(Calendar.HOUR_OF_DAY, 23);
         cal.set(Calendar.MINUTE, 59);
@@ -31,83 +39,74 @@ public class TimeUtils {
         return cal.getTime();
     }
 
-    //获取昨天的开始时间
-    public static Date getBeginDayOfYesterday() {
+    //某天的结束时间---获取昨天的结束时间
+    public static Date getEndDateOfYesterday() {
         Calendar cal = new GregorianCalendar();
-        cal.setTime(getDayBegin());
+        cal.setTime(getEndDateOfToday());
         cal.add(Calendar.DAY_OF_MONTH, -1);
         return cal.getTime();
     }
 
-    //获取昨天的结束时间
-    public static Date getEndDayOfYesterDay() {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(getDayEnd());
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-        return cal.getTime();
-    }
-
-    //七天内起始时间
-    public static Date getSevenTodayStartTime() {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(getDayBegin());
-        cal.add(Calendar.DAY_OF_MONTH, -6);
-        return cal.getTime();
-    }
-
-    //获取当天的开始时间
-    public static String getStringDayBegin() {
+    //某天的开始时间---获取当天的开始时间
+    public static String getBeginStringOfToday() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String time_string = df.format(getDayBegin());
+        String time_string = df.format(getBeginDateOfToday());
         return time_string;
     }
-    //获取当天的结束时间
-    public static String getStringDayEnd() {
+
+    //某天的结束时间---获取当天的结束时间
+    public static String getEndStringOfToday() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String time_string = df.format(getEndDateOfToday());
+        return time_string;
+    }
+
+    //某天的开始时间---获取昨天的开始时间
+    public static String getBeginStringOfYesterday() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = new GregorianCalendar();
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DATE, -1);
         String time_string = df.format(cal.getTime());
         return time_string;
     }
 
-    //获取昨天的开始时间
-    public static String getStringBeginDayOfYesterday() {
+    //某天的结束时间---获取昨天的结束时间
+    public static String getEndStringOfYesterday() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = new GregorianCalendar();
-        cal.setTime(getDayBegin());
+        cal.setTime(getEndDateOfToday());
         cal.add(Calendar.DAY_OF_MONTH, -1);
         String time_string = df.format(cal.getTime());
         return time_string;
     }
 
-    //获取昨天的结束时间
-    public static String getStringEndDayOfYesterDay() {
+    //获取当前时间的前3天的日期
+    public static String getLatelyStringOfThree() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(getDayEnd());
-        cal.add(Calendar.DAY_OF_MONTH, -1);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DATE, -2);
         String time_string = df.format(cal.getTime());
         return time_string;
     }
 
-    //获取近三天的开始时间
-    public static String getStringBeginDayOfThree() {
+    //获取当前时间的前7天的日期
+    public static String getLatelyStringOfSeven() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(getDayBegin());
-        cal.add(Calendar.DAY_OF_MONTH, -2);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DATE, -6);
         String time_string = df.format(cal.getTime());
         return time_string;
     }
 
-    //获取近七天的开始时间
-    public static String getStringBeginDayOfSeven() {
+    //获取当前时间的前15天的日期
+    public static String getLatelyStringOf15() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(getDayBegin());
-        cal.add(Calendar.DAY_OF_MONTH, -6);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DATE, -14);
         String time_string = df.format(cal.getTime());
         return time_string;
     }
@@ -125,14 +124,22 @@ public class TimeUtils {
         return day_first;
     }
 
-
-    //获取近35天的开始时间
-    public static String getStringBeginDayOf35() {
+    //获当前时间的前35天的日期
+    public static String getLatelyStringOf35() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(getDayBegin());
-        cal.add(Calendar.DAY_OF_MONTH, -34);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DATE, -34);
         String time_string = df.format(cal.getTime());
         return time_string;
+    }
+
+
+    //获取当前时间的前7天的日期
+    public static Date getLatelyDateOfSeven() {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DAY_OF_MONTH, -6);
+        return cal.getTime();
     }
 }

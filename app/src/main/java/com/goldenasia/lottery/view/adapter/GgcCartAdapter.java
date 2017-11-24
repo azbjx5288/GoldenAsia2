@@ -11,7 +11,7 @@ import com.goldenasia.lottery.R;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -81,11 +81,11 @@ public class GgcCartAdapter extends BaseAdapter
 
     static class ViewHolder
     {
-        @Bind(R.id.imageView)
+        @BindView(R.id.imageView)
         ImageView imageView;
-        @Bind(R.id.tail_num)
+        @BindView(R.id.tail_num)
         TextView tailNum;
-        @Bind(R.id.close)
+        @BindView(R.id.close)
         ImageView close;
 
         public ViewHolder(View view)
