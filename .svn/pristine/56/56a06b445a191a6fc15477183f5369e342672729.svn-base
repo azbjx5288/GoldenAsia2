@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/password_setting"
+        style="@style/tabUserItemLinearLayout">
+        <TextView
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/password_setting_icon"
+            android:text="密码设置" />
+        <ImageView style="@style/tabUserItemImgArrow" />
+    </RelativeLayout>
+    <View
+        android:id="@+id/password_setting_line"
+        android:layout_below="@+id/password_setting"
+        style="@style/horizontal_divide_line" />
+
+    <RelativeLayout
+        android:id="@+id/security_setting"
+        android:layout_below="@+id/password_setting_line"
+        style="@style/tabUserItemLinearLayout">
+        <TextView
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/safty_info_icon"
+            android:text="安全资料" />
+        <ImageView style="@style/tabUserItemImgArrow" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/security_setting_line"
+        android:layout_below="@+id/security_setting"
+        style="@style/horizontal_divide_line" />
+
+    <RelativeLayout
+        android:id="@+id/card_setting"
+        android:layout_below="@+id/security_setting_line"
+        style="@style/tabUserItemLinearLayout">
+        <TextView
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/card_setting_icon"
+            android:text="银行卡管理"/>
+        <ImageView style="@style/tabUserItemImgArrow" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/card_setting_line"
+        android:layout_below="@+id/card_setting"
+        style="@style/horizontal_divide_line" />
+
+    <RelativeLayout
+        android:id="@+id/version"
+        android:layout_below="@+id/card_setting_line"
+        style="@style/tabUserItemLinearLayout">
+        <TextView
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/check_update_icon"
+            android:text="检查更新"/>
+        <ImageView style="@style/tabUserItemImgArrow" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/version_line"
+        android:layout_below="@+id/version"
+        style="@style/horizontal_divide_line" />
+
+    <RelativeLayout
+        android:id="@+id/push_notification"
+        style="@style/tabUserItemLinearLayout"
+        android:layout_below="@+id/version_line"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/check_update_icon"
+            android:text="推送通知"/>
+        <ImageView style="@style/tabUserItemImgArrow" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/push_notification_line"
+        android:layout_below="@+id/push_notification"
+        style="@style/horizontal_divide_line" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/app_main"
+        android:gravity="center"
+        android:text="登 录"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"/>
+</RelativeLayout>

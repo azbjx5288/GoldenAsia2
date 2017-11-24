@@ -1,0 +1,234 @@
+package com.goldenasia.lottery.pattern;
+
+import android.app.Activity;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.component.LimitTextWatcher;
+import com.goldenasia.lottery.material.ChaseRuleData;
+
+/**
+ * Created by ACE-PC on 2016/3/28.
+ */
+public class TaskPlanView implements View.OnClickListener {
+    private static final String TAG = TaskPlanView.class.getSimpleName();
+    private Activity activity;
+    private EditText multiple;
+    private EditText issueno;
+    private CheckBox addStop;
+    private OnArrangeChangedListener onArrangeChangedListener;
+    private int index = 0;
+    private ChaseRuleData chaserule;
+    private Button planSetting;
+    private Button confirmPlan;
+
+    public TaskPlanView(Activity activity, View view,OnArrangeChangedListener onArrangeChangedListener) {
+        this.activity = activity;
+        this.chaserule = new ChaseRuleData();
+        this.onArrangeChangedListener=onArrangeChangedListener;
+        multiple = (EditText) view.findViewById(R.id.plan_multiple);
+        multiple.addTextChangedListener(new LimitTextWatcher(multiple,4));
+
+        issueno = (EditText) view.findViewById(R.id.plan_issueno);
+        issueno.addTextChangedListener(new LimitTextWatcher(issueno,3));
+
+        addStop = (CheckBox) view.findViewById(R.id.add_stop);
+
+        planSetting = (Button) view.findViewById(R.id.plan_setting);
+        planSetting.setOnClickListener(this);
+
+        confirmPlan = (Button) view.findViewById(R.id.confirm_plan);
+        confirmPlan.setOnClickListener(this);
+        if(onArrangeChangedListener!=null){
+            chaserule =new ChaseRuleData(0, getMultiple(), getIssueno(),10, 5, 10, 5);
+            onArrangeChangedListener.newArrange(chaserule,addStop.isChecked(),false);
+        }
+
+    }
+    
+    public void setIssueno(String no){
+        issueno.setText(no);
+    }
+
+    public Integer getMultiple() {
+        if(TextUtils.isEmpty(multiple.getText().toString())){
+            return 0;
+        }else{
+            if(multiple.getText().toString().matches("^(0+)"))
+            {
+                multiple.setText(multiple.getText().toString().replaceAll("^(0+)", "0"));
+            }
+            return Integer.parseInt(multiple.getText().toString());
+        }
+    }
+
+    public boolean isStopOnWin(){
+       return addStop.isChecked();
+    }
+
+    public Integer getIssueno() {
+        if(TextUtils.isEmpty(issueno.getText().toString())){
+            return 0;
+        }else{
+            if(issueno.getText().toString().matches("^(0+)"))
+            {
+                issueno.setText(issueno.getText().toString().replaceAll("^(0+)", "0"));
+            }
+            return Integer.parseInt(issueno.getText().toString().replaceAll("^(0+)", "0"));
+        }
+    }
+
+    public void setTagHideAndShow(boolean dupe){
+        planSetting.setVisibility(dupe?View.VISIBLE:View.GONE);
+    }
+
+    public void setOnArrangeChangedListener(OnArrangeChangedListener onArrangeChangedListener) {
+        this.onArrangeChangedListener = onArrangeChangedListener;
+    }
+
+    @Override
+    public void onClick(final View v) {
+        switch (v.getId()){
+            case R.id.plan_setting:
+                PlanSetting planSetView =new PlanSetting(activity);
+                planSetView.setOnChaseModeListener((int mode)-> index=mode);
+                View view=planSetView.getPlanSetView();
+                CustomDialog.Builder builder = new CustomDialog.Builder(activity);
+                builder.setContentView(view);
+                builder.setTitle("利润方案设置");
+                builder.setLayoutSet(DialogLayout.UP_AND_DOWN);
+                builder.setPositiveButton("确定", (dialog, which) -> {
+                    getChaseSetting(view);
+                    dialog.dismiss();
+                });
+                builder.create().show();
+                break;
+            case R.id.confirm_plan:
+                if(TextUtils.isEmpty(issueno.getText().toString())||issueno.getText().toString().matches("^(0+)")){
+                    tipDialog("温馨提示", "追号期数不能为空或0",issueno);
+                    return;
+                }
+    
+                if(TextUtils.isEmpty(multiple.getText().toString())||multiple.getText().toString().matches("^(0+)")){
+                    tipDialog("温馨提示", "倍数不能为空或0",multiple);
+                    return;
+                }
+    
+                if(onArrangeChangedListener!=null) {
+                    chaserule.setMultiple(getMultiple());
+                    onArrangeChangedListener.newArrange(chaserule,addStop.isChecked(),true);
+                }
+                break;
+        }
+    }
+
+    private void getChaseSetting(View view){
+        if (TextUtils.isEmpty(issueno.getText())) {
+            Toast.makeText(activity, "请追号期数", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (Integer.parseInt(issueno.getText().toString()) == 0) {
+            Toast.makeText(activity, "追号至少为1期", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        chaserule.setMultiple(Integer.parseInt(multiple.getText().toString()));
+        chaserule.setType(index);
+
+        int issue = 0, ratio = 0, rateAgo = 0, rateLater = 0;
+        if (index == 0) {
+            EditText gainModeText=(EditText)view.findViewById(R.id.plan_way_0);
+            if (TextUtils.isEmpty(gainModeText.getText())) {
+                ratio = 0;
+            } else {
+                ratio = Integer.parseInt(gainModeText.getText().toString());
+            }
+            chaserule.setGainMode(ratio);
+        } else if (index == 1) {
+            EditText period=(EditText)view.findViewById(R.id.plan_way_1_0);
+            EditText elementAgo=(EditText)view.findViewById(R.id.plan_way_1_1);
+            EditText elementLater=(EditText)view.findViewById(R.id.plan_way_1_2);
+            if (TextUtils.isEmpty(period.getText())) {
+                issue = 0;
+            } else {
+                issue = Integer.parseInt(period.getText().toString());
+            }
+
+            if (TextUtils.isEmpty(elementAgo.getText())) {
+                rateAgo = 0;
+            } else {
+                rateAgo = Integer.parseInt(elementAgo.getText().toString());
+            }
+
+            if (TextUtils.isEmpty(elementLater.getText())) {
+                rateLater = 0;
+            } else {
+                rateLater = Integer.parseInt(elementLater.getText().toString());
+            }
+
+            chaserule.setIssueGap(issue);
+            chaserule.setAgoValue(rateAgo);
+            chaserule.setLaterValue(rateLater);
+
+        } else if (index == 2) {//全程累计利润率
+            EditText gainModeText=(EditText)view.findViewById(R.id.plan_way_2);
+            if (TextUtils.isEmpty(gainModeText.getText())) {
+                ratio = 0;
+            } else {
+                ratio = Integer.parseInt(gainModeText.getText().toString());
+            }
+            chaserule.setGainMode(ratio);
+        } else if (index == 3) {//计划利润率
+            EditText period=(EditText)view.findViewById(R.id.plan_way_3_0);
+            EditText elementAgo=(EditText)view.findViewById(R.id.plan_way_3_1);
+            EditText elementLater=(EditText)view.findViewById(R.id.plan_way_3_2);
+
+            if (TextUtils.isEmpty(period.getText())) {
+                issue = 0;
+            } else {
+                issue = Integer.parseInt(period.getText().toString());
+            }
+
+            if (TextUtils.isEmpty(elementAgo.getText())) {
+                rateAgo = 0;
+            } else {
+                rateAgo = Integer.parseInt(elementAgo.getText().toString());
+            }
+
+            if (TextUtils.isEmpty(elementLater.getText())) {
+                rateLater = 0;
+            } else {
+                rateLater = Integer.parseInt(elementLater.getText().toString());
+            }
+            chaserule.setIssueGap(issue);
+            chaserule.setAgoValue(rateAgo);
+            chaserule.setLaterValue(rateLater);
+        }
+    }
+    
+    private void tipDialog(String title, String msg,TextView textView)
+    {
+        CustomDialog.Builder builder = new CustomDialog.Builder(activity);
+        builder.setMessage(msg);
+        builder.setTitle(title);
+        builder.setLayoutSet(DialogLayout.SINGLE);
+        builder.setPositiveButton("知道了", (dialog, which) ->
+        {
+            textView.setText("1");
+            dialog.dismiss();
+        });
+        builder.create().show();
+    }
+
+    public interface OnArrangeChangedListener {
+        void newArrange(ChaseRuleData chaserule,boolean status,boolean dupe);
+    }
+}

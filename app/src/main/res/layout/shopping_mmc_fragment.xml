@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <!-- 秒秒彩老虎机 -->
+    <include
+        android:id="@+id/one_arm_bandit"
+        layout="@layout/mmc_one_arm_bandit" />
+
+    <View style="@style/mmc_divideLine" />
+    <!-- 购物车展示 -->
+    <ListView
+        android:id="@+id/shopping_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:divider="@color/gameCheck"
+        android:dividerHeight="1dip" />
+
+    <!-- 购物车界面导航 -->
+    <include
+        android:id="@+id/shopping_bottom"
+        layout="@layout/shroud_mmc_view" />
+
+    <View style="@style/mmc_divideLine" />
+
+    <RelativeLayout
+        android:id="@+id/lottery_choose_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/tap_button">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/chase_mmc_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:background="@null"
+                android:src="@drawable/setting_icon" />
+
+            <include
+                android:id="@+id/shopping_choosetip"
+                layout="@layout/choosetips" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/lottery_shopping_buy"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="确认投注"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</LinearLayout>

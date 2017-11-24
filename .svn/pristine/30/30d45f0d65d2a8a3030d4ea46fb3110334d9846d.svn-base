@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.cpiz.android.bubbleview.BubbleLinearLayout android:id="@+id/popup_bubble"
+                                                xmlns:android="http://schemas.android.com/apk/res/android"
+                                                android:layout_width="125dp"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="vertical"
+                                                android:padding="7.5dp">
+    <RadioGroup
+        android:id="@+id/platform_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RadioButton
+            android:id="@+id/platform_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/pad_ud"
+            android:background="@drawable/selector_radio_button"
+            android:button="@null"
+            android:text="全部平台"
+            android:textColor="@drawable/general_button_text_color"/>
+        <RadioButton
+            android:id="@+id/platform_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_radio_button"
+            android:button="@null"
+            android:text="彩票"
+            android:layout_marginBottom="@dimen/pad_ud"
+            android:textColor="@drawable/general_button_text_color"/>
+        <RadioButton
+            android:id="@+id/platform_three"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_radio_button"
+            android:button="@null"
+            android:text="GA游戏"
+            android:textColor="@drawable/general_button_text_color"/>
+    </RadioGroup>
+
+</com.cpiz.android.bubbleview.BubbleLinearLayout>

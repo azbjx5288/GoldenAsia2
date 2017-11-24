@@ -1,0 +1,365 @@
+package com.goldenasia.lottery.fragment;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.cpiz.android.bubbleview.BubbleLinearLayout;
+import com.cpiz.android.bubbleview.BubblePopupWindow;
+import com.cpiz.android.bubbleview.BubbleStyle;
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.base.net.RestCallback;
+import com.goldenasia.lottery.base.net.RestRequest;
+import com.goldenasia.lottery.base.net.RestRequestManager;
+import com.goldenasia.lottery.base.net.RestResponse;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.data.Platform;
+import com.goldenasia.lottery.data.TranMoney;
+import com.goldenasia.lottery.data.TransferFundsCommand;
+import com.goldenasia.lottery.data.TransferRouteCommand;
+import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.util.NumbericUtils;
+import com.goldenasia.lottery.view.adapter.TransferAdapter;
+import com.google.gson.reflect.TypeToken;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * Created by ACE-PC on 2017/1/16.
+ * 平台转账
+ */
+
+public class TransferPlatformFragment extends BaseFragment {
+    private static final int TRACE_TRANSFER_ROUTE = 1;
+    private static final int TRACE_TRANSFER_SUBMIT = 2;
+
+    @Bind(R.id.image_from)
+    ImageView imageFrom;
+    @Bind(R.id.image_to)
+    ImageView imageTo;
+    @Bind(R.id.transfer_amount)
+    EditText transferAmount;
+    @Bind(R.id.funds_password)
+    EditText fundsPassword;
+    @Bind(R.id.btn_submit)
+    Button btnSubmit;
+    @Bind(R.id.from_funds)
+    TextView fromFunds;
+    @Bind(R.id.to_funds)
+    TextView toFunds;
+    @Bind(R.id.text_from)
+    TextView textFrom;
+    @Bind(R.id.text_to)
+    TextView textTo;
+
+    private BubblePopupWindow adapterPopupWindow;
+
+    private TranMoney tranMoney;
+    private int positionFrom = 0;
+    private int positionTo = 0;
+    private boolean status = false;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View view=null;
+        if(getArguments()!=null&&getArguments().getSerializable("hasTitle")!=null){
+                    view=inflateView(inflater, container, "资金转移",  R.layout.fragment_transfer_platform);
+        }else{
+             view = inflater.inflate(R.layout.fragment_transfer_platform, container, false);
+        }
+
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.customized_tips, null);
+        BubbleLinearLayout bubbleView = (BubbleLinearLayout) rootView.findViewById(R.id.popup_bubble);
+        adapterPopupWindow = new BubblePopupWindow(rootView, bubbleView);
+
+        TransferAdapter adapter = new TransferAdapter(getContext(), ConstantInformation.getTransferArray());
+        adapter.setOnIssueNoClickListener((Platform platform) -> {
+            if (status) {
+                positionFrom = platform.getId();
+                route(platform.getId(), fromFunds);
+                textFrom.setText(platform.getName());
+            } else {
+                positionTo = platform.getId();
+                route(platform.getId(), toFunds);
+                textTo.setText(platform.getName());
+            }
+            adapterPopupWindow.dismiss();
+        });
+        ListView issuenoList = (ListView) rootView.findViewById(R.id.issueNoList);
+        issuenoList.setAdapter(adapter);
+    }
+
+    private void init(){
+        if(ConstantInformation.getTransferArray().size()>=2){
+            Platform from=ConstantInformation.getTransferArray().get(0);
+            positionFrom = from.getId();
+            fromFunds.setText(route(from.getId()));
+            textFrom.setText(from.getName());
+            Platform to=ConstantInformation.getTransferArray().get(1);
+            positionTo = to.getId();
+            toFunds.setText(route(to.getId()));
+            textTo.setText(to.getName());
+        }else{
+            CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+            builder.setMessage("资金转移平台不足!");
+            builder.setTitle("温馨提示");
+            builder.setLayoutSet(DialogLayout.SINGLE);
+            builder.setPositiveButton("知道了", (dialog, which) -> {
+                dialog.dismiss();
+                getActivity().finish();
+            });
+            builder.create().show();
+        }
+    }
+
+    @OnClick({R.id.image_from, R.id.image_to})
+    public void selectDonw(View v) {
+        switch (v.getId()) {
+            case R.id.image_from:
+                status = true;
+                break;
+            case R.id.image_to:
+                status = false;
+                break;
+        }
+        adapterPopupWindow.showArrowTo(v, BubbleStyle.ArrowDirection.Up);
+    }
+
+    private void route(int route, TextView text) {
+        if (tranMoney != null) {
+            switch (route) {
+                case 0:
+                    text.setText(tranMoney.getJyzBalance());
+                    break;
+                /*case 1:
+                    text.setText(tranMoney.getPtBalance());
+                    break;
+                case 2:
+                    text.setText(tranMoney.getJcBalance());
+                    break;*/
+                case 3:
+                    text.setText(tranMoney.getGaBalance());
+                    break;
+            }
+        }
+    }
+
+    private String route(int route) {
+        String platMoney="0";
+        if (tranMoney != null) {
+            switch (route) {
+                case 0:
+                    platMoney=tranMoney.getJyzBalance();
+                    break;
+                /*case 1:
+                    text.setText(tranMoney.getPtBalance());
+                    break;
+                case 2:
+                    text.setText(tranMoney.getJcBalance());
+                    break;*/
+                case 3:
+                    platMoney=tranMoney.getGaBalance();
+                    break;
+            }
+        }
+        return platMoney;
+    }
+
+    private void tranMoneyLoad() {
+        TransferRouteCommand routeCommand = new TransferRouteCommand();
+        TypeToken typeToken = new TypeToken<RestResponse<TranMoney>>() {
+        };
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), routeCommand, typeToken, restCallback, TRACE_TRANSFER_ROUTE, this);
+        RestResponse restResponse = restRequest.getCache();
+        if (restResponse != null && restResponse.getData() instanceof TranMoney) {
+            tranMoney = (TranMoney) restResponse.getData();
+        }
+        restRequest.execute();
+    }
+
+    @OnClick(R.id.btn_submit)
+    public void btnSubmit() {
+
+        if (TextUtils.isEmpty(transferAmount.getText())) {
+            showToast("请输入转移金额", Toast.LENGTH_SHORT);
+            return;
+        }
+        if (TextUtils.isEmpty(fundsPassword.getText())) {
+            showToast("请输入资金密码", Toast.LENGTH_SHORT);
+            return;
+        }
+
+        if (positionFrom == positionTo) {
+            showToast("资金转移平台不能相同");
+            return;
+        }
+
+        double drawMoney = Double.parseDouble(transferAmount.getText().toString());
+        if (drawMoney < 10) {
+            Toast.makeText(getActivity(), "转移金额不能小于10元", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (verify(drawMoney)) {
+            Toast.makeText(getActivity(), "转移金额不能大于" + outPlatform() + "元", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (positionFrom == positionTo) {
+            Toast.makeText(getActivity(), "转移金额平台不能相同", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        btnSubmit.setEnabled(false);
+        TransferFundsCommand fundsCommand = new TransferFundsCommand();
+        fundsCommand.setTranFrom(positionFrom);
+        fundsCommand.setTranTo(positionTo);
+        fundsCommand.setTranAmount(drawMoney);
+        fundsCommand.setTranPass(fundsPassword.getText().toString());
+        executeCommand(fundsCommand, restCallback, TRACE_TRANSFER_SUBMIT);
+    }
+
+    private boolean verify(double drawMoney) {
+        if (tranMoney != null) {
+            switch (positionFrom) {
+                case 0:
+                    if (NumbericUtils.isNumeric(tranMoney.getJyzBalance())) {
+                        if (drawMoney > Double.parseDouble(tranMoney.getJyzBalance())) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                case 1:
+                    if (NumbericUtils.isNumeric(tranMoney.getPtBalance())) {
+                        if (drawMoney > Double.parseDouble(tranMoney.getPtBalance())) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                case 2:
+                    if (NumbericUtils.isNumeric(tranMoney.getJcBalance())) {
+                        if (drawMoney > Double.parseDouble(tranMoney.getJcBalance())) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                case 3:
+                    if (NumbericUtils.isNumeric(tranMoney.getGaBalance())) {
+                        if (drawMoney > Double.parseDouble(tranMoney.getGaBalance())) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+            }
+        }
+        return false;
+    }
+
+    private String outPlatform() {
+        if (tranMoney != null) {
+            switch (positionFrom) {
+                case 0:
+                    return tranMoney.getJyzBalance();
+                case 1:
+                    return tranMoney.getPtBalance();
+                case 2:
+                    return tranMoney.getJcBalance();
+                case 3:
+                    return tranMoney.getGaBalance();
+            }
+        }
+        return "";
+    }
+
+    private RestCallback restCallback = new RestCallback() {
+        @Override
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            switch (request.getId()) {
+                case TRACE_TRANSFER_ROUTE:
+                    if (response != null && response.getData() instanceof TranMoney) {
+                        tranMoney = (TranMoney) response.getData();
+                        init();
+                        transferAmount.setText("");
+                        fundsPassword.setText("");
+
+                    }
+                    break;
+                case TRACE_TRANSFER_SUBMIT:
+                    showToast(response.getErrStr());
+                    tranMoneyLoad();
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (errCode == 7003) {
+                Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
+                return true;
+            } else if (errCode == 7006) {
+                CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
+                dialog.setCancelable(false);
+                dialog.show();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+            if (state == RestRequest.RUNNING) {
+                if (request.getId() == TRACE_TRANSFER_ROUTE) {
+                    showProgress("正在加载平台……");
+                }
+            } else {
+                btnSubmit.setEnabled(true);
+                hideWaitProgress();
+            }
+        }
+    };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tranMoneyLoad();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+}

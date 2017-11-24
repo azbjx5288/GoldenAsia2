@@ -1,0 +1,111 @@
+package com.goldenasia.lottery.pattern;
+
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.component.QuantityView;
+import com.goldenasia.lottery.component.QuantityView.OnQuantityChangeListener;
+import com.goldenasia.lottery.material.ShoppingCart;
+
+/**
+ * 购物车多倍操作
+ * Created by ACE-PC on 2016/2/5.
+ */
+public class ShroudViewNoChase {
+
+    private static final String TAG = ShroudViewNoChase.class.getSimpleName();
+
+    private QuantityView doubleText;    //倍数
+    private RadioGroup viewGroup;     //无角分操作
+    private RadioButton radioYuan, radioJiao, radioFen, radioLi;
+    private OnModeItemClickListener modeItemListener;
+
+    public ShroudViewNoChase(View view) {
+        doubleText = (QuantityView) view.findViewById(R.id.double_number_view);
+        viewGroup = (RadioGroup) view.findViewById(R.id.lucremode_sett);
+
+        doubleText.setMinQuantity(1);
+        doubleText.setMaxQuantity(50000);
+        doubleText.setQuantity(ShoppingCart.getInstance().getMultiple());
+        doubleText.setLimitMax(true);//添加 限制最大值
+        radioYuan = (RadioButton) view.findViewById(R.id.lucremode_yuan);
+        radioJiao = (RadioButton) view.findViewById(R.id.lucremode_jiao);
+        radioFen = (RadioButton) view.findViewById(R.id.lucremode_fen);
+        radioLi = (RadioButton) view.findViewById(R.id.lucremode_li);
+        defaultSelected();
+
+        doubleText.setOnQuantityChangeListener(new OnQuantityChangeListener() {
+
+            @Override
+            public void onQuantityChanged(int newQuantity, boolean programmatically) {
+                modeItemListener.onModeItemClick(newQuantity, setLucreMode());
+            }
+
+            @Override
+            public void onLimitReached() {
+
+            }
+        });
+
+        viewGroup.setOnCheckedChangeListener((group, checkedId) -> modeItemListener.onModeItemClick(doubleText
+                .getQuantity(), setLucreMode()));
+    }
+
+    public void setModeItemListener(OnModeItemClickListener modeItemListener) {
+        this.modeItemListener = modeItemListener;
+    }
+
+
+    private int setLucreMode() {
+        int check = 0;
+        switch (viewGroup.getCheckedRadioButtonId()) {
+            case R.id.lucremode_yuan:
+                check = 0;
+                break;
+            case R.id.lucremode_jiao:
+                check = 1;
+                break;
+            case R.id.lucremode_fen:
+                check = 2;
+                break;
+            case R.id.lucremode_li:
+                check = 3;
+                break;
+            default:
+                check = 0;
+        }
+        GoldenAsiaApp.getUserCentre().setLucreMode(check);
+        return check;
+    }
+
+    public QuantityView getDoubleText() {
+        return doubleText;
+    }
+
+    private void defaultSelected() {
+        switch (GoldenAsiaApp.getUserCentre().getLucreMode()) {
+            case 0:
+                radioYuan.setChecked(true);
+                break;
+            case 1:
+                radioJiao.setChecked(true);
+                break;
+            case 2:
+                radioFen.setChecked(true);
+                break;
+            case 3:
+                radioLi.setChecked(true);
+                break;
+        }
+    }
+
+    /**
+     * 选中监听器
+     */
+    public interface OnModeItemClickListener {
+        void onModeItemClick(int multiple, int lucreMode);
+    }
+}

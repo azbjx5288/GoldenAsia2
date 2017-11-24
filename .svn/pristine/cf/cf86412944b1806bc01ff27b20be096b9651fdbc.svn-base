@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/pad_ud">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/basic_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    style="@style/tabRechargeItemText"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_15_8d8d_sdw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="           充值帐户："
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/recharge_username"
+                        style="@style/text_15_0000_sdw"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/text_size_small" />
+
+                </LinearLayout>
+
+                <View style="@style/horizontal_divide_line" />
+
+                <LinearLayout
+                    style="@style/tabRechargeItemText"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_15_8d8d_sdw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="           充值金额："
+                        android:textSize="@dimen/text_size_small" />
+
+                    <EditText
+                        android:id="@+id/edit_orderamount"
+                        android:layout_width="fill_parent"
+                        android:layout_height="37dp"
+                        android:layout_marginRight="@dimen/pad_lr"
+                        android:background="@drawable/corner_shadow_shape"
+                        android:digits="1234567890"
+                        android:gravity="center_vertical|left"
+                        android:hint="充值金额需与转账金额一致"
+                        android:inputType="numberDecimal"
+                        android:maxLength="10"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textSize="@dimen/text_size_tiny" />
+
+                </LinearLayout>
+
+                <View style="@style/horizontal_divide_line" />
+
+                <TextView
+                    android:id="@+id/hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:lines="4"
+                    android:text="支付步骤：\n1、点击“立即充值”后，截屏二维码的页面\n2、打开支付宝APP\n3、点击“扫一扫”，选择截屏的图片即可支付"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/mode_label_tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                android:text="手机端充值方式正在维护，请您稍后再试或登录金亚洲网站充值，谢谢！"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/transfer"
+                style="@style/tabRechargeItemText"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/text_15_8d8d_sdw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="支付宝真实姓名："
+                        android:textSize="@dimen/text_size_small" />
+
+                    <EditText
+                        android:id="@+id/true_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_marginRight="@dimen/pad_lr"
+                        android:layout_weight="1"
+                        android:background="@drawable/corner_shadow_shape"
+                        android:gravity="center_vertical"
+                        android:hint="需如实填写，否则会影响到账"
+                        android:paddingLeft="10dp"
+                        android:textSize="@dimen/text_size_tiny" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="200dp"
+                android:gravity="center"
+                android:text="请在发起充值后15分钟内完成转账"
+                android:textColor="@color/font_color_red" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView android:id="@+id/recharge_method"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="48dp">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/mode_label"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/pad_lr"
+                android:layout_marginTop="@dimen/pad_ud"
+                android:text="选择支付方式:" />
+
+            <com.goldenasia.lottery.component.AdaptHighListView
+                android:id="@+id/recharge_type"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:cacheColorHint="@android:color/transparent"
+                android:listSelector="@android:color/transparent"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/submit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:padding="6dp">
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_fit_button_suit"
+            android:text="下一步"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DFDFDF"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <!-- 显示用户头像、名称、账号余额 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="32dp"
+                android:src="@drawable/user" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="UserName223"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/user_balance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="账号余额：8000.00"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View style="@style/horizontal_divide_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/recharge"
+                style="@style/horizontal_item"
+                android:drawableTop="@drawable/ic_deposit"
+                android:paddingTop="@dimen/pad_ud"
+                android:text="充值" />
+
+            <TextView
+                android:id="@+id/withdraw_deposit"
+                style="@style/horizontal_item"
+                android:drawableTop="@drawable/ic_withdraw"
+                android:paddingTop="@dimen/pad_ud"
+                android:text="提现" />
+
+            <TextView
+                android:id="@+id/transfer"
+                style="@style/horizontal_item"
+                android:drawableTop="@drawable/ic_transfer"
+                android:paddingTop="@dimen/pad_ud"
+                android:text="转帐" />
+        </LinearLayout>
+
+        <View style="@style/big_divideLine" />
+
+        <TextView
+            android:id="@+id/balance_details"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/balance_details_icon"
+            android:text="资金明细" />
+
+        <View style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/password_setting"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/password_setting_icon"
+            android:text="密码设置" />
+
+        <View style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/security_setting"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/safty_info_icon"
+            android:text="安全资料" />
+
+        <View style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/card_setting"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/card_setting_icon"
+            android:text="银行卡管理" />
+
+        <View style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/lower_setting"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/lower_setting_icon"
+            android:text="下级管理" />
+
+        <View
+            android:id="@+id/lower_divide"
+            style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/station_letter"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/lower_setting"
+            android:text="站内信"
+            android:visibility="gone" />
+
+        <View
+            style="@style/horizontal_divide_line"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/service_center"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/service_icon"
+            android:text="客服中心" />
+
+        <View style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/rebates_setting"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/bonus_setting_icon"
+            android:visibility="gone"
+            android:text="奖金设置" />
+
+        <View style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/notice"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/notice_icon"
+            android:text="历史公告" />
+
+        <View style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/version"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/check_update_icon"
+            android:text="检查更新" />
+
+        <View style="@style/horizontal_divide_line" />
+
+        <TextView
+            android:id="@+id/logout"
+            style="@style/tabUserItemText"
+            android:drawableLeft="@drawable/logout_icon"
+            android:text="安全退出" />
+
+    </LinearLayout>
+
+</ScrollView>
+
+

@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:padding="20dp"
+        android:orientation="vertical">
+
+        <!--特码-->
+        <LinearLayout
+            android:id="@+id/te_ma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="不定位"
+                android:textColor="@color/app_font_dark_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/gray">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="一码不定位"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="任选1个号码，开出号码前三位中包含该号码，顺序不限，即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="二码不定位"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="任选2个号码组成一注，开出号码前三位中包含所选的2个号码，顺序不限，即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+            </TableLayout>
+
+
+        </LinearLayout>
+
+        <!--正码-->
+        <LinearLayout
+            android:id="@+id/zheng_ma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="大小单双"
+                android:textColor="@color/app_font_dark_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:layout_marginTop="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="前（后）二大小单双"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="在百位和十位（十位和各位）上，各选择一种状态（大小单双）作为一注，当对应位置所选的状态与开奖号码相符，即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+
+            </TableLayout>
+
+
+        </LinearLayout>
+
+        <!--正特尾数-->
+        <LinearLayout
+            android:id="@+id/zheng_te_wei_shu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="后二"
+                android:textColor="@color/app_font_dark_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:layout_marginTop="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="后二直选"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="从十位和个位各选一个号码组成一注，开奖号码后两位与其数字和位置皆一致，即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView60"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="后二组选"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="从十位和个位各选一个号码组成一注，开奖号码后两位与其数字一致，即中奖，顺序不限。 "
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+
+        <!--正特一肖-->
+        <LinearLayout
+            android:id="@+id/zheng_te_yi_xiao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="前二"
+                android:textColor="@color/app_font_dark_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:layout_marginTop="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="前二直选"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="从百位，十位各选一号码，与开出号码位置与数字皆相符，即中奖"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="前二组选"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="任选2个号码组成一注，其与开出号码中前两位相同，顺序不限，即中奖。 "
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+
+            </TableLayout>
+
+
+        </LinearLayout>
+
+
+
+        <!--连肖-->
+        <LinearLayout
+            android:id="@+id/lian_xiao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="定位胆"
+                android:textColor="@color/app_font_dark_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:layout_marginTop="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="定位胆"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="在百、十、个位任意一个位置上，选择1个号码作为一注，开奖号码与所选号码的数字与位置都一致，即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+
+        <!--连码-->
+        <LinearLayout
+            android:id="@+id/lian_ma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="组选"
+                android:textColor="@color/app_font_dark_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:layout_marginTop="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="组三"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="任选2个号码组成两注，且开奖号码中有对子并且不同的两个号码与投注号码相同，顺序不限，即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="组六"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="任选3个不同号码组成一注，开奖号码中三个号码与所选号码相同，顺序不限，即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="组选和值"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="开奖号码有对子，则中一等奖；开奖号码数字各不相同，则中二等奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="混合组选"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="手动输入号码，3个数字为一注，所选号码与开奖号码的三位相同，顺序不限，即中奖。开奖号码有对子，则中一等奖；开奖号码数字各不相同，则中二等奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+
+            </TableLayout>
+
+
+        </LinearLayout>
+
+        <!--正特一码-->
+        <LinearLayout
+            android:id="@+id/zheng_te_yi_ma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="直选"
+                android:textColor="@color/app_font_dark_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:layout_marginTop="10dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="直选"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="在百、十、个位任意选择三个数，位置和数字正确即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="191"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="直选和值"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="14sp"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/game_method_info_padding"
+                        android:layout_weight="470"
+                        android:background="@color/white"
+                        android:text="所选数值等于开奖号码的三个数字之和，即中奖。"
+                        android:textColor="@color/app_font_dark_color"
+                        android:textSize="12sp"
+                        android:typeface="serif" />
+                </TableRow>
+
+
+            </TableLayout>
+
+
+        </LinearLayout>
+
+        <!--大小单双-->
+
+        <!--正特不中-->
+    </LinearLayout>
+</ScrollView>
+
+

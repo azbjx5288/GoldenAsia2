@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/pad_lr"
+    android:paddingRight="@dimen/pad_lr">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow android:layout_marginBottom="5dp">
+
+            <CheckBox
+                android:id="@+id/cb1"
+                style="@style/checkbox_digits"
+                android:text="1" />
+
+            <CheckBox
+                android:id="@+id/cb2"
+                style="@style/checkbox_digits"
+                android:text="2" />
+
+            <CheckBox
+                android:id="@+id/cb3"
+                style="@style/checkbox_digits"
+                android:text="3" />
+
+            <CheckBox
+                android:id="@+id/cb4"
+                style="@style/checkbox_digits"
+                android:text="4" />
+
+            <CheckBox
+                android:id="@+id/cb5"
+                style="@style/checkbox_digits"
+                android:text="5" />
+        </TableRow>
+
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/cb6"
+                style="@style/checkbox_digits"
+                android:text="6" />
+
+            <CheckBox
+                android:id="@+id/cb7"
+                style="@style/checkbox_digits"
+                android:text="7" />
+
+            <CheckBox
+                android:id="@+id/cb8"
+                style="@style/checkbox_digits"
+                android:text="8" />
+
+            <CheckBox
+                android:id="@+id/cb9"
+                style="@style/checkbox_digits"
+                android:text="9" />
+
+            <CheckBox
+                android:id="@+id/cb10"
+                style="@style/checkbox_digits"
+                android:text="10" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

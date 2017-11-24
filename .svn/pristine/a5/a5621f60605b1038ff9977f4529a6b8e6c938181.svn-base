@@ -1,0 +1,240 @@
+package com.goldenasia.lottery.fragment;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.base.net.RestCallback;
+import com.goldenasia.lottery.base.net.RestRequest;
+import com.goldenasia.lottery.base.net.RestRequestManager;
+import com.goldenasia.lottery.base.net.RestResponse;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.data.LogoutCommand;
+import com.goldenasia.lottery.data.UserInfo;
+import com.goldenasia.lottery.data.UserInfoCommand;
+import com.goldenasia.lottery.db.MmcWinHistoryDao;
+import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.pattern.VersionChecker;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+
+/**
+ * Created on 2016/01/04.
+ *
+ * @author ACE
+ * @功能描述: 用户信息界面
+ */
+
+public class FragmentUser extends BaseFragment {
+    private static final String TAG = FragmentHistory.class.getSimpleName();
+
+    private static final int ID_USER_INFO = 1;
+    private static final int ID_LOGOUT = 2;
+
+    @Bind(R.id.user_name)
+    TextView userName;
+    @Bind(R.id.user_balance)
+    TextView userBalance;
+    @Bind(R.id.lower_setting)
+    TextView lowerSetting;
+    @Bind(R.id.lower_divide)
+    View lowerDivide;
+
+    private UserInfo userInfo;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflateView(inflater, container, false, "账号中心", R.layout.fragment_user);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        userInfo = GoldenAsiaApp.getUserCentre().getUserInfo();
+        if (userInfo != null) {
+            userName.setText(userInfo.getNickName());
+            userBalance.setText(String.format("账号余额：%.4f", userInfo.getBalance()));
+            if (userInfo.getLevel() == 10) {
+                lowerSetting.setVisibility(View.GONE);
+                lowerDivide.setVisibility(View.GONE);
+            } else {
+                lowerSetting.setVisibility(View.VISIBLE);
+                lowerDivide.setVisibility(View.VISIBLE);
+            }
+
+        }
+        executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
+    }
+
+    @OnClick({R.id.balance_details, R.id.recharge, R.id.withdraw_deposit, R.id.transfer, R.id.rebates_setting, R.id.station_letter, R.id.notice, R.id
+            .password_setting, R.id.security_setting, R.id.version, R.id.lower_setting, R.id.card_setting, R.id
+            .service_center})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.recharge:
+                launchFragment(RechargeApply.class);
+                break;
+            case R.id.balance_details:
+                launchFragment(BalanceTableFragment.class);
+                break;
+            case R.id.transfer:
+                //根据用户类型来判断是否显示下级转账
+                if(userInfo.getLevel() == 10){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("hasTitle","hasTitle");
+                    launchFragment(TransferPlatformFragment.class,bundle);
+                }else{
+                    launchFragment(TransferFragment.class);
+                }
+
+                break;
+            case R.id.rebates_setting:
+                launchFragment(RebatesSetting.class);
+                break;
+            case R.id.notice:
+                launchFragment(NoticeListFragment.class);
+                break;
+            case R.id.withdraw_deposit:
+                ArrayList<Class> withdraws = new ArrayList();
+                withdraws.add(DrawFragment.class);
+                withdraws.add(WithdrawListFragment.class);
+                TwoTableFragment.launch(getActivity(), "快速提现", new String[]{"提取余额", "提款记录"}, withdraws);
+                break;
+            case R.id.password_setting:
+                ArrayList<Class> passwors = new ArrayList();
+                passwors.add(LoginPasswordSetting.class);
+                passwors.add(CashPasswordSetting.class);
+                TwoTableFragment.launch(getActivity(), "密码设置", new String[]{"登录密码", "资金密码"}, passwors);
+                break;
+            case R.id.service_center:
+                launchFragment(ServiceCenterFragment.class);
+                break;
+            case R.id.security_setting:
+                launchFragment(SecuritySetting.class);
+                break;
+            case R.id.station_letter:
+                ArrayList<Class> arrays = new ArrayList();
+                arrays.add(WriteEmailFragment.class);
+                arrays.add(InBoxFragment.class);
+                arrays.add(OutBoxFragment.class);
+                TwoTableFragment.launch(getActivity(), "站内信", new String[]{"写邮件", "收件箱", "发件箱"}, arrays);
+                break;
+            case R.id.card_setting:
+                launchFragment(BankCardSetting.class);
+                break;
+            case R.id.lower_setting:
+                launchFragment(LowerMemberSetting.class);
+                break;
+            case R.id.version:
+                new VersionChecker(this).startCheck(true);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && userName != null) {
+            executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
+        }
+    }
+
+    @OnClick(R.id.logout)
+    public void logout() {
+        new AlertDialog.Builder(getActivity()).setMessage("退出当前账号").setNegativeButton("取消", null).setPositiveButton
+                ("退出", (dialog, which) -> executeCommand(new LogoutCommand(), restCallback, ID_LOGOUT)).create().show();
+    }
+
+    private void handleExit() {
+        GoldenAsiaApp.getUserCentre().logout();
+        getActivity().finish();
+        launchFragment(GoldenLoginFragment.class);
+        RestRequestManager.cancelAll();
+        deleteMmcWinHistoryDB();
+    }
+
+    public void deleteMmcWinHistoryDB() {
+        MmcWinHistoryDao mmcWinHistoryDao = new MmcWinHistoryDao(getActivity());
+
+        new Thread() {
+            @Override
+            public void run() {
+                mmcWinHistoryDao.deleteAllMmcWinHistory();
+            }
+        }.start();
+    }
+
+    private RestCallback restCallback = new RestCallback() {
+        @Override
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            if (request.getId() == ID_LOGOUT) {
+                handleExit();
+            } else if (request.getId() == ID_USER_INFO) {
+                UserInfo userInfo = ((UserInfo) response.getData());
+                GoldenAsiaApp.getUserCentre().setUserInfo(userInfo);
+                if (userInfo != null) {
+                    userName.setText(userInfo.getNickName());
+                    userBalance.setText(String.format("账号余额：%.4f", userInfo.getBalance()));
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (request.getId() == ID_LOGOUT) {
+                handleExit();
+                return true;
+            } else if (errCode == 7003) {
+                Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
+                return true;
+            } else if (errCode == 7006) {
+                CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
+                dialog.setCancelable(false);
+                dialog.show();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+            if (request.getId() == ID_LOGOUT) {
+                if (state == RestRequest.RUNNING) {
+                    showProgress("退出中...");
+                } else {
+                    hideProgress();
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+}

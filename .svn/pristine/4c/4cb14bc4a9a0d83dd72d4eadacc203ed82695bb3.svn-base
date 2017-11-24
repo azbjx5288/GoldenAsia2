@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="@dimen/big_blank"
+              android:layout_gravity="center"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/btn_tx"
+        style="@style/sddds_text"
+        android:text="三同号通选"/>
+</LinearLayout>

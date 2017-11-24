@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="55dp"
+              android:gravity="center"
+              android:orientation="horizontal"
+              android:paddingLeft="@dimen/pad_lr"
+              android:paddingRight="@dimen/pad_lr">
+    <CheckBox
+        android:id="@+id/myriabit"
+        style="@style/checkbox_digits"
+        android:text="万位"/>
+    <CheckBox
+        android:id="@+id/thousand"
+        style="@style/checkbox_digits"
+        android:text="千位"/>
+    <CheckBox
+        android:id="@+id/hundred"
+        style="@style/checkbox_digits"
+        android:text="百位"/>
+    <CheckBox
+        android:id="@+id/ten"
+        style="@style/checkbox_digits"
+        android:text="十位"/>
+    <CheckBox
+        android:id="@+id/one"
+        style="@style/checkbox_digits"
+        android:text="个位"/>
+</LinearLayout>

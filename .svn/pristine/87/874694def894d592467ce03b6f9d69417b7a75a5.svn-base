@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/kj_bg"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <com.goldenasia.lottery.component.AutoFitTextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="第0次开奖"
+        android:textSize="22sp"/>
+</LinearLayout>

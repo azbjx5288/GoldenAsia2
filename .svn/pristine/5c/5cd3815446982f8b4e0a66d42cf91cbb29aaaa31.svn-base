@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/middle_layout"
+        android:background="@color/background"
+        android:gravity="center"
+        android:text="进入支付宝APP，选择转账，转到以下银行"
+        android:textSize="14sp"/>
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/app_font_color"/>
+    <LinearLayout style="@style/tabRechargeItemText">
+        <TextView style="@style/normal_text_view"
+                  android:text="收款银行："/>
+        <TextView android:id="@+id/bank_name" style="@style/normal_text_view"/>
+    </LinearLayout>
+    <LinearLayout style="@style/tabRechargeItemText">
+        <TextView style="@style/normal_text_view"
+                  android:text="户       名："/>
+        <TextView android:id="@+id/user_name" style="@style/normal_text_view" android:layout_weight="1"/>
+        <Button
+            android:id="@+id/copy_name"
+            style="@style/small_button"
+            android:layout_height="40dp"
+            android:layout_marginRight="@dimen/pad_lr"
+            android:text="复制"/>
+    </LinearLayout>
+    <LinearLayout style="@style/tabRechargeItemText">
+        <TextView style="@style/normal_text_view"
+                  android:text="卡号："/>
+        <TextView android:id="@+id/account" style="@style/normal_text_view" android:layout_weight="1"/>
+        <Button
+            android:id="@+id/copy_account"
+            style="@style/small_button"
+            android:layout_height="40dp"
+            android:layout_marginRight="@dimen/pad_lr"
+            android:text="复制"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/pad_ud"
+        android:layout_marginTop="@dimen/pad_ud"
+        android:paddingLeft="@dimen/pad_lr"
+        android:text="请先支付未完成订单（该订单15分钟后自动关闭）\n充值金额： 50元\n支付宝真实姓名：阳光"
+        android:textSize="@dimen/text_size_small"/>
+
+    <TextView
+        android:id="@+id/warn_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/pad_lr"
+        android:layout_marginRight="@dimen/pad_lr"
+        android:background="@color/app_main_background"
+        android:text="温馨提示：\n完成转账后，需等待5-10分钟，待支付宝提示“转账到账成功”，且充值金额与支付宝真实姓名如实填写就会自动上分，如未自动上分，请联系客服。"
+        android:textColor="@color/app_font_ash_color"
+        android:textSize="@dimen/text_size_tiny"/>
+
+    <View android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1"/>
+
+    <LinearLayout android:id="@+id/submit_layout"
+                  android:layout_width="match_parent"
+                  android:layout_height="55dp"
+                  android:layout_marginTop="@dimen/pad_ud"
+                  android:background="@color/white"
+                  android:padding="6dp">
+
+        <Button
+            android:id="@+id/step"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_login"
+            android:text="支付宝转账教程"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+</LinearLayout>

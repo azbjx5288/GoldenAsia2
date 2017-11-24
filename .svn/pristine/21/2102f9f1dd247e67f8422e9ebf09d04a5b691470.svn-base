@@ -1,0 +1,100 @@
+package com.goldenasia.lottery.view.adapter;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.material.Ticket;
+
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+/**
+ * Created by Gan on 2017/10/13.
+ * 会员报表适配器
+ */
+public class MemberReportSubAdapter extends BaseAdapter {
+
+    private List<Ticket> ticketsList;
+
+    public MemberReportSubAdapter() {
+
+    }
+
+    public void setData(List<Ticket> tickets) {
+        ticketsList = tickets;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getCount() {
+//        return ticketsList != null? ticketsList.size() : 0;
+        return 10;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.member_report_sub_item, parent, false);
+            holder = new ViewHolder(convertView);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+       /* Ticket ticket = ticketsList.get(position);
+
+        holder.playName.setText(ticket.getChooseMethod().getCname()); //玩法名
+        String isShoppingNote=convertView.getContext().getResources().getString(R.string.is_shopping_note);
+        isShoppingNote= StringUtils.replaceEach(isShoppingNote, new String[]{"NOTE"}, new String[]{""+ticket.getChooseNotes()});
+        holder.noteNumber.setText(Html.fromHtml(isShoppingNote)); //注数
+        holder.code.setText(ticket.getCodes()); //Code
+        holder.delButton.setTag(position);*/
+
+//        holder.item_9
+        return convertView;
+    }
+
+    static class ViewHolder {
+        @Bind(R.id.item_1)
+        TextView item_1;
+        @Bind(R.id.item_2)
+        TextView item_2;
+        @Bind(R.id.item_3)
+        TextView item_3;
+
+        @Bind(R.id.item_4)
+        TextView item_4;
+        @Bind(R.id.item_5)
+        TextView item_5;
+        @Bind(R.id.item_6)
+        TextView item_6;
+        @Bind(R.id.item_7)
+        TextView item_7;
+        @Bind(R.id.item_8)
+        TextView item_8;
+        @Bind(R.id.item_9)
+        TextView item_9;
+
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+            view.setTag(this);
+        }
+    }
+
+}

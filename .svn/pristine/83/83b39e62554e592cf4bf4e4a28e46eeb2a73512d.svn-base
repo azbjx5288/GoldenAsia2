@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_history_result_item_mmc"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/app_main_rim">
+
+        <TextView
+            android:id="@+id/historycode_count"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/pad_lr"
+            android:text="开奖次数"
+            android:textColor="@color/gray" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="#aa000000" />
+
+        <TextView
+            android:id="@+id/historycode_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/pad_lr"
+            android:text="开奖号码"
+            android:textColor="@color/app_main_support" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="#aa000000" />
+
+        <TextView
+            android:id="@+id/bet_money"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/pad_lr"
+            android:text="投注(元)"
+            android:textColor="@color/app_main" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="#aa000000" />
+
+        <TextView
+            android:id="@+id/win_money"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/pad_lr"
+            android:text="奖金(元)"
+            android:textColor="@color/app_main_support" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/history_lottery_listviewcode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
+

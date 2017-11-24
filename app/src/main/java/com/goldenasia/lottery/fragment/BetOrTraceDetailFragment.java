@@ -1,0 +1,354 @@
+package com.goldenasia.lottery.fragment;
+
+import android.app.AlertDialog;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.BuildConfig;
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.app.FragmentLauncher;
+import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.base.net.GsonHelper;
+import com.goldenasia.lottery.base.net.JsonString;
+import com.goldenasia.lottery.base.net.RestCallback;
+import com.goldenasia.lottery.base.net.RestRequest;
+import com.goldenasia.lottery.base.net.RestRequestManager;
+import com.goldenasia.lottery.base.net.RestResponse;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.data.Bet;
+import com.goldenasia.lottery.data.BetDetailCommand;
+import com.goldenasia.lottery.data.CancelPackageCommand;
+import com.goldenasia.lottery.data.CancelTraceCommand;
+import com.goldenasia.lottery.data.Lottery;
+import com.goldenasia.lottery.data.Trace;
+import com.goldenasia.lottery.data.TraceDetailCommand;
+import com.goldenasia.lottery.game.PromptManager;
+
+import java.util.Arrays;
+
+import butterknife.Bind;
+import butterknife.OnClick;
+
+/**
+ * Created by Alashi on 2016/1/15.
+ */
+public class BetOrTraceDetailFragment extends BaseFragment {
+    private static final String TAG = BetOrTraceDetailFragment.class.getSimpleName();
+
+    private static final int BET_DETAIL_ID = 1;
+    private static final int TRACE_DETAIL_ID = 2;
+    private static final int CANCEL_PACKAGE_ID = 3;
+    private static final int CANCEL_TRACE_ID = 4;
+
+    @Bind(R.id.webView)
+    WebView webView;
+    @Bind(R.id.button)
+    Button button;
+
+    private boolean isBet;
+    private Bet bet;
+    private Trace trace;
+    private Lottery lottery;
+    private String[] pkids;
+
+    private String jsonDataForWeb;
+
+    public static void launch(BaseFragment fragment, Bet bet) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isBet", true);
+        bundle.putBoolean("type", false);
+        bundle.putString("Bet", GsonHelper.toJson(bet));
+        FragmentLauncher.launch(fragment.getActivity(), BetOrTraceDetailFragment.class, bundle);
+    }
+
+    public static void launch(BaseFragment fragment, Trace trace) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isBet", false);
+        bundle.putBoolean("type", false);
+        bundle.putString("Trace", GsonHelper.toJson(trace));
+        FragmentLauncher.launch(fragment.getActivity(), BetOrTraceDetailFragment.class, bundle);
+    }
+
+    public static void launch(BaseFragment fragment,Lottery lottery, Bet bet) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isBet", true);
+        bundle.putBoolean("type", true);
+        bundle.putSerializable("lottery", lottery);
+        bundle.putString("Bet", GsonHelper.toJson(bet));
+        FragmentLauncher.launch(fragment.getActivity(), BetOrTraceDetailFragment.class, bundle);
+    }
+
+    public static void launch(BaseFragment fragment,Lottery lottery, Trace trace) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isBet", false);
+        bundle.putBoolean("type", true);
+        bundle.putSerializable("lottery", lottery);
+        bundle.putString("Trace", GsonHelper.toJson(trace));
+        FragmentLauncher.launch(fragment.getActivity(), BetOrTraceDetailFragment.class, bundle);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        isBet = getArguments().getBoolean("isBet");
+        return inflateView(inflater, container, isBet ? "注单详情" : "追号详情", R.layout.bet_or_trace_detail);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if(getArguments().getBoolean("type")){
+            lottery = (Lottery) getArguments().getSerializable("lottery");
+        }
+        initWebView();
+        if (isBet) {
+            webView.loadUrl("file:///android_asset/web/BetDetail.html");
+            loadBetData();
+        } else {
+            //处理刮刮乐
+            webView.loadUrl("file:///android_asset/web/TraceDetail.html");
+            loadTraceData();
+        }
+    }
+
+    private void loadBetData() {
+        bet = GsonHelper.fromJson(getArguments().getString("Bet"), Bet.class);
+        if (bet == null) {
+            Toast.makeText(getActivity(), "无效注单参数", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+            return;
+        }
+        refreshBet(true);
+    }
+
+    private void loadTraceData() {
+        trace = GsonHelper.fromJson(getArguments().getString("Trace"), Trace.class);
+        if (trace == null) {
+            Toast.makeText(getActivity(), "无效追号参数", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+            return;
+        }
+        refreshTrace(true);
+    }
+
+    private void refreshTrace(boolean withCache) {
+        TraceDetailCommand command = new TraceDetailCommand();
+        command.setId(trace.getWrapId());
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, restCallback, TRACE_DETAIL_ID, this);
+        if (withCache) {
+            RestResponse restResponse = restRequest.getCache();
+            if (restResponse != null) {
+                JsonString jsonString = (JsonString) restResponse.getData();
+                if (jsonString != null) {
+                    jsonDataForWeb = jsonString.getJson();
+                    update2WebView();
+                }
+            }
+        }
+        restRequest.execute();
+    }
+
+    private void refreshBet(boolean withCache) {
+        BetDetailCommand command = new BetDetailCommand();
+        command.setId(bet.getWrapId());
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, restCallback, BET_DETAIL_ID, this);
+        if (withCache) {
+            RestResponse restResponse = restRequest.getCache();
+            if (restResponse != null) {
+                jsonDataForWeb = GsonHelper.toJson(restResponse.getData());
+                update2WebView();
+            }
+        }
+        restRequest.execute();
+    }
+
+    private void update2WebView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.evaluateJavascript("onLoaded();", null);
+        } else {
+            webView.loadUrl("javascript:onLoaded();");
+        }
+    }
+
+    private void initWebView() {
+        webView.setOverScrollMode(WebView.OVER_SCROLL_ALWAYS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
+        }
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setSupportZoom(false);
+        webSettings.setBuiltInZoomControls(false);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setSupportMultipleWindows(true);
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
+        webSettings.setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JsInterface(), "androidJs");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        webView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        webView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        webView.destroy();
+        super.onDestroyView();
+    }
+
+    private class JsInterface {
+        @JavascriptInterface
+        public String getData() {
+            return jsonDataForWeb;
+        }
+
+        @JavascriptInterface
+        public void changeUi(final int lotteryId, final boolean supportCancel, final String[] pkids) {
+            BetOrTraceDetailFragment.this.pkids = pkids;
+            button.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e(TAG, GoldenAsiaApp.getUserCentre().getLottery(lotteryId) + "");
+                    if(!getArguments().getBoolean("type")){
+                        lottery = GoldenAsiaApp.getUserCentre().getLottery(lotteryId);
+                    }
+                    if (lottery == null) {
+                        findViewById(R.id.bottom).setVisibility(View.GONE);
+                    }
+
+                    button.setTag(supportCancel);
+                    if (isBet) {
+                        button.setText(supportCancel ? "撤单" : "去购彩");
+                    } else {
+                        if (supportCancel && BetOrTraceDetailFragment.this.pkids != null && BetOrTraceDetailFragment.this.pkids.length > 0) {
+                            button.setText("撤单");
+                        } else {
+                            button.setText("去购彩");
+                        }
+                    }
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void allowCancelTrace(final boolean allow) {
+            button.post(() -> {
+                if (allow) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("取消追号")
+                            .setMessage("确定要取消追号？")
+                            .setPositiveButton("取消追号", (dialog, which) -> {
+                                CancelTraceCommand command = new CancelTraceCommand();
+                                command.setWrapId(trace.getWrapId());
+                                command.setPkids(Arrays.asList(pkids));
+                                executeCommand(command, restCallback, CANCEL_TRACE_ID);
+                            })
+                            .setNegativeButton("保留追号", null)
+                            .create().show();
+                } else {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("提醒")
+                            .setMessage("已经过了取消追号的时间，不能取消追号")
+                            .setNegativeButton("确定", null)
+                            .create().show();
+                }
+            });
+        }
+    }
+
+    @OnClick(R.id.button)
+    public void onClick(View v) {
+        boolean supportCancel = (v.getTag()==null?true:(boolean) v.getTag());//为返回数据异常所做的防崩溃处理
+        if (!supportCancel) {
+            GameTableFragment.launch(BetOrTraceDetailFragment.this, lottery);
+            return;
+        }
+
+        if (isBet) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("取消订单")
+                    .setMessage("确定要取消订单？")
+                    .setPositiveButton("取消订单", (dialog, which) -> {
+                        CancelPackageCommand command = new CancelPackageCommand();
+                        command.setWrapId(bet.getWrapId());
+                        executeCommand(command, restCallback, CANCEL_PACKAGE_ID);
+                    })
+                    .setNegativeButton("保留订单", null)
+                    .create().show();
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                webView.evaluateJavascript("reviewStatus();", null);
+            } else {
+                webView.loadUrl("javascript:reviewStatus();");
+            }
+        }
+    }
+
+    private RestCallback restCallback = new RestCallback() {
+        @Override
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            switch (request.getId()) {
+                case BET_DETAIL_ID:
+                    jsonDataForWeb = GsonHelper.toJson(response.getData());
+                    update2WebView();
+                    break;
+                case TRACE_DETAIL_ID:
+                    jsonDataForWeb = ((JsonString) response.getData()).getJson();
+                    update2WebView();
+                    break;
+                case CANCEL_PACKAGE_ID:
+                    refreshBet(false);
+                    break;
+                case CANCEL_TRACE_ID:
+                    refreshTrace(false);
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (errCode == 7006) {
+                CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
+                dialog.setCancelable(false);
+                dialog.show();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+            if (state == RestRequest.RUNNING) {
+                if (request.getId() == BET_DETAIL_ID) {
+                    showProgress("进行中...");
+                }
+            } else {
+                hideWaitProgress();
+            }
+        }
+    };
+}

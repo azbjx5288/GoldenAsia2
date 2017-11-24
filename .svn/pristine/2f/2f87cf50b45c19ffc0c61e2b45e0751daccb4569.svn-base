@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="40dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/chase_mmc_issue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:text="次数" />
+
+        <View style="@style/verticalLine" />
+
+        <LinearLayout
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <com.goldenasia.lottery.component.QuantityView
+                android:id="@+id/chase_mmc_multiple"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:qv_addButtonBackground="@drawable/quantityview_mmc_add_selector"
+                app:qv_addButtonTextColor="@color/background"
+                app:qv_quantity="1"
+                app:qv_quantityBackground="@color/white"
+                app:qv_quantityPadding="10dp"
+                app:qv_removeButtonBackground="@drawable/quantityview_mmc_remove_selector"
+                app:qv_removeButtonTextColor="@color/background" />
+        </LinearLayout>
+
+        <View style="@style/verticalLine" />
+
+        <com.goldenasia.lottery.component.AutoFitTextView
+            android:id="@+id/chase_mmc_current"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minWidth="70dp"
+            android:text="" />
+
+        <View style="@style/verticalLine" />
+
+        <com.goldenasia.lottery.component.AutoFitTextView
+            android:id="@+id/chase_mmc_investput"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:minWidth="70dp"
+            android:text="" />
+
+        <View style="@style/verticalLine" />
+    </LinearLayout>
+
+    <View style="@style/horizontal_divide_line" />
+</LinearLayout>

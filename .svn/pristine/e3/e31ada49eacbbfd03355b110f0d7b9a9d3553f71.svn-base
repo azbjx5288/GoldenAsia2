@@ -1,0 +1,107 @@
+package com.goldenasia.lottery.fragment;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.app.FragmentLauncher;
+import com.goldenasia.lottery.component.TabPageAdapter;
+import com.goldenasia.lottery.pattern.CustomViewPager;
+import com.goldenasia.lottery.view.adapter.MemberReportSubAdapter;
+import com.goldenasia.lottery.view.adapter.ShoppingAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * Created by Gan on 2017/10/13.
+ * 会员报表
+ */
+
+public class MemberReportSubFragment extends BaseFragment{
+
+
+
+
+    @Bind(R.id.list_view)
+    ListView listView;
+    private MemberReportSubAdapter adapter;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.member_report_sub_fragment, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        adapter = new MemberReportSubAdapter();
+
+        listView.addHeaderView(LayoutInflater.from(getActivity()).inflate(R.layout.member_report_sub_head,
+                listView, false));//添加头部
+
+        listView.setAdapter(adapter);
+    }
+
+
+//    @OnClick({R.id.title_text_layout,R.id.tab_menu1,R.id.tab_menu2,R.id.tab_menu3,R.id.tab_menu4,R.id.tab_menu5,R.id.back})
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.title_text_layout:
+////                ArrayList<Class> passwors = new ArrayList();
+////                passwors.add(LoginPasswordSetting.class);
+////                passwors.add(CashPasswordSetting.class);
+////                TwoTableFragment.launch(getActivity(), "密码设置", new String[]{"登录密码", "资金密码"}, passwors);
+//
+//
+//                break;
+//            case R.id.tab_menu1:
+//                launchFragment(SecuritySetting.class);
+//                break;
+//            case R.id.card_setting:
+//                launchFragment(BankCardSetting.class);
+//                break;
+//            case R.id.back:
+//                getActivity().finish();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+
+    public   void reLoad(int  platformType){
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+}

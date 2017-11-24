@@ -1,0 +1,317 @@
+package com.goldenasia.lottery.material;
+
+import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.data.Lottery;
+import com.goldenasia.lottery.data.Method;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
+/**
+ * Created by ACE-PC on 2016/1/26.
+ */
+public class ShoppingCart
+{
+    
+    private static ShoppingCart instance = new ShoppingCart();
+    
+    private ShoppingCart()
+    {
+    }
+    
+    public static ShoppingCart getInstance()
+    {
+        return instance;
+    }
+    
+    /**
+     * 彩种ID
+     */
+    private Lottery lottery;
+    
+    /**
+     * 当前金额模式
+     */
+    private LucreMode lucreMode = LucreMode.fromCode(GoldenAsiaApp.getUserCentre().getLucreMode());
+    
+    /**
+     * 奖金模式
+     */
+    private int prizeMode = -1;
+    /**
+     * 计划注数
+     */
+    private int planNotes = 0;
+    /**
+     * 倍数
+     */
+    private int multiple = 1;
+    /**
+     * 追号奖期
+     */
+    private int traceNumber = 0;
+    /**
+     * 追中即停
+     */
+    private boolean stopOnWin = true;
+    /**
+     * 计划金额
+     */
+    private double planAmount = 0.00;
+    /**
+     * 投注组合字符串
+     */
+    private String codeStr;
+    
+    private String mids;
+    
+    private int countMethod = 0;
+    /**
+     * 投注号
+     */
+    private List<Ticket> codesMap = new ArrayList<>();
+    /**
+     * 所追号码期数
+     */
+    private String[][] chaseMap = null;
+    /**
+     * 追号规则
+     */
+    private ChaseRuleData chaserule = new ChaseRuleData();
+    
+    public int getMultiple()
+    {
+        return multiple;
+    }
+    
+    public int getTraceNumber()
+    {
+        return traceNumber;
+    }
+    
+    public boolean isStopOnWin()
+    {
+        return stopOnWin;
+    }
+    
+    public double getPlanAmount()
+    {
+        return planAmount;
+    }
+    
+    public boolean isEmpty()
+    {
+        return codesMap.size() == 0;
+    }
+    
+    public void addTicket(Ticket ticket)
+    {
+        codesMap.add(ticket);
+        codePurify();
+        ruleCount();
+    }
+    
+    public void addTicketList(List<Ticket> tickets)
+    {
+        codesMap.addAll(tickets);
+        codePurify();
+        ruleCount();
+    }
+    
+    public int getPrizeMode()
+    {
+        return prizeMode;
+    }
+    
+    public void setPrizeMode(int prizeMode)
+    {
+        this.prizeMode = prizeMode;
+    }
+    
+    public List<Ticket> getCodesMap()
+    {
+        return codesMap;
+    }
+    
+    public int getPlanNotes()
+    {
+        return planNotes;
+    }
+    
+    public LucreMode getLucreMode()
+    {
+        return lucreMode;
+    }
+    
+    public String getCodeStr()
+    {
+        return codeStr;
+    }
+    
+    public String getMids()
+    {
+        return mids;
+    }
+    
+    public int getCountMethod()
+    {
+        return countMethod;
+    }
+    
+    private void setCountMethod(int countMethod)
+    {
+        this.countMethod = countMethod;
+    }
+    
+    public String[][] getChaseMap()
+    {
+        return chaseMap;
+    }
+    
+    public void setChaseMap(String[][] chaseMap)
+    {
+        this.chaseMap = chaseMap;
+    }
+    
+    public ChaseRuleData getChaserule()
+    {
+        return chaserule;
+    }
+    
+    public void setChaserule(ChaseRuleData chaserule)
+    {
+        this.chaserule = chaserule;
+    }
+    
+    public void init(Lottery lottery)
+    {
+        if (this.lottery == null || this.lottery.getLotteryId() != lottery.getLotteryId())
+        {
+            clear();
+        }
+        this.lottery = lottery;
+        this.multiple = 1;
+        this.traceNumber = 0;
+        codePurify();
+        ruleCount();
+    }
+    
+    private void codePurify()
+    {
+        StringBuffer codeBuffer = new StringBuffer();
+        for (Ticket ticket : codesMap)
+        {
+            Method method = ticket.getChooseMethod();
+            int id = method.getMethodId();
+            boolean flag = false;
+            int methodIndex = codeBuffer.indexOf(String.valueOf(id + ":"));
+            if (methodIndex != -1)
+            {
+                flag = true;
+            }
+            
+            if (flag)
+            {
+                String sameCodr = codeBuffer.substring(methodIndex, codeBuffer.length());
+                int index = sameCodr.indexOf("#");
+                int findIndex = -1;
+                if (index != -1)
+                { //如果有
+                    sameCodr = sameCodr.substring(0, index);
+                    findIndex = codeBuffer.indexOf(sameCodr);
+                    findIndex = findIndex + sameCodr.length();
+                } else
+                {
+                    findIndex = codeBuffer.indexOf(sameCodr);
+                    findIndex = findIndex + sameCodr.length();
+                }
+                codeBuffer.insert(findIndex, "|" + ticket.getCodes());   //相同
+            } else
+            {
+                if (codeBuffer.length() <= 0)
+                {
+                    codeBuffer.append(method.getMethodId()).append(":").append(ticket.getCodes());
+                } else
+                {
+                    codeBuffer.append("#").append(method.getMethodId()).append(":").append(ticket.getCodes());
+                }
+            }
+        }
+        StringBuffer midsBuffer = new StringBuffer();
+        for (Ticket ticket : codesMap)
+        {
+            Method method = ticket.getChooseMethod();
+            midsBuffer.append(method.getMethodId()).append(",");
+        }
+        this.codeStr = codeBuffer.toString();
+        this.mids = midsBuffer.length() > 0 ? midsBuffer.toString().substring(0, midsBuffer.toString().length() - 1)
+                : "";
+        setCountMethod(removeDuplicate(Arrays.asList(mids.split(","))));
+    }
+    
+    private int removeDuplicate(List<String> list)
+    {
+        return new ArrayList(new HashSet(list)).size();
+    }
+    
+    public void setPlanBuyRule(int multiple, int tracenum, boolean stopOnWin)
+    {
+        this.multiple = multiple;
+        this.traceNumber = tracenum;
+        this.stopOnWin = stopOnWin;
+        this.lucreMode = LucreMode.fromCode(GoldenAsiaApp.getUserCentre().getLucreMode());
+        ruleCount();
+    }
+    
+    public void setPlanBuyRule(int multiple, boolean stopOnWin)
+    {
+        setPlanBuyRule(multiple, 0, stopOnWin);
+    }
+    
+    public void setPlanBuyRule(int multiple)
+    {
+        setPlanBuyRule(multiple, true);
+    }
+    
+    public void ruleCount()
+    {
+        int notes = 0;
+        for (Ticket ticket : codesMap)
+        {
+            notes += ticket.getChooseNotes();
+        }
+        double totalOrder = lucreMode.getFactor() * 2 * getMultiple() * notes;
+        if (traceNumber > 0)
+        {
+            totalOrder *= traceNumber;
+        }
+        
+        this.planNotes = notes;
+        this.planAmount = totalOrder;
+    }
+    
+    public void deleteCode(int position)
+    {
+        if (position >= 0 && position < codesMap.size())
+        {
+            codesMap.remove(position);
+            codePurify();
+            ruleCount();
+        }
+    }
+    
+    public void clear()
+    {
+        this.lottery = null;
+        this.codeStr = "";
+        this.mids = "";
+        this.planNotes = 0;
+        this.multiple = 1;
+        this.traceNumber = 0;
+        this.stopOnWin = true;
+        this.planAmount = 0.00;
+        this.codesMap.clear();
+    }
+}

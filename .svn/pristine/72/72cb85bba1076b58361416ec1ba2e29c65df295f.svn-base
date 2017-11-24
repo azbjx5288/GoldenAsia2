@@ -1,0 +1,188 @@
+package com.goldenasia.lottery.game;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.data.Method;
+import com.goldenasia.lottery.pattern.PickNumber;
+import com.google.gson.JsonArray;
+
+/**
+ * Created by ACE-PC on 2016/2/18.
+ */
+public class TextGame extends Game {
+    private static String[] disText = new String[]{"大", "小", "单", "双"};
+    private static String[] dragonTigerSumText = new String[]{"龙", "虎", "和"};
+    private static final int TYPE_DIGIT = 0;
+    private static final int TYPE_DRAGON_TIGER_SUM = 1;
+    private static int TYPE;
+
+    public TextGame(Method method) {
+        super(method);
+        switch (method.getName()) {
+            case "RELHH":
+                isDigital = true;
+                setHasRandom(false);
+                break;
+            default:
+                isDigital = false;
+                setHasRandom(true);
+        }
+    }
+
+    @Override
+    public void onInflate() {
+        try {
+            java.lang.reflect.Method function = getClass().getMethod(method.getName(), Game.class);
+            function.invoke(null, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public String getWebViewCode() {
+        JsonArray jsonArray = new JsonArray();
+        if (isDigital)
+            jsonArray.add(transformDigitJsonArray(digits));
+        for (PickNumber pickNumber : pickNumbers) {
+            jsonArray.add(transform(pickNumber.getCheckedNumber(), true, true));
+        }
+        return jsonArray.toString();
+    }
+
+    public String getSubmitCodes() {
+        StringBuilder builder = new StringBuilder();
+        switch (TYPE) {
+            case TYPE_DIGIT:
+                for (int i = 0, size = pickNumbers.size(); i < size; i++) {
+                    builder.append(transformtext(pickNumbers.get(i).getCheckedNumber(), disText, false));
+                    if (i != size - 1) {
+                        builder.append(",");
+                    }
+                }
+                break;
+            case TYPE_DRAGON_TIGER_SUM:
+                builder.append(transformDigit(digits));
+                for (int i = 0, size = pickNumbers.size(); i < size; i++) {
+                    builder.append(transformtext(pickNumbers.get(i).getCheckedNumber(), dragonTigerSumText, false));
+                    if (i != size - 1) {
+                        builder.append(",");
+                    }
+                }
+                break;
+        }
+
+        return builder.toString();
+    }
+
+    public void onRandomCodes() {
+        try {
+            java.lang.reflect.Method function = getClass().getMethod(method.getName() + "Random", Game.class);
+            function.invoke(null, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("SscCommonGame", "onInflate: " + "//" + method.getCname() + "随机 " + method.getName() + " public " +
+                    "static void " + method.getName() + "Random" + "(Game game) {}");
+            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static View createDefaultPickLayout(ViewGroup container) {
+        return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column, null, false);
+    }
+
+    public static View createDigitPickLayout(ViewGroup container) {
+        return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column_digits, null, false);
+    }
+
+    private static void addPickTextGame(Game game, View topView, String title, String[] disText) {
+        PickNumber pickNumberText = new PickNumber(topView, title);
+        pickNumberText.getNumberGroupView().setNumber(1, disText.length);
+        pickNumberText.setDisplayText(disText);
+        pickNumberText.setNumberStyle(null);
+        pickNumberText.setChooseMode(true);
+        pickNumberText.setColumnAreaHideOrShow(false);
+        game.addPickNumber(pickNumberText);
+    }
+
+    private static void createPicklayout(Game game, String[] name, String[] disText) {
+        View[] views = new View[name.length];
+        if (!game.isDigital)
+            for (int i = 0; i < name.length; i++) {
+                View view = createDefaultPickLayout(game.getTopLayout());
+                addPickTextGame(game, view, name[i], disText);
+                views[i] = view;
+            }
+        else
+            for (int i = 0; i < name.length; i++) {
+                View view = createDigitPickLayout(game.getTopLayout());
+                game.initDigitPanel(view);
+                addPickTextGame(game, view, name[i], disText);
+                views[i] = view;
+            }
+
+        ViewGroup topLayout = game.getTopLayout();
+        for (View view : views) {
+            topLayout.addView(view);
+        }
+
+        game.setColumn(name.length);
+    }
+
+    //后二大小单双 EXDXDS
+    public static void EXDXDS(Game game) {
+        TYPE = TYPE_DIGIT;
+        createPicklayout(game, new String[]{"十位", "个位"}, disText);
+    }
+
+    //后三大小单双 SXDXDS
+    public static void SXDXDS(Game game) {
+        TYPE = TYPE_DIGIT;
+        createPicklayout(game, new String[]{"百位", "十位", "个位"}, disText);
+    }
+
+    //前二大小单双 QEDXDS
+    public static void QEDXDS(Game game) {
+        TYPE = TYPE_DIGIT;
+        createPicklayout(game, new String[]{"百位", "十位"}, disText);
+    }
+
+    //龙虎和 RELHH
+    public static void RELHH(Game game) {
+        TYPE = TYPE_DRAGON_TIGER_SUM;
+        createPicklayout(game, new String[]{"龙虎和"}, dragonTigerSumText);
+    }
+
+    //后二大小单双随机 EXDXDS
+    public static void EXDXDSRandom(Game game) {
+        for (PickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(random(1, 4, 1));
+        game.notifyListener();
+    }
+
+    //后三大小单双随机 SXDXDS
+    public static void SXDXDSRandom(Game game) {
+        for (PickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(random(1, 4, 1));
+        game.notifyListener();
+    }
+
+    //前二大小单双 QEDXDS
+    public static void QEDXDSRandom(Game game) {
+        for (PickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(random(1, 4, 1));
+        game.notifyListener();
+    }
+
+    //龙虎和 RELHH
+    public static void RELHHRandom(Game game) {
+        for (PickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(random(1, 3, 1));
+        game.notifyListener();
+    }
+}

@@ -1,0 +1,324 @@
+package com.goldenasia.lottery.fragment;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.FragmentLauncher;
+import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.base.net.GsonHelper;
+import com.goldenasia.lottery.data.PayInfo;
+import com.goldenasia.lottery.data.RechargeConfig;
+import com.goldenasia.lottery.data.UserInfo;
+import com.goldenasia.lottery.util.DownPicUtil;
+import com.goldenasia.lottery.util.SaveImageUtils;
+
+import org.apache.cordova.CordovaChromeClient;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaPreferences;
+import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.CordovaWebViewClient;
+import org.apache.cordova.PluginEntry;
+import org.apache.cordova.Whitelist;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * Created by ACE-PC on 2017/5/11.
+ */
+
+public class PayHtml extends Activity implements View.OnClickListener, CordovaInterface
+{
+    private static final String TAG = PayHtml.class.getSimpleName();
+    private Handler mHandler = new Handler();
+    private final ExecutorService threadPool = Executors.newCachedThreadPool();
+    // The webview for our app
+    protected CordovaWebView appView;
+    // Plugin to call when activity result is received
+    protected int activityResultRequestCode;
+    protected CordovaPlugin activityResultCallback;
+    
+    protected CordovaPreferences prefs = new CordovaPreferences();
+    protected Whitelist internalWhitelist = new Whitelist();
+    protected Whitelist externalWhitelist = new Whitelist();
+    protected ArrayList<PluginEntry> pluginEntries;
+    
+    private String url = "";
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_payhtml);
+        RechargeConfig rechargeConfig = (RechargeConfig) getIntent().getSerializableExtra
+                ("rconfig");
+        if (rechargeConfig != null)
+        {
+            UserInfo userInfo = GoldenAsiaApp.getUserCentre().getUserInfo();
+            PayInfo payInfo = new PayInfo(userInfo.getUserName(), userInfo.getUserId());
+            url = GoldenAsiaApp.BASEURL + "/?c=fin&a=recharge&id=" + rechargeConfig.getDtId() +
+                    "&encry=" + Base64.encodeToString(GsonHelper.toJson(payInfo).getBytes(),
+                    Base64.DEFAULT) + "&trade_type=" + rechargeConfig.getTradeType() + "&frm=4";
+            init();
+        }
+    }
+    
+    protected CordovaWebViewClient makeWebViewClient(CordovaWebView webView)
+    {
+        return webView.makeWebViewClient(this);
+    }
+    
+    protected CordovaChromeClient makeChromeClient(CordovaWebView webView)
+    {
+        return webView.makeWebChromeClient(this);
+    }
+    
+    @Override
+    public Activity getActivity()
+    {
+        return this;
+    }
+    
+    @Override
+    public ExecutorService getThreadPool()
+    {
+        return threadPool;
+    }
+    
+    @Override
+    public Object onMessage(String id, Object data)
+    {
+        if ("exit".equals(id))
+        {
+            super.finish();
+        }
+        return null;
+    }
+    
+    @Override
+    public void setActivityResultCallback(CordovaPlugin plugin)
+    {
+        if (activityResultCallback != null)
+        {
+            activityResultCallback.onActivityResult(activityResultRequestCode, Activity
+                    .RESULT_CANCELED, null);
+        }
+        this.activityResultCallback = plugin;
+    }
+    
+    @Override
+    public void startActivityForResult(CordovaPlugin command, Intent intent, int requestCode)
+    {
+        setActivityResultCallback(command);
+        try
+        {
+            startActivityForResult(intent, requestCode);
+        } catch (RuntimeException e)
+        {
+            activityResultCallback = null;
+            throw e;
+        }
+    }
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+        super.onActivityResult(requestCode, resultCode, intent);
+        CordovaPlugin callback = this.activityResultCallback;
+        if (callback != null)
+        {
+            callback.onActivityResult(requestCode, resultCode, intent);
+        }
+    }
+    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+    }
+    
+    @Override
+    public void onPause()
+    {
+        if (appView != null)
+        {
+            appView.onPause();
+        }
+        super.onPause();
+    }
+    
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (appView != null)
+        {
+            appView.onResume();
+        }
+    }
+    
+    private void init()
+    {
+        ImageButton home = (ImageButton) findViewById(android.R.id.home);
+        home.setOnClickListener(this);
+        
+        TextView title = (TextView) findViewById(android.R.id.title);
+        title.setText("充值中心");
+        
+        ImageButton service = (ImageButton) findViewById(R.id.service);
+        service.setOnClickListener(this);
+        
+        appView = (CordovaWebView) findViewById(R.id.payWebView);
+        WebSettings settings = appView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setSupportMultipleWindows(true);
+        settings.setSupportZoom(true);          //允许缩放
+        settings.setBuiltInZoomControls(true);  //原网页基础上缩放
+        settings.setUseWideViewPort(true);      //任意比例缩放
+        //支持自动加载图片
+        settings.setLoadsImagesAutomatically(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);// 排版适应屏幕
+        // 缩放按钮
+        settings.setDisplayZoomControls(false);
+        
+        internalWhitelist.addWhiteListEntry("*", false);
+        externalWhitelist.addWhiteListEntry("tel:*", false);
+        externalWhitelist.addWhiteListEntry("sms:*", false);
+        
+        prefs.set("loglevel", "DEBUG");
+        
+        appView.init(this, makeWebViewClient(appView), makeChromeClient(appView), pluginEntries,
+                internalWhitelist, externalWhitelist, prefs);
+        
+        appView.setWebViewClient(new CordovaWebViewClient(this, appView)
+        {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url)
+            {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+        appView.addJavascriptInterface(new JavaScriptInterface(), "android");
+        
+        // 长按点击事件
+        appView.setOnLongClickListener((View view) ->
+        {
+            final WebView.HitTestResult hitTestResult = appView.getHitTestResult();
+            // 如果是图片类型或者是带有图片链接的类型
+            if (hitTestResult.getType() == WebView.HitTestResult.IMAGE_TYPE || hitTestResult.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)
+            {
+                saveImageInto(hitTestResult.getExtra());
+            }
+            return true;
+        });
+        appView.loadUrlIntoView(url);
+    }
+    
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case android.R.id.home:
+                getActivity().finish();
+                break;
+            case R.id.service:
+                FragmentLauncher.launch(getActivity(), ServiceCenterFragment.class);
+                break;
+        }
+    }
+    
+    Handler handler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            super.handleMessage(msg);
+            Bitmap bitmap = (Bitmap) msg.obj;
+            SaveImageUtils.saveImageToGallerys(getActivity(), bitmap);
+            Toast.makeText(getActivity(), "图片保存图库成功", Toast.LENGTH_LONG).show();
+        }
+    };
+    
+    
+    // 监听返回键返回网页的上一层
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK && appView.canGoBack())
+        {
+            if (appView != null)
+            {
+                appView.goBack();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
+    private class JavaScriptInterface
+    {
+        @JavascriptInterface
+        public void exitWebViewController()
+        {
+            mHandler.post(() -> getActivity().finish());
+        }
+        
+        @JavascriptInterface
+        public void saveImageIntoAlbums(String imgPath)
+        {
+            Log.e(TAG, "保存图片" + imgPath);
+            saveImageInto(imgPath);
+        }
+    }
+    
+    public void saveImageInto(String url){
+        // 弹出保存图片的对话框
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("提示");
+        builder.setMessage("保存图片到本地");
+        builder.setPositiveButton("确认", (DialogInterface dialogInterface, int i) ->{
+            // 下载图片到本地
+            DownPicUtil.downPic(url, (Bitmap bitmap) ->
+            {
+                Toast.makeText(getActivity(), "下载完成", Toast.LENGTH_LONG).show();
+                Message msg = Message.obtain();
+                msg.obj = bitmap;
+                handler.sendMessage(msg);
+            });
+        });
+        builder.setNegativeButton("取消", (DialogInterface dialogInterface, int i) ->
+        {
+            // 自动dismiss
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+}
+

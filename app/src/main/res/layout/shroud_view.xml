@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/pad_lr"
+            android:gravity="center"
+            android:text="投"/>
+
+        <com.goldenasia.lottery.component.QuantityView
+            android:id="@+id/double_number_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:qv_addButtonBackground="@drawable/quantityview_add_selector"
+            app:qv_addButtonTextColor="@color/background"
+            app:qv_buttonWidth="60"
+            app:qv_quantity="1"
+            app:qv_quantityBackground="@color/white"
+            app:qv_removeButtonBackground="@drawable/quantityview_remove_selector"
+            app:qv_removeButtonTextColor="@color/background"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="倍"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/pad_lr"
+        android:gravity="center_vertical">
+        <Button
+            android:id="@+id/chase_button"
+            style="@style/tiny_button"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="智能追号"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginRight="10dp"
+                  android:text="模式"/>
+
+        <TextView android:id="@+id/setting_mode"
+                  android:layout_width="40dp"
+                  android:layout_height="30dp"
+                  android:background="@drawable/background_border"
+                  android:gravity="center"
+                  android:text="元"
+                  android:textColor="@color/app_main_support"/>
+
+        <ImageView
+            android:id="@+id/select_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@color/app_menu_background"
+            android:src="@drawable/ic_jiantouup"/>
+
+        <!--<Button-->
+            <!--android:id="@+id/setting_mode"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/ic_jiantouup"/>-->
+    </LinearLayout>
+
+</RelativeLayout>

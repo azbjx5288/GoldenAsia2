@@ -1,0 +1,22 @@
+package com.goldenasia.lottery.data;
+
+import com.android.volley.Request;
+import com.goldenasia.lottery.base.net.RequestConfig;
+
+/**
+ * 订单列表
+ * Created by Alashi on 2016/1/21.
+ */
+@RequestConfig(api = "?c=game&a=packageList", method = Request.Method.GET, response = BetListResponse.class)
+public class BetListCommand {
+    private int curPage;
+    private int perPage = 20;
+
+    public void setCurPage(int curPage) {
+        this.curPage = curPage;
+    }
+
+    public void setPerPage(int perPage) {
+        this.perPage = perPage;
+    }
+}

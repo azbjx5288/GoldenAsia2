@@ -1,0 +1,180 @@
+package com.goldenasia.lottery.game;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.data.Method;
+import com.goldenasia.lottery.pattern.LhcPickNumber;
+import com.google.gson.JsonArray;
+
+/**
+ * Created by Sakura on 2016/10/25.
+ */
+public class LhcTextGame extends LhcGame
+{
+    private static String[] digitText = new String[]{"大", "小", "单", "双"};
+    private static String[] zthzdsdsText = new String[]{"大", "小", "单", "双", "大单", "小单", "大双", "小双"};
+    private static final int TYPE_DIGIT = 1;
+    private static final int TYPE_ZTHZDXDS = 2;
+    private static int TYPE;
+    
+    public LhcTextGame(Method method)
+    {
+        super(method);
+    }
+    
+    @Override
+    public void onInflate()
+    {
+        try
+        {
+            java.lang.reflect.Method function = getClass().getMethod(method.getName(), LhcGame.class);
+            function.invoke(null, this);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.e("LhcTextGame", "onInflate: " + "//" + method.getCname() + " " + method.getName() + " public static " +
+                    "" + "void " + method.getName() + "(LhcGame game) {}");
+            Toast.makeText(topLayout.getContext(), "不支持的LhcTextGame类型", Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    public String getWebViewCode()
+    {
+        JsonArray jsonArray = new JsonArray();
+        for (LhcPickNumber pickNumber : pickNumbers)
+        {
+            jsonArray.add(transform(pickNumber.getCheckedNumber(), true, true));
+        }
+        return jsonArray.toString();
+    }
+    
+    public String getSubmitCodes()
+    {
+        StringBuilder builder = new StringBuilder();
+        switch (TYPE)
+        {
+            case TYPE_DIGIT:
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(), digitText, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
+            case TYPE_ZTHZDXDS:
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(), zthzdsdsText, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return builder.toString();
+    }
+    
+    @Override
+    public void onClearPick(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onClearPick();
+        game.notifyListener();
+    }
+    
+    public void onRandomCodes()
+    {
+        try
+        {
+            java.lang.reflect.Method function = getClass().getMethod(method.getName() + "Random", LhcGame.class);
+            function.invoke(null, this);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            Log.i("LhcTextGame", "onInflate: " + "//" + method.getCname() + "随机 " + method.getName() + " public " +
+                    "static void " + method.getName() + "Random" + "(Game game) {}");
+            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
+        }
+    }
+    
+    public static View createDefaultPickLayout(ViewGroup container)
+    {
+        if (TYPE == TYPE_ZTHZDXDS)
+            return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column_lhc_zthzdxds, null, false);
+        else
+            return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column_lhc_dxds, null, false);
+    }
+    
+    private static void addPickTextGame(LhcGame game, View topView, String title, String[] disText, boolean chooseMode)
+    {
+        LhcPickNumber pickNumberText = new LhcPickNumber(topView, title);
+        pickNumberText.getNumberGroupView().setColorful(false);
+        pickNumberText.getNumberGroupView().setNumber(1, disText.length);
+        //pickNumberText.getNumberGroupView().setTextColor(Color.BLACK);
+        pickNumberText.setDisplayText(disText);
+        pickNumberText.setNumberStyle(null);
+        pickNumberText.setChooseMode(chooseMode);
+        //pickNumberText.setColumnAreaHideOrShow(false);
+        pickNumberText.setPickColumnArea(false);
+        game.addPickNumber(pickNumberText);
+    }
+    
+    private static void createPicklayout(LhcGame game, String[] name, String[] disText, boolean chooseMode)
+    {
+        View[] views = new View[name.length];
+        for (int i = 0; i < name.length; i++)
+        {
+            View view = createDefaultPickLayout(game.getTopLayout());
+            addPickTextGame(game, view, name[i], disText, chooseMode);
+            views[i] = view;
+        }
+        
+        ViewGroup topLayout = game.getTopLayout();
+        for (View view : views)
+        {
+            topLayout.addView(view);
+        }
+        
+        //game.setColumn(name.length);
+    }
+    
+    //特码大小单双 TMDXDS
+    public static void TMDXDS(LhcGame game)
+    {
+        TYPE = TYPE_DIGIT;
+        createPicklayout(game, new String[]{""}, digitText, false);
+    }
+    
+    //正特和值大小单双 ZTHZDXDS
+    public static void ZTHZDXDS(LhcGame game)
+    {
+        TYPE = TYPE_ZTHZDXDS;
+        createPicklayout(game, new String[]{""}, zthzdsdsText, false);
+    }
+    
+    //特码大小单双随机 TMDXDSRandom
+    public static void TMDXDSRandom(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(random(1, 4, 1));
+        game.notifyListener();
+    }
+    
+    //正特和值大小随机 ZTHZDXDSRandom
+    public static void ZTHZDXDSRandom(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(random(1, 4, 1));
+        game.notifyListener();
+    }
+}

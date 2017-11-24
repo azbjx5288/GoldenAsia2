@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="4dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/rule_samefactor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_tiny"
+            android:text="起始" />
+
+        <EditText
+            android:id="@+id/plan_multiple"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_rec_button_un"
+            android:digits="1234567890"
+            android:gravity="center"
+            android:hint="1"
+            android:imeOptions="flagNoExtractUi"
+            android:singleLine="true"
+            android:text="1"
+            android:textSize="@dimen/text_size_tiny"
+            android:textColor="@color/app_main_support"
+            android:textColorHint="@color/text_middle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_tiny"
+            android:text="倍" />
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_tiny"
+            android:text="追" />
+
+        <EditText
+            android:id="@+id/plan_issueno"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_rec_button_un"
+            android:digits="1234567890"
+            android:gravity="center"
+            android:hint="1"
+            android:imeOptions="flagNoExtractUi"
+            android:singleLine="true"
+            android:text="5"
+            android:textSize="@dimen/text_size_tiny"
+            android:textColor="@color/app_main_support"
+            android:textColorHint="@color/text_middle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_tiny"
+            android:text="期" />
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+
+        <CheckBox
+            android:id="@+id/add_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_tiny"
+            android:checked="true"
+            android:text="追中即停" />
+
+        <View
+            android:layout_width="5dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/plan_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@drawable/shape_rec_button_un"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textSize="@dimen/text_size_tiny"
+            android:text="利润方案设置>"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/confirm_plan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/button_type_select"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_tiny"
+        android:text="生成计划" />
+
+</LinearLayout>

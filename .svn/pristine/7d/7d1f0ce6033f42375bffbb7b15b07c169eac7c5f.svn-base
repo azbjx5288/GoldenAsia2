@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/app_main">
+        <ImageButton
+            android:id="@android:id/home"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/back"/>
+
+        <LinearLayout
+            android:id="@+id/title_text_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@android:id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/title_text_size"/>
+            <View
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/game_title_more_mmc"/>
+        </LinearLayout>
+
+        <ImageButton android:id="@+id/help"
+                     android:layout_width="40dp"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentRight="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginRight="16dp"
+                     android:background="@null"
+                     android:padding="8dp"
+                     android:src="@drawable/help"
+                     android:visibility="gone"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white"/>
+    <!-- 秒秒彩老虎机 -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/pick_game_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="加载中..."
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white"/>
+
+    <RelativeLayout android:id="@+id/lottery_choose_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="73dp"
+                    android:background="@color/mmc_bottom"
+                    android:visibility="visible">
+
+        <Button android:id="@+id/pick_random"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/button_mmc_type"
+                android:drawableLeft="@drawable/suiji"
+                android:text="机选"
+                android:textColor="@color/white"/>
+
+        <TextView android:id="@+id/pick_notice"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_centerInParent="true"
+                  android:text="选择 0 注"
+                  android:textColor="@color/background"
+                  android:textSize="16sp"/>
+
+        <Button android:id="@+id/choose_done_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/choose_done_mmc_button_bg"
+                android:drawableLeft="@drawable/jia"
+                android:text="选好了"
+                android:textColor="@drawable/choose_done_mmc_button_text_color"/>
+    </RelativeLayout>
+</LinearLayout>

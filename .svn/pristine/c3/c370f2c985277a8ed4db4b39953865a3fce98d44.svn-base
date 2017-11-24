@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/radioGroupHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.goldenasia.lottery.component.DrawableLeftRadioButton
+            android:id="@+id/lotteryRadioButton"
+            style="@style/drawableRadioButton"
+            android:drawableLeft="@drawable/selector_radio_lottery"
+            android:text="彩票" />
+
+        <com.goldenasia.lottery.component.DrawableLeftRadioButton
+            android:id="@+id/gaRadioButton"
+            style="@style/drawableRadioButton"
+            android:drawableLeft="@drawable/selector_radio_ga"
+            android:text="GA游戏" />
+    </RadioGroup>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPagerHome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"></android.support.v4.view.ViewPager>
+
+</LinearLayout>

@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/pick_column_style"
+            android:layout_marginLeft="@dimen/pad_lr"
+            android:layout_marginTop="@dimen/vertical_gap"
+            android:background="@drawable/digit_tab"
+            android:text="红波" />
+
+        <com.goldenasia.lottery.pattern.LhcLayout
+            android:id="@+id/layout_red"
+            style="@style/lhc_wave"
+            app:color_wave="红">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="7"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="8"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="12"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="13"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/vertical_gap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="18"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="19"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="23"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="24"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="29"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="30"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/vertical_gap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="34"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="35"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="40"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="45"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="46"
+                        android:textColor="@color/lhc_red"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+            </TableLayout>
+        </com.goldenasia.lottery.pattern.LhcLayout>
+
+        <TextView
+            style="@style/pick_column_style"
+            android:layout_marginLeft="@dimen/pad_lr"
+            android:layout_marginTop="@dimen/vertical_gap"
+            android:background="@drawable/digit_tab"
+            android:text="蓝波" />
+
+        <com.goldenasia.lottery.pattern.LhcLayout
+            android:id="@+id/layout_blue"
+            style="@style/lhc_wave"
+            app:color_wave="蓝">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="3"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="4"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="9"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="10"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="14"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="15"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/vertical_gap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="20"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="25"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="26"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="31"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="36"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="37"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/vertical_gap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="41"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="42"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="47"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="48"
+                        android:textColor="@color/lhc_blue"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+            </TableLayout>
+        </com.goldenasia.lottery.pattern.LhcLayout>
+
+        <TextView
+            style="@style/pick_column_style"
+            android:layout_marginLeft="@dimen/pad_lr"
+            android:layout_marginTop="@dimen/vertical_gap"
+            android:background="@drawable/digit_tab"
+            android:text="绿波" />
+
+        <com.goldenasia.lottery.pattern.LhcLayout
+            android:id="@+id/layout_green"
+            style="@style/lhc_wave"
+            app:color_wave="绿">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="5"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="6"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="11"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="16"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="17"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="21"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/vertical_gap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="22"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="27"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="28"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="32"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="33"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="38"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/vertical_gap">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="39"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="43"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="44"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/vertical_gap"
+                        android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
+                        android:gravity="center"
+                        android:text="49"
+                        android:textColor="@color/lhc_green"
+                        android:textSize="@dimen/ball_text_size" />
+                </TableRow>
+            </TableLayout>
+        </com.goldenasia.lottery.pattern.LhcLayout>
+    </LinearLayout>
+</ScrollView>

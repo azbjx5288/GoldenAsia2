@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="30dp"
+              android:gravity="center"
+              android:orientation="horizontal"
+              >
+    <CheckBox
+        android:id="@+id/one"
+        style="@style/checkbox_digits"
+        android:textSize="10sp"
+        android:text="正码一"/>
+    <CheckBox
+        android:id="@+id/two"
+        style="@style/checkbox_digits"
+        android:textSize="10sp"
+        android:text="正码二"/>
+    <CheckBox
+        android:id="@+id/three"
+        style="@style/checkbox_digits"
+        android:textSize="10sp"
+        android:text="正码三"/>
+    <CheckBox
+        android:id="@+id/four"
+        style="@style/checkbox_digits"
+        android:textSize="10sp"
+        android:text="正码四 "/>
+    <CheckBox
+        android:id="@+id/five"
+        style="@style/checkbox_digits"
+        android:textSize="10sp"
+        android:text="正码五"/>
+    <CheckBox
+        android:id="@+id/six"
+        style="@style/checkbox_digits"
+        android:textSize="10sp"
+        android:text="正码六"/>
+</LinearLayout>

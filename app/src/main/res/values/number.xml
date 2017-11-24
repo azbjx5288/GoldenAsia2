@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="flipper_duration1">110</integer>
+    <integer name="flipper_duration2">120</integer>
+    <integer name="flipper_duration3">130</integer>
+    <integer name="flipper_duration4">140</integer>
+    <integer name="flipper_duration5">150</integer>
+    <integer name="slide_duration">150</integer>
+</resources>

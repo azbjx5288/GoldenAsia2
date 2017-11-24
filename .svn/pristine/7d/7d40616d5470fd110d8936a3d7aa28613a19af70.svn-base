@@ -1,0 +1,129 @@
+package com.goldenasia.lottery.fragment;
+
+import android.app.AlertDialog;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.base.net.RestCallback;
+import com.goldenasia.lottery.base.net.RestRequest;
+import com.goldenasia.lottery.base.net.RestRequestManager;
+import com.goldenasia.lottery.base.net.RestResponse;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.data.LogoutCommand;
+import com.goldenasia.lottery.db.MmcWinHistoryDao;
+import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.pattern.VersionChecker;
+
+import java.util.ArrayList;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * Created by Gan on 2017/10/11.
+ */
+
+public class UserSettingsFragment extends BaseFragment {
+    private static final int ID_LOGOUT = 1;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflateView(inflater, container, "快速充值", R.layout.user_settings_fragment);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @OnClick({R.id.password_setting,R.id.security_setting,R.id.card_setting,R.id.version,R.id.push_notification,R.id.logout})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.password_setting:
+                ArrayList<Class> passwors = new ArrayList();
+                passwors.add(LoginPasswordSetting.class);
+                passwors.add(CashPasswordSetting.class);
+                TwoTableFragment.launch(getActivity(), "密码设置", new String[]{"登录密码", "资金密码"}, passwors);
+                break;
+            case R.id.security_setting:
+                launchFragment(SecuritySetting.class);
+                break;
+            case R.id.card_setting:
+                launchFragment(BankCardSetting.class);
+                break;
+            case R.id.version:
+                new VersionChecker(this).startCheck(true);
+                break;
+            case R.id.push_notification:
+                new VersionChecker(this).startCheck(true);
+                break;
+            case R.id.logout:
+                new AlertDialog.Builder(getActivity()).setMessage("退出当前账号").setNegativeButton("取消", null).setPositiveButton
+                ("退出", (dialog, which) -> executeCommand(new LogoutCommand(), restCallback, ID_LOGOUT)).create().show();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void handleExit() {
+        GoldenAsiaApp.getUserCentre().logout();
+        getActivity().finish();
+        launchFragment(GoldenLoginFragment.class);
+        RestRequestManager.cancelAll();
+        deleteMmcWinHistoryDB();
+    }
+
+    public void deleteMmcWinHistoryDB() {
+        MmcWinHistoryDao mmcWinHistoryDao = new MmcWinHistoryDao(getActivity());
+
+        new Thread() {
+            @Override
+            public void run() {
+                mmcWinHistoryDao.deleteAllMmcWinHistory();
+            }
+        }.start();
+    }
+
+    private RestCallback restCallback = new RestCallback() {
+        @Override
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            if (request.getId() == ID_LOGOUT) {
+                handleExit();
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (request.getId() == ID_LOGOUT) {
+                handleExit();
+                return true;
+            } else if (errCode == 7003) {
+                Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
+                return true;
+            } else if (errCode == 7006) {
+                CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
+                dialog.setCancelable(false);
+                dialog.show();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+            if (request.getId() == ID_LOGOUT) {
+                if (state == RestRequest.RUNNING) {
+                    showProgress("退出中...");
+                } else {
+                    hideProgress();
+                }
+            }
+        }
+    };
+}

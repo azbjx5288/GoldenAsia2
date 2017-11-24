@@ -1,0 +1,126 @@
+package com.goldenasia.lottery.fragment;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.base.net.RestCallback;
+import com.goldenasia.lottery.base.net.RestRequest;
+import com.goldenasia.lottery.base.net.RestResponse;
+import com.goldenasia.lottery.data.EditSecurityCommand;
+
+import butterknife.Bind;
+import butterknife.OnClick;
+
+/**
+ * Created by Gan on 2017/10/11.
+ * 意见反馈
+ */
+
+public class FeedbackFragment extends BaseFragment {
+
+    @Bind(R.id.add_content)
+    EditText mAddContentEditText;
+
+    @Bind(R.id.feeback_back)
+    Button mFeebackBackButton;
+
+    @Bind(R.id.feeback_submit)
+    Button mFeebackSubmitButton;
+
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflateView(inflater, container, "意见反馈", R.layout.feedback_fragment);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @OnClick(R.id.feeback_submit)
+    public void onSubmit() {
+        if (!check()) {
+            return;
+        }
+
+        EditSecurityCommand command = new EditSecurityCommand();
+//        command.setRealName(stateEmptyName.getText().toString());
+//        command.setSecpassword(newPassword.getText().toString());
+//        command.setSecpassword2(newPasswordVerify.getText().toString());
+//        //command.setEmail(stateEmptyMail.getText().toString());
+//
+//        executeCommand(command, restCallback, ID_SUBMIT_INFO);
+    }
+
+    @OnClick({R.id.feeback_back, R.id.feeback_submit})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.feeback_back://返回
+                getActivity().finish();
+                break;
+
+            case R.id.feeback_submit://提交
+                if (!check()) {
+                    return;
+                }
+
+//                EditSecurityCommand command = new EditSecurityCommand();
+
+                break;
+            default:
+                break;
+        }
+
+    }
+    private boolean check() {
+        String addContent = mAddContentEditText.getText().toString();
+
+        if (addContent.isEmpty()) {
+            showToast("意见内容不能为空", Toast.LENGTH_SHORT);
+            return false;
+        }
+
+        return true;
+    }
+
+
+    private RestCallback restCallback = new RestCallback() {
+        @Override
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+//            if (request.getId() == ID_SUBMIT_INFO){
+//                showToast("安全信息设置成功", Toast.LENGTH_SHORT);
+//                executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
+//            } else if (request.getId() == ID_USER_INFO) {
+//                UserInfo userInfo = ((UserInfo) response.getData());
+//                GoldenAsiaApp.getUserCentre().setUserInfo(userInfo);
+//                name.setText(userInfo.getRealName());
+//                updateUI(TextUtils.isEmpty(userInfo.getRealName()));
+//            }
+            tipDialog( "提交成功，感谢您的反馈！我们会尽快跟进处理！");
+            return false;
+        }
+
+        @Override
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            return false;
+        }
+
+        @Override
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+
+        }
+    };
+}
+

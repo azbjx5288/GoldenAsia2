@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/betting_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/is_betting_tips"
+        android:textColor="@color/app_main_ash"
+        android:textSize="@dimen/text_size_tiny" />
+
+    <TextView
+        android:id="@+id/balance_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/is_balance_tips"
+        android:textColor="@color/app_main_ash"
+        android:textSize="@dimen/text_size_tiny"/>
+
+</LinearLayout>

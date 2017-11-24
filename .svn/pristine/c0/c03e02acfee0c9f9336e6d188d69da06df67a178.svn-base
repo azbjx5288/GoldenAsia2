@@ -1,0 +1,307 @@
+package com.goldenasia.lottery.fragment;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ListView;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.base.net.RestCallback;
+import com.goldenasia.lottery.base.net.RestRequest;
+import com.goldenasia.lottery.base.net.RestRequestManager;
+import com.goldenasia.lottery.base.net.RestResponse;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.data.Bet;
+import com.goldenasia.lottery.data.BetListCommand;
+import com.goldenasia.lottery.data.BetListResponse;
+import com.goldenasia.lottery.data.Lottery;
+import com.goldenasia.lottery.data.LotteryListCommand;
+import com.goldenasia.lottery.data.Trace;
+import com.goldenasia.lottery.data.TraceListCommand;
+import com.goldenasia.lottery.data.TraceListResponse;
+import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.view.adapter.GameHistoryAdapter;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.OnItemClick;
+
+public class FragmentHistory extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
+    private static final String TAG = FragmentHistory.class.getSimpleName();
+    private static final int LOTTERY_LIST_COMMAND = 3;//彩票种类信息查询
+    private static final int BET_LIST_COMMAND = 1;//投注订单列表
+    private static final int TRACE_LIST_COMMAND = 2;//追号订单列表
+
+    /**
+     * 服务器分页从1开始
+     */
+    private static final int FIRST_PAGE = 1;
+
+    @Bind(R.id.refreshLayout)
+    SwipeRefreshLayout refreshLayout;
+    @Bind(R.id.list)
+    ListView listView;
+    @Bind(R.id.radioGroup)
+    RadioGroup radioGroup;
+
+    private GameHistoryAdapter adapter;
+    private List items = new ArrayList();
+    private int totalCount;
+    private int page = FIRST_PAGE;
+    private boolean isLoading;
+    private boolean isFirstTime = true;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflateView(inflater, container, false, "游戏记录", R.layout.fragment_history);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        radioGroup.setOnCheckedChangeListener(this);
+        refreshLayout.setColorSchemeColors(Color.parseColor("#ff0000"), Color.parseColor("#00ff00"), Color.parseColor
+                ("#0000ff"), Color.parseColor("#f234ab"));
+        refreshLayout.setOnRefreshListener(() -> {
+            if (isInBetList()) {
+                loadBetList(false, FIRST_PAGE);
+            } else {
+                loadTraceList(false, FIRST_PAGE);
+            }
+        });
+        final int endTrigger = 2; // load more content 2 items before the end
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView arg0, int arg1) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (listView.getCount() != 0 && items.size() < totalCount && listView.getLastVisiblePosition() >=
+                        (listView.getCount() - 1) - endTrigger) {
+                    if (isInBetList()) {
+                        loadBetList(false, page + 1);
+                    } else {
+                        loadTraceList(false, page + 1);
+                    }
+                }
+            }
+        });
+        adapter = new GameHistoryAdapter(view.getContext());
+        listView.setAdapter(adapter);
+        loadLotteryList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (page == FIRST_PAGE) {
+            if (isInBetList()) {
+                loadBetList(isFirstTime, FIRST_PAGE);
+            } else {
+                loadTraceList(isFirstTime, FIRST_PAGE);
+            }
+        }
+        isFirstTime = false;
+    }
+
+    private void loadLotteryList() {
+        LotteryListCommand command = new LotteryListCommand();
+        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<Lottery>>>() {
+        };
+        RestRequestManager.executeCommand(getActivity(), command, typeToken, restCallback, LOTTERY_LIST_COMMAND, this);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        refreshLayout.setRefreshing(false);
+        isLoading = false;
+        items.clear();
+        switch (checkedId) {
+            case R.id.gameRadioButton:
+                loadBetList(true, FIRST_PAGE);
+                break;
+            case R.id.traceRadioButton:
+                loadTraceList(true, FIRST_PAGE);
+                break;
+        }
+    }
+
+    private void loadBetList(boolean withCache, int page) {
+        if (isLoading) {
+            return;
+        }
+        this.page = page;
+        BetListCommand command = new BetListCommand();
+        command.setCurPage(page);
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, restCallback,
+                BET_LIST_COMMAND, this);
+        if (withCache) {
+            RestResponse restResponse = restRequest.getCache();
+            if (restResponse != null && restResponse.getData() instanceof BetListResponse) {
+                items.addAll(((BetListResponse) restResponse.getData()).getBets());
+                totalCount = items.size();
+                adapter.setData(items);
+            } else {
+                adapter.setData(null);
+            }
+        }
+        restRequest.execute();
+    }
+
+    private void loadTraceList(boolean withCache, int page) {
+        if (isLoading) {
+            return;
+        }
+        this.page = page;
+        TraceListCommand command = new TraceListCommand();
+        command.setCurPage(page);
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, restCallback,
+                TRACE_LIST_COMMAND, this);
+        if (withCache) {
+            RestResponse restResponse = restRequest.getCache();
+            if (restResponse != null && restResponse.getData() instanceof TraceListResponse) {
+                items.addAll(((TraceListResponse) restResponse.getData()).getTraces());
+                totalCount = items.size();
+                adapter.setData(items);
+            } else {
+                adapter.setData(null);
+            }
+        }
+        restRequest.execute();
+    }
+
+    @OnItemClick(R.id.list)
+    public void onItemClick(int position) {
+        if (isInBetList()) {
+            Bet bet = (Bet) adapter.getItem(position);
+            int lotteryId = bet.getLotteryId();
+            switch (lotteryId) {
+                /*case 15:
+                    BetOrTraceDetailMmcFragment.launch(this, (Bet) adapter.getItem(position));
+                    break;*/
+                case 17:
+                case 16:
+                    BetOrTraceDetailLhcFragment.launch(this, (Bet) adapter.getItem(position));
+                    break;
+                default:
+                    BetOrTraceDetailFragment.launch(this, (Bet) adapter.getItem(position));
+                    break;
+            }
+            /*if (lotteryId == 15)
+            {
+                BetOrTraceDetailMmcFragment.launch(this, (Bet) adapter.getItem(position));
+            } else if (lotteryId == 17 || lotteryId == 26)
+            {
+                BetOrTraceDetailLhcFragment.launch(this, (Bet) adapter.getItem(position));
+            } else
+            {
+                BetOrTraceDetailFragment.launch(this, (Bet) adapter.getItem(position));
+            }*/
+        } else {
+            Trace trace = (Trace) adapter.getItem(position);
+            int lotteryId = trace.getLotteryId();
+            switch (lotteryId) {
+                /*case 15:
+                    BetOrTraceDetailMmcFragment.launch(this, (Trace) adapter.getItem(position));
+                    break;*/
+                case 17:
+                case 16:
+                    BetOrTraceDetailLhcFragment.launch(this, (Trace) adapter.getItem(position));
+                    break;
+                default:
+                    BetOrTraceDetailFragment.launch(this, (Trace) adapter.getItem(position));
+                    break;
+            }
+            //BetOrTraceDetailFragment.launch(this, (Trace) adapter.getItem(position));
+        }
+    }
+
+    private boolean isInBetList() {
+        return radioGroup.getCheckedRadioButtonId() == R.id.gameRadioButton;
+    }
+
+    private RestCallback restCallback = new RestCallback() {
+        @Override
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            switch (request.getId()) {
+                case LOTTERY_LIST_COMMAND: { //彩票种类信息查询
+                    GoldenAsiaApp.getUserCentre().setLotteryList((ArrayList<Lottery>) response.getData());
+                    adapter.notifyDataSetChanged();
+                    break;
+                }
+
+                case BET_LIST_COMMAND: { //投注订单列表
+                    if (!isInBetList()) {
+                        break;
+                    }
+                    if (response.getData() == null || !(response.getData() instanceof BetListResponse)) {
+                        items.clear();
+                    } else {
+                        totalCount = ((BetListResponse) response.getData()).getPackagesNumber();
+                        if (page == FIRST_PAGE) {
+                            items.clear();
+                        }
+                        items.addAll(((BetListResponse) response.getData()).getBets());
+                    }
+                    adapter.setData(items);
+                    break;
+                }
+
+                case TRACE_LIST_COMMAND: { //追号订单列表
+                    if (isInBetList()) {
+                        break;
+                    }
+                    if (response.getData() == null || !(response.getData() instanceof TraceListResponse)) {
+                        items.clear();
+                    } else {
+                        totalCount = ((TraceListResponse) response.getData()).getTracesNumber();
+                        if (page == FIRST_PAGE) {
+                            items.clear();
+                        }
+                        items.addAll(((TraceListResponse) response.getData()).getTraces());
+                    }
+                    adapter.setData(items);
+                    break;
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (errCode == 7003) {
+                Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
+                return true;
+            } else if (errCode == 7006) {
+                CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
+                dialog.setCancelable(false);
+                dialog.show();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+            if ((request.getId() == BET_LIST_COMMAND && isInBetList()) || (request.getId() == TRACE_LIST_COMMAND &&
+                    !isInBetList())) {
+                refreshLayout.setRefreshing(state == RestRequest.RUNNING);
+                isLoading = state == RestRequest.RUNNING;
+            }
+        }
+    };
+}

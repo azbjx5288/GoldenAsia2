@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RadioGroup
+        android:id="@+id/radioGroupTransfer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.goldenasia.lottery.component.DrawableLeftRadioButton
+            android:id="@+id/platformRadioButton"
+            style="@style/drawableRadioButton"
+            android:drawableLeft="@drawable/selector_radio_lottery"
+            android:text="平台转账" />
+
+        <com.goldenasia.lottery.component.DrawableLeftRadioButton
+            android:id="@+id/fundRadioButton"
+            style="@style/drawableRadioButton"
+            android:drawableLeft="@drawable/selector_radio_ga"
+            android:text="下级转账" />
+    </RadioGroup>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPagerTransfer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"></android.support.v4.view.ViewPager>
+</LinearLayout>
+
+

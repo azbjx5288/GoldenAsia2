@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/shape_rec_button_un"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        style="@style/chase_item"
+        android:minWidth="80dp"
+        android:text="期号" />
+
+    <View style="@style/verticalLine" />
+
+    <TextView
+        style="@style/chase_item"
+        android:minWidth="120dp"
+        android:text="倍数" />
+
+    <View style="@style/verticalLine" />
+
+    <TextView
+        style="@style/chase_item"
+        android:minWidth="90dp"
+        android:text="当前投入" />
+
+    <View style="@style/verticalLine" />
+
+    <TextView
+        style="@style/chase_item"
+        android:minWidth="90dp"
+        android:text="累计投入" />
+
+    <View style="@style/verticalLine" />
+
+    <TextView android:id="@+id/chase_deficit_title"
+        style="@style/chase_item"
+        android:minWidth="90dp"
+        android:text="当前奖金" />
+
+    <View android:id="@+id/chase_deficit_line" style="@style/verticalLine" />
+
+    <TextView android:id="@+id/chase_total_title"
+        style="@style/chase_item"
+        android:minWidth="90dp"
+        android:text="合计利润"
+        android:visibility="gone"/>
+
+    <View android:id="@+id/chase_total_line" style="@style/verticalLine" android:visibility="gone"/>
+
+    <TextView android:id="@+id/chase_interestrate_title"
+        style="@style/chase_item"
+        android:minWidth="90dp"
+        android:text="盈利率"
+        android:visibility="gone"/>
+
+    <View android:id="@+id/chase_interestrate_line" style="@style/verticalLine" android:visibility="gone"/>
+</LinearLayout>

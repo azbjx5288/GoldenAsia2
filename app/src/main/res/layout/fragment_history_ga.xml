@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/gaRadioButton"
+            style="@style/historyRadioButton"
+            android:text="选择游戏" />
+
+        <RadioButton
+            android:id="@+id/timeRadioButton"
+            style="@style/historyRadioButton"
+            android:text="今天" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/total_money"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="总盈亏：0元"
+        android:textColor="@color/app_main"
+        android:textSize="@dimen/text_size_small" />
+    <View
+        style="@style/horizontal_divide_line"
+         />
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>
+
+

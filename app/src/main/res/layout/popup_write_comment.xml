@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_main_background"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/input_multiline_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#ffffff"
+        android:gravity="top"
+        android:hint=""
+        android:imeActionLabel="完成"
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine"
+        android:maxLines="6"
+        android:minLines="3"
+        android:scrollbars="vertical"
+        android:textColorHint="@color/gray"
+        android:textSize="@dimen/text_size_tiny" />
+
+</LinearLayout>

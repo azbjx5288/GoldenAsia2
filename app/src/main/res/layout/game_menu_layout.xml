@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingBottom="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="常用玩法"
+            android:textColor="@color/app_font_color"
+            android:textSize="18sp" />
+
+        <com.goldenasia.lottery.component.TagCloudView
+            android:id="@+id/preference"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:tcvBackground="@drawable/shape_rec_button_un"
+            app:tcvCanTagClick="true"
+            app:tcvItemBorderHorizontal="6dp"
+            app:tcvItemBorderVertical="8dp"
+            app:tcvSingleLine="false"
+            app:tcvTextColor="@drawable/general_button_text_color"
+            app:tcvSeclecTextColor="@color/white"
+            app:tcvTextSize="@dimen/text_size_micro"
+        />
+
+        <ImageView style="@style/horizontal_divide_line" />
+
+        <com.goldenasia.lottery.view.TableMenu
+            android:id="@+id/tableMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tmCurrentTextColor="@color/white"
+            app:tmDivideLineColor="#DFDFDF"
+            app:tmHeadmanTextColor="#505050"
+            app:tmHorizontalGap="8dp"
+            app:tmItemTextColor="#adadad"
+            app:tmTextSize="@dimen/text_size_micro"
+            app:tmVerticalGap="12dp"
+            app:tmCurrentBackground="@drawable/shape_rec_button"
+            app:tmCommonBackground="@drawable/shape_rec_button_un"/>
+
+    </LinearLayout>
+
+</ScrollView>
