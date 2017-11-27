@@ -545,6 +545,7 @@ function isLegalCode(codes) {
                 case 'CYBIC':
                 case 'JSDX':  //大小
                 case 'JSDS':  //单双
+                case 'JSYS':  //颜色
                     //parts = codes[0].split('_');
                     singleNum = codes[0].length;
                     isDup = singleNum > 1 ? 1 : 0;

@@ -32,6 +32,7 @@ public class TextMultipleGame extends Game
     private static String[] raceText = new String[]{"快", "慢"};
     private static String[] daXiaoText = new String[]{"大", "小"};
     private static String[] danShuangText = new String[]{"单", "双"};
+    private static String[] yanSeText = new String[]{"全红", "全黑", "1红2黑", "2红1黑"};
     
     private static int TYPE;
     private static final int TYPE_DIGIT = 1;
@@ -45,6 +46,7 @@ public class TextMultipleGame extends Game
     private static final int TYPE_LMLH = 9;
     private static final int TYPE_JSDX=10; //大小
     private static final int TYPE_JSDS=11;//单双
+    private static final int TYPE_JSYS=12;//颜色
 
     public TextMultipleGame(Method method)
     {
@@ -224,6 +226,17 @@ public class TextMultipleGame extends Game
                     }
                 }
                 break;
+            case TYPE_JSYS://颜色
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(),
+                            yanSeText, false, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -383,6 +396,12 @@ public class TextMultipleGame extends Game
     {
         TYPE = TYPE_JSDS;
         createPicklayout(game, new String[]{"单双"}, danShuangText, false);
+    }
+    //JSYS 颜色
+    public static void JSYS(Game game)
+    {
+        TYPE = TYPE_JSYS;
+        createPicklayout(game, new String[]{"颜色"}, yanSeText, false);
     }
     //竞速 JSPK
     public static void JSPK(Game game)
