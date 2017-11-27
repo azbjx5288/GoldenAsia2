@@ -19,7 +19,7 @@ public class GameConfig
         {
             case "RELHH":
                 return new TextGame(method);
-            
+
             case "LMGYH":
             case "LMMC":
             case "LMLH":
@@ -34,6 +34,8 @@ public class GameConfig
             case "QEDXDS":
             case "QSDXDS":
             case "ZSDXDS":
+            case "JSDX": //大小
+            case "JSDS": //单双
                 return new TextMultipleGame(method);
             
             case "EXBD":

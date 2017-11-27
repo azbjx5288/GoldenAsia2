@@ -30,6 +30,8 @@ public class TextMultipleGame extends Game
     private static String[] twoSameMulPickText = new String[]{"11", "22", "33", "44", "55", "66"};
     private static String[] threeSameSinglePickText = new String[]{"111", "222", "333", "444", "555", "666"};
     private static String[] raceText = new String[]{"快", "慢"};
+    private static String[] daXiaoText = new String[]{"大", "小"};
+    private static String[] danShuangText = new String[]{"单", "双"};
     
     private static int TYPE;
     private static final int TYPE_DIGIT = 1;
@@ -41,7 +43,9 @@ public class TextMultipleGame extends Game
     private static final int TYPE_JSPK = 7;
     private static final int TYPE_LMMC = 8;
     private static final int TYPE_LMLH = 9;
-    
+    private static final int TYPE_JSDX=10; //大小
+    private static final int TYPE_JSDS=11;//单双
+
     public TextMultipleGame(Method method)
     {
         super(method);
@@ -198,6 +202,28 @@ public class TextMultipleGame extends Game
                     }
                 }
                 break;
+            case TYPE_JSDX: //大小
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(),
+                            daXiaoText, true, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
+            case TYPE_JSDS://单双
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(),
+                            danShuangText, true, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -346,7 +372,18 @@ public class TextMultipleGame extends Game
         TYPE = TYPE_STDX;
         createPicklayout(game, new String[]{"三同号单选"}, threeSameSinglePickText, false);
     }
-    
+    //JSDX  大小
+    public static void JSDX(Game game)
+    {
+        TYPE = TYPE_JSDX;
+        createPicklayout(game, new String[]{"大小"}, daXiaoText, false);
+    }
+    //JSDS   单双
+    public static void JSDS(Game game)
+    {
+        TYPE = TYPE_JSDS;
+        createPicklayout(game, new String[]{"单双"}, danShuangText, false);
+    }
     //竞速 JSPK
     public static void JSPK(Game game)
     {

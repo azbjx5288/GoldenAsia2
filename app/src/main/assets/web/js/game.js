@@ -543,6 +543,8 @@ function isLegalCode(codes) {
                 case 'JSETFX':  //二同复选 1个号区 11_22_33
                 case 'CYBUC':
                 case 'CYBIC':
+                case 'JSDX':  //大小
+                case 'JSDS':  //单双
                     //parts = codes[0].split('_');
                     singleNum = codes[0].length;
                     isDup = singleNum > 1 ? 1 : 0;
