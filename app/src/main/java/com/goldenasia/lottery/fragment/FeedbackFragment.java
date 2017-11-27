@@ -34,6 +34,9 @@ public class FeedbackFragment extends BaseFragment {
 
     @BindView(R.id.add_content)
     EditText mAddContentEditText;
+    @BindView(R.id.add_title)
+    EditText mAddTitleEditText;
+
 
     @BindView(R.id.residual_number)
     TextView residualNumber;
@@ -69,7 +72,7 @@ public class FeedbackFragment extends BaseFragment {
                 }
 
                 FeedBackCommand command = new FeedBackCommand();
-                command.setTitle("意见反馈");
+                command.setTitle(mAddTitleEditText.getText().toString());
                 command.setContent(mAddContentEditText.getText().toString());
                 executeCommand(command, restCallback, ID_SUBMIT_INFO);
 
