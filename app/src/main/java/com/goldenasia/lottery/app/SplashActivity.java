@@ -19,6 +19,7 @@ import com.goldenasia.lottery.fragment.Splash3Fragment;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.IUmengCallback;
 import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
@@ -51,8 +52,31 @@ public class SplashActivity extends FragmentActivity implements ViewPager.OnPage
         verify();
         //统计应用启动数据
         PushAgent.getInstance(this).onAppStart();
+
+        //友盟推送的 开启和关闭判断
+        isStopUPush();
     }
-    
+
+    private void isStopUPush() {
+        String WIN="win";
+
+        if(!SharedPreferencesUtils.getBoolean(this, ConstantInformation.APP_INFO, WIN)){
+            PushAgent mPushAgent = PushAgent.getInstance(this);
+            //当关闭友盟+推送时
+            mPushAgent.disable(new IUmengCallback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onFailure(String s, String s1) {
+
+                }
+            });
+        }
+    }
+
     private void init()
     {
         fragments = new ArrayList<>();

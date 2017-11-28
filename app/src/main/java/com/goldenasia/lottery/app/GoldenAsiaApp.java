@@ -10,6 +10,7 @@ import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.base.CrashHandler;
 import com.goldenasia.lottery.base.net.NetStateHelper;
 import com.goldenasia.lottery.base.thread.ThreadPool;
+import com.goldenasia.lottery.service.MyPushIntentService;
 import com.goldenasia.lottery.user.UserCentre;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -84,6 +85,8 @@ public class GoldenAsiaApp extends Application
                 Log.d(TAG, "onFailure");
             }
         });
+        mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
+
     }
 
     /**

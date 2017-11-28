@@ -21,6 +21,8 @@ import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.VersionChecker;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.view.TimePickerLayout;
+import com.umeng.message.IUmengCallback;
+import com.umeng.message.PushAgent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -129,7 +131,12 @@ public class PushNotificationFragment extends BaseFragment {
         }
     }
 
-    @OnCheckedChanged({R.id.switch_mail,R.id.switch_update,R.id.switch_win})
+    //关闭推送
+
+
+    //开启推送
+
+    @OnCheckedChanged({R.id.switch_mail,/*R.id.switch_update,*/R.id.switch_win})
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()){
             case R.id.switch_mail:
@@ -147,10 +154,37 @@ public class PushNotificationFragment extends BaseFragment {
                 }
                 break;
             case R.id.switch_win:
+                PushAgent mPushAgent = PushAgent.getInstance(getActivity());
                 if(isChecked){
                     SharedPreferencesUtils.putBoolean(getActivity(), ConstantInformation.APP_INFO, WIN, true);
+                    //再次开启推送
+                    mPushAgent.enable(new IUmengCallback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onFailure(String s, String s1) {
+
+                        }
+                    });
+
                 }else {
                     SharedPreferencesUtils.putBoolean(getActivity(), ConstantInformation.APP_INFO, WIN, false);
+                    //当关闭友盟+推送时
+                    mPushAgent.disable(new IUmengCallback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onFailure(String s, String s1) {
+
+                        }
+                    });
+
                 }
                 break;
             default:
