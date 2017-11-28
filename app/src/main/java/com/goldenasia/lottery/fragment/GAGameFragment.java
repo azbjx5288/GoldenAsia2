@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
  * Created By Sakura
  */
 public class GAGameFragment extends BaseFragment {
-
     private String url;
 
     @BindView(R.id.ga_web)

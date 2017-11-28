@@ -227,8 +227,6 @@ public class ConstantInformation
         sLotteryLogo.put(108, new int[]{R.drawable.id_lottery_ysz, R.drawable.id_lottery_ysz_rest});
         //水果机
         sLotteryLogo.put(109, new int[]{R.drawable.sgj, R.drawable.sgj1});
-        //百人牛牛
-        sLotteryLogo.put(110, new int[]{R.drawable.brnn, R.drawable.brnn});
         //多人百家乐
         sLotteryLogo.put(111, new int[]{R.drawable.ga_duorenbjl, R.drawable.ga_duorenbjl});
         //龙虎斗

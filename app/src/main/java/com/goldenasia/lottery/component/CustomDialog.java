@@ -48,6 +48,7 @@ public class CustomDialog extends Dialog
         private boolean titleHideOrShow = true;
         private boolean bottomHideOrShow = true;
         private String message;
+        private CharSequence colorfulMsg;
         private String positiveButtonText;
         private String negativeButtonText;
         private View contentView;
@@ -77,6 +78,12 @@ public class CustomDialog extends Dialog
         public Builder setMessage(int message)
         {
             this.message = (String) context.getText(message);
+            return this;
+        }
+        
+        public Builder setColorfulMsg(CharSequence colorfulMsg)
+        {
+            this.colorfulMsg = colorfulMsg;
             return this;
         }
         
@@ -473,12 +480,19 @@ public class CustomDialog extends Dialog
             if (message != null)
             {
                 ((TextView) layout.findViewById(R.id.message)).setText(message);
-            } else if (contentView != null)
+            } else if (colorfulMsg != null)
             {
-                // if no message set
-                // add the contentView to the dialog body
-                ((LinearLayout) layout.findViewById(R.id.content)).removeAllViews();
-                ((LinearLayout) layout.findViewById(R.id.content)).addView(contentView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+                ((TextView) layout.findViewById(R.id.message)).setText(colorfulMsg);
+            } else
+            {
+                if (contentView != null)
+                {
+                    // if no message set
+                    // add the contentView to the dialog body
+                    ((LinearLayout) layout.findViewById(R.id.content)).removeAllViews();
+                    ((LinearLayout) layout.findViewById(R.id.content)).addView(contentView, new LayoutParams
+                            (LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+                }
             }
             return layout;
         }
