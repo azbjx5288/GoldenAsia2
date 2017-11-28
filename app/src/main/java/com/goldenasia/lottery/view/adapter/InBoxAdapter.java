@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.ReceiveBoxResponse;
+import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.util.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class InBoxAdapter extends BaseAdapter {
     private List<ReceiveBoxResponse.ListBean> list;
     private boolean mStateIsEdit=false;
     private ArrayList <String> mUnreadPositionList;
+    private  String MAIL="mail";
 
     public InBoxAdapter(boolean stateIsEdit) {
         mStateIsEdit=stateIsEdit;
@@ -77,25 +80,34 @@ public class InBoxAdapter extends BaseAdapter {
 
         //是否已读
         Object  tag=holder.time.getTag();
-        if (tag == null) {
-            QBadgeView qBadgeView=new QBadgeView(parent.getContext());//
-            qBadgeView.bindTarget(holder.overlay_badge);
-            qBadgeView.setBadgeGravity(Gravity.START | Gravity.TOP);
-            if("0".equals(bean.getHas_read())&&!mUnreadPositionList.contains(bean.getMt_id())) {
-                qBadgeView.setBadgeNumber(1);////1:已读,0:未读
-            }else {
-                qBadgeView.setBadgeNumber(0);
+        if( SharedPreferencesUtils.getBoolean(parent.getContext(), ConstantInformation.APP_INFO,MAIL)) { //解除屏蔽 就是 可以 显示  小红点 提示
+            if (tag == null) {
+                QBadgeView qBadgeView=new QBadgeView(parent.getContext());//
+                qBadgeView.bindTarget(holder.overlay_badge);
+                qBadgeView.setBadgeGravity(Gravity.START | Gravity.TOP);
+                if("0".equals(bean.getHas_read())&&!mUnreadPositionList.contains(bean.getMt_id())) {
+                    qBadgeView.setBadgeNumber(1);////1:已读,0:未读
+                }else {
+                    qBadgeView.setBadgeNumber(0);
+                }
+
+                holder.time.setTag(qBadgeView);
+            }else{
+                QBadgeView qQBadgeView=(QBadgeView)tag;
+                if("0".equals(bean.getHas_read())&&!mUnreadPositionList.contains(bean.getMt_id())) {
+                    qQBadgeView.setBadgeNumber(1);////1:已读,0:未读
+                }else {
+                    qQBadgeView.setBadgeNumber(0);
+                }
             }
 
-            holder.time.setTag(qBadgeView);
-        }else{
-            QBadgeView qQBadgeView=(QBadgeView)tag;
-            if("0".equals(bean.getHas_read())&&!mUnreadPositionList.contains(bean.getMt_id())) {
-                qQBadgeView.setBadgeNumber(1);////1:已读,0:未读
-            }else {
+        }else{//屏蔽
+            if(tag!=null){
+                QBadgeView qQBadgeView=(QBadgeView)tag;
                 qQBadgeView.setBadgeNumber(0);
             }
         }
+
 
         if(mStateIsEdit){
             holder.check_box.setVisibility(View.VISIBLE);

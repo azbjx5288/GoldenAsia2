@@ -21,6 +21,8 @@ import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.data.ReceiveBoxResponse;
 import com.goldenasia.lottery.data.ReceiveBoxUnReadCommand;
 import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.google.gson.reflect.TypeToken;
 
 import butterknife.BindView;
@@ -49,6 +51,7 @@ public class FragmentMessageBox extends BaseFragment {
     @BindView(R.id.tabUserItemTextArr)
     ImageView tabUserItemTextArr;
 
+    private  String MAIL="mail";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +77,16 @@ public class FragmentMessageBox extends BaseFragment {
     public void onResume() {
         Log.i(TAG, "onResume");
         super.onResume();
-        loadReceiveBox();
+        if( SharedPreferencesUtils.getBoolean(getActivity(), ConstantInformation.APP_INFO,MAIL)) {
+            loadReceiveBox();
+        }else{
+            Object  tag=in_box_text.getTag();
+
+            if(tag!=null){
+                QBadgeView qQBadgeView=(QBadgeView)tag;
+                qQBadgeView.setBadgeNumber(0);
+            }
+        }
     }
 
     @OnClick({R.id.in_box_fragment, R.id.out_box_fragment, R.id.write_email_fragment})
