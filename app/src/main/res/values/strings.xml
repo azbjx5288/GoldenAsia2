@@ -251,4 +251,5 @@
             总盈亏：<font color="#ee7e45">PAYAMT</font>
         ]]>
     </string>
+    <string name="title_activity_umessage">UMessageActivity</string>
 </resources>

@@ -96,7 +96,7 @@ public class ConstantInformation
     public static final String APP_INFO = "app";
     public static final String ACCOUNT_INFO = "account";
     public static final String FAVOURITE_INFO = "favourite";
-    
+
     public static final ArrayList<Integer> CURRENT_LOTTERY_ID_LIST = new ArrayList<Integer>()
     {
         {

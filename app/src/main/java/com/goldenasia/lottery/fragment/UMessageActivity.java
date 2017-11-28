@@ -12,8 +12,8 @@ import butterknife.ButterKnife;
 public class UMessageActivity extends Activity {
 
 
-    @BindView(R.id.description)
-    TextView tv_description;
+//    @BindView(R.id.description)
+//    TextView tv_description;
     @BindView(R.id.title)
     TextView tv_title;
     @BindView(R.id.content)
@@ -28,11 +28,11 @@ public class UMessageActivity extends Activity {
         ButterKnife.bind(this);
 
         Bundle bundle = this.getIntent().getExtras();
-        String description = bundle.getString("description");
+//        String description = bundle.getString("description");
         String title = bundle.getString("title");
         String content = bundle.getString("content");
 
-        tv_description.setText(description);
+//        tv_description.setText(description);
         tv_title.setText(title);
         tv_content.setText(content);
     }

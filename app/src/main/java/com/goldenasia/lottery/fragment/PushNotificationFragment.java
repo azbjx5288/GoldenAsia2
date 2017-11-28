@@ -131,12 +131,7 @@ public class PushNotificationFragment extends BaseFragment {
         }
     }
 
-    //关闭推送
-
-
-    //开启推送
-
-    @OnCheckedChanged({R.id.switch_mail,/*R.id.switch_update,*/R.id.switch_win})
+    @OnCheckedChanged({R.id.switch_mail,R.id.switch_update,R.id.switch_win})
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId()){
             case R.id.switch_mail:
