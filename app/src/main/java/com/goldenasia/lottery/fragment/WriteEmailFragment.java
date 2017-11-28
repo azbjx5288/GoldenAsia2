@@ -2,6 +2,8 @@ package com.goldenasia.lottery.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,8 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -96,7 +100,28 @@ public class WriteEmailFragment extends BaseFragment implements RadioGroup.OnChe
             }
         });*/
         init();
+
+        InputFilter[] emojiFilters = {emojiFilter};
+        titleText.setFilters(emojiFilters);
+        multilineText.setFilters(emojiFilters);
     }
+
+    private static InputFilter emojiFilter = new InputFilter() {
+
+        Pattern emoji = Pattern.compile(
+                "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+                Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
+                                   int dstart,int dend) {
+            Matcher emojiMatcher = emoji.matcher(source);
+            if (emojiMatcher.find()) {
+                return "";
+            }
+            return null;
+        }
+    };
 
     private  String  getSelectUser(){
         StringBuilder  sb=new StringBuilder ();

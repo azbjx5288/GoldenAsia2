@@ -38,7 +38,7 @@ public class GameConfig
             case "JSDS": //单双
                 return new TextMultipleGame(method);
             case "JSYS": //颜色
-                return new KuanSanYS(method);
+                return new KuaiSanYS(method);
 
             case "EXBD":
             case "EXHZ":
