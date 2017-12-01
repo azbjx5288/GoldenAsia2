@@ -12,15 +12,14 @@
         android:layout_height="130dp"
     />
 
-    <View style="@style/big_divideLine"/>
-
     <TextView
         style="@style/small_layout"
         android:text="游戏专区"
         android:textColor="@color/text_dark"
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        android:visibility="gone"/>
 
-    <View style="@style/horizontal_divide_line"/>
+    <View style="@style/big_divideLine"/>
 
     <ListView
         android:id="@+id/ga_listview"

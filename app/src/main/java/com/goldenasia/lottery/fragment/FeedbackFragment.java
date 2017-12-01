@@ -19,6 +19,7 @@ import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.FeedBackCommand;
+import com.goldenasia.lottery.game.PromptManager;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -83,6 +84,13 @@ public class FeedbackFragment extends BaseFragment {
 
     }
     private boolean check() {
+        String addTitle = mAddTitleEditText.getText().toString();
+
+        if (addTitle.isEmpty()) {
+            showToast("意见标题不能为空", Toast.LENGTH_SHORT);
+            return false;
+        }
+
         String addContent = mAddContentEditText.getText().toString();
 
         if (addContent.isEmpty()) {
@@ -139,6 +147,15 @@ public class FeedbackFragment extends BaseFragment {
 
         @Override
         public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (errCode == 7003) {
+                Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
+                return true;
+            } else if (errCode == 7006) {
+                CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
+                dialog.setCancelable(false);
+                dialog.show();
+                return true;
+            }
             return false;
         }
 

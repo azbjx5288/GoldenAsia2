@@ -40,6 +40,9 @@ public class FragmentMessageBox extends BaseFragment {
     @BindView(R.id.in_box_text)
     TextView in_box_text;
 
+    @BindView(R.id.in_box_badge)
+    TextView in_box_badge;
+
     @BindView(R.id.out_box_fragment)
     View out_box_fragment;
 
@@ -126,8 +129,8 @@ public class FragmentMessageBox extends BaseFragment {
 
                 if(tag==null){
                     QBadgeView qBadgeView=new QBadgeView(getActivity());
-                    qBadgeView.bindTarget(in_box_text);
-                    qBadgeView.setBadgeGravity(Gravity.TOP | Gravity.CENTER);
+                    qBadgeView.bindTarget(in_box_badge);
+                    qBadgeView.setBadgeGravity(Gravity.START | Gravity.TOP);
                     qBadgeView.setBadgeNumber(totalCount);
                     in_box_text.setTag(qBadgeView);
                 }else{

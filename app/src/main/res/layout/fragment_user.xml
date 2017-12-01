@@ -329,9 +329,7 @@
             style="@style/tabUserItemLinearLayout">
             <TextView
                 style="@style/tabMyUserItemText"
-                android:paddingLeft="37dp"
-                android:drawablePadding="22dp"
-                android:drawableLeft="@drawable/lower_setting"
+                android:drawableLeft="@drawable/stationemail_icon"
                 android:text="站内信"
                 />
             <ImageView style="@style/tabUserItemImgArrow" />
@@ -362,7 +360,7 @@
             style="@style/tabUserItemLinearLayout">
             <TextView
                 style="@style/tabMyUserItemText"
-                android:drawableLeft="@drawable/logout_icon"
+                android:drawableLeft="@drawable/feedback_icon"
                 android:text="意见反馈"/>
             <ImageView style="@style/tabUserItemImgArrow" />
         </RelativeLayout>
