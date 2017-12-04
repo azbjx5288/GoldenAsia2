@@ -2,12 +2,10 @@ package com.goldenasia.lottery.game;
 
 import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
@@ -154,7 +152,7 @@ public class MenuController {
     private void usePreference() {
         tags.clear();
         map.clear();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 9; i++) {
             if(chooserModel.getMethodInfo(i)!=null){
                 tags.add(chooserModel.getMethodInfo(i).method.getCname());
                 map.put(i, false);

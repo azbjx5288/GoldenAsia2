@@ -27,17 +27,14 @@ import com.cpiz.android.bubbleview.BubbleStyle;
 import com.goldenasia.lottery.BuildConfig;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
-import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.data.Lottery;
 import com.goldenasia.lottery.data.Method;
-import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.game.Game;
 import com.goldenasia.lottery.game.LhcGame;
 import com.goldenasia.lottery.game.OnSelectedListener;
 import com.goldenasia.lottery.material.ShoppingCart;
 import com.goldenasia.lottery.material.Ticket;
 import com.goldenasia.lottery.pattern.TitleTimingView;
-import com.goldenasia.lottery.user.UserCentre;
 import com.goldenasia.lottery.util.ToastUtils;
 import com.phillipcalvin.iconbutton.IconButton;
 import com.umeng.analytics.MobclickAgent;
@@ -50,7 +47,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
