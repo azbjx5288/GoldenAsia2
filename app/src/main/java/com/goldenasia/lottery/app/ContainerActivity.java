@@ -51,6 +51,7 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
     private Drawable[] unselectedIcon;
     private Drawable[] selectedIcon;
     private List<Fragment> fragments = new ArrayList<Fragment>();
+    private TextView  btn_meRadioButton;
 
 
     @Override
@@ -64,7 +65,9 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
         //统计应用启动数据
         PushAgent.getInstance(this).onAppStart();
         //添加桌面角标(BadgeNumber)
-        loadReceiveBox();
+        if(ConstantInformation.MESSAGE_COUNT==-1){
+            loadReceiveBox();
+        }
     }
 
     @Override
@@ -98,8 +101,6 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
     }
 
     private void refreshBadge(int totalCount) {
-        TextView  btn_meRadioButton = (TextView) findViewById(R.id.badge_view);;
-
         Object  tag=btn_meRadioButton.getTag();
         if(tag==null){
             QBadgeView qBadgeView=new QBadgeView(ContainerActivity.this);
@@ -148,6 +149,7 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
     }
 
     private void initView() {
+        btn_meRadioButton = (TextView) findViewById(R.id.badge_view);
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mRadioGroup.setOnCheckedChangeListener(this);
