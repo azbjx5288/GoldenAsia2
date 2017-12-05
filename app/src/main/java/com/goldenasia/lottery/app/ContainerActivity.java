@@ -83,7 +83,11 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
         super.onPause();
         Log.i(TAG,"onPause");
         MobclickAgent.onPause(this);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
         updateBadgeIntentService();
     }
 
@@ -218,7 +222,9 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
             if (request.getId() == 0) {
                 ReceiveBoxResponse receiveBoxResponse = (ReceiveBoxResponse) (response.getData());
                 int totalCount =receiveBoxResponse.getList().size();// Integer.parseInt(receiveBoxResponse.getCount());// 解决服务端 返回数据 有缓存的 问题
-
+                if(totalCount==10){
+                    totalCount=Integer.parseInt(receiveBoxResponse.getCount());
+                }
                 if(totalCount<=0){
                     totalCount=0;
                 }else{

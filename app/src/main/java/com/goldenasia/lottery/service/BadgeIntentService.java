@@ -47,6 +47,9 @@ public class BadgeIntentService extends IntentService {
 
                 ReceiveBoxResponse receiveBoxResponse = (ReceiveBoxResponse) (response.getData());
                 int totalCount =receiveBoxResponse.getList().size();// Integer.parseInt(receiveBoxResponse.getCount());//解决服务端 返回数据 有缓存的 问题
+                if(totalCount==10){
+                    totalCount=Integer.parseInt(receiveBoxResponse.getCount());
+                }
 
                 if(totalCount<=0){
                     totalCount=0;
