@@ -1,5 +1,6 @@
 package com.goldenasia.lottery.fragment;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -68,7 +69,10 @@ public class InBoxFragment extends BaseFragment {
     Button delete;
     @BindView(R.id.edit)
     TextView edit;
+    @BindView(R.id.empty_show)
+    RelativeLayout  empty_show;
     private ArrayList <String> mUnreadMtIdList =new ArrayList<>();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -183,7 +187,10 @@ public class InBoxFragment extends BaseFragment {
 
                 break;
             case R.id.delete:
-                deleteBox();
+
+                new AlertDialog.Builder(getActivity()).setMessage("确定要删除邮件吗？").setNegativeButton("是", (dialog, which) -> deleteBox()).setPositiveButton
+                        ("否", null).create().show();
+
                 break;
 
         }
@@ -262,11 +269,21 @@ public class InBoxFragment extends BaseFragment {
             if (request.getId() == LIST) {
                 ReceiveBoxResponse receiveBoxResponse = (ReceiveBoxResponse) (response.getData());
 
-                totalCount =Integer.parseInt(receiveBoxResponse.getCount());//  receiveBoxResponse.getList().size();
+                totalCount = receiveBoxResponse.getList().size();//Integer.parseInt(receiveBoxResponse.getCount());//
                 if (page == FIRST_PAGE) {
                     list.clear();
                 }
                 list.addAll(receiveBoxResponse.getList());
+
+                if(list.size()==0){
+                    refreshLayout.setVisibility(View.GONE);
+                    edit.setVisibility(View.GONE);
+                    empty_show.setVisibility(View.VISIBLE);
+                }else{
+                    empty_show.setVisibility(View.GONE);
+                    refreshLayout.setVisibility(View.VISIBLE);
+                    edit.setVisibility(View.VISIBLE);
+                }
 
                 adapter.setList(list, mUnreadMtIdList);
 

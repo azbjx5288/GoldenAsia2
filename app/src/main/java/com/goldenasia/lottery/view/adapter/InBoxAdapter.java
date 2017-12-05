@@ -1,5 +1,6 @@
 package com.goldenasia.lottery.view.adapter;
 
+import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +13,13 @@ import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.ReceiveBoxResponse;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
+import com.goldenasia.lottery.util.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 
 /**
@@ -74,9 +75,6 @@ public class InBoxAdapter extends BaseAdapter {
         }
 
         ReceiveBoxResponse.ListBean bean = list.get(position);
-        holder.from_username.setText(bean.getFrom_username());
-        holder.content.setText(bean.getTitle());
-        holder.time.setText(bean.getCreate_time());
 
         //是否已读
         Object  tag=holder.time.getTag();
@@ -87,8 +85,10 @@ public class InBoxAdapter extends BaseAdapter {
                 qBadgeView.setBadgeGravity(Gravity.START | Gravity.TOP);
                 if("0".equals(bean.getHas_read())&&!mUnreadPositionList.contains(bean.getMt_id())) {
                     qBadgeView.setBadgeNumber(1);////1:已读,0:未读
+                    refreshTextColor(holder,parent.getContext(),false);
                 }else {
                     qBadgeView.setBadgeNumber(0);
+                    refreshTextColor(holder,parent.getContext(),true);
                 }
 
                 holder.time.setTag(qBadgeView);
@@ -96,8 +96,10 @@ public class InBoxAdapter extends BaseAdapter {
                 QBadgeView qQBadgeView=(QBadgeView)tag;
                 if("0".equals(bean.getHas_read())&&!mUnreadPositionList.contains(bean.getMt_id())) {
                     qQBadgeView.setBadgeNumber(1);////1:已读,0:未读
+                    refreshTextColor(holder,parent.getContext(),false);
                 }else {
                     qQBadgeView.setBadgeNumber(0);
+                    refreshTextColor(holder,parent.getContext(),true);
                 }
             }
 
@@ -108,6 +110,9 @@ public class InBoxAdapter extends BaseAdapter {
             }
         }
 
+        holder.from_username.setText(bean.getFrom_username());
+        holder.content.setText(bean.getTitle());
+        holder.time.setText(bean.getCreate_time());
 
         if(mStateIsEdit){
             holder.check_box.setVisibility(View.VISIBLE);
@@ -120,6 +125,18 @@ public class InBoxAdapter extends BaseAdapter {
             holder.check_box.setVisibility(View.GONE);
         }
         return convertView;
+    }
+
+    private void refreshTextColor(ViewHolder holder, Context context ,boolean isRead) {
+        if(isRead){
+            holder.from_username.setTextColor(UiUtils.getColor(context,R.color.gray));
+            holder.content.setTextColor(UiUtils.getColor(context,R.color.gray));
+            holder.time.setTextColor(UiUtils.getColor(context,R.color.gray));
+        }else{
+            holder.from_username.setTextColor(UiUtils.getColor(context,R.color.contents_text));
+            holder.content.setTextColor(UiUtils.getColor(context,R.color.contents_text));
+            holder.time.setTextColor(UiUtils.getColor(context,R.color.contents_text));
+        }
     }
 
 

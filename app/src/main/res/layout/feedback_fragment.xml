@@ -7,50 +7,66 @@
     android:orientation="vertical">
 
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:text="意见反馈标题:" />
-
-    <EditText
-        android:id="@+id/add_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:lines="2"
-        android:background="@drawable/feedback_edittext_bg"
-        android:hint="输入您的意见反馈标题"
-        android:textSize="13sp"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
         android:layout_marginTop="20dp"
-        android:text="意见反馈正文:" />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="标题:" />
 
-    <EditText
-        android:id="@+id/add_content"
-        android:layout_width="fill_parent"
+        <EditText
+            android:id="@+id/add_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:lines="2"
+            android:background="@drawable/feedback_edittext_bg"
+            android:hint="请输入反馈的标题"
+            android:textSize="13sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/feedback_edittext_bg"
-        android:enabled="true"
-        android:gravity="top"
-        android:hint="输入您的意见，最多可输入200个字"
-        android:textSize="13sp"
-        android:inputType="textMultiLine"
-        android:maxLines="10"
-        android:minLines="8"
-        android:maxLength="200"
-        android:scrollbars="vertical"/>
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="正文:" />
+
+        <EditText
+            android:id="@+id/add_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/feedback_edittext_bg"
+            android:enabled="true"
+            android:gravity="top"
+            android:hint="请输入您的意见，最多可输入200个字"
+            android:textSize="13sp"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:minLines="8"
+            android:maxLength="200"
+            android:scrollbars="vertical"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/residual_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/gray"
+        android:gravity="right"
         android:textSize="14sp"
         android:text="剩余200个字" />
 

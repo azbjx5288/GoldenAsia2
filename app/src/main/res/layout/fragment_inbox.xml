@@ -35,6 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:text="编辑"
             android:textColor="@color/white"
             android:textSize="@dimen/title_text_size" />
@@ -53,6 +54,22 @@
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <RelativeLayout
+        android:id="@+id/empty_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+        <TextView
+            android:id="@android:id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="暂无邮件"
+            android:textSize="@dimen/title_text_size" />
+
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/ll_edit"
         android:layout_width="match_parent"

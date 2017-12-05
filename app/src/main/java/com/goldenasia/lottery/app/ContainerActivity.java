@@ -109,7 +109,7 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
         if(tag==null){
             QBadgeView qBadgeView=new QBadgeView(ContainerActivity.this);
             qBadgeView.bindTarget(btn_meRadioButton);
-            qBadgeView.setBadgeGravity(Gravity.CENTER | Gravity.TOP);
+            qBadgeView.setBadgeGravity(Gravity.START | Gravity.TOP);
             qBadgeView.setBadgeNumber(totalCount);
             btn_meRadioButton.setTag(qBadgeView);
         }else{

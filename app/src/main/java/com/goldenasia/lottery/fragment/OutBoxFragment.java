@@ -1,5 +1,6 @@
 package com.goldenasia.lottery.fragment;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -69,6 +70,8 @@ public class OutBoxFragment extends BaseFragment {
     Button delete;
     @BindView(R.id.edit)
     TextView edit;
+    @BindView(R.id.empty_show)
+    RelativeLayout  empty_show;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -168,7 +171,8 @@ public class OutBoxFragment extends BaseFragment {
 
                 break;
             case R.id.delete:
-                deleteBox();
+                new AlertDialog.Builder(getActivity()).setMessage("确定要删除邮件吗？").setNegativeButton("是", (dialog, which) -> deleteBox()).setPositiveButton
+                        ("否", null).create().show();
                 break;
 
         }
@@ -284,6 +288,16 @@ public class OutBoxFragment extends BaseFragment {
                 }
 
                 parseSendBoxToReceiveBox(sendBoxResponse);
+
+                if(list.size()==0){
+                    refreshLayout.setVisibility(View.GONE);
+                    edit.setVisibility(View.GONE);
+                    empty_show.setVisibility(View.VISIBLE);
+                }else{
+                    empty_show.setVisibility(View.GONE);
+                    refreshLayout.setVisibility(View.VISIBLE);
+                    edit.setVisibility(View.VISIBLE);
+                }
 
 
                 adapter.setList(list);

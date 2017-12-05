@@ -57,6 +57,7 @@
         style="@style/tabUserItemLinearLayout"
         android:layout_below="@+id/card_setting_line"
         android:layout_alignParentLeft="true"
+        android:visibility="gone"
         android:layout_alignParentStart="true">
         <TextView
             style="@style/tabUserItemText"
@@ -68,6 +69,7 @@
     <View
         android:id="@+id/push_notification_line"
         android:layout_below="@+id/push_notification"
+        android:visibility="gone"
         style="@style/horizontal_divide_line" />
 
  <!--   <Button
