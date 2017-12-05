@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.goldenasia.lottery.base.Preferences;
+import com.goldenasia.lottery.service.BadgeIntentService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
@@ -67,6 +68,11 @@ public class FragmentLauncher extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+        updateBadgeIntentService();
+    }
+
+    private  void updateBadgeIntentService(){
+        startService(new Intent(this, BadgeIntentService.class));
     }
 
     @Override

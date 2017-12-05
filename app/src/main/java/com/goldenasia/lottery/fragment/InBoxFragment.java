@@ -25,6 +25,7 @@ import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.data.ReceiveBoxCommand;
 import com.goldenasia.lottery.data.ReceiveBoxResponse;
 import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.view.adapter.InBoxAdapter;
 import com.google.gson.reflect.TypeToken;
 
@@ -114,7 +115,16 @@ public class InBoxFragment extends BaseFragment {
 
                     setSelectAllState();
                 } else {
-                    mUnreadMtIdList.add(bean.getMt_id());
+
+                    if(!mUnreadMtIdList.contains(bean.getMt_id())){
+                        if("0".equals(bean.getHas_read())//未读到已读  1:已读,0:未读
+                                &&ConstantInformation.MESSAGE_COUNT>0//
+                                ){
+                            ConstantInformation.MESSAGE_COUNT--;
+                        }
+                        mUnreadMtIdList.add(bean.getMt_id());
+                    }
+
                     BoxDetailsFragment.launch(InBoxFragment.this, bean.getMsg_id(), "receive");
                 }
 

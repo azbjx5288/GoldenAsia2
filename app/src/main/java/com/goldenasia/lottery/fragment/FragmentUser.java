@@ -3,6 +3,7 @@ package com.goldenasia.lottery.fragment;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +27,12 @@ import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.data.UserInfoCommand;
 import com.goldenasia.lottery.db.MmcWinHistoryDao;
 import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.VersionChecker;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import q.rorbin.badgeview.QBadgeView;
 
@@ -66,6 +67,9 @@ public class FragmentUser extends BaseFragment {
     RelativeLayout noticeRelativeLayout;
     @BindView(R.id.feeback)
     RelativeLayout feebackRelativeLayout;
+    @BindView(R.id.station_letter_badge)
+    TextView station_letter_badge;
+
 
 
     @Override
@@ -89,14 +93,35 @@ public class FragmentUser extends BaseFragment {
 
         }
         executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        new QBadgeView(getActivity()).bindTarget(feebackRelativeLayout).setBadgeNumber(5);
-//        new QBadgeView(getActivity()).bindTarget(noticeRelativeLayout).setBadgeNumber(0);
+
         loadLowerMember();
+        initMessageCount();
+    }
+
+    private void initMessageCount() {
+        int  count= ConstantInformation.MESSAGE_COUNT;//SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.MESSAGE_COUNT);
+        if(count<=0){
+            count=0;
+        }
+
+        Object  tag=station_letter_badge.getTag();
+
+        if(tag==null){
+            QBadgeView qBadgeView=new QBadgeView(getActivity());
+            qBadgeView.bindTarget(station_letter_badge);
+            qBadgeView.setBadgeGravity(Gravity.END | Gravity.TOP);
+            qBadgeView.setBadgeNumber(count);
+            station_letter_badge.setTag(qBadgeView);
+        }else{
+            QBadgeView qQBadgeView=(QBadgeView)tag;
+            qQBadgeView.setBadgeNumber(count);
+        }
 
     }
 

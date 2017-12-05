@@ -81,7 +81,19 @@ public class FragmentMessageBox extends BaseFragment {
         Log.i(TAG, "onResume");
         super.onResume();
         if( SharedPreferencesUtils.getBoolean(getActivity(), ConstantInformation.APP_INFO,MAIL)) {
-            loadReceiveBox();
+            int  totalCount=ConstantInformation.MESSAGE_COUNT;
+
+            Object  tag=in_box_text.getTag();
+            if(tag==null){
+                QBadgeView qBadgeView=new QBadgeView(getActivity());
+                qBadgeView.bindTarget(in_box_badge);
+                qBadgeView.setBadgeGravity(Gravity.START | Gravity.TOP);
+                qBadgeView.setBadgeNumber(totalCount);
+                in_box_text.setTag(qBadgeView);
+            }else{
+                QBadgeView qQBadgeView=(QBadgeView)tag;
+                qQBadgeView.setBadgeNumber(totalCount);
+            }
         }else{
             Object  tag=in_box_text.getTag();
 

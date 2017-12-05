@@ -133,6 +133,10 @@
         <service
             android:name=".service.MyPushIntentService"
             android:exported="false"></service>
+
+        <service
+            android:name=".service.BadgeIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

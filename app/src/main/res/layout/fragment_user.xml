@@ -332,7 +332,14 @@
                 android:drawableLeft="@drawable/stationemail_icon"
                 android:text="站内信"
                 />
-            <ImageView style="@style/tabUserItemImgArrow" />
+            <TextView
+                android:id="@+id/station_letter_badge"
+                android:layout_toLeftOf="@+id/station_letter_image"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:id="@+id/station_letter_image"
+                style="@style/tabUserItemImgArrow" />
         </RelativeLayout>
 
         <View style="@style/horizontal_divide_line" />
