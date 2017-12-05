@@ -244,7 +244,7 @@ public class ConstantInformation
         //三国水果机
         sLotteryLogo.put(116, new int[]{R.drawable.id_lottery_sgsgj, R.drawable.id_lottery_sgsgj});
         //三公
-        sLotteryLogo.put(116, new int[]{R.drawable.icon_sg, R.drawable.icon_sg});
+        sLotteryLogo.put(117, new int[]{R.drawable.icon_sg, R.drawable.icon_sg});
 
         //支付logo
         rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});
