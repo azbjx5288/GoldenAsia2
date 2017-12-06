@@ -92,16 +92,19 @@ public class InBoxFragment extends BaseFragment {
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
-            public void onScrollStateChanged(AbsListView arg0, int arg1) {
-
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == SCROLL_STATE_FLING || scrollState == SCROLL_STATE_IDLE) {
+                    if (listView.getCount() != 0 && list.size() < totalCount && listView.getLastVisiblePosition() >=
+                            (listView.getCount() - 1) - endTrigger) {
+                        loadData(false, page + 1);
+                    }
+                }
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (listView.getCount() != 0 && list.size() < totalCount && listView.getLastVisiblePosition() >=
-                        (listView.getCount() - 1) - endTrigger) {
-                    loadData(false, page + 1);
-                }
+
+
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -269,7 +272,7 @@ public class InBoxFragment extends BaseFragment {
             if (request.getId() == LIST) {
                 ReceiveBoxResponse receiveBoxResponse = (ReceiveBoxResponse) (response.getData());
 
-                totalCount = receiveBoxResponse.getList().size();//Integer.parseInt(receiveBoxResponse.getCount());//
+                totalCount =Integer.parseInt(receiveBoxResponse.getCount());// receiveBoxResponse.getList().size();//
                 if (page == FIRST_PAGE) {
                     list.clear();
                 }

@@ -38,4 +38,16 @@ public class ReceiveBoxCommand {
     public void setOp(String op) {
         this.op = op;
     }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getOp() {
+        return op;
+    }
 }
