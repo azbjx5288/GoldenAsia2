@@ -32,8 +32,9 @@
             android:id="@+id/in_box_badge"
             android:layout_toRightOf="@+id/in_box_text_img"
             android:layout_width="30dp"
-            android:layout_height="52dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="-6dp"
+            android:layout_marginTop="5dp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             />

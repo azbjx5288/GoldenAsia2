@@ -115,7 +115,7 @@ public class FragmentUser extends BaseFragment {
         if(tag==null){
             QBadgeView qBadgeView=new QBadgeView(getActivity());
             qBadgeView.bindTarget(station_letter_badge);
-            qBadgeView.setBadgeGravity(Gravity.END | Gravity.TOP);
+            qBadgeView.setBadgeGravity(Gravity.START | Gravity.TOP);
             qBadgeView.setBadgeNumber(count);
             station_letter_badge.setTag(qBadgeView);
         }else{

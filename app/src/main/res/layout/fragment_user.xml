@@ -327,15 +327,30 @@
         <RelativeLayout
             android:id="@+id/station_letter"
             style="@style/tabUserItemLinearLayout">
+
+            <ImageView
+                android:id="@+id/station_letter_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="32dp"
+                android:src="@drawable/stationemail_icon" />
+
             <TextView
-                style="@style/tabMyUserItemText"
-                android:drawableLeft="@drawable/stationemail_icon"
+                android:id="@+id/station_letter_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/station_letter_icon"
+                android:layout_marginLeft="15dp"
                 android:text="站内信"
                 />
             <TextView
                 android:id="@+id/station_letter_badge"
-                android:layout_toLeftOf="@+id/station_letter_image"
+                android:layout_marginLeft="-5dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="50dp"
+                android:layout_toRightOf="@+id/station_letter_icon"
                 android:layout_height="match_parent"/>
             <ImageView
                 android:id="@+id/station_letter_image"
