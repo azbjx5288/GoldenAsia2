@@ -137,6 +137,9 @@
         <service
             android:name=".service.BadgeIntentService"
             android:exported="false"></service>
+        <service
+            android:name=".service.BadgeIntentForXiaomiService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

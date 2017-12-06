@@ -2,6 +2,7 @@ package com.goldenasia.lottery.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Build;
 
 import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.base.net.RestCallback;
@@ -63,6 +64,9 @@ public class BadgeIntentService extends IntentService {
 
                 ShortcutBadger.applyCount(GoldenAsiaApp.getInstance(), totalCount);
 
+            if (Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
+                startService(new Intent(BadgeIntentService.this, BadgeIntentForXiaomiService.class).putExtra("badgeCount", totalCount));
+            }
             return true;
         }
 
