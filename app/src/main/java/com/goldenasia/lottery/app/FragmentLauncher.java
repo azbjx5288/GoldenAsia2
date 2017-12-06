@@ -68,7 +68,7 @@ public class FragmentLauncher extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-
+        updateBadgeIntentService();
     }
 
     private  void updateBadgeIntentService(){
@@ -78,7 +78,7 @@ public class FragmentLauncher extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        updateBadgeIntentService();
+//        updateBadgeIntentService();
     }
 
     @Override

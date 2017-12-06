@@ -216,7 +216,8 @@ public class ShoppingFragment extends BaseFragment {
             public void run() {
                 if(floatingTips!=null)
                     floatingTips.setVisibility(View.VISIBLE);
-                ptrFrameLayout.autoRefresh(true);
+                if(ptrFrameLayout!=null)
+                    ptrFrameLayout.autoRefresh(true);
             }
         }, 300);
 
@@ -403,7 +404,8 @@ public class ShoppingFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ptrFrameLayout.autoRefresh(true);
+        if(ptrFrameLayout!=null)
+            ptrFrameLayout.autoRefresh(true);
     }
 
     @Override

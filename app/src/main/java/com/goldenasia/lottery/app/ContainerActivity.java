@@ -83,13 +83,14 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
         super.onPause();
         Log.i(TAG,"onPause");
         MobclickAgent.onPause(this);
+        updateBadgeIntentService();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        updateBadgeIntentService();
-    }
+//        updateBadgeIntentService();
+}
 
     private void loadReceiveBox() {
         ReceiveBoxUnReadCommand command = new ReceiveBoxUnReadCommand();
