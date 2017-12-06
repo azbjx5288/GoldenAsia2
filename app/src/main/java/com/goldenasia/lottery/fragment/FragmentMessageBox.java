@@ -137,14 +137,14 @@ public class FragmentMessageBox extends BaseFragment {
 
 //                new QBadgeView(getActivity()).bindTarget(in_box_text).setBadgeGravity(Gravity.TOP | Gravity.CENTER).setBadgeNumber(totalCount);
 
-                Object  tag=in_box_text.getTag();
+                Object  tag=in_box_badge.getTag();
 
                 if(tag==null){
                     QBadgeView qBadgeView=new QBadgeView(getActivity());
                     qBadgeView.bindTarget(in_box_badge);
                     qBadgeView.setBadgeGravity(Gravity.START | Gravity.TOP);
                     qBadgeView.setBadgeNumber(totalCount);
-                    in_box_text.setTag(qBadgeView);
+                    in_box_badge.setTag(qBadgeView);
                 }else{
                     QBadgeView qQBadgeView=(QBadgeView)tag;
                     qQBadgeView.setBadgeNumber(totalCount);

@@ -15,7 +15,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
             android:layout_centerVertical="true"/>
 
         <TextView
@@ -23,7 +22,7 @@
             android:layout_toRightOf="@+id/in_box_text_img"
             android:layout_width="wrap_content"
             android:layout_height="52dp"
-            android:layout_marginLeft="0dp"
+            android:layout_marginLeft="15dp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:textColor="@color/black"
@@ -31,10 +30,10 @@
 
         <TextView
             android:id="@+id/in_box_badge"
-            android:layout_toRightOf="@+id/in_box_text"
+            android:layout_toRightOf="@+id/in_box_text_img"
             android:layout_width="30dp"
             android:layout_height="52dp"
-            android:layout_marginLeft="3dp"
+            android:layout_marginLeft="-6dp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             />
