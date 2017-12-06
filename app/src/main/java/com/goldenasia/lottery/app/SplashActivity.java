@@ -55,7 +55,7 @@ public class SplashActivity extends FragmentActivity implements ViewPager.OnPage
         PushAgent.getInstance(this).onAppStart();
 
         //友盟推送的 开启和关闭判断
-        isStopUPush();
+//        isStopUPush();
     }
 
     private void isStopUPush() {
