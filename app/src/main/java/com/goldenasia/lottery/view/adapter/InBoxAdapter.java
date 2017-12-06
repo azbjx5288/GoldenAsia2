@@ -1,7 +1,6 @@
 package com.goldenasia.lottery.view.adapter;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import android.widget.TextView;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.ReceiveBoxResponse;
-import com.goldenasia.lottery.material.ConstantInformation;
-import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.util.UiUtils;
 
 import java.util.ArrayList;
@@ -20,7 +17,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import q.rorbin.badgeview.QBadgeView;
 
 /**
  * Created by Gan on 2017/11/20.
@@ -77,7 +73,7 @@ public class InBoxAdapter extends BaseAdapter {
         ReceiveBoxResponse.ListBean bean = list.get(position);
 
         //是否已读
-        Object  tag=holder.time.getTag();
+        /*Object  tag=holder.time.getTag();
         if( SharedPreferencesUtils.getBoolean(parent.getContext(), ConstantInformation.APP_INFO,MAIL)) { //解除屏蔽 就是 可以 显示  小红点 提示
             if (tag == null) {
                 QBadgeView qBadgeView=new QBadgeView(parent.getContext());//
@@ -108,6 +104,11 @@ public class InBoxAdapter extends BaseAdapter {
                 QBadgeView qQBadgeView=(QBadgeView)tag;
                 qQBadgeView.setBadgeNumber(0);
             }
+        }*/
+        if("0".equals(bean.getHas_read())&&!mUnreadPositionList.contains(bean.getMt_id())) {
+            refreshTextColor(holder,parent.getContext(),false);
+        }else {
+            refreshTextColor(holder,parent.getContext(),true);
         }
 
         holder.from_username.setText(bean.getFrom_username());
@@ -149,8 +150,8 @@ public class InBoxAdapter extends BaseAdapter {
         TextView time;
         @BindView(R.id.check_box)
         CheckBox check_box;
-        @BindView(R.id.overlay_badge)
-        TextView overlay_badge;
+    /*    @BindView(R.id.overlay_badge)
+        TextView overlay_badge;*/
 
         public ViewHolder(View convertView) {
             ButterKnife.bind(this, convertView);
