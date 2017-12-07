@@ -92,17 +92,17 @@ public class OutBoxFragment extends BaseFragment {
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == SCROLL_STATE_FLING || scrollState == SCROLL_STATE_IDLE) {
-                    if (listView.getCount() != 0 && list.size() < totalCount && listView.getLastVisiblePosition() >=
-                            (listView.getCount() - 1) - endTrigger) {
-                        loadData(false, page + 1);
-                    }
-                }
+               /* if (scrollState == SCROLL_STATE_FLING || scrollState == SCROLL_STATE_IDLE) {
+
+                }*/
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
+                if (listView.getCount() != 0 && list.size() < totalCount && listView.getLastVisiblePosition() >=
+                        (listView.getCount() - 1) - endTrigger) {
+                    loadData(false, page + 1);
+                }
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

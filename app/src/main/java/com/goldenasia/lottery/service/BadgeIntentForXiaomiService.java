@@ -46,7 +46,9 @@ public class BadgeIntentForXiaomiService extends IntentService {
                 .setSmallIcon(R.drawable.ic_launcher);
             Notification notification = builder.build();
             ShortcutBadger.applyNotification(getApplicationContext(), notification, badgeCount);
-            mNotificationManager.notify(notificationId, notification);
+            if(badgeCount!=0) {
+                mNotificationManager.notify(notificationId, notification);
+            }
         }
     }
 }
