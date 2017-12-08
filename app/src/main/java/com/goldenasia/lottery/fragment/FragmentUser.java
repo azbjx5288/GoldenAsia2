@@ -29,6 +29,7 @@ import com.goldenasia.lottery.db.MmcWinHistoryDao;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.VersionChecker;
+import com.goldenasia.lottery.util.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 
@@ -215,6 +216,14 @@ public class FragmentUser extends BaseFragment {
         launchFragment(GoldenLoginFragment.class);
         RestRequestManager.cancelAll();
         deleteMmcWinHistoryDB();
+        deleteNoticeSP();
+    }
+
+    /**
+     * 账号退出后删除已经读取的Notice sp中的值
+     */
+    private void deleteNoticeSP() {
+        SharedPreferencesUtils.putString(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.NOTICE_READ,"");
     }
 
     public void deleteMmcWinHistoryDB() {

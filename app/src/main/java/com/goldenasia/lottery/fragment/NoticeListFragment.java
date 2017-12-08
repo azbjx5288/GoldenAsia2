@@ -132,6 +132,7 @@ public class NoticeListFragment extends BaseFragment {
 
             Notice notice = notices.get(position);
 
+            //已读 未读 判断
             if(SharedPreferencesUtils.getString(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.NOTICE_READ).contains(notice.getNoticeID()+",")){
                 holder.title.setTextColor(UiUtils.getColor(parent.getContext(),R.color.gray));
                 holder.time.setTextColor(UiUtils.getColor(parent.getContext(),R.color.gray));
@@ -150,9 +151,12 @@ public class NoticeListFragment extends BaseFragment {
     @OnItemClick(R.id.list)
     public void onItemClick(int position) {
         Notice notice=notices.get(position);
+        //取出保存的已经点击的条目集合
         String alreadyRead= SharedPreferencesUtils.getString(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.NOTICE_READ);
+        //判断当前的id是否存在保存的字符串中
         if(!alreadyRead.contains(notice.getNoticeID()+",")){
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.NOTICE_READ,alreadyRead+notice.getNoticeID()+",");
+            //刷新适配器
             adapter.notifyDataSetChanged();
         }
 
