@@ -216,7 +216,7 @@ public class FragmentUser extends BaseFragment {
         launchFragment(GoldenLoginFragment.class);
         RestRequestManager.cancelAll();
         deleteMmcWinHistoryDB();
-        deleteNoticeSP();
+//        deleteNoticeSP();
     }
 
     /**
