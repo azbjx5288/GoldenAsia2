@@ -21,6 +21,9 @@ import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.data.Notice;
 import com.goldenasia.lottery.data.NoticeListCommand;
 import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.util.SharedPreferencesUtils;
+import com.goldenasia.lottery.util.UiUtils;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -128,6 +131,15 @@ public class NoticeListFragment extends BaseFragment {
             }
 
             Notice notice = notices.get(position);
+
+            if(SharedPreferencesUtils.getString(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.NOTICE_READ).contains(notice.getNoticeID()+",")){
+                holder.title.setTextColor(UiUtils.getColor(parent.getContext(),R.color.gray));
+                holder.time.setTextColor(UiUtils.getColor(parent.getContext(),R.color.gray));
+            }else{
+                holder.title.setTextColor(UiUtils.getColor(parent.getContext(),R.color.contents_text));
+                holder.time.setTextColor(UiUtils.getColor(parent.getContext(),R.color.contents_text));
+            }
+
             holder.title.setText(notice.getTitle());
             holder.time.setText(notice.getStartTime());
 
@@ -137,6 +149,13 @@ public class NoticeListFragment extends BaseFragment {
 
     @OnItemClick(R.id.list)
     public void onItemClick(int position) {
+        Notice notice=notices.get(position);
+        String alreadyRead= SharedPreferencesUtils.getString(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.NOTICE_READ);
+        if(!alreadyRead.contains(notice.getNoticeID()+",")){
+            SharedPreferencesUtils.putString(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.NOTICE_READ,alreadyRead+notice.getNoticeID()+",");
+            adapter.notifyDataSetChanged();
+        }
+
         NoticeDetailsFragment.launch(this, true, notices.get(position));
     }
 

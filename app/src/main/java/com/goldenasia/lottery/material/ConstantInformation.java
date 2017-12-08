@@ -96,6 +96,9 @@ public class ConstantInformation
     public static final String APP_INFO = "app";
     public static final String ACCOUNT_INFO = "account";
     public static final String FAVOURITE_INFO = "favourite";
+    /*已读取的 公告通知id*/
+    public static final String NOTICE_READ = "notice_read";
+
     /*收件箱 消息的 数量*/
     public static int MESSAGE_COUNT = -1;
 
