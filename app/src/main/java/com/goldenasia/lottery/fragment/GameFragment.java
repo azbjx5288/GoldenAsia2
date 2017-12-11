@@ -532,7 +532,9 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
                                 }
                             }
                             ticket.setChooseNotes(notes);
-                        } else {
+                        }  else if(game.getMethod().getName().equals("RSHHZX")){
+                            ticket.setChooseNotes( game.getSingleNum());
+                        }else {
                             ticket.setChooseNotes(game.getColumn() > 1 ? 1 : game.getSingleNum());
                         }
                         ticket.setCodes(list.get(i));

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Lottery;
@@ -24,34 +22,32 @@ import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.util.NumbericUtils;
 import com.goldenasia.lottery.util.ToastUtils;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.goldenasia.lottery.game.GameConfig.DS_TYPE_SSC;
-import static com.goldenasia.lottery.game.GameConfig.DS_TYPE_SYXW;
-
 /**
  * Created by gan on 2017/11/18.
  * 单式玩法--任三混合组选
  */
 public class DsRSHHZXGame extends Game {
-    protected static final String TAG = DsRSHHZXGame.class.getName();
-    protected Activity activity;
-    protected int digit;
-    protected boolean hasIllegal;
-    protected ArrayList<String[]> codeList=new ArrayList<>();
+    private static final String TAG = DsRSHHZXGame.class.getName();
+    private Activity activity;
+    private int digit;
+    private boolean hasIllegal;
+    private ArrayList<String[]> codeList=new ArrayList<>();
 
-    protected EditText codesInput;
-    protected LinearLayout mainLayout;
-    protected LinearLayout parentLayout;
-    protected TextView pickNoticeView;
+    private EditText codesInput;
+    private LinearLayout mainLayout;
+    private LinearLayout parentLayout;
+    private TextView pickNoticeView;
 
-    protected Handler handler = new Handler();
+    private Handler handler = new Handler();
 
-    protected Runnable delayRun = new Runnable() {
+    private Runnable delayRun = new Runnable() {
         @Override
         public void run() {
             doCalculation();
@@ -62,27 +58,8 @@ public class DsRSHHZXGame extends Game {
         super(method);
         this.activity = activity;
         this.lottery = lottery;
-        switch (method.getName()) {
-            case "QSHHZX":
-            case "SXHHZX":
-            case "ZSHHZX":
-            case "RSHHZX":
-                digit = 3;
-                break;
-            default:
-                Log.w(TAG, "DsGame: 不支持的method类型：" + method.getMethodId());
-                ToastUtils.showShortToast(activity, "不支持的类型");
-        }
-        int type = GameConfig.getDsType(lottery);
-        switch (type) {
-            case DS_TYPE_SSC:
-            case DS_TYPE_SYXW:
-                break;
-            default:
-                Log.w(TAG, "DsGame: 不支持的类型：method:" + method.getName() + ", lottery:" + lottery.getLotteryId());
-                ToastUtils.showShortToast(activity, "不支持的类型");
-                break;
-        }
+        digit = 3;
+
         codeList = new ArrayList<>();
         setSingleNum(0);
     }
@@ -94,21 +71,28 @@ public class DsRSHHZXGame extends Game {
 
     private void doCalculation() {
         verify();
-        int type = GameConfig.getDsType(lottery);
-        switch (type) {
-            case DS_TYPE_SSC:
-                codeList = NumbericUtils.delDupWithOrder(codeList);
-                break;
-            case DS_TYPE_SYXW:
-                codeList = NumbericUtils.delDup(codeList);
-                break;
-            default:
-                break;
-        }
+        codeList = NumbericUtils.delDupWithOrder(codeList);
         codesInput.setText(getWebViewCode2());
         codesInput.setSelection(codesInput.getText().length());
         setColumn(digit);
-        setSingleNum(codeList.size());
+        int digitsLength=transformDigitJsonArray(digits).length();
+
+        switch(digitsLength){
+            case 3:
+                digitsLength=1;
+                break;
+            case 4:
+                digitsLength=4;
+                break;
+            case 5:
+                digitsLength=10;
+                break;
+            default:
+                digitsLength=0;
+                break;
+        }
+
+        setSingleNum(digitsLength*codeList.size());
         pickNoticeView.callOnClick();
     }
 
@@ -118,60 +102,26 @@ public class DsRSHHZXGame extends Game {
         if ("".equals(codesInput.getText().toString())) {
             return;
         }
-        String[] codes;
-        int type = GameConfig.getDsType(lottery);
-        switch (type) {
-            case DS_TYPE_SSC:
-                codes = codesInput.getText().toString().split("\\s|,|，|;|；|\\||｜");
-                break;
-            default:
-                codes = codesInput.getText().toString().split("\\s|,|，|;|；|\\||｜");
-                break;
-        }
+        String[] codes = codesInput.getText().toString().split("\\s|,|，|;|；|\\||｜");
 
         for (String code : codes) {
             String[] strs;
-            switch (type) {
-                case DS_TYPE_SSC:
-                    if(verifyOrFormat(code)){
-                        strs = code.split(",");
-                    }else{
-                        int length = code.length();
-                        strs = new String[length];
-                        for (int i = 0; i < length; i++) {
-                            strs[i] = String.valueOf(code.charAt(i));
-                        }
-                    }
-                    break;
-                default:
-                    strs = code.split(" ");
-                    if (NumbericUtils.hasDupString(strs)) {
-                        hasIllegal = true;
-                        continue;
-                    }
-                    break;
+
+            if(verifyOrFormat(code)){
+                strs = code.split(",");
+            }else{
+                int length = code.length();
+                strs = new String[length];
+                for (int i = 0; i < length; i++) {
+                    strs[i] = String.valueOf(code.charAt(i));
+                }
             }
             if (strs.length != digit) {
                 hasIllegal = true;
                 continue;
             }
-
-            switch (type) {
-                case DS_TYPE_SSC:
-                    verifyNumber(strs, ConstantInformation.LEGAL_NUMBER_SSC);
-                    break;
-                case DS_TYPE_SYXW:
-                    verifyNumber(strs, ConstantInformation.LEGAL_NUMBER_SYXW);
-                    break;
-                default:
-                    Log.w(TAG, "verify: 不支持的类型：" + type);
-                    Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_SHORT).show();
-                    break;
-            }
+            verifyNumber(strs, ConstantInformation.LEGAL_NUMBER_SSC);
         }
-        /*if (NumbericUtils.hasDupArray(codeList)) {
-            hasIllegal = true;
-        }*/
     }
 
     /**
@@ -199,46 +149,33 @@ public class DsRSHHZXGame extends Game {
     }
 
     public String getWebViewCode(){
+        JsonArray jsonArray = new JsonArray();
+        jsonArray.add(transformDigitJsonArray(digits));
+
         StringBuilder builder = new StringBuilder();
-        builder.append(transformDigit(digits));
-        int type = GameConfig.getDsType(lottery);
-        switch (type) {
-            case DS_TYPE_SSC:
-                for (int i = 0, size = codeList.size(); i < size; i++) {
-                    for (int j = 0, length = codeList.get(i).length; j < length; j++) {
-                        builder.append(codeList.get(i)[j]);
-                    }
-                    if (i < size - 1) {
-                        builder.append(" ");
-                    }
-                }
-                break;
-            default:
-                Log.w(TAG, "getWebViewCode: 不支持的类型：" + type);
-                ToastUtils.showShortToast(activity, "不支持的类型");
-                break;
+
+        for (int i = 0, size = codeList.size(); i < size; i++) {
+            for (int j = 0, length = codeList.get(i).length; j < length; j++) {
+                builder.append(codeList.get(i)[j]);
+            }
+            if (i < size - 1) {
+                builder.append("_");
+            }
         }
-        return builder.toString();
+
+        jsonArray.add(builder.toString());
+        return jsonArray.toString();
     }
 
     private String getWebViewCode2(){
         StringBuilder builder = new StringBuilder();
-        int type = GameConfig.getDsType(lottery);
-        switch (type) {
-            case DS_TYPE_SSC:
-                for (int i = 0, size = codeList.size(); i < size; i++) {
-                    for (int j = 0, length = codeList.get(i).length; j < length; j++) {
-                        builder.append(codeList.get(i)[j]);
-                    }
-                    if (i < size - 1) {
-                        builder.append(" ");
-                    }
-                }
-                break;
-            default:
-                Log.w(TAG, "getWebViewCode: 不支持的类型：" + type);
-                ToastUtils.showShortToast(activity, "不支持的类型");
-                break;
+        for (int i = 0, size = codeList.size(); i < size; i++) {
+            for (int j = 0, length = codeList.get(i).length; j < length; j++) {
+                builder.append(codeList.get(i)[j]);
+            }
+            if (i < size - 1) {
+                builder.append(" ");
+            }
         }
         return builder.toString();
     }
@@ -246,24 +183,18 @@ public class DsRSHHZXGame extends Game {
     public List<String> getSubmitArray() {
         List<String> array= new ArrayList<>();
 
-        int type = GameConfig.getDsType(lottery);
-        switch (type) {
-            case DS_TYPE_SSC:
-                for (int i = 0, size = codeList.size(); i < size; i++) {
-                    StringBuffer builder=new StringBuffer();
-                    builder.append(transformDigit(digits));
-                    for (int j = 0, length = codeList.get(i).length; j < length; j++) {
-                        builder.append(codeList.get(i)[j])/*.append(",")*/;
-                    }
-                    /*builder.delete(builder.length()-1,builder.length());*/
-                    array.add(builder.toString());
-                }
-                break;
-            default:
-                Log.w(TAG, "getSubmitCodes: 不支持的类型：" + type);
-                ToastUtils.showShortToast(topLayout.getContext(), "不支持的类型");
-                break;
+        StringBuffer builder=new StringBuffer();
+        builder.append(transformDigit(digits));
+        for (int i = 0, size = codeList.size(); i < size; i++) {
+            for (int j = 0, length = codeList.get(i).length; j < length; j++) {
+                builder.append(codeList.get(i)[j])/*.append(",")*/;
+            }
+            builder.append(",");
+            /*builder.delete(builder.length()-1,builder.length());*/
         }
+        builder.delete(builder.length()-1,builder.length());
+        array.add(builder.toString());
+
         return array;
     }
 

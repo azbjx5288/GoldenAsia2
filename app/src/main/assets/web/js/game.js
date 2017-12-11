@@ -85,6 +85,27 @@ function isLegalCode(codes) {
                     singleNum = codes[0].length * codes[1].length * codes[2].length;
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
+                case "RSHHZX"://任三混合组选
+                     var oneLength=0;
+                     var twoLength = codes[1].split('_').length;
+                     switch(codes[0].length){
+                        case 3:
+                            oneLength=1;
+                            break;
+                        case 4:
+                            oneLength=4;
+                            break;
+                        case 5:
+                            oneLength=10;
+                            break;
+                        default:
+                            oneLength=0;
+                            break;
+                     }
+
+                     singleNum=oneLength * twoLength;
+                     isDup = singleNum > 1 ? 1 : 0;
+                     break;
                 case 'EXZX':    //二星直选 0123456789,0123456789
                 case 'QEZX':
                     singleNum = codes[0].length * codes[1].length;
