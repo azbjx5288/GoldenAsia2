@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
@@ -16,12 +17,21 @@ import com.goldenasia.lottery.data.Lottery;
  */
 
 public class GameMethodInfoFragment extends BaseFragment {
+
+    TextView  tv_taiwan;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Lottery lottery = (Lottery) getArguments().getSerializable("lottery");
         View view=inflater.inflate(R.layout.fragment_game_method_info_shishicai, container, false);
 
         view = selectLayoutInflator(inflater, container, lottery, view);
+
+        tv_taiwan= (TextView) view.findViewById(R.id.tv_taiwan);
+
+        if(lottery.getLotteryId()==35) {//台湾五分彩
+            tv_taiwan.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
@@ -45,7 +55,7 @@ public class GameMethodInfoFragment extends BaseFragment {
             case 11://亚洲分分彩
             case 15://亚洲秒秒彩
             case 19://亚洲5分彩
-            case 35:
+            case 35://台湾五分彩
             case 37:
                 view=inflater.inflate(R.layout.fragment_game_method_info_shishicai, container, false);//时时彩 玩法说明
                 break;
