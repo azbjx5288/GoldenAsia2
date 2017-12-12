@@ -85,7 +85,7 @@ public class GoldenAsiaApp extends Application
                 Log.d(TAG, "onFailure");
             }
         });
-        mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
+//        mPushAgent.setPushIntentServiceClass(MyPushIntentService.class);
 
     }
 

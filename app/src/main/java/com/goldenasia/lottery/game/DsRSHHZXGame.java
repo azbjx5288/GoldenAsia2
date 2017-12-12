@@ -173,9 +173,9 @@ public class DsRSHHZXGame extends Game {
             for (int j = 0, length = codeList.get(i).length; j < length; j++) {
                 builder.append(codeList.get(i)[j]);
             }
-            if (i < size - 1) {
+           // if (i < size - 1) {
                 builder.append(" ");
-            }
+            //}
         }
         return builder.toString();
     }
