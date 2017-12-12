@@ -259,6 +259,7 @@ public class ConstantInformation
         rechargeLogo.put(6, new int[]{9, 0, R.drawable.zfb_icon});
         rechargeLogo.put(7, new int[]{1, 100, R.drawable.pay_wyzz_icon});
         rechargeLogo.put(8, new int[]{5, 0, R.drawable.jd_icon});//京东支付 id=5
+        rechargeLogo.put(9, new int[]{10, 120, R.drawable.unionpay});//银联扫码
         
         transferList.add(new Platform(0, "主钱包", "JYZ"));
         /*transferArray.put(1, new String[]{"pt", "PT游戏"});
