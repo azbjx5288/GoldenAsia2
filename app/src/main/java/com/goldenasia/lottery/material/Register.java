@@ -16,6 +16,7 @@ public class Register implements Serializable{
     private String rebateStr;
     @SerializedName("nick_name")
     private String nickname;
+    private String channel;
     public Register() {
     }
 
@@ -67,5 +68,15 @@ public class Register implements Serializable{
     public void setNickname(String nickname)
     {
         this.nickname = nickname;
+    }
+    
+    public String getChannel()
+    {
+        return channel;
+    }
+    
+    public void setChannel(String channel)
+    {
+        this.channel = channel;
     }
 }

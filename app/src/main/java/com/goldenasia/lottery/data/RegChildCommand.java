@@ -12,6 +12,7 @@ public class RegChildCommand {
     private int type;
     private String username;
     private String nick_name;
+    private String channel;
     private String password;
     private String password2;
     private String normal_rebate;
@@ -51,7 +52,17 @@ public class RegChildCommand {
     {
         this.nick_name = nick_name;
     }
-
+    
+    public String getChannel()
+    {
+        return channel;
+    }
+    
+    public void setChannel(String channel)
+    {
+        this.channel = channel;
+    }
+    
     public void setPassword(String password) {
         this.password = password;
     }

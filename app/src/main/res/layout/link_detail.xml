@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/background"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/pad_lr"
+              android:paddingRight="@dimen/pad_lr">
+    <TextView android:id="@+id/type"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/pad_ud"
+              android:layout_marginTop="@dimen/pad_ud"
+              android:text="账号类型："
+              android:textColor="@color/app_font_color"
+              android:textSize="@dimen/text_size_main"/>
+
+    <TextView android:id="@+id/link"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/pad_ud"
+              android:text="链接地址："
+              android:textColor="@color/app_font_color"
+              android:textSize="@dimen/text_size_main"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/pad_lr">
+        <Button android:id="@+id/check"
+                style="@style/tiny_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="查看返点"/>
+        <Space android:layout_width="@dimen/pad_lr" android:layout_height="match_parent"/>
+        <Button android:id="@+id/copy"
+                style="@style/tiny_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="复制链接地址"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.goldenasia.lottery.component.ScrollGridView android:id="@+id/ssc_gridview"
+                                                             android:layout_width="match_parent"
+                                                             android:layout_height="wrap_content"
+                                                             android:numColumns="2">
+            </com.goldenasia.lottery.component.ScrollGridView>
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:padding="@dimen/pad_ud"
+                      android:text="六合彩"
+                      android:textColor="@color/app_font_color"
+                      android:textSize="@dimen/text_size_small"/>
+            <com.goldenasia.lottery.component.ScrollGridView android:id="@+id/lhc_gridview"
+                                                             android:layout_width="match_parent"
+                                                             android:layout_height="wrap_content"
+                                                             android:numColumns="2">
+            </com.goldenasia.lottery.component.ScrollGridView>
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:padding="@dimen/pad_ud"
+                      android:text="竞彩"
+                      android:textColor="@color/app_font_color"
+                      android:textSize="@dimen/text_size_small"/>
+            <com.goldenasia.lottery.component.ScrollGridView android:id="@+id/jc_gridview"
+                                                             android:layout_width="match_parent"
+                                                             android:layout_height="wrap_content"
+                                                             android:numColumns="2">
+            </com.goldenasia.lottery.component.ScrollGridView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
