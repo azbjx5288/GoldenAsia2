@@ -87,7 +87,12 @@ function isLegalCode(codes) {
                     break;
                 case "RSHHZX"://任三混合组选
                      var oneLength=0;
-                     var twoLength = codes[1].split('_').length;
+                     var twoLength=0;
+                     if(codes[1].length == 0){
+                        twoLength=0;
+                     }else{
+                        twoLength = codes[1].split('_').length;
+                     }
                      switch(codes[0].length){
                         case 3:
                             oneLength=1;

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -164,6 +165,7 @@ public class DsRSHHZXGame extends Game {
         }
 
         jsonArray.add(builder.toString());
+        Log.d(TAG, "getWebViewCode  jsonArray: " + jsonArray.toString());
         return jsonArray.toString();
     }
 
