@@ -14,14 +14,23 @@
               android:text="账号类型："
               android:textColor="@color/app_font_color"
               android:textSize="@dimen/text_size_main"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="@dimen/pad_ud"
+                  android:text="链接地址："
+                  android:textColor="@color/app_font_color"
+                  android:textSize="@dimen/text_size_main"/>
+        <TextView android:id="@+id/link"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="@dimen/pad_ud"
+                  android:textColor="@color/app_font_color"
+                  android:textSize="@dimen/text_size_main"/>
+    </LinearLayout>
 
-    <TextView android:id="@+id/link"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginBottom="@dimen/pad_ud"
-              android:text="链接地址："
-              android:textColor="@color/app_font_color"
-              android:textSize="@dimen/text_size_main"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

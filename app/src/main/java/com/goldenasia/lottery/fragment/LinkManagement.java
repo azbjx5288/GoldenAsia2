@@ -1,5 +1,6 @@
 package com.goldenasia.lottery.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.goldenasia.lottery.base.net.RestRequest;
 import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.DelRegLinkCommand;
 import com.goldenasia.lottery.data.RegLinksBean;
 import com.goldenasia.lottery.data.RegLinksCommand;
@@ -46,7 +48,7 @@ public class LinkManagement extends BaseFragment
     @BindView(R.id.link_list)
     RecyclerView linkList;
     Unbinder unbinder;
-    
+
     private LinkListAdapter linkListAdapter;
     private LinearLayoutManager linearLayoutManager;
     
@@ -85,9 +87,29 @@ public class LinkManagement extends BaseFragment
             @Override
             public void onDeleteClick(View view, RegLinksBean curData)
             {
-                DelRegLinkCommand delRegLinkCommand = new DelRegLinkCommand();
-                delRegLinkCommand.setSu_id(curData.getSu_id());
-                executeCommand(delRegLinkCommand, restCallback, DEL_LINKS);
+                CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
+                builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+                builder.setMessage("删除链接后，将不能从该链接注册账号。\n" + "确定删除吗？");
+                builder.setNegativeButton("确认删除", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        dialogInterface.dismiss();
+                        DelRegLinkCommand delRegLinkCommand = new DelRegLinkCommand();
+                        delRegLinkCommand.setSu_id(curData.getSu_id());
+                        executeCommand(delRegLinkCommand, restCallback, DEL_LINKS);
+                    }
+                });
+                builder.setPositiveButton("我再想想", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.create().show();
             }
         });
         

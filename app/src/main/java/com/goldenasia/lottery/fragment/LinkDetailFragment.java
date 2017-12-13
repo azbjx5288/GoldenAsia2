@@ -87,7 +87,7 @@ public class LinkDetailFragment extends BaseFragment
                     type.setText("账号类型：用户");
                     break;
             }
-            link.setText("链接地址：" + regLinksBean.getLink());
+            link.setText(regLinksBean.getLink());
             sscAdapter.setData(regLinksBean.getNormal_rebate_options(), "normal_rebate_options");
             lhcAdapter.setData(regLinksBean.getLhc_rebate_options(), null);
             jcAdapter.setData(regLinksBean.getJc_rebate_options(), null);
