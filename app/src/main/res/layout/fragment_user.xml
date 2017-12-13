@@ -210,7 +210,7 @@
 
                 <!--立即开户-->
                 <LinearLayout
-                    android:id="@+id/addd_member_ll"
+                    android:id="@+id/add_member_ll"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -243,7 +243,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
-                            android:text="立即开户"
+                            android:text="人工开户"
                             android:textColor="@color/text_dark"
                             android:textSize="14sp"/>
 
@@ -263,7 +263,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/add_member_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:descendantFocusability="blocksDescendants"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="22dp"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_open_account"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:minHeight="45.5dp"
+                        android:minWidth="45.5dp"/>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical"
+                        android:paddingTop="17dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text="链接开户"
+                            android:textColor="@color/text_dark"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="添加+"
+                            android:textColor="@color/app_main_support"
+                            android:textSize="@dimen/text_size_tiny"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:maxLines="1"
+                        android:text="链接开户"
+                        android:textColor="@color/text_dark"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+                <View style="@style/vertical_divide_line"/>
                 <!--会员报表-->
                 <LinearLayout
                     android:id="@+id/member_report"
@@ -293,16 +348,6 @@
                         android:text="会员报表"
                         android:textColor="@color/text_dark"
                         android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <View style="@style/vertical_divide_line" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    >
 
                 </LinearLayout>
             </LinearLayout>
@@ -378,7 +423,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/feeback"
+            android:id="@+id/feedback"
             style="@style/tabUserItemLinearLayout">
             <TextView
                 style="@style/tabMyUserItemText"

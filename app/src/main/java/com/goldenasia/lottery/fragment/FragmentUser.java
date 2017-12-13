@@ -66,7 +66,7 @@ public class FragmentUser extends BaseFragment {
     LinearLayout onlyAgencyShow;
     @BindView(R.id.notice)
     RelativeLayout noticeRelativeLayout;
-    @BindView(R.id.feeback)
+    @BindView(R.id.feedback)
     RelativeLayout feebackRelativeLayout;
     @BindView(R.id.station_letter_badge)
     TextView station_letter_badge;
@@ -94,7 +94,6 @@ public class FragmentUser extends BaseFragment {
 
         }
         executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
-
     }
 
     @Override
@@ -136,7 +135,7 @@ public class FragmentUser extends BaseFragment {
     }
 
     @OnClick({R.id.service_center, R.id.settings, R.id.withdraw_deposit, R.id.transfer,R.id.notice, R.id.recharge,
-            R.id.feeback,R.id.station_letter,R.id.lower_member_manager,R.id.addd_member_ll,R.id.member_report,R.id.logout,R.id.version,})
+            R.id.feedback,R.id.station_letter,R.id.lower_member_manager,R.id.add_member_ll,R.id.add_member_link,R.id.member_report,R.id.logout,R.id.version,})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.service_center://客服
@@ -173,14 +172,17 @@ public class FragmentUser extends BaseFragment {
 
             case R.id.security_setting:
 
-            case R.id.feeback:
+            case R.id.feedback:
                 launchFragment(FeedbackFragment.class);
                 break;
             case R.id.lower_member_manager:
                 launchFragment(LowerMemberSetting.class);//下级管理
                 break;
-            case R.id.addd_member_ll:
+            case R.id.add_member_ll:
                 launchFragmentForResult(RegisterSetting.class, null, 1);//立即开户
+                break;
+            case R.id.add_member_link:
+                launchFragmentForResult(RegisterLink.class, null, 1);//链接开户
                 break;
             case R.id.member_report:
                 //MemberReportMainFragment.launch(this);

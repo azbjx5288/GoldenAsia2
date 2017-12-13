@@ -100,6 +100,7 @@ public class RegisterSetting extends BaseFragment {
                     registerData.setPassword2(regSurepass.getText().toString());
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("reg", registerData);
+                    bundle.putString("openType","manual");
                     launchFragmentForResult(LowerRebateSetting.class, bundle, 1);
                 }
                 break;

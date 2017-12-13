@@ -228,9 +228,38 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         TextView view = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.actionbar_menu_text,
                 actionBarMenuLayout, false);
         view.setText(text);
+        view.setTextColor(getResources().getColor(R.color.white));
         view.setOnClickListener(listener);
         actionBarMenuLayout.addView(view);
         return view;
+    }
+    
+    /**
+     * 在ActionBar添加图标菜单
+     */
+    protected void addMenuItemAtRight(@DrawableRes int resID, View.OnClickListener listener) {
+        if (actionBarMenuLayout == null) {
+            actionBarMenuLayout = (LinearLayout) getActivity().findViewById(R.id.action_bar_menu_layout);
+            if (actionBarMenuLayout == null) {
+                Log.e(TAG, "addMenuItem: can not add menu, actionBarMenuLayout is null", new Throwable());
+                //return null;
+            }
+        }
+        
+        ImageView view = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.actionbar_menu_image,actionBarMenuLayout, false);
+        view.setOnClickListener(listener);
+        view.setImageResource(resID);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
+        view.setPadding(0, 0, 40, 0);
+        lp.addRule(RelativeLayout.CENTER_VERTICAL);
+        actionBarMenuLayout.addView(view, lp);
+        //return view;
+    }
+    
+    protected void addMenuItemAtLeft(@DrawableRes int resID, View.OnClickListener listener) {
+        homeBtn.setVisibility(View.VISIBLE);
+        homeBtn.setImageResource(resID);
+        homeBtn.setOnClickListener(listener);
     }
 
     protected void removeAllMenu() {

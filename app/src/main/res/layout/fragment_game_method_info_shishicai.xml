@@ -21,7 +21,7 @@
             android:textColor="@color/app_font_dark_color"
             android:layout_marginBottom="5dp"
             android:visibility="gone"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <!--特码-->
         <LinearLayout

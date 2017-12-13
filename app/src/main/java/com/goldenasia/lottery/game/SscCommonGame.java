@@ -429,13 +429,13 @@ public class SscCommonGame extends Game {
     //任三直选 RSZX
     public static void RSZX(Game game) {
         createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
-        game.setSupportInput(true);
+//        game.setSupportInput(true);
     }
 
     //任二直选 REZX
     public static void REZX(Game game) {
         createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
-        game.setSupportInput(true);
+//        game.setSupportInput(true);
     }
 
     //后三一码不定位 YMBDW
@@ -516,7 +516,7 @@ public class SscCommonGame extends Game {
     //任四直选 RSIZX
     public static void RSIZX(Game game) {
         createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
-        game.setSupportInput(true);
+//        game.setSupportInput(true);
     }
 
     //后一直选 YXZX
