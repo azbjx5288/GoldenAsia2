@@ -431,10 +431,16 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
         initPrizes();
     }
 
+    //该方法会计算注数
     @Override
     public void onChanged(Game game) {
-        loadWebViewIfNeed();
-        update2WebView();
+        if("REZX".equals(game.getMethod().getName())
+                && !game.isExchange()){
+            game.sscRenXuanManualMethodResult();
+        }else{
+            loadWebViewIfNeed();
+            update2WebView();
+        }
     }
 
     @Override
@@ -534,6 +540,9 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
                             ticket.setChooseNotes(notes);
                         }  else if(game.getMethod().getName().equals("RSHHZX")){
                             ticket.setChooseNotes( game.getSingleNum());
+                        } else if(game.getMethod().getName().equals("REZX")
+                                && !game.isExchange()){
+                             ticket.setChooseNotes( game.getSingleNum());
                         }else {
                             ticket.setChooseNotes(game.getColumn() > 1 ? 1 : game.getSingleNum());
                         }

@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
  */
 public class SscCommonGame extends Game {
     private String TAG=SscCommonGame.class.getName();
+    private ArrayList<String[]> mChooseArray=null;
 
     public SscCommonGame(Method method) {
         super(method);
@@ -102,12 +104,58 @@ public class SscCommonGame extends Game {
         }
     }
 
+    @Override
+    public void sscRenXuanManualMethodResult(){
+        if(mChooseArray!=null) {
+            int notes = mChooseArray.size();
+
+            int  digitLength=transformDigitJsonArray(digits).length();
+
+            switch (digitLength){
+                case 2:
+                    digitLength=1;
+                    break;
+                case 3:
+                    digitLength=3;
+                    break;
+                case 4:
+                    digitLength=6;
+                    break;
+                case 5:
+                    digitLength=10;
+                    break;
+                default:
+                    digitLength=0;
+            }
+
+            notes=notes*digitLength;
+
+            ArrayList<String> codeArray = new ArrayList<>();
+
+            StringBuffer builder=new StringBuffer();
+            builder.append(transformDigit(digits));
+            for (int i = 0; i < mChooseArray.size(); i++) {
+                for (int j = 0 ; j < mChooseArray.get(i).length; j++) {
+                    builder.append(mChooseArray.get(i)[j]);
+                }
+                builder.append(",");
+            }
+            builder.delete(builder.length()-1,builder.length());
+            codeArray.add(builder.toString());
+
+            setSubmitArray(codeArray);
+            setSingleNum(notes);
+            onManualEntryListener.onManualEntry(notes);
+        }
+    }
+
     public void displayInputView() {
         if (onManualEntryListener != null || manualInputView != null) {
             manualInputView.setOnAddListner(new OnAddListner() {
 
                 @Override
                 public void onAdd(ArrayList<String[]> chooseArray) {
+                    mChooseArray=chooseArray;
                     int notes = 0;
                     if (getMethod().getName().equals("WXDW")) {
                         for (String[] wxdw : chooseArray) {
@@ -117,6 +165,9 @@ public class SscCommonGame extends Game {
                                 }
                             }
                         }
+                    }  else if(getMethod().getName().equals("REZX")) {
+                        sscRenXuanManualMethodResult();
+                        return;
                     } else {
                         notes = chooseArray.size();
                     }
@@ -146,8 +197,19 @@ public class SscCommonGame extends Game {
 
     public static void addInputLayout(Game game, int column) {
         ViewGroup manualInput = game.getManualInput();
-        View view = createManualInputLayout(manualInput);
+        View view =null;
+        if("REZX".equals(game.getMethod().getName())){
+            view=LayoutInflater.from(manualInput.getContext()).inflate(R.layout.popup_write_comment, null, false);
+            game.initDigitPanel(view,column);
+            LinearLayout digitLL=view.findViewById(R.id.digit);
+            digitLL.setVisibility(View.VISIBLE);
+        }else{
+            view=createManualInputLayout(manualInput);
+        }
         ManualInputView manualInputView = new ManualInputView(view, game.lottery, column);
+        if("REZX".equals(game.getMethod().getName())){
+
+        }
         game.addManualInputView(manualInputView);
         manualInput.addView(view);
     }
@@ -429,13 +491,13 @@ public class SscCommonGame extends Game {
     //任三直选 RSZX
     public static void RSZX(Game game) {
         createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
-//        game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //任二直选 REZX
     public static void REZX(Game game) {
         createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
-//        game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后三一码不定位 YMBDW
@@ -516,7 +578,7 @@ public class SscCommonGame extends Game {
     //任四直选 RSIZX
     public static void RSIZX(Game game) {
         createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
-//        game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后一直选 YXZX
