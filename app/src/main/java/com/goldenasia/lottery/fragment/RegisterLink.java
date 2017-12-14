@@ -48,7 +48,7 @@ public class RegisterLink extends BaseFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState)
     {
-        View view = inflateView(inflater, container, true, "注册下级", R.layout.register_link);
+        View view = inflateView(inflater, container, true, "链接开户", R.layout.register_link);
         ButterKnife.bind(this, view);
         return view;
     }

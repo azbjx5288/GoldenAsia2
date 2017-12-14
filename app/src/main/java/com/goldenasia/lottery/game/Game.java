@@ -477,4 +477,9 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
         if (rankCheckBoxPanel != null)
             rankCheckBoxPanel.initCheck();
     }
+
+    /*专门针对 时时彩(任二 任三 任四直选)玩法添加的，该方法主要是响应（万位千位百位十位个位）点击和手工输入的变化 所带来的注数变化 */
+    public void sscRenXuanManualMethodResult(){
+
+    }
 }
