@@ -105,9 +105,10 @@ public class SscCommonGame extends Game {
     }
 
     @Override
-    public void sscRenXuanManualMethodResult(){
+    public void sscRenXuan2ManualMethodResult(){
+        int notes=0;
         if(mChooseArray!=null) {
-            int notes = mChooseArray.size();
+            notes= mChooseArray.size();
 
             int  digitLength=transformDigitJsonArray(digits).length();
 
@@ -144,7 +145,97 @@ public class SscCommonGame extends Game {
             codeArray.add(builder.toString());
 
             setSubmitArray(codeArray);
-            setSingleNum(notes);
+        }
+        setSingleNum(notes);
+        if(onManualEntryListener!=null) {
+            onManualEntryListener.onManualEntry(notes);
+        }
+    }
+
+    @Override
+    public void sscRenXuan3ManualMethodResult(){
+        int notes=0;
+        if(mChooseArray!=null) {
+            notes= mChooseArray.size();
+
+            int  digitLength=transformDigitJsonArray(digits).length();
+
+            switch (digitLength){
+                case 3:
+                    digitLength=1;
+                    break;
+                case 4:
+                    digitLength=4;
+                    break;
+                case 5:
+                    digitLength=10;
+                    break;
+                default:
+                    digitLength=0;
+            }
+
+            notes=notes*digitLength;
+
+            ArrayList<String> codeArray = new ArrayList<>();
+
+            StringBuffer builder=new StringBuffer();
+            builder.append(transformDigit(digits));
+            for (int i = 0; i < mChooseArray.size(); i++) {
+                for (int j = 0 ; j < mChooseArray.get(i).length; j++) {
+                    builder.append(mChooseArray.get(i)[j]);
+                }
+                builder.append(",");
+            }
+            builder.delete(builder.length()-1,builder.length());
+            codeArray.add(builder.toString());
+
+            setSubmitArray(codeArray);
+        }
+        setSingleNum(notes);
+        if(onManualEntryListener!=null) {
+            onManualEntryListener.onManualEntry(notes);
+        }
+    }
+
+
+    @Override
+    public void sscRenXuan4ManualMethodResult(){
+        int notes=0;
+        if(mChooseArray!=null) {
+            notes= mChooseArray.size();
+
+            int  digitLength=transformDigitJsonArray(digits).length();
+
+            switch (digitLength){
+                case 4:
+                    digitLength=1;
+                    break;
+                case 5:
+                    digitLength=5;
+                    break;
+                default:
+                    digitLength=0;
+            }
+
+            notes=notes*digitLength;
+
+            ArrayList<String> codeArray = new ArrayList<>();
+
+            StringBuffer builder=new StringBuffer();
+            builder.append(transformDigit(digits));
+            for (int i = 0; i < mChooseArray.size(); i++) {
+                for (int j = 0 ; j < mChooseArray.get(i).length; j++) {
+                    builder.append(mChooseArray.get(i)[j]);
+                }
+                builder.append(",");
+            }
+            builder.delete(builder.length()-1,builder.length());
+            codeArray.add(builder.toString());
+
+            setSubmitArray(codeArray);
+        }
+        setSingleNum(notes);
+        if(onManualEntryListener!=null) {
             onManualEntryListener.onManualEntry(notes);
         }
     }
@@ -165,8 +256,14 @@ public class SscCommonGame extends Game {
                                 }
                             }
                         }
-                    }  else if(getMethod().getName().equals("REZX")) {
-                        sscRenXuanManualMethodResult();
+                    }  else if(getMethod().getName().equals("REZX")) {//任二直选 RSZX
+                        sscRenXuan2ManualMethodResult();
+                        return;
+                    }else if(getMethod().getName().equals("RSZX")){//任三直选 RSZX
+                        sscRenXuan3ManualMethodResult();
+                        return;
+                    }else if(getMethod().getName().equals("RSIZX")){//任四直选 RSIZX
+                        sscRenXuan4ManualMethodResult();
                         return;
                     } else {
                         notes = chooseArray.size();
@@ -198,7 +295,10 @@ public class SscCommonGame extends Game {
     public static void addInputLayout(Game game, int column) {
         ViewGroup manualInput = game.getManualInput();
         View view =null;
-        if("REZX".equals(game.getMethod().getName())){
+        if("REZX".equals(game.getMethod().getName())//任二直选 RSZX
+                ||"RSZX".equals(game.getMethod().getName())//任三直选 RSZX
+                ||"RSIZX".equals(game.getMethod().getName())//任四直选 RSIZX
+        ){
             view=LayoutInflater.from(manualInput.getContext()).inflate(R.layout.popup_write_comment, null, false);
             game.initDigitPanel(view,column);
             LinearLayout digitLL=view.findViewById(R.id.digit);
@@ -207,9 +307,6 @@ public class SscCommonGame extends Game {
             view=createManualInputLayout(manualInput);
         }
         ManualInputView manualInputView = new ManualInputView(view, game.lottery, column);
-        if("REZX".equals(game.getMethod().getName())){
-
-        }
         game.addManualInputView(manualInputView);
         manualInput.addView(view);
     }

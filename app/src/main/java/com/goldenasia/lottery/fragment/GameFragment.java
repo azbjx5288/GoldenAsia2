@@ -434,9 +434,15 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
     //该方法会计算注数
     @Override
     public void onChanged(Game game) {
-        if("REZX".equals(game.getMethod().getName())
+        if("REZX".equals(game.getMethod().getName())////任二直选 REZX
                 && !game.isExchange()){
-            game.sscRenXuanManualMethodResult();
+            game.sscRenXuan2ManualMethodResult();
+        }else if("RSZX".equals(game.getMethod().getName())//任三直选 RSZX
+                && !game.isExchange()){
+            game.sscRenXuan3ManualMethodResult();
+        }else if("RSIZX".equals(game.getMethod().getName())//任四直选 RSIZX
+                && !game.isExchange()){
+            game.sscRenXuan4ManualMethodResult();
         }else{
             loadWebViewIfNeed();
             update2WebView();
@@ -491,7 +497,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
                 break;
             int end = start + dealSize;
             end = end > codes.size() ? codes.size() : end;
-            futures.add(ex.submit(new Task(codes, start, end)));
+            futures.add(ex.submit(new Task(codes, start, end)));//运行Callable任务可以拿到一个Future对象，表示异步计算的结果
         }
         try {
             //处理 合并操作
@@ -505,7 +511,6 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
             MobclickAgent.reportError(getActivity(), TAG + "->" + e.getMessage());
         }
     }
-
 
     private class Task implements Callable<List<Ticket>> {
 
@@ -540,9 +545,15 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
                             ticket.setChooseNotes(notes);
                         }  else if(game.getMethod().getName().equals("RSHHZX")){
                             ticket.setChooseNotes( game.getSingleNum());
-                        } else if(game.getMethod().getName().equals("REZX")
+                        } else if(game.getMethod().getName().equals("REZX")//任二直选 RSZX
                                 && !game.isExchange()){
                              ticket.setChooseNotes( game.getSingleNum());
+                        }else if("RSZX".equals(game.getMethod().getName())//任三直选 RSZX
+                                && !game.isExchange()){
+                            ticket.setChooseNotes( game.getSingleNum());
+                        }else if("RSIZX".equals(game.getMethod().getName())//任四直选 RSIZX
+                                && !game.isExchange()){
+                            ticket.setChooseNotes( game.getSingleNum());
                         }else {
                             ticket.setChooseNotes(game.getColumn() > 1 ? 1 : game.getSingleNum());
                         }
