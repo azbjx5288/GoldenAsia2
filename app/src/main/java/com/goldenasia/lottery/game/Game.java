@@ -50,6 +50,9 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
     protected RankCheckBoxPanel rankCheckBoxPanel;
     protected SparseBooleanArray ranks = new SparseBooleanArray();
 
+    /*手动录入输入的数字 为了解决进入购物车界面 点击 再选一注  在SSCCommonGame 数据没有清空 将数据 移到父类中*/
+    protected ArrayList<String[]> mChooseArray=null;
+
     public boolean isHasRandom() {
         return hasRandom;
     }
@@ -190,6 +193,7 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
             setSingleNum(0);
             if (onManualEntryListener != null) {
                 onManualEntryListener.onManualEntry(0);
+                mChooseArray=null;
             }
         }
     }

@@ -22,7 +22,6 @@ import java.util.ArrayList;
  */
 public class SscCommonGame extends Game {
     private String TAG=SscCommonGame.class.getName();
-    private ArrayList<String[]> mChooseArray=null;
 
     public SscCommonGame(Method method) {
         super(method);
