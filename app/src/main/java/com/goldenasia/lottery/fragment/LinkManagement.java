@@ -133,9 +133,11 @@ public class LinkManagement extends BaseFragment
             switch (request.getId())
             {
                 case GET_LINKS:
-                    if (response != null && response.getData() != null)
+                    if (response != null /*&& response.getData() != null*/)
                     {
-                        ArrayList<RegLinksBean> list = (ArrayList<RegLinksBean>) response.getData();
+                        ArrayList<RegLinksBean> list = new ArrayList<>();
+                        if (response.getData() != null)
+                            list = (ArrayList<RegLinksBean>) response.getData();
                         linkListAdapter.setData(list);
                         int userCount = 0;
                         for (RegLinksBean bean : list)
