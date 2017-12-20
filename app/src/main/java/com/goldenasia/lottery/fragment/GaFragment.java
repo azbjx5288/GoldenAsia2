@@ -28,8 +28,10 @@ import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.user.UserCentre;
 import com.goldenasia.lottery.view.adapter.GaAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -126,6 +128,11 @@ public class GaFragment extends BaseFragment {
     @OnItemClick(R.id.ga_listview)
     public void onItemClick(int position) {
         GaBean gaBean = gaList.get(position);
+        //友盟数据埋点start
+        HashMap<String,String> m =new HashMap<String,String>();
+        m.put("__ct__", String.valueOf("1"));
+        MobclickAgent.onEventValue(getActivity(), "lotteryid_"+gaBean.getLotteryId(), m,  1);
+        //友盟数据埋点end
         GAGameFragment.launch(GaFragment.this, gaBean);
     }
 
