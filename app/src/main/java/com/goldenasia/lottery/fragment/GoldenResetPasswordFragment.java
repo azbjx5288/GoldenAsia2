@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
-import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.base.net.RestCallback;
 import com.goldenasia.lottery.base.net.RestRequest;
 import com.goldenasia.lottery.base.net.RestResponse;
@@ -40,20 +39,19 @@ public class GoldenResetPasswordFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reset_password, container, false);
+        View view = inflateView(inflater, container, "重置登录密码", R.layout.fragment_reset_password);
         ButterKnife.bind(this, view);
-        return inflateView(inflater, container, "重置登录密码", R.layout.fragment_reset_password);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         applyArguments();
     }
 
     private void applyArguments() {
-        nvpair = (String) getArguments().getSerializable("nvpair");
+        nvpair = getArguments().getString("nvpair");
     }
 
     @OnClick({R.id.reset_password_submit,R.id.contact_customer_service})
@@ -81,7 +79,6 @@ public class GoldenResetPasswordFragment extends BaseFragment {
         command.setPassword2(password2.getText().toString());
         command.setNvpair(nvpair);
         command.setStep("2");
-        command.setSessionid(GoldenAsiaApp.getUserCentre().getSession());
         executeCommand(command, restCallback);
     }
 

@@ -39,11 +39,10 @@ public class GoldenFindPasswordFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_find_password, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflateView(inflater, container, "找回登录密码", R.layout.fragment_find_password);
         ButterKnife.bind(this, view);
-        return inflateView(inflater, container, "找回登录密码", R.layout.fragment_find_password);
+        return view;
     }
 
     @Override

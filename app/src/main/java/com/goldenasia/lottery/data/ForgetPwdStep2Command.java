@@ -6,7 +6,7 @@ import com.goldenasia.lottery.base.net.RequestConfig;
  * 4.1.10	用户忘记密码接口
  * Created by Gan on 2017/10/4.
  */
-@RequestConfig(api = "?c=user&a=forgetPwd")
+@RequestConfig(api = "?c=user&a=forgetPwd",response = String.class)
 public class ForgetPwdStep2Command {
     /**
      * 1(默认值)	验证资金密码是否正确
@@ -18,8 +18,6 @@ public class ForgetPwdStep2Command {
      * 随机长度为6的字符串
      */
     private String sign="";
-
-
     /**
      * 	Step=1时: 用户名
      */
@@ -28,10 +26,6 @@ public class ForgetPwdStep2Command {
      * Step=1时: Md5后的资金密码
      */
     private String encsecpwd;
-    /**
-     * Step=1时:设备[IOS =5|安卓=4]
-     */
-   private int frm;
     /**
      * Step=2时: 未加密的新登录密码
      */
@@ -44,11 +38,8 @@ public class ForgetPwdStep2Command {
     /**
      * Step=2时: step1返回的验证参数
      */
-
+    private int frm=4;
     private String nvpair;
-
-    private String sessionid;
-
 
     public ForgetPwdStep2Command() {
 
@@ -56,14 +47,6 @@ public class ForgetPwdStep2Command {
             int intVal=(int)(Math.random()*26+97);
             sign=sign+(char)intVal;
         }
-    }
-
-    public int getFrm() {
-        return frm;
-    }
-
-    public void setFrm(int frm) {
-        this.frm = frm;
     }
 
     public String getUsername() {
@@ -113,11 +96,4 @@ public class ForgetPwdStep2Command {
         this.nvpair = nvpair;
     }
 
-    public String getSessionid() {
-        return sessionid;
-    }
-
-    public void setSessionid(String sessionid) {
-        this.sessionid = sessionid;
-    }
 }
