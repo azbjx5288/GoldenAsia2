@@ -12,11 +12,13 @@ import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.data.ReceiveBoxResponse;
 import com.goldenasia.lottery.data.ReceiveBoxUnReadCommand;
 import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.user.UserCentre;
 import com.google.gson.reflect.TypeToken;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class BadgeIntentService extends IntentService {
+    private UserCentre userCentre;
 
     public BadgeIntentService() {
         super("BadgeIntentService");
@@ -29,7 +31,10 @@ public class BadgeIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        loadReceiveBox();
+        userCentre = GoldenAsiaApp.getUserCentre();
+        if(userCentre.isLogin()&&userCentre.getUserInfo()!=null) {
+            loadReceiveBox();
+        }
     }
 
     private void loadReceiveBox() {

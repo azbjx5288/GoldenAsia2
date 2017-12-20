@@ -63,7 +63,7 @@ public class UserCentre {
     }
 
     public boolean isLogin() {
-        return session != null&& GoldenAsiaApp.getUserCentre().getUserName()!=null;
+        return session != null&& GoldenAsiaApp.getUserCentre().getUserName()!=null&&getUserInfo()!=null;
     }
 
     public void saveSession(String session) {
