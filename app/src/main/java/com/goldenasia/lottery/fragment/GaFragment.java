@@ -131,7 +131,7 @@ public class GaFragment extends BaseFragment {
         //友盟数据埋点start
         HashMap<String,String> m =new HashMap<String,String>();
         m.put("__ct__", String.valueOf("1"));
-        MobclickAgent.onEventValue(getActivity(), "lotteryid_"+gaBean.getLotteryId(), m,  1);
+        MobclickAgent.onEventValue(getActivity(), "lotteryid_"+gaBean.getLotteryId(), m,  +1);
         //友盟数据埋点end
         GAGameFragment.launch(GaFragment.this, gaBean);
     }
