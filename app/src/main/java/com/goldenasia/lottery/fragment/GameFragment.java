@@ -282,6 +282,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
         }
         Bundle bundle = new Bundle();
         bundle.putSerializable("lottery", lottery);
+        bundle.putSerializable("lastMethod", game.getMethod());
         shoppingCart.setPrizeMode(prizeMode);
         if (lottery.getLotteryId() != 15) {
             launchFragmentForResult(ShoppingFragment.class, bundle, 1);
@@ -511,6 +512,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
             MobclickAgent.reportError(getActivity(), TAG + "->" + e.getMessage());
         }
     }
+
 
     private class Task implements Callable<List<Ticket>> {
 

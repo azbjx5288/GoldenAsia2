@@ -2,11 +2,13 @@ package com.goldenasia.lottery.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * 玩法信息
  * Created by ACE-PC on 2016/1/22.
  */
-public class Method {
+public class Method implements Serializable{
     @SerializedName("method_id")
     private int methodId;
     @SerializedName("lottery_id")

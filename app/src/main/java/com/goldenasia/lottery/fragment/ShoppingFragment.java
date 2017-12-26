@@ -592,8 +592,24 @@ public class ShoppingFragment extends BaseFragment {
         }
         builder.create().show();
     }
-
-    private RestCallback restCallback = new RestCallback() {
+    
+    private void saveLastMethod()
+    {
+        Method method = (Method) getArguments().getSerializable("lastMethod");
+        if (method != null)
+        {
+            String fileName = GoldenAsiaApp.getUserCentre().getUserID() + " lastPlay";
+            try
+            {
+                SharedPreferencesUtils.putObject(getActivity(), fileName, lottery.getName(), method);
+            } catch (Exception e)
+            {
+            }
+        }
+    }
+    
+    private RestCallback restCallback = new RestCallback()
+    {
         @Override
         public boolean onRestComplete(RestRequest request, RestResponse response) {
             switch (request.getId()) {
@@ -610,6 +626,7 @@ public class ShoppingFragment extends BaseFragment {
                         receiptOrderDialog(jsonStr);
                         tempAmount = 0;
                         cart.setPrizeMode(-1);
+                        saveLastMethod();
                     }
                     break;
                 case ID_USER_INFO:

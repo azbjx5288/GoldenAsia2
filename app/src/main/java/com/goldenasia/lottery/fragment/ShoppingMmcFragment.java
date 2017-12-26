@@ -472,8 +472,24 @@ public class ShoppingMmcFragment extends BaseFragment {
         shoppingBuyButton.setEnabled(true);
 //        enableHomeButton(true);
     }
-
-    private RestCallback restCallback = new RestCallback() {
+    
+    private void saveLastMethod()
+    {
+        Method method = (Method) getArguments().getSerializable("lastMethod");
+        if (method != null)
+        {
+            String fileName = GoldenAsiaApp.getUserCentre().getUserID() + " lastPlay";
+            try
+            {
+                SharedPreferencesUtils.putObject(getActivity(), fileName, lottery.getName(), method);
+            } catch (Exception e)
+            {
+            }
+        }
+    }
+    
+    private RestCallback restCallback = new RestCallback()
+    {
         @Override
         public boolean onRestComplete(RestRequest request, RestResponse response) {
             switch (request.getId()) {
@@ -481,6 +497,7 @@ public class ShoppingMmcFragment extends BaseFragment {
                     ArrayList<MmcEntity> openCodeList = (ArrayList<MmcEntity>) response.getData();
                     if (openCodeList != null) {
                         roll(openCodeList);
+                        saveLastMethod();
                     }
                     break;
                 case ID_USER_INFO:

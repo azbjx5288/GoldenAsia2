@@ -292,6 +292,7 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
         }
         Bundle bundle = new Bundle();
         bundle.putSerializable("lottery", lottery);
+        bundle.putSerializable("lastMethod", lhcGame.getMethod());
         shoppingCart.setPrizeMode(prizeMode);
         launchFragmentForResult(ShoppingFragment.class, bundle, 1);
     }

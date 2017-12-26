@@ -36,6 +36,7 @@ import com.goldenasia.lottery.game.GameConfig;
 import com.goldenasia.lottery.game.MenuController;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.pattern.CustomViewPager;
+import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.view.TableMenu;
 import com.google.gson.reflect.TypeToken;
 
@@ -448,7 +449,11 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                     case 17:
                     case 26:
                         if (((GameLhcFragment) fragments.get(0)).getLhcGame() == null) {
-                            Method method = defaultGameMethod(methodList);
+                            Method method = (Method) SharedPreferencesUtils.getObject(getActivity(), GoldenAsiaApp
+                                    .getUserCentre().getUserID() + " lastPlay", lottery.getName());
+                            if (method == null)
+                                method = defaultGameMethod(methodList);
+                            //Method method = defaultGameMethod(methodList);
                             saveMethod2Xml(method);
                             menuController.addPreference(method);
                             changeGameMethod(method);
@@ -456,7 +461,11 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                         break;
                     default:
                         if (((GameFragment) fragments.get(0)).getGame() == null) {
-                            Method method = defaultGameMethod(methodList);
+                            Method method = (Method) SharedPreferencesUtils.getObject(getActivity(), GoldenAsiaApp
+                                    .getUserCentre().getUserID() + " lastPlay", lottery.getName());
+                            if (method == null)
+                                method = defaultGameMethod(methodList);
+                            //Method method = defaultGameMethod(methodList);
                             saveMethod2Xml(method);
                             menuController.addPreference(method);
                             changeGameMethod(method);
