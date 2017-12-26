@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,12 +129,25 @@ public class GaFragment extends BaseFragment {
     @OnItemClick(R.id.ga_listview)
     public void onItemClick(int position) {
         GaBean gaBean = gaList.get(position);
+        Log.i(TAG,"onItemClick gaBean.getLotteryId()="+"lotteryid_"+gaBean.getLotteryId());
         //友盟数据埋点start
         HashMap<String,String> m =new HashMap<String,String>();
         m.put("__ct__", String.valueOf("1"));
-        MobclickAgent.onEventValue(getActivity(), "lotteryid_"+gaBean.getLotteryId(), m,  +1);
+        MobclickAgent.onEventValue(getActivity(), "lotteryid_"+gaBean.getLotteryId(), null,  +1);
         //友盟数据埋点end
         GAGameFragment.launch(GaFragment.this, gaBean);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(getActivity());
     }
 
     private void gaListLoad() {
