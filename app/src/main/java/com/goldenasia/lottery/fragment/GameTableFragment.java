@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -52,11 +51,12 @@ import butterknife.OnClick;
  */
 
 public class GameTableFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, ViewPager
-        .OnPageChangeListener, TableMenu.OnClickMethodListener {
+        .OnPageChangeListener, TableMenu.OnClickMethodListener
+{
     private static final String TAG = GameTableFragment.class.getSimpleName();
     private static final int ID_METHOD_LIST = 1;
-
-
+    
+    
     @BindView(R.id.title_name)
     TextView titleName;
     @BindView(android.R.id.title)
@@ -75,83 +75,89 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     CustomViewPager viewPager;
     @BindView(R.id.trend)
     ImageView trend;
-
+    
     private MenuController menuController;
     private String[] radiotitle;
     private Lottery lottery;
     private List<Fragment> fragments = new ArrayList<>();
-
+    
     @OnClick(R.id.trend)
     public void openTrend()
     {
         Bundle bundle = new Bundle();
-        bundle.putString("url",lottery.getChartUrl());
+        bundle.putString("url", lottery.getChartUrl());
         launchFragment(TrendFragment.class, bundle);
     }
     
-    public static void launch(BaseFragment fragment, Lottery lottery) {
+    public static void launch(BaseFragment fragment, Lottery lottery)
+    {
         ArrayList gameList = new ArrayList();
         gameList.add(GameFragment.class);
         gameList.add(ResultsFragment.class);
         gameList.add(GameMethodInfoFragment.class);
         Bundle bundle = new Bundle();
         bundle.putString("title", "");
-        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖","玩法说明"});
+        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
         bundle.putParcelableArrayList("fragmentlist", gameList);
         bundle.putSerializable("lottery", lottery);
         bundle.putSerializable("hasTab", true);
-        bundle.putString("url",lottery.getChartUrl());
+        bundle.putString("url", lottery.getChartUrl());
         FragmentLauncher.launch(fragment.getActivity(), GameTableFragment.class, bundle);
     }
-
-    public static void launchMmc(BaseFragment fragment, Lottery lottery) {
-        Log.i(TAG,"launchMmc");
+    
+    public static void launchMmc(BaseFragment fragment, Lottery lottery)
+    {
+        Log.i(TAG, "launchMmc");
         ArrayList gameList = new ArrayList();
         gameList.add(GameFragment.class);
         gameList.add(ResultsMmcFragment.class);
         gameList.add(GameMethodInfoFragment.class);
         Bundle bundle = new Bundle();
         bundle.putString("title", "");
-        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖","玩法说明"});
+        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
         bundle.putParcelableArrayList("fragmentlist", gameList);
         bundle.putSerializable("lottery", lottery);
         bundle.putSerializable("hasTab", true);
         FragmentLauncher.launch(fragment.getActivity(), GameTableFragment.class, bundle);
     }
-
-    public static void launchLhc(BaseFragment fragment, Lottery lottery) {
+    
+    public static void launchLhc(BaseFragment fragment, Lottery lottery)
+    {
         ArrayList gameList = new ArrayList();
         gameList.add(GameLhcFragment.class);
         gameList.add(ResultsFragment.class);
         gameList.add(GameMethodInfoFragment.class);
         Bundle bundle = new Bundle();
         bundle.putString("title", "");
-        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖","玩法说明"});
+        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
         bundle.putParcelableArrayList("fragmentlist", gameList);
         bundle.putSerializable("lottery", lottery);
         bundle.putSerializable("hasTab", true);
-        bundle.putString("url",lottery.getChartUrl());
+        bundle.putString("url", lottery.getChartUrl());
         FragmentLauncher.launch(fragment.getActivity(), GameTableFragment.class, bundle);
     }
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
+            savedInstanceState)
+    {
         return inflater.inflate(R.layout.fragment_game_table, container, false);
     }
-
+    
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
         initTab();
         initMenu();
         loadMenu();
     }
-
+    
     /**
      * 初始化标签
      */
-    private void initTab() {
+    private void initTab()
+    {
         Bundle bundle = getArguments();
         if (bundle != null)
         {
@@ -162,12 +168,13 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             for (int i = 0; i < radiotitle.length; i++)
                 if (i == 0)
                     lotteryRadioButton.setId(i);
-                else if(i==1)
+                else if (i == 1)
                     trendRadioButton.setId(i);
                 else
                     methodRadioButton.setId(i);
             ArrayList fragmentList = bundle.getParcelableArrayList("fragmentlist");
-            for (int i = 0; i < fragmentList.size(); i++) {
+            for (int i = 0; i < fragmentList.size(); i++)
+            {
                 Class fragment = (Class) fragmentList.get(i);
                 Bundle bundlelottery = new Bundle();
                 bundlelottery.putSerializable("lottery", lottery);
@@ -183,38 +190,44 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 radioGroup.setVisibility(View.GONE);
         }
     }
-
+    
     /**
      * 初始化菜单
      */
-    private void initMenu() {
+    private void initMenu()
+    {
         menuController = new MenuController(getActivity(), lottery);
         menuController.setOnClickMethodListener(this);
     }
-
+    
     /**
      * 加载菜单数据
      */
-    private void loadMenu() {
+    private void loadMenu()
+    {
         MethodListCommand methodListCommand = new MethodListCommand();
         methodListCommand.setLotteryID(lottery.getLotteryId());
         methodListCommand.setMethodGroupID(0);
-        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<MethodList>>>() {
-        };
+        TypeToken typeToken = new TypeToken<RestResponse<ArrayList<MethodList>>>()
+        {};
         RestRequestManager.executeCommand(getActivity(), methodListCommand, typeToken, restCallback, ID_METHOD_LIST,
                 this);
     }
-
-    private void saveMethod2Xml(Method method) {
+    
+    private void saveMethod2Xml(Method method)
+    {
         String key = "game_config_method_" + GoldenAsiaApp.getUserCentre().getUserID() + "_" + lottery.getLotteryId();
         Preferences.saveString(getContext(), key, GsonHelper.toJson(method));
     }
-
-    private void changeGameMethod(Method method) {
-        if (method == null) {
+    
+    private void changeGameMethod(Method method)
+    {
+        if (method == null)
+        {
             return;
         }
-        switch (lottery.getLotteryId()) {
+        switch (lottery.getLotteryId())
+        {
             case 17:
             case 26:
                 LHCFragment(method);
@@ -224,13 +237,17 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 break;
         }
     }
-
-    private void GeneralFragment(Method method) {
+    
+    private void GeneralFragment(Method method)
+    {
         GameFragment gameFragment = (GameFragment) fragments.get(0);
-        if (gameFragment.getGame() == null) {
+        if (gameFragment.getGame() == null)
+        {
             gameFragment.removeViews();
-        } else {
-            if (method.getName().equals(gameFragment.getGame().getMethod().getName())) {
+        } else
+        {
+            if (method.getName().equals(gameFragment.getGame().getMethod().getName()))
+            {
                 //同一个玩法，不用切换
                 return;
             }
@@ -242,18 +259,22 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         }
         menuController.setCurrentMethod(method);
         titleView.setText(method.getCname());
-        gameFragment.setGame(GameConfig.createGame(getActivity(),method,lottery));
+        gameFragment.setGame(GameConfig.createGame(getActivity(), method, lottery));
         gameFragment.changeGameMethod(method);
         manualInputBotton.setVisibility(gameFragment.getGame().isSupportInput() ? View.VISIBLE : View.GONE);
-        trend.setVisibility(lottery.getLotteryId()==15?View.INVISIBLE:View.VISIBLE);
+        trend.setVisibility(lottery.getLotteryId() == 15 ? View.INVISIBLE : View.VISIBLE);
     }
-
-    private void LHCFragment(Method method) {
+    
+    private void LHCFragment(Method method)
+    {
         GameLhcFragment gameLhcFragment = (GameLhcFragment) fragments.get(0);
-        if (gameLhcFragment.getLhcGame() == null) {
+        if (gameLhcFragment.getLhcGame() == null)
+        {
             gameLhcFragment.removeViews();
-        } else {
-            if (method.getName().equals(gameLhcFragment.getLhcGame().getMethod().getName())) {
+        } else
+        {
+            if (method.getName().equals(gameLhcFragment.getLhcGame().getMethod().getName()))
+            {
                 //同一个玩法，不用切换
                 return;
             }
@@ -267,19 +288,24 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         gameLhcFragment.changeGameMethod();
         trend.setVisibility(View.VISIBLE);
     }
-
-    private void updateMenu(ArrayList<MethodList> methodList) {
+    
+    private void updateMenu(ArrayList<MethodList> methodList)
+    {
         menuController.setMethodList(methodList);
     }
-
-    private Method defaultGameMethod(ArrayList<MethodList> methodList) {
+    
+    private Method defaultGameMethod(ArrayList<MethodList> methodList)
+    {
         String key = "game_config_method_" + GoldenAsiaApp.getUserCentre().getUserID() + "_" + lottery.getLotteryId();
         Method methodDefault = GsonHelper.fromJson(Preferences.getString(getContext(), key, null), Method.class);
-        if (methodDefault != null) {
+        if (methodDefault != null)
+        {
             return methodDefault;
-        } else {
+        } else
+        {
             String name = null;
-            switch (lottery.getLotteryId()) {
+            switch (lottery.getLotteryId())
+            {
                 case 2://山东11选5
                 case 6://江西11选5
                 case 7://广东11选5
@@ -325,12 +351,16 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 default:
                     break;
             }
-            if (name == null) {
+            if (name == null)
+            {
                 return methodList.get(0).getChilds().get(0);
             }
-            for (MethodList methods : methodList) {
-                for (Method method : methods.getChilds()) {
-                    if (name.equals(method.getName())) {
+            for (MethodList methods : methodList)
+            {
+                for (Method method : methods.getChilds())
+                {
+                    if (name.equals(method.getName()))
+                    {
                         return method;
                     }
                 }
@@ -338,67 +368,82 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             return methodList.get(0).getChilds().get(0);
         }
     }
-
+    
     @OnClick(android.R.id.home)
-    public void backHome(View v){
+    public void backHome(View v)
+    {
         InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         getActivity().finish();
     }
-
+    
     @Override
-    public void onPause() {
+    public void onPause()
+    {
         super.onPause();
     }
-
+    
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
     }
-
+    
     @Override
-    public void onDestroyView() {
+    public void onDestroyView()
+    {
         super.onDestroyView();
     }
-
+    
     @OnClick(android.R.id.home)
-    public void finishFragment() {
+    public void finishFragment()
+    {
         getActivity().finish();
     }
-
+    
     @OnClick(R.id.title_text_layout)
-    public void showOrHideMenu() {
-        if (menuController.isShowing()) {
+    public void showOrHideMenu()
+    {
+        if (menuController.isShowing())
+        {
             menuController.hide();
-        } else {
+        } else
+        {
             menuController.show(titleView);
         }
     }
-
+    
     /**
      * 点击手工录入
      */
     @OnClick(R.id.manual_input_botton)
-    public void manualInput() {
+    public void manualInput()
+    {
         //true 显示选号页面  false 显示录入
-        if (((GameFragment) fragments.get(0)).getGame().isExchange()) {
+        if (((GameFragment) fragments.get(0)).getGame().isExchange())
+        {
             //manualInputBotton.setText("选号页面");
             ((GameFragment) fragments.get(0)).getGame().setExchange(false);
-        } else {
+        } else
+        {
             //manualInputBotton.setText("手工录入");
             ((GameFragment) fragments.get(0)).getGame().setExchange(true);
         }
         ((GameFragment) fragments.get(0)).cutover();
     }
-
-
+    
+    
     @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        for (int i = 0; i < radiotitle.length; i++) {
-            if (i == checkedId) {
+    public void onCheckedChanged(RadioGroup group, int checkedId)
+    {
+        for (int i = 0; i < radiotitle.length; i++)
+        {
+            if (i == checkedId)
+            {
                 selectPage(i);
             }
-            if(checkedId==trendRadioButton.getId()){
+            if (checkedId == trendRadioButton.getId())
+            {
                 Fragment resultsFragment = fragments.get(1);
                 resultsFragment.onResume();
                 //TrendFragment trendFragment= (TrendFragment) fragments.get(1);
@@ -407,48 +452,60 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             }
         }
     }
-
+    
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+    {
+    
     }
-
+    
     @Override
-    public void onPageSelected(int position) {
+    public void onPageSelected(int position)
+    {
         selectPage(position);
     }
-
+    
     @Override
-    public void onPageScrollStateChanged(int state) {
-
+    public void onPageScrollStateChanged(int state)
+    {
+    
     }
-
-
+    
+    
     @Override
-    public void onClickMethod(Method method) {
+    public void onClickMethod(Method method)
+    {
         menuController.hide();
         changeGameMethod(method);
     }
-
-    private void selectPage(int position) {
+    
+    private void selectPage(int position)
+    {
         radioGroup.check(radioGroup.getChildAt(position).getId());
         viewPager.setCurrentItem(position, true);
-        if(lottery.getLotteryId()==15){
+        if (lottery.getLotteryId() == 15)
+        {
             viewPager.setScanScroll(true);
-        }else{
+        } else
+        {
             viewPager.setScanScroll(true);
         }
     }
-
-    private RestCallback restCallback = new RestCallback() {
+    
+    private RestCallback restCallback = new RestCallback()
+    {
         @Override
-        public boolean onRestComplete(RestRequest request, RestResponse response) {
-            if (request.getId() == ID_METHOD_LIST) {
+        public boolean onRestComplete(RestRequest request, RestResponse response)
+        {
+            if (request.getId() == ID_METHOD_LIST)
+            {
                 ArrayList<MethodList> methodList = (ArrayList<MethodList>) response.getData();
-                switch (lottery.getLotteryId()) {
+                switch (lottery.getLotteryId())
+                {
                     case 17:
                     case 26:
-                        if (((GameLhcFragment) fragments.get(0)).getLhcGame() == null) {
+                        if (((GameLhcFragment) fragments.get(0)).getLhcGame() == null)
+                        {
                             Method method = (Method) SharedPreferencesUtils.getObject(getActivity(), GoldenAsiaApp
                                     .getUserCentre().getUserID() + " lastPlay", lottery.getName());
                             if (method == null)
@@ -460,7 +517,8 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                         }
                         break;
                     default:
-                        if (((GameFragment) fragments.get(0)).getGame() == null) {
+                        if (((GameFragment) fragments.get(0)).getGame() == null)
+                        {
                             Method method = (Method) SharedPreferencesUtils.getObject(getActivity(), GoldenAsiaApp
                                     .getUserCentre().getUserID() + " lastPlay", lottery.getName());
                             if (method == null)
@@ -476,13 +534,16 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             }
             return true;
         }
-
+        
         @Override
-        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
-            if (errCode == 7003) {
+        public boolean onRestError(RestRequest request, int errCode, String errDesc)
+        {
+            if (errCode == 7003)
+            {
                 Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
                 return true;
-            } else if (errCode == 7006) {
+            } else if (errCode == 7006)
+            {
                 CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
                 dialog.setCancelable(false);
                 dialog.show();
@@ -490,9 +551,10 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             }
             return false;
         }
-
+        
         @Override
-        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state)
+        {
         }
     };
 }

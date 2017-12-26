@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.user.UserCentre;
 import com.goldenasia.lottery.view.adapter.FavouriteAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -356,7 +358,11 @@ public class LotteryFragment extends BaseFragment {
     private void launchLottery(ArrayList<Lottery> list, int position) {
         if (list.size() > 0) {
             Lottery lottery = list.get(position);
-            if (lottery.isAvailable())
+            if (lottery.isAvailable()) {
+                //友盟数据埋点start
+                Log.i(TAG, "launchLottery=lotteryid_" + lottery.getLotteryId());
+                MobclickAgent.onEventValue(getActivity(), "lotteryid_" + lottery.getLotteryId(), null, +1);
+                //友盟数据埋点end
                 switch (lottery.getLotteryId()) {
                     case 15://亚洲妙妙彩
                         GameTableFragment.launchMmc(LotteryFragment.this,
@@ -374,7 +380,7 @@ public class LotteryFragment extends BaseFragment {
                         GameTableFragment.launch(LotteryFragment.this, lottery);
                         break;
                 }
-            else {
+            }else {
                 tipDialog(lottery.getStopReason());
             }
         } else {
@@ -394,6 +400,18 @@ public class LotteryFragment extends BaseFragment {
                     }
                 }
             };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(getActivity());
+    }
 
     @Override
     public void onDestroy() {

@@ -48,7 +48,7 @@ public class LinkManagement extends BaseFragment
     @BindView(R.id.link_list)
     RecyclerView linkList;
     Unbinder unbinder;
-
+    
     private LinkListAdapter linkListAdapter;
     private LinearLayoutManager linearLayoutManager;
     
@@ -135,9 +135,11 @@ public class LinkManagement extends BaseFragment
                 case GET_LINKS:
                     if (response != null /*&& response.getData() != null*/)
                     {
-                        ArrayList<RegLinksBean> list = new ArrayList<>();
+                        ArrayList<RegLinksBean> list;
                         if (response.getData() != null)
                             list = (ArrayList<RegLinksBean>) response.getData();
+                        else
+                            list = new ArrayList<>();
                         linkListAdapter.setData(list);
                         int userCount = 0;
                         for (RegLinksBean bean : list)

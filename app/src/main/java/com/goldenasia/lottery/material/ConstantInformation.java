@@ -214,6 +214,9 @@ public class ConstantInformation
         sLotteryLogo.put(37, new int[]{R.drawable.id_lottery_yz2fc, R.drawable.id_lottery_yz2fc_2});
         //PK10分分彩
         sLotteryLogo.put(38, new int[]{R.drawable.id_lottery_pk10ffc, R.drawable.id_lottery_pk10ffc_2});
+        //黑龙江11选5
+        sLotteryLogo.put(40, new int[]{R.drawable.id_lottery_hlj11x5, R.drawable.id_lottery_hlj11x5});
+        
         //百家乐
         sLotteryLogo.put(101, new int[]{R.drawable.id_lottery_mybjl, R.drawable.id_lottery_mybjl_rest});
         //幸运大转盘

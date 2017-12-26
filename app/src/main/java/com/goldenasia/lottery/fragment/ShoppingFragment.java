@@ -28,6 +28,7 @@ import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.Bet;
 import com.goldenasia.lottery.data.Lottery;
+import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.data.PayMoneyCommand;
 import com.goldenasia.lottery.data.Trace;
 import com.goldenasia.lottery.data.UserInfo;
@@ -40,6 +41,7 @@ import com.goldenasia.lottery.pattern.ChooseTips;
 import com.goldenasia.lottery.pattern.ShroudView;
 import com.goldenasia.lottery.pattern.TitleTimingSalesView;
 import com.goldenasia.lottery.user.UserCentre;
+import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.view.adapter.ShoppingAdapter;
 import com.umeng.analytics.MobclickAgent;
 
@@ -66,14 +68,15 @@ import in.srain.cube.views.ptr.PtrHandler;
  *
  * @author ACE
  */
-public class ShoppingFragment extends BaseFragment {
+public class ShoppingFragment extends BaseFragment
+{
     private static final String TAG = ShoppingFragment.class.getSimpleName();
     private static final int BUY_TRACE_ID = 1;
     private static final int ID_USER_INFO = 2;
     private static final int TRACK_TURNED_PAGE_LOGIN = 1;
     private static final int TRACK_TURNED_PAGE_RECHARGE = 2;
     private static final int TRACK_TURNED_PAGE_PICK = 3;
-
+    
     @BindView(R.id.load_more_list_view_ptr_frame)
     PtrClassicFrameLayout ptrFrameLayout;
     @BindView(R.id.load_more_list_view_container)
@@ -84,7 +87,7 @@ public class ShoppingFragment extends BaseFragment {
     Button shopping_buy;
     @BindView(R.id.floating_tips)
     Button floatingTips;
-
+    
     private TitleTimingSalesView timingView;
     private ShoppingAdapter adapter;
     private ShroudView shroudView;
@@ -93,66 +96,76 @@ public class ShoppingFragment extends BaseFragment {
     private ShoppingCart cart;
     private UserCentre userCentre;
     private boolean isInTraceState;
-
+    
     /**
      * 辅助用，投注异常时，上报到服务器的错误信息
      */
     private String unusualInfo;
-
+    
     private List<Ticket> ticketList = new ArrayList<>();
     private int start = 0;
     private int count = 10;
     private int touchSlop = 10;
     private double tempAmount = 0;
-
+    
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         return inflateView(inflater, container, "投注", R.layout.shopping_fragment);
     }
-
+    
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
         parameter();
-        if (lottery != null) {
+        if (lottery != null)
+        {
             initInfo();
             loadTimingView();
             loadListInfo();
             planPrompt();
         }
     }
-
-    private void parameter() {
+    
+    private void parameter()
+    {
         lottery = (Lottery) getArguments().getSerializable("lottery");
         userCentre = GoldenAsiaApp.getUserCentre();
         cart = ShoppingCart.getInstance();
     }
-
-    private void initInfo() {
+    
+    private void initInfo()
+    {
         cart.init(lottery);
         setTitle(lottery.getCname());
         executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
     }
-
+    
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
+    public void setUserVisibleHint(boolean isVisibleToUser)
+    {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+        if (isVisibleToUser)
+        {
             executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
         }
     }
-
-    private void loadTimingView() {
+    
+    private void loadTimingView()
+    {
         shroudView = new ShroudView(ShoppingFragment.this, findViewById(R.id.shopping_bottom), lottery);
         timingView = new TitleTimingSalesView(getActivity(), findViewById(R.id.shopping_top_timing), lottery);
-        timingView.setOnSalesIssueListener((String issue) -> {
+        timingView.setOnSalesIssueListener((String issue) ->
+        {
             shroudView.setData(issue);
         });
         chooseTips = new ChooseTips(findViewById(R.id.shopping_choosetip));
-//        shroudView.setChaseShowAndHide(lottery);
+        //        shroudView.setChaseShowAndHide(lottery);
     }
-
-    private void loadListInfo() {
+    
+    private void loadListInfo()
+    {
         // 为listview的创建一个headerview,注意，如果不加会影响到加载的footview的显示！
         View headerMarginView = new View(getContext());
         headerMarginView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -161,20 +174,26 @@ public class ShoppingFragment extends BaseFragment {
         shoppingList.setOnTouchListener(onTouchListener);
         floatingTips.setOnClickListener((View v) -> shoppingList.smoothScrollByOffset(10));
         adapter = new ShoppingAdapter(ticketList);
-        adapter.setOnDeleteClickListener((int position) -> {
+        adapter.setOnDeleteClickListener((int position) ->
+        {
             ticketList.remove(position);
             ShoppingCart.getInstance().deleteCode(position);
-            loadMoreListViewContainer.postDelayed(new Runnable() {
+            loadMoreListViewContainer.postDelayed(new Runnable()
+            {
                 @Override
-                public void run() {
-                    if (start == 0) {
+                public void run()
+                {
+                    if (start == 0)
+                    {
                         start++;
                     }
                     List startList = getMockData(start * 10, 1);
                     ticketList.addAll(startList);
-                    if (start * 10 > cart.getCodesMap().size()) {
+                    if (start * 10 > cart.getCodesMap().size())
+                    {
                         loadMoreListViewContainer.loadMoreFinish(false, false);
-                    } else {
+                    } else
+                    {
                         loadMoreListViewContainer.loadMoreFinish(false, true);
                     }
                     loadingMoreTips();
@@ -186,18 +205,23 @@ public class ShoppingFragment extends BaseFragment {
         shoppingList.setAdapter(adapter);
         //3.设置下拉刷新组件和事件监听
         ptrFrameLayout.setLoadingMinTime(300);
-        ptrFrameLayout.setPtrHandler(new PtrHandler() {
+        ptrFrameLayout.setPtrHandler(new PtrHandler()
+        {
             @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header)
+            {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, shoppingList, header);
             }
-
+            
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
+            public void onRefreshBegin(PtrFrameLayout frame)
+            {
                 //实现下拉刷新的功能
-                ptrFrameLayout.postDelayed(new Runnable() {
+                ptrFrameLayout.postDelayed(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         ticketList.clear();
                         start = 0;
                         ticketList.addAll(getMockData(start, count));
@@ -211,31 +235,39 @@ public class ShoppingFragment extends BaseFragment {
             }
         });
         //设置延时自动刷新数据
-        ptrFrameLayout.postDelayed(new Runnable() {
+        ptrFrameLayout.postDelayed(new Runnable()
+        {
             @Override
-            public void run() {
-                if(floatingTips!=null)
+            public void run()
+            {
+                if (floatingTips != null)
                     floatingTips.setVisibility(View.VISIBLE);
-                if(ptrFrameLayout!=null)
+                if (ptrFrameLayout != null)
                     ptrFrameLayout.autoRefresh(true);
             }
         }, 300);
-
+        
         //4.加载更多的组件
         loadMoreListViewContainer.setAutoLoadMore(true);//设置是否自动加载更多
         loadMoreListViewContainer.useDefaultHeader();
         //5.添加加载更多的事件监听
-        loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
+        loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler()
+        {
             @Override
-            public void onLoadMore(LoadMoreContainer loadMoreContainer) {
-                loadMoreListViewContainer.postDelayed(new Runnable() {
+            public void onLoadMore(LoadMoreContainer loadMoreContainer)
+            {
+                loadMoreListViewContainer.postDelayed(new Runnable()
+                {
                     @Override
-                    public void run() {
+                    public void run()
+                    {
                         start++;
                         ticketList.addAll(getMockData(start * 10, count));
-                        if (start * 10 > cart.getCodesMap().size()) {
+                        if (start * 10 > cart.getCodesMap().size())
+                        {
                             loadMoreListViewContainer.loadMoreFinish(false, false);
-                        } else {
+                        } else
+                        {
                             loadMoreListViewContainer.loadMoreFinish(false, true);
                         }
                         loadingMoreTips();
@@ -244,38 +276,47 @@ public class ShoppingFragment extends BaseFragment {
                 }, 300);
             }
         });
-
-        shroudView.setModeItemListener((multiple) -> {
+        
+        shroudView.setModeItemListener((multiple) ->
+        {
             cart.setPlanBuyRule(multiple);
             planPrompt();
         });
     }
-
-    View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-
+    
+    View.OnTouchListener onTouchListener = new View.OnTouchListener()
+    {
+        
         float lastY = 0f;
         float currentY = 0f;
         int lastDirection = 0;
         int currentDirection = 0;
-
+        
         @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            switch (event.getAction()) {
+        public boolean onTouch(View v, MotionEvent event)
+        {
+            switch (event.getAction())
+            {
                 case MotionEvent.ACTION_DOWN:
                     lastY = event.getY();
                     currentY = event.getY();
                     currentDirection = 0;
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    if (shoppingList.getFirstVisiblePosition() > 0) {
+                    if (shoppingList.getFirstVisiblePosition() > 0)
+                    {
                         float tmpCurrentY = event.getY();
-                        if (Math.abs(tmpCurrentY - lastY) > touchSlop) {
+                        if (Math.abs(tmpCurrentY - lastY) > touchSlop)
+                        {
                             currentY = tmpCurrentY;
                             currentDirection = (int) (currentY - lastY);
-                            if (lastDirection != currentDirection) {
-                                if (currentDirection < 0) {
+                            if (lastDirection != currentDirection)
+                            {
+                                if (currentDirection < 0)
+                                {
                                     animateHide();
-                                } else {
+                                } else
+                                {
                                     animateBack();
                                 }
                             }
@@ -292,11 +333,14 @@ public class ShoppingFragment extends BaseFragment {
             return false;
         }
     };
-
-    private void loadingMoreTips() {
-        if (ticketList.size() < cart.getCodesMap().size()) {
+    
+    private void loadingMoreTips()
+    {
+        if (ticketList.size() < cart.getCodesMap().size())
+        {
             animateBack();
-        } else {
+        } else
+        {
             animateHide();
         }
     }
@@ -323,16 +367,20 @@ public class ShoppingFragment extends BaseFragment {
             lastPosition = firstVisibleItem;
         }
     };*/
-
+    
     AnimatorSet backAnimatorSet;
-
-    private void animateBack() {
-        if (hideAnimatorSet != null && hideAnimatorSet.isRunning()) {
+    
+    private void animateBack()
+    {
+        if (hideAnimatorSet != null && hideAnimatorSet.isRunning())
+        {
             hideAnimatorSet.cancel();
         }
-        if (backAnimatorSet != null && backAnimatorSet.isRunning()) {
-
-        } else {
+        if (backAnimatorSet != null && backAnimatorSet.isRunning())
+        {
+        
+        } else
+        {
             backAnimatorSet = new AnimatorSet();
             ObjectAnimator footerAnimator = ObjectAnimator.ofFloat(floatingTips, "translationY", floatingTips
                     .getTranslationY(), 0f);
@@ -343,16 +391,20 @@ public class ShoppingFragment extends BaseFragment {
             backAnimatorSet.start();
         }
     }
-
+    
     AnimatorSet hideAnimatorSet;
-
-    private void animateHide() {
-        if (backAnimatorSet != null && backAnimatorSet.isRunning()) {
+    
+    private void animateHide()
+    {
+        if (backAnimatorSet != null && backAnimatorSet.isRunning())
+        {
             backAnimatorSet.cancel();
         }
-        if (hideAnimatorSet != null && hideAnimatorSet.isRunning()) {
-
-        } else {
+        if (hideAnimatorSet != null && hideAnimatorSet.isRunning())
+        {
+        
+        } else
+        {
             hideAnimatorSet = new AnimatorSet();
             ObjectAnimator footerAnimator = ObjectAnimator.ofFloat(floatingTips, "translationY", floatingTips
                     .getTranslationY(), floatingTips.getHeight());
@@ -363,7 +415,7 @@ public class ShoppingFragment extends BaseFragment {
             hideAnimatorSet.start();
         }
     }
-
+    
     /**
      * 做一个简单的内容数据
      *
@@ -371,23 +423,32 @@ public class ShoppingFragment extends BaseFragment {
      * @param number 每次拉取的数量
      * @return
      */
-    private List<Ticket> getMockData(int start, int number) {
+    private List<Ticket> getMockData(int start, int number)
+    {
         List<Ticket> cartTicket = cart.getCodesMap();
         List<Ticket> slist = new ArrayList<>();
         int size = cartTicket.size();
-        if (cartTicket.size() > 0) {
-            if (start == 0) {
-                if (size < number) {
+        if (cartTicket.size() > 0)
+        {
+            if (start == 0)
+            {
+                if (size < number)
+                {
                     slist.addAll(cartTicket.subList(start, size));
-                } else {
+                } else
+                {
                     slist.addAll(cartTicket.subList(start, number));
                 }
-            } else {
-                if (size > start + number) {
+            } else
+            {
+                if (size > start + number)
+                {
                     slist.addAll(cartTicket.subList(start, start + number));
-                } else if ((size - start) > 0 && number > 1) {
+                } else if ((size - start) > 0 && number > 1)
+                {
                     slist.addAll(cartTicket.subList(start, size));
-                } else if (number == 1 && size - (start + number) > 0) {
+                } else if (number == 1 && size - (start + number) > 0)
+                {
                     slist.addAll(cartTicket.subList(start, start + number));
                 }
             }
@@ -395,83 +456,99 @@ public class ShoppingFragment extends BaseFragment {
         }
         return new ArrayList<>();
     }
-
-    public void planPrompt() {
+    
+    public void planPrompt()
+    {
         chooseTips.setTipsText(String.format("%d", cart.getPlanNotes()), String.format("%.3f", cart.getPlanAmount()),
                 String.format("%.3f", userCentre.getUserInfo().getBalance()));
     }
-
+    
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
-        if(ptrFrameLayout!=null)
+        if (ptrFrameLayout != null)
             ptrFrameLayout.autoRefresh(true);
     }
-
+    
     @Override
-    public void onDestroyView() {
+    public void onDestroyView()
+    {
         /*if (timingView != null){
             timingView.stop();
         }*/
         super.onDestroyView();
     }
-
+    
     @OnClick(R.id.random)
-    public void random() {
-
+    public void random()
+    {
+    
     }
-
+    
     @OnClick(R.id.reelection)
-    public void reelection() {
+    public void reelection()
+    {
         getActivity().finish();
     }
-
+    
     @OnClick(R.id.emptied)
-    public void clear() {
+    public void clear()
+    {
         ShoppingCart.getInstance().clear();
         adapter.setData(new ArrayList<>());
         adapter.notifyDataSetChanged();
         planPrompt();
     }
-
+    
     @OnClick(R.id.lottery_shopping_buy)
-    public void total() {
-        if (timingView.getIssue() == null || timingView.getIssue().length() <= 0) {
+    public void total()
+    {
+        if (timingView.getIssue() == null || timingView.getIssue().length() <= 0)
+        {
             tipDialog("温馨提示", "请稍等，正在加载销售奖期信息……", 0);
             return;
         }
         // ①判断：购物车中是否有投注
-        if (!cart.isEmpty()) {
+        if (!cart.isEmpty())
+        {
             // ②判断：用户是否登录——被动登录
-            if (userCentre.isLogin()) {
+            if (userCentre.isLogin())
+            {
                 // ③判断：用户的余额是否满足投注需求
-                if (cart.getPlanAmount() <= userCentre.getUserInfo().getBalance()) {
+                if (cart.getPlanAmount() <= userCentre.getUserInfo().getBalance())
+                {
                     // ④界面跳转：跳转到追期和倍投的设置界面
                     verificationData();
-                } else {
+                } else
+                {
                     // 提示用户：充值去；界面跳转：用户充值界面
                     tipDialog("温馨提示", "请充值", TRACK_TURNED_PAGE_RECHARGE);
                 }
-            } else {
+            } else
+            {
                 // 提示用户：登录去；界面跳转：用户登录界面
                 tipDialog("温馨提示", "请重新登录", TRACK_TURNED_PAGE_LOGIN);
             }
-        } else {
+        } else
+        {
             // 提示用户需要选择一注
             tipDialog("温馨提示", "您需要选择一注", TRACK_TURNED_PAGE_PICK);
         }
     }
-
+    
     /**
      * 数据验证
      */
-    private void verificationData() {
+    private void verificationData()
+    {
         Log.i(TAG, cart.getCodeStr());
-
+        
         final PayMoneyCommand command = new PayMoneyCommand();
         command.setLotteryId(lottery.getLotteryId());
         command.setIssue(timingView.getIssue());
-        command.setPrizeMode(cart.getPrizeMode()>0?1:0);/*!(userCentre.getBonusMode(lottery.getLotteryId()) == 0)*/
+        command.setPrizeMode(cart.getPrizeMode() > 0 ? 1 : 0);/*!(userCentre.getBonusMode(lottery.getLotteryId()) ==
+        0)*/
         command.setModes(cart.getLucreMode().getModes());
         command.setCodes(cart.getCodeStr());
         command.setMultiple(cart.getMultiple());
@@ -479,14 +556,15 @@ public class ShoppingFragment extends BaseFragment {
         command.setStopOnWin(cart.isStopOnWin());
         command.setToken(ConstantInformation.randomToken());
         BigDecimal becimal = new BigDecimal(cart.getPlanAmount());
-
+        
         double planAmount = becimal.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
         String msg = getActivity().getResources().getString(R.string.is_shopping_list_tip);
-        msg = StringUtils.replaceEach(msg, new String[]{"NOTE", "UNIT", "DOUBLE", "MONEY"}, new
-                String[]{String.valueOf(cart.getPlanNotes()), cart.getLucreMode().getName
-                (), String.valueOf(cart.getMultiple()), String.format("%.3f", planAmount)});
-
-        if (!timingView.getIssue().isEmpty()) {
+        msg = StringUtils.replaceEach(msg, new String[]{"NOTE", "UNIT", "DOUBLE", "MONEY"}, new String[]{String
+                .valueOf(cart.getPlanNotes()), cart.getLucreMode().getName(), String.valueOf(cart.getMultiple()),
+                String.format("%.3f", planAmount)});
+        
+        if (!timingView.getIssue().isEmpty())
+        {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_buy_succeed, null);
             ImageView icon = (ImageView) view.findViewById(R.id.icon);
             icon.setImageResource(ConstantInformation.getLotteryLogo(lottery.getLotteryId(), true));
@@ -496,7 +574,7 @@ public class ShoppingFragment extends BaseFragment {
             issue.setText(timingView.getIssue());
             TextView info = (TextView) view.findViewById(R.id.info);
             info.setText(Html.fromHtml(msg).toString());
-
+            
             CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
             builder.setContentView(view);
             builder.setTitle("温馨提示");
@@ -513,12 +591,14 @@ public class ShoppingFragment extends BaseFragment {
             builder.create().show();
         }
     }
-
-    private void receiptOrderDialog(final String orderTip) {
+    
+    private void receiptOrderDialog(final String orderTip)
+    {
         CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
         builder.setMessage(orderTip.isEmpty() ? "投注失败!请重新投注" : "订单：" + orderTip);
         builder.setTitle(orderTip.isEmpty() ? "投注失败!" : "投注成功");
-        if (!orderTip.isEmpty()) {
+        if (!orderTip.isEmpty())
+        {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_buy_succeed, null);
             ImageView icon = (ImageView) view.findViewById(R.id.icon);
             icon.setImageResource(ConstantInformation.getLotteryLogo(lottery.getLotteryId(), true));
@@ -532,20 +612,23 @@ public class ShoppingFragment extends BaseFragment {
                     String[]{orderTip, String.format("%.3f", tempAmount)});
             info.setText(Html.fromHtml(isBuySucceedTips));
             //info.setText("订单编号：" + orderTip + "\n\n总金额：￥" + tempAmount);
-
+            
             builder.setContentView(view);
         }
-
+        
         builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
         builder.setPositiveButton("查看投注记录", (dialog, which) ->
         {
             dialog.dismiss();
-            if (!orderTip.isEmpty()) {
-                if (isInTraceState) {
+            if (!orderTip.isEmpty())
+            {
+                if (isInTraceState)
+                {
                     Trace trace = new Trace();
                     trace.setWrapId(orderTip);
                     BetOrTraceDetailFragment.launch(ShoppingFragment.this, trace);
-                } else {
+                } else
+                {
                     Bet bet = new Bet();
                     bet.setWrapId(orderTip);
                     BetOrTraceDetailFragment.launch(ShoppingFragment.this, bet);
@@ -553,7 +636,7 @@ public class ShoppingFragment extends BaseFragment {
             }
             getActivity().finish();
         });
-
+        
         builder.setNegativeButton("继续投注", (dialog, which) ->
         {
             getActivity().finish();
@@ -563,18 +646,21 @@ public class ShoppingFragment extends BaseFragment {
         dialog.setOnDismissListener((d) -> getActivity().finish());
         dialog.show();
     }
-
-    private void tipDialog(String title, String msg, final int track) {
+    
+    private void tipDialog(String title, String msg, final int track)
+    {
         CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
         builder.setMessage(msg);
         builder.setTitle(title);
-        switch (track) {
+        switch (track)
+        {
             case TRACK_TURNED_PAGE_RECHARGE:
                 builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
                 builder.setNegativeButton("知道了", (dialog, which) ->
                 {
                     dialog.dismiss();
-                    if (track == TRACK_TURNED_PAGE_PICK) {
+                    if (track == TRACK_TURNED_PAGE_PICK)
+                    {
                         getActivity().finish();
                     }
                 });
@@ -586,9 +672,7 @@ public class ShoppingFragment extends BaseFragment {
                 break;
             default:
                 builder.setLayoutSet(DialogLayout.SINGLE);
-                builder.setPositiveButton("知道了", (dialog, which) ->
-                    dialog.dismiss()
-                );
+                builder.setPositiveButton("知道了", (dialog, which) -> dialog.dismiss());
         }
         builder.create().show();
     }
@@ -611,11 +695,14 @@ public class ShoppingFragment extends BaseFragment {
     private RestCallback restCallback = new RestCallback()
     {
         @Override
-        public boolean onRestComplete(RestRequest request, RestResponse response) {
-            switch (request.getId()) {
+        public boolean onRestComplete(RestRequest request, RestResponse response)
+        {
+            switch (request.getId())
+            {
                 case BUY_TRACE_ID:
                     String jsonStr = (String) response.getData();
-                    if (jsonStr != null) {
+                    if (jsonStr != null)
+                    {
                         tempAmount = cart.getPlanAmount();
                         cart.clear();
                         ticketList.clear();
@@ -632,24 +719,28 @@ public class ShoppingFragment extends BaseFragment {
                 case ID_USER_INFO:
                     UserInfo userInfo = ((UserInfo) response.getData());
                     userCentre.setUserInfo(userInfo);
-                    if (userInfo != null) {
+                    if (userInfo != null)
+                    {
                         planPrompt();
                     }
                     break;
             }
             return true;
         }
-
+        
         @Override
-        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+        public boolean onRestError(RestRequest request, int errCode, String errDesc)
+        {
             shopping_buy.setEnabled(true);
             //shopping_buy.setBackgroundResource(R.drawable.button_type);
-            if (errCode == 7006) {
+            if (errCode == 7006)
+            {
                 CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
                 dialog.setCancelable(false);
                 dialog.show();
                 return true;
-            } else if (errCode == 2220) {
+            } else if (errCode == 2220)
+            {
                 showToast(errDesc, Toast.LENGTH_LONG);
                 MobclickAgent.reportError(getActivity(), unusualInfo);
                 Log.e(TAG, unusualInfo);
@@ -657,9 +748,10 @@ public class ShoppingFragment extends BaseFragment {
             }
             return false;
         }
-
+        
         @Override
-        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state)
+        {
         }
     };
 }

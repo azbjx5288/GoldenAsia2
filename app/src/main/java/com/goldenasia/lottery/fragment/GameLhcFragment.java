@@ -44,18 +44,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * 选号界面
  * Created by Alashi on 2016/2/17.
  */
-public class GameLhcFragment extends BaseFragment implements OnSelectedListener {
+public class GameLhcFragment extends BaseFragment implements OnSelectedListener
+{
     private static final String TAG = GameLhcFragment.class.getSimpleName();
     private static final int FLAG_MAX_PRIZE = 1;
     private static final int FLAG_MIN_PRIZE = 0;
-
+    
     WebView webView;
     @BindView(R.id.pick_game_layout)
     LinearLayout pickGameLayout;
@@ -75,7 +75,7 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
     RelativeLayout prizeModeLayout;
     @BindView(R.id.prize_mode_show)
     TextView prizeModeShow;
-
+    
     private TitleTimingView timingView;
     private Lottery lottery;
     private LhcGame lhcGame;
@@ -84,56 +84,67 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
     private RadioGroup prizeGroup;
     private RadioButton maxButton;
     private RadioButton minButton;
-
+    
     private ShoppingCart shoppingCart;
     private int prizeMode = -1;
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
+            savedInstanceState)
+    {
         return inflater.inflate(R.layout.game_fragment, container, false);
     }
-
+    
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
         applyArguments();
         loadTimingView();
         initRandom();
         initPrizeMode();
     }
-
-    private void applyArguments() {
+    
+    private void applyArguments()
+    {
         shoppingCart = ShoppingCart.getInstance();
         lottery = (Lottery) getArguments().getSerializable("lottery");
     }
-
-    private void loadTimingView() {
+    
+    private void loadTimingView()
+    {
         timingView = new TitleTimingView(getActivity(), findViewById(R.id.pick_title_view), lottery);
     }
-
-    private void initRandom() {
-
+    
+    private void initRandom()
+    {
+    
     }
-
-    private void initPrizeMode() {
+    
+    private void initPrizeMode()
+    {
         View rootView = LayoutInflater.from(getActivity()).inflate(R.layout.popup_prize_mode, null);
         bubbleLinearLayout = (BubbleLinearLayout) rootView.findViewById(R.id.popup_bubble);
         bubblePopupWindow = new BubblePopupWindow(rootView, bubbleLinearLayout);
         prizeGroup = (RadioGroup) rootView.findViewById(R.id.prize_group);
         maxButton = (RadioButton) rootView.findViewById(R.id.max);
         minButton = (RadioButton) rootView.findViewById(R.id.min);
-
-        prizeModeLayout.setOnClickListener(new View.OnClickListener() {
+        
+        prizeModeLayout.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 bubblePopupWindow.showArrowTo(v, BubbleStyle.ArrowDirection.Down);
             }
         });
-        prizeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        prizeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
             @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId) {
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId)
+            {
+                switch (checkedId)
+                {
                     case R.id.max:
                         changePrizeMode(FLAG_MIN_PRIZE, lhcGame.getMethod().getMaxRebate(), lhcGame.getMethod()
                                 .getMaxRebatePrize());
@@ -146,36 +157,48 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
             }
         });
     }
-
-    private void changePrizeMode(int prizeMode, float rebate, float rebatePrize) {
+    
+    private void changePrizeMode(int prizeMode, float rebate, float rebatePrize)
+    {
         this.prizeMode = prizeMode;
         prizeModeShow.setText(rebatePrize + "/" + String.format("%.1f%%", rebate * 100));
         bubblePopupWindow.dismiss();
     }
-
-    private void initPrizes() {
+    
+    private void initPrizes()
+    {
         prizeGroup.check(R.id.min);
-        prizeModeShow.setText(lhcGame.getMethod().getMinRebatePrize() + "/" + String.format("%.1f%%", lhcGame.getMethod().getMinRebate() * 100));
-        maxButton.setText(lhcGame.getMethod().getMaxRebatePrize() + "/" + String.format("%.1f%%", lhcGame.getMethod().getMaxRebate() * 100));
-        minButton.setText(lhcGame.getMethod().getMinRebatePrize() + "/" + String.format("%.1f%%", lhcGame.getMethod().getMinRebate() * 100));
+        prizeModeShow.setText(lhcGame.getMethod().getMinRebatePrize() + "/" + String.format("%.1f%%", lhcGame
+                .getMethod().getMinRebate() * 100));
+        maxButton.setText(lhcGame.getMethod().getMaxRebatePrize() + "/" + String.format("%.1f%%", lhcGame.getMethod()
+                .getMaxRebate() * 100));
+        minButton.setText(lhcGame.getMethod().getMinRebatePrize() + "/" + String.format("%.1f%%", lhcGame.getMethod()
+                .getMinRebate() * 100));
         if (lhcGame.getMethod().getMinRebate() == lhcGame.getMethod().getMaxRebate())
             maxButton.setVisibility(View.GONE);
         else
             maxButton.setVisibility(View.VISIBLE);
     }
-
-    private void loadWebViewIfNeed() {
-        if (webView != null) {
+    
+    private void loadWebViewIfNeed()
+    {
+        if (webView != null)
+        {
             return;
         }
-        lotteryChooseBottom.postDelayed(new Runnable() {
+        lotteryChooseBottom.postDelayed(new Runnable()
+        {
             @Override
-            public void run() {
-                synchronized (getActivity()) {
-                    if (isFinishing()) {
+            public void run()
+            {
+                synchronized (getActivity())
+                {
+                    if (isFinishing())
+                    {
                         return;
                     }
-                    if (webView != null) {
+                    if (webView != null)
+                    {
                         update2WebView();
                         return;
                     }
@@ -187,82 +210,100 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
             }
         }, 0);
     }
-
+    
     @Override
-    public void onPause() {
-        if (webView != null) {
+    public void onPause()
+    {
+        if (webView != null)
+        {
             webView.onPause();
         }
         super.onPause();
     }
-
+    
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
-        if (webView != null) {
+        if (webView != null)
+        {
             webView.onResume();
         }
     }
-
+    
     @Override
-    public void onDestroyView() {
-        if (timingView != null) {
+    public void onDestroyView()
+    {
+        if (timingView != null)
+        {
             timingView.stop();
         }
-        if (lhcGame != null) {
+        if (lhcGame != null)
+        {
             lhcGame.destroy();
         }
-        if (webView != null) {
+        if (webView != null)
+        {
             webView.destroy();
         }
         if (shoppingCart != null)
             shoppingCart.setPrizeMode(-1);
         super.onDestroyView();
     }
-
+    
     /**
      * 清空
      */
     @OnClick(R.id.pick_clear)
-    public void onClearPick() {
+    public void onClearPick()
+    {
         //        lhcGame.getSubmitArray();
-        if (lhcGame != null) {
+        if (lhcGame != null)
+        {
             lhcGame.onClearPick(lhcGame);
         }
     }
-
+    
     /**
      * 随机
      */
     @OnClick(R.id.pick_random)
-    public void onRandom() {
-        if (lhcGame != null) {
+    public void onRandom()
+    {
+        if (lhcGame != null)
+        {
             lhcGame.onRandomCodes();
         }
     }
-
+    
     /**
      * 投注
      */
     @OnClick(R.id.choose_done_button)
-    public void onChooseDone() {
-        if (lhcGame == null) {
+    public void onChooseDone()
+    {
+        if (lhcGame == null)
+        {
             return;
         }
-        if (shoppingCart.getCodesMap().size() != 0 &&shoppingCart.getPrizeMode() != -1 && prizeMode != shoppingCart.getPrizeMode()) {
+        if (shoppingCart.getCodesMap().size() != 0 && shoppingCart.getPrizeMode() != -1 && prizeMode != shoppingCart
+                .getPrizeMode())
+        {
             ToastUtils.showShortToast(getActivity(), "本次投注与购物车订单的奖金模式不一致，需分开投注");
             return;
         }
-        if (lhcGame.getSingleNum() > 0 && lhcGame.isExchange() == true) {
+        if (lhcGame.getSingleNum() > 0 && lhcGame.isExchange() == true)
+        {
             String codes = lhcGame.getSubmitCodes();
             Ticket ticket = new Ticket();
             ticket.setChooseMethod(lhcGame.getMethod());
             ticket.setChooseNotes(lhcGame.getSingleNum());
             ticket.setCodes(codes);
-
+            
             shoppingCart.init(lottery);
             shoppingCart.addTicket(ticket);
-        } else if (lhcGame.getSingleNum() > 0 && !lhcGame.isExchange()) {
+        } else if (lhcGame.getSingleNum() > 0 && !lhcGame.isExchange())
+        {
             shoppingCart.init(lottery);
             List<String> codes = lhcGame.getSubmitArray();
             int index = 0;
@@ -270,7 +311,8 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
             int dealSize = 2000;
             List<Future<List<Ticket>>> futures = new ArrayList<>(5);
             //分配
-            for (int i = 0; i < 5; i++, index += dealSize) {
+            for (int i = 0; i < 5; i++, index += dealSize)
+            {
                 int start = index;
                 if (start >= codes.size())
                     break;
@@ -278,15 +320,18 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
                 end = end > codes.size() ? codes.size() : end;
                 futures.add(ex.submit(new Task(codes, start, end)));
             }
-            try {
+            try
+            {
                 //处理 合并操作
                 List<Ticket> result = new ArrayList<>();
-                for (Future<List<Ticket>> future : futures) {
+                for (Future<List<Ticket>> future : futures)
+                {
                     result.addAll(future.get());
                 }
                 shoppingCart.addTicketList(result);
                 lhcGame.onClearPick(lhcGame);
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 MobclickAgent.reportError(getActivity(), TAG + "->" + e.getMessage());
             }
         }
@@ -296,10 +341,12 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
         shoppingCart.setPrizeMode(prizeMode);
         launchFragmentForResult(ShoppingFragment.class, bundle, 1);
     }
-
-    private void initWebView() {
+    
+    private void initWebView()
+    {
         webView.setOverScrollMode(WebView.OVER_SCROLL_ALWAYS);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
         }
         WebSettings webSettings = webView.getSettings();
@@ -312,62 +359,78 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-
+        
         webSettings.setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JsInterface(), "androidJs");
     }
-
+    
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if (lhcGame != null) {
+        if (lhcGame != null)
+        {
             lhcGame.reset();
         }
     }
-
-    private class JsInterface {
+    
+    private class JsInterface
+    {
         @JavascriptInterface
-        public String getData() {
-            if (lhcGame == null) {
+        public String getData()
+        {
+            if (lhcGame == null)
+            {
                 return "";
             }
             return lhcGame.getWebViewCode();
         }
-
+        
         @JavascriptInterface
-        public String getMethodName() {
-            if (lhcGame == null) {
+        public String getMethodName()
+        {
+            if (lhcGame == null)
+            {
                 return "";
             }
             return lhcGame.getMethod().getName();
         }
-
+        
         @JavascriptInterface
-        public void result(int singleNum, boolean isDup) {
+        public void result(int singleNum, boolean isDup)
+        {
             Log.d(TAG, "result() called with: " + "singleNum = [" + singleNum + "], isDup = [" + isDup + "]");
-            if (lhcGame == null) {
+            if (lhcGame == null)
+            {
                 return;
             }
             lhcGame.setNumState(singleNum, isDup);
             webView.post(updatePickNoticeRunnable);
         }
     }
-
-    private void update2WebView() {
-        if (webView == null) {
+    
+    private void update2WebView()
+    {
+        if (webView == null)
+        {
             return;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+        {
             webView.evaluateJavascript("calculate();", null);
-        } else {
+        } else
+        {
             webView.loadUrl("javascript:calculate();");
         }
     }
-
-    private Runnable updatePickNoticeRunnable = new Runnable() {
+    
+    private Runnable updatePickNoticeRunnable = new Runnable()
+    {
         @Override
-        public void run() {
-            if (lhcGame == null) {
+        public void run()
+        {
+            if (lhcGame == null)
+            {
                 return;
             }
             if (pickNotice != null)
@@ -381,24 +444,30 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
             }
         }
     };
-
-    public LhcGame getLhcGame() {
+    
+    public LhcGame getLhcGame()
+    {
         return lhcGame;
     }
-
-    public void setLhcGame(LhcGame lhcGame) {
+    
+    public void setLhcGame(LhcGame lhcGame)
+    {
         this.lhcGame = lhcGame;
     }
-
-    public void removeViews() {
-        if (pickGameLayout != null && pickGameLayout.getChildCount() > 0) {
+    
+    public void removeViews()
+    {
+        if (pickGameLayout != null && pickGameLayout.getChildCount() > 0)
+        {
             pickGameLayout.removeAllViews();
         }
     }
-
-    public void changeGameMethod() {
+    
+    public void changeGameMethod()
+    {
         pickNotice.setText("共0注");
-        if(chooseDoneButton!=null) {
+        if (chooseDoneButton != null)
+        {
             chooseDoneButton.setEnabled(!shoppingCart.isEmpty());
         }
         lhcGame.inflate(pickGameLayout);
@@ -406,34 +475,40 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener 
         loadWebViewIfNeed();
         initPrizes();
     }
-
+    
     @Override
-    public void onChanged(Game game) {
-
+    public void onChanged(Game game)
+    {
+    
     }
-
+    
     @Override
-    public void onChanged(LhcGame lhcGame) {
+    public void onChanged(LhcGame lhcGame)
+    {
         loadWebViewIfNeed();
         update2WebView();
     }
-
-    private class Task implements Callable<List<Ticket>> {
-
+    
+    private class Task implements Callable<List<Ticket>>
+    {
+        
         private List<String> list;
         private int start;
         private int end;
-
-        public Task(List<String> list, int start, int end) {
+        
+        public Task(List<String> list, int start, int end)
+        {
             this.list = list;
             this.start = start;
             this.end = end;
         }
-
+        
         @Override
-        public List<Ticket> call() throws Exception {
+        public List<Ticket> call() throws Exception
+        {
             List<Ticket> retList = new ArrayList<>();
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < end; i++)
+            {
                 //你的处理逻辑
                 Ticket ticket = new Ticket();
                 ticket.setChooseMethod(lhcGame.getMethod());
