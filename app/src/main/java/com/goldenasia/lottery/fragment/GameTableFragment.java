@@ -35,6 +35,8 @@ import com.goldenasia.lottery.data.MethodListCommand;
 import com.goldenasia.lottery.game.GameConfig;
 import com.goldenasia.lottery.game.MenuController;
 import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.material.MethodQueue;
 import com.goldenasia.lottery.pattern.CustomViewPager;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.view.TableMenu;
@@ -80,6 +82,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     private String[] radiotitle;
     private Lottery lottery;
     private List<Fragment> fragments = new ArrayList<>();
+    private MethodQueue regularMethods;
     
     @OnClick(R.id.trend)
     public void openTrend()
@@ -151,6 +154,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         initTab();
         initMenu();
         loadMenu();
+        loadMethods();
     }
     
     /**
@@ -214,6 +218,21 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 this);
     }
     
+    private void loadMethods()
+    {
+        try
+        {
+            regularMethods = (MethodQueue) SharedPreferencesUtils.getObject(getActivity(),
+                    ConstantInformation.REGULAR_METHODS, GoldenAsiaApp.getUserCentre().getUserID() + "_" + lottery
+                            .getLotteryId());
+        } catch (Exception e)
+        {
+            Log.d(TAG, "loadMethods: fail to load methods.");
+        }
+        if (regularMethods == null)
+            regularMethods = new MethodQueue(9);
+    }
+    
     private void saveMethod2Xml(Method method)
     {
         String key = "game_config_method_" + GoldenAsiaApp.getUserCentre().getUserID() + "_" + lottery.getLotteryId();
@@ -254,6 +273,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             gameFragment.getGame().destroy();
             menuController.addPreference(method);
             saveMethod2Xml(method);
+            saveRegularMethods(method);
             //manualInputBotton.setText("手工录入");
             gameFragment.getGame().setExchange(true);
         }
@@ -281,12 +301,18 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             gameLhcFragment.getLhcGame().destroy();
             menuController.addPreference(method);
             saveMethod2Xml(method);
+            saveRegularMethods(method);
         }
         menuController.setCurrentMethod(method);
         titleView.setText(method.getCname());
         gameLhcFragment.setLhcGame(GameConfig.createLhcGame(method));
         gameLhcFragment.changeGameMethod();
         trend.setVisibility(View.VISIBLE);
+    }
+    
+    private void saveRegularMethods(Method method)
+    {
+        regularMethods.offer(method);
     }
     
     private void updateMenu(ArrayList<MethodList> methodList)
@@ -392,6 +418,14 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     @Override
     public void onDestroyView()
     {
+        try
+        {
+            SharedPreferencesUtils.putObject(getActivity(), ConstantInformation.REGULAR_METHODS, GoldenAsiaApp
+                    .getUserCentre().getUserID() + "_" + lottery.getLotteryId(), regularMethods);
+        } catch (Exception e)
+        {
+            Log.d(TAG, "onDestroyView: fail to save methods.");
+        }
         super.onDestroyView();
     }
     
@@ -470,7 +504,6 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     {
     
     }
-    
     
     @Override
     public void onClickMethod(Method method)

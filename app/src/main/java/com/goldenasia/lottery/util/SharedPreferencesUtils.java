@@ -83,7 +83,7 @@ public class SharedPreferencesUtils
                         Base64.DEFAULT))).apply();
             } catch (IOException e)
             {
-                Log.e("", "putObject failed. ");
+                Log.e("", "Put object failed. ");
             }
         } else
             throw new Exception("User must implements Serializable");

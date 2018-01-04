@@ -1,5 +1,7 @@
 package com.goldenasia.lottery.data;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,7 +10,8 @@ import java.io.Serializable;
  * 玩法信息
  * Created by ACE-PC on 2016/1/22.
  */
-public class Method implements Serializable{
+public class Method implements Serializable, Comparable
+{
     @SerializedName("method_id")
     private int methodId;
     @SerializedName("lottery_id")
@@ -33,68 +36,84 @@ public class Method implements Serializable{
     private float MinRebate;
     @SerializedName("min_rebate_prize")
     private float MinRebatePrize;
-
-    public int getMethodId() {
+    
+    public int getMethodId()
+    {
         return methodId;
     }
-
-    public void setMethodId(int methodId) {
+    
+    public void setMethodId(int methodId)
+    {
         this.methodId = methodId;
     }
-
-    public int getLotteryId() {
+    
+    public int getLotteryId()
+    {
         return lotteryId;
     }
-
-    public void setLotteryId(int lotteryId) {
+    
+    public void setLotteryId(int lotteryId)
+    {
         this.lotteryId = lotteryId;
     }
-
-    public String getName() {
+    
+    public String getName()
+    {
         return name;
     }
-
-    public void setName(String name) {
+    
+    public void setName(String name)
+    {
         this.name = name;
     }
-
-    public String getCname() {
+    
+    public String getCname()
+    {
         return cname;
     }
-
-    public void setCname(String cname) {
+    
+    public void setCname(String cname)
+    {
         this.cname = cname;
     }
-
-    public int getMgId() {
+    
+    public int getMgId()
+    {
         return mgId;
     }
-
-    public void setMgId(int mgId) {
+    
+    public void setMgId(int mgId)
+    {
         this.mgId = mgId;
     }
-
-    public String getMgName() {
+    
+    public String getMgName()
+    {
         return mgName;
     }
-
-    public void setMgName(String mgName) {
+    
+    public void setMgName(String mgName)
+    {
         this.mgName = mgName;
     }
-
-    public boolean isCanInput() {
+    
+    public boolean isCanInput()
+    {
         return canInput;
     }
-
-    public void setCanInput(boolean canInput) {
+    
+    public void setCanInput(boolean canInput)
+    {
         this.canInput = canInput;
     }
-
-    public int getLevels() {
+    
+    public int getLevels()
+    {
         return levels;
     }
-
-    public void setLevels(int levels) {
+    
+    public void setLevels(int levels)
+    {
         this.levels = levels;
     }
     
@@ -136,5 +155,13 @@ public class Method implements Serializable{
     public void setMinRebatePrize(float minRebatePrize)
     {
         MinRebatePrize = minRebatePrize;
+    }
+    
+    @Override
+    public int compareTo(@NonNull Object o)
+    {
+        if (o instanceof Method && this.cname.equals(((Method) o).cname))
+            return 0;
+        return 1;
     }
 }
