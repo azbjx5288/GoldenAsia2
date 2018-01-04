@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Lottery;
-import com.goldenasia.lottery.fragment.LoadingDialog;
 
 /**
  * Created by ACE-PC on 2016/9/29.
@@ -142,6 +141,34 @@ public class ManualInputView {
                         "1、每注各组成员之间用空格[ ]或TAB[]隔开。\n" +
                         "2、各注号码之间用间隔符隔开：逗号[,] 分号[；]竖线[|]\n" +
                         "范例："+colsy+"\n";
+                break;
+            case 8: //PK10
+                String colPK10="";
+                switch (column){
+                    case 1:
+                        colPK10="1"+"\n"+"2";
+                        break;
+                    case 2:
+                        colPK10="1,2"+"\n"+"1,2";
+                        break;
+                    case 3:
+                        colPK10="1,2,3"+"\n"+"1,2,3";
+                        break;
+                    case 4:
+                        colPK10="1,2,3,4"+"\n"+"1,2,3,4";
+                        break;
+                    case 5:
+                        colPK10="1,2,3,4,5" +"\n"+
+                                "1,2,3,4,5";
+                        break;
+                }
+                hintStr = "提示：\n" +
+                        "请把您已有的大底号码复制或者输入到左边文本框中。\n" +
+                        "每注号码之间必须用换行隔开,\n" +
+                        "每注号码每位之间必须使用 空格作为分隔。\n"+
+                        "仅支持单式,最高可投10万注。\n"+
+                        "范例：\n"
+                        +colPK10+"\n";
                 break;
         }
         inputEditText.setHint(hintStr);

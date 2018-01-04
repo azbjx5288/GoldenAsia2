@@ -153,127 +153,127 @@ public class Pk10CommonGame extends Game {
     //猜前五 QWMC
     public static void QWMC(Game game) {
         createPicklayout(game, new String[]{"冠军", "亚军", "季军", "第四名", "第五名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //猜后五 HWMC
     public static void HWMC(Game game) {
         createPicklayout(game, new String[]{"第六名", "第七名", "第八名", "第九名", "第十名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //猜车位 CCW
     public static void CCW(Game game) {
         createPicklayout(game, new String[]{"冠军", "亚军", "季军", "第四名", "第五名", "第六名", "第七名", "第八名", "第九名", "第十名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前二名直选 QEMZX
     public static void QEMZX(Game game) {
         createPicklayout(game, new String[]{"冠军", "亚军"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后二名直选 HEMZX
     public static void HEMZX(Game game) {
         createPicklayout(game, new String[]{"第九名", "第十名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前二名组选 QEMZUX
     public static void QEMZUX(Game game) {
         createPicklayout(game, new String[]{"前二"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后二名组选 HEMZUX
     public static void HEMZUX(Game game) {
         createPicklayout(game, new String[]{"后二"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前三名直选 QSMZX
     public static void QSMZX(Game game) {
         createPicklayout(game, new String[]{"冠军", "亚军", "季军"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后三名直选 HSMZX
     public static void HSMZX(Game game) {
         createPicklayout(game, new String[]{"第八名", "第九名", "第十名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前三名组六 QSMZL
     public static void QSMZL(Game game) {
         createPicklayout(game, new String[]{"前三"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后三名组六 HSMZL
     public static void HSMZL(Game game) {
         createPicklayout(game, new String[]{"后三"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前四名直选 QSIMZX
     public static void QSIMZX(Game game) {
         createPicklayout(game, new String[]{"冠军", "亚军", "季军", "第四名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后四名直选 HSIMZX
     public static void HSIMZX(Game game) {
         createPicklayout(game, new String[]{"第七名", "第八名", "第九名", "第十名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前四名组选 QSIMZUX
     public static void QSIMZUX(Game game) {
         createPicklayout(game, new String[]{"前四"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后四名组选 HSIMZUX
     public static void HSIMZUX(Game game) {
         createPicklayout(game, new String[]{"后四"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前五名直选 QWMZX
     public static void QWMZX(Game game) {
         createPicklayout(game, new String[]{"冠军", "亚军", "季军", "第四名", "第五名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后五名直选 HWMZX
     public static void HWMZX(Game game) {
         createPicklayout(game, new String[]{"第六名", "第七名", "第八名", "第九名", "第十名"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前五名组选 QWMZUX
     public static void QWMZUX(Game game) {
         createPicklayout(game, new String[]{"前五"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后五名组选 HWMZUX
     public static void HWMZUX(Game game) {
         createPicklayout(game, new String[]{"后五"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //前三名不定位 QSMBDW
     public static void QSMBDW(Game game) {
         createPicklayout(game, new String[]{"前三"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //后三名不定位 HSMBDW
     public static void HSMBDW(Game game) {
         createPicklayout(game, new String[]{"后三"});
-        //game.setSupportInput(true);
+        game.setSupportInput(true);
     }
 
     //猜和值
@@ -281,6 +281,112 @@ public class Pk10CommonGame extends Game {
         isGYHZ = true;
         createPicklayout(game, new String[]{"猜和值"});
     }
+
+    /**============================================手工录入start=============================================================**/
+    //猜前五 QWMC
+    public static void QWMCInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //猜后五 HWMC
+    public static void HWMCInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //猜车位 CCW
+    public static void CCWInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //前二名直选 QEMZX
+    public static void QEMZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后二名直选 HEMZX
+    public static void HEMZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //前二名组选 QEMZUX
+    public static void QEMZUXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后二名组选 HEMZUX
+    public static void HEMZUXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //前三名直选 QSMZX
+    public static void QSMZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后三名直选 HSMZX
+    public static void HSMZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //前三名组六 QSMZL
+    public static void QSMZLInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后三名组六 HSMZL
+    public static void HSMZLInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //前四名直选 QSIMZX
+    public static void QSIMZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后四名直选 HSIMZX
+    public static void HSIMZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //前四名组选 QSIMZUX
+    public static void QSIMZUXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后四名组选 HSIMZUX
+    public static void HSIMZUXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //前五名直选 QWMZX
+    public static void QWMZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后五名直选 HWMZX
+    public static void HWMZXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //前五名组选 QWMZUX
+    public static void QWMZUXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后五名组选 HWMZUX
+    public static void HWMZUXInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+    //前三名不定位 QSMBDW
+    public static void QSMBDWInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+
+    //后三名不定位 HSMBDW
+    public static void HSMBDWInput(Game game) {
+        addInputLayout(game, game.getColumn());
+    }
+    /**============================================手工录入end=============================================================**/
 
     /*机选*/
     //猜前五 QWMC
