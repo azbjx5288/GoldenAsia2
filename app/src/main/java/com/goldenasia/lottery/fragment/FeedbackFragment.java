@@ -21,6 +21,9 @@ import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.FeedBackCommand;
 import com.goldenasia.lottery.game.PromptManager;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -48,6 +51,9 @@ public class FeedbackFragment extends BaseFragment {
     @BindView(R.id.feeback_submit)
     Button mFeebackSubmitButton;
 
+    private  String mAddTitle;
+    private  String mAddContent;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,8 +79,8 @@ public class FeedbackFragment extends BaseFragment {
                 }
 
                 FeedBackCommand command = new FeedBackCommand();
-                command.setTitle(mAddTitleEditText.getText().toString());
-                command.setContent(mAddContentEditText.getText().toString());
+                command.setTitle(mAddTitle);
+                command.setContent(mAddContent);
                 executeCommand(command, restCallback, ID_SUBMIT_INFO);
 
                 break;
@@ -91,6 +97,12 @@ public class FeedbackFragment extends BaseFragment {
             return false;
         }
 
+        try {
+            mAddTitle=filterOffUtf8Mb4(addTitle);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         String addContent = mAddContentEditText.getText().toString();
 
         if (addContent.isEmpty()) {
@@ -98,7 +110,40 @@ public class FeedbackFragment extends BaseFragment {
             return false;
         }
 
+        try {
+            mAddContent=filterOffUtf8Mb4(addContent);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         return true;
+    }
+
+    private String filterOffUtf8Mb4(String text) throws UnsupportedEncodingException {
+        byte[] bytes = text.getBytes("utf-8");
+        ByteBuffer buffer = ByteBuffer.allocate(bytes.length);
+        int i = 0;
+        while (i < bytes.length) {
+            short b = bytes[i];
+            if (b > 0) {
+                buffer.put(bytes[i++]);
+                continue;
+            }
+            b += 256;
+            if ((b ^ 0xC0) >> 4 == 0) {
+                buffer.put(bytes, i, 2);
+                i += 2;
+            }
+            else if ((b ^ 0xE0) >> 4 == 0) {
+                buffer.put(bytes, i, 3);
+                i += 3;
+            }
+            else if ((b ^ 0xF0) >> 4 == 0) {
+                i += 4;
+            }
+        }
+        buffer.flip();
+        return new String(buffer.array(), "utf-8");
     }
 
     class TextWatcher implements android.text.TextWatcher {
