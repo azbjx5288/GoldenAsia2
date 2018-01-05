@@ -161,6 +161,10 @@ public class ManualInputView {
                         colPK10="1,2,3,4,5" +"\n"+
                                 "1,2,3,4,5";
                         break;
+                    case 10:
+                        colPK10="1,,,,,,,,," +"\n"+
+                                "2,,,,,,,,,";
+                        break;
                 }
                 hintStr = "提示：\n" +
                         "请把您已有的大底号码复制或者输入到左边文本框中。\n" +
@@ -191,11 +195,11 @@ public class ManualInputView {
         if (inputEditText.getText().length() > 0) {
             ManualInputEntry manualInput;
             switch (lottery.getLotteryType()) {
-                case 2:
+                case 2://11选5
                     manualInput = new ManualInputEntry(view.getContext(), inputEditText.getText().toString(), column, false, 1, 11);
                     break;
-                case 8:
-                    manualInput = new ManualInputEntry(view.getContext(), inputEditText.getText().toString(), column, false, 1, 10);
+                case 8://pk10
+                    manualInput = new ManualInputEntry(view.getContext(), inputEditText.getText().toString(), column, false, 1, 10,8);
                     break;
                 default:
                     manualInput = new ManualInputEntry(view.getContext(), inputEditText.getText().toString(), column, true, 0, 9);

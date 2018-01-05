@@ -484,6 +484,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
         }
     }
 
+    //手工入录
     private void taskWay() {
         shoppingCart.init(lottery);
         List<String> codes = game.getSubmitArray();
@@ -578,6 +579,10 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
                             default:
                                 ticket.setChooseNotes(1);
                         }
+                        break;
+                    case 8://pk10
+                        ticket.setCodes(list.get(i));
+                        ticket.setChooseNotes(1);
                         break;
                 }
                 retList.add(ticket);

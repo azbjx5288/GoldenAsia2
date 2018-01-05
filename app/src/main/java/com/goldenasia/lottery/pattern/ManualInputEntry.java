@@ -1,17 +1,12 @@
 package com.goldenasia.lottery.pattern;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.goldenasia.lottery.util.NumbericUtils;
-import com.goldenasia.lottery.util.ToastUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -38,6 +33,7 @@ public class ManualInputEntry {
      * numberStyle 数字显示风格，true: 6, false: 06 null: 123
      */
     private boolean numberStyle = true;
+    private int lotteryType;
 
     public ManualInputEntry(Context context, String enterstr, int bits, boolean numberStyle, int min, int max) {
         this.context = context;
@@ -47,6 +43,40 @@ public class ManualInputEntry {
         this.min = min;
         this.max = max;
         initSpecStr();
+    }
+
+    //专门针对  PK10分分彩，北京PK10 这种玩法的
+    public ManualInputEntry(Context context, String enterstr, int bits, boolean numberStyle, int min, int max,int lotteryType) {
+        this.context = context;
+        this.enterstr = enterstr;
+        this.bits = bits;
+        this.numberStyle = numberStyle;
+        this.min = min;
+        this.max = max;
+        this.lotteryType=lotteryType;
+        if (enterstr.isEmpty()) {
+            Toast.makeText(context, "请输入大底号码", Toast.LENGTH_LONG).show();
+            return;
+        }
+        chooseArray.clear();
+        chooseArray=rulePK10Analysis(enterstr);
+    }
+
+    //解析正确选号
+    private ArrayList<String[]> rulePK10Analysis(String enterstr) {
+        ArrayList<String[]> list=new ArrayList<String[]>();
+
+        String[] verifyCode = enterstr.split("\n");
+
+        for (int i = 0; i < verifyCode.length; i++) {
+            if (!verifyCode[i].isEmpty()) {
+                String[] singleNumber =verifyCode[i].split(",|，");
+
+                list.add(singleNumber);
+            }
+        }
+
+        return  list;
     }
 
     public ArrayList<String[]> getChooseArray() {

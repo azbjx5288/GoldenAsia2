@@ -10,6 +10,7 @@ import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.pattern.ManualInputView;
 import com.goldenasia.lottery.pattern.OnAddListner;
 import com.goldenasia.lottery.pattern.PickNumber;
+import com.goldenasia.lottery.util.NumbericUtils;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
@@ -93,22 +94,79 @@ public class Pk10CommonGame extends Game {
             manualInputView.setOnAddListner(new OnAddListner() {
                 @Override
                 public void onAdd(ArrayList<String[]> chooseArray) {
-                    ArrayList<String> codeArray = new ArrayList<>();
-                    for (int i = 0, size = chooseArray.size(); i < size; i++) {
-                        StringBuilder codeBuilder = new StringBuilder();
-                        for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
-                            codeBuilder.append(chooseArray.get(i)[j]);
-                            if (j != length - 1) {
-                                codeBuilder.append(",");
-                            }
-                        }
-                        codeArray.add(codeBuilder.toString());
-                    }
+                    ArrayList<String> codeArray=dealDiffPlay(chooseArray);
+
                     setSubmitArray(codeArray);
                     setSingleNum(codeArray.size());
                     onManualEntryListener.onManualEntry(codeArray.size());
                 }
             });
+        }
+    }
+
+    /*处理不同玩法的手工录入*/
+    private ArrayList<String> dealDiffPlay(ArrayList<String[]> chooseArray) {
+
+        Pk10CommonGameUtils pk10CommonGameUtils=new Pk10CommonGameUtils();
+
+        switch (method.getName()){
+            case "HEMZX": //后二名直选
+                return pk10CommonGameUtils.HEMZX(chooseArray);
+            case "HEMZUX": //后二名组选
+                return pk10CommonGameUtils.HEMZUX(chooseArray);
+            case "QEMZX": //前二名直选  每一注 不能有 相同的 例如：1，1
+                return pk10CommonGameUtils.HEMZX(chooseArray);
+            case "QEMZUX": //前二名组选
+                return pk10CommonGameUtils.HEMZUX(chooseArray);
+
+            case "HSMZX": //后三名直选
+                return pk10CommonGameUtils.HEMZX(chooseArray);
+            case "HSMZL": //后三名组六
+                return pk10CommonGameUtils.HSMZL(chooseArray);
+            case "QSMZX": //前三名直选
+                return pk10CommonGameUtils.HEMZX(chooseArray);
+            case "QSMZL": //前三名组六
+                return pk10CommonGameUtils.HSMZL(chooseArray);
+
+            case "HSIMZX": //后四名直选
+                return pk10CommonGameUtils.HEMZX(chooseArray);
+            case "HSIMZUX": //后四名组选
+                return pk10CommonGameUtils.HSIMZUX(chooseArray);
+            case "QSIMZX": //前四名直选
+                return pk10CommonGameUtils.HEMZX(chooseArray);
+            case "QSIMZUX": //前四名组选
+                return pk10CommonGameUtils.HSIMZUX(chooseArray);
+
+            case "HWMZX"://后五名直选
+                return pk10CommonGameUtils.HEMZX(chooseArray);
+            case "HWMZUX": //后五名组选
+                return pk10CommonGameUtils.HSIMZUX(chooseArray);
+            case "QWMZX": //前五名直选
+                return pk10CommonGameUtils.HEMZX(chooseArray);
+            case "QWMZUX": //前五名组选
+                return pk10CommonGameUtils.HSIMZUX(chooseArray);
+
+            default:
+                ArrayList<String> codeArray = new ArrayList<>();
+                for (int i = 0; i < chooseArray.size(); i++) {
+                    StringBuilder codeBuilder = new StringBuilder();
+                    for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
+                        String  charChoose=chooseArray.get(i)[j];
+
+                        if(!NumbericUtils.isNumericChar(charChoose)){
+                            codeArray.clear();
+                            return  codeArray;
+                        }else{
+                            codeBuilder.append(charChoose);
+                            if (j != length - 1) {
+                                codeBuilder.append(",");
+                            }
+                        }
+
+                    }
+                    codeArray.add(codeBuilder.toString());
+                }
+                return codeArray;
         }
     }
 
@@ -315,7 +373,7 @@ public class Pk10CommonGame extends Game {
 
     //后二名组选 HEMZUX
     public static void HEMZUXInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 2);
     }
 
     //前三名直选 QSMZX
