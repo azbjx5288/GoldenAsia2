@@ -47,7 +47,7 @@ public class Pk10CommonGameUtils {
         return codeArray;
     }
 
-    //后二名组选
+    //后二名组选 可以有相同的 但是 每注 必须 2位
     public  ArrayList<String> HEMZUX(ArrayList<String[]> chooseArray){
         ArrayList<String> codeArray = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class Pk10CommonGameUtils {
         return codeArray;
     }
 
-    //后三名组选 HSMZL
+    //后三名组选 HSMZL 可以有相同的 但是 每注 必须 3位
     public  ArrayList<String> HSMZL(ArrayList<String[]> chooseArray){
         ArrayList<String> codeArray = new ArrayList<>();
 
@@ -111,7 +111,7 @@ public class Pk10CommonGameUtils {
         return codeArray;
     }
 
-    //后四名组选
+    //后四名组选 可以有相同的 但是 每注 必须 4位
     public  ArrayList<String> HSIMZUX(ArrayList<String[]> chooseArray){
         ArrayList<String> codeArray = new ArrayList<>();
 
@@ -142,7 +142,7 @@ public class Pk10CommonGameUtils {
         }
         return codeArray;
     }
-    //后五名组选
+    //后五名组选 可以有相同的 但是 每注 必须 5位
     public  ArrayList<String> HWMZUX(ArrayList<String[]> chooseArray){
         ArrayList<String> codeArray = new ArrayList<>();
 

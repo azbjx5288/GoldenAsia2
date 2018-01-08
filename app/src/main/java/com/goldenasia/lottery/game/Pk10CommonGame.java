@@ -368,7 +368,7 @@ public class Pk10CommonGame extends Game {
 
     //前二名组选 QEMZUX
     public static void QEMZUXInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 2);
     }
 
     //后二名组选 HEMZUX
@@ -388,12 +388,12 @@ public class Pk10CommonGame extends Game {
 
     //前三名组六 QSMZL
     public static void QSMZLInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 3);
     }
 
     //后三名组六 HSMZL
     public static void HSMZLInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 3);
     }
 
     //前四名直选 QSIMZX
@@ -408,12 +408,12 @@ public class Pk10CommonGame extends Game {
 
     //前四名组选 QSIMZUX
     public static void QSIMZUXInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 4);
     }
 
     //后四名组选 HSIMZUX
     public static void HSIMZUXInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 4);
     }
 
     //前五名直选 QWMZX
@@ -428,12 +428,12 @@ public class Pk10CommonGame extends Game {
 
     //前五名组选 QWMZUX
     public static void QWMZUXInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 5);
     }
 
     //后五名组选 HWMZUX
     public static void HWMZUXInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 5);
     }
     //前三名不定位 QSMBDW
     public static void QSMBDWInput(Game game) {
