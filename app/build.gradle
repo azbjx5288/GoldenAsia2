@@ -20,8 +20,8 @@ android {
         applicationId "com.goldenasia.lottery"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 29
-        versionName "29.0.0"
+        versionCode 30
+        versionName "30.0.0"
     }
 
     compileOptions {

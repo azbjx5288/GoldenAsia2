@@ -140,11 +140,11 @@ public class Pk10CommonGame extends Game {
             case "HWMZX"://后五名直选
                 return pk10CommonGameUtils.HEMZX(chooseArray);
             case "HWMZUX": //后五名组选
-                return pk10CommonGameUtils.HSIMZUX(chooseArray);
+                return pk10CommonGameUtils.HWMZUX(chooseArray);
             case "QWMZX": //前五名直选
                 return pk10CommonGameUtils.HEMZX(chooseArray);
             case "QWMZUX": //前五名组选
-                return pk10CommonGameUtils.HSIMZUX(chooseArray);
+                return pk10CommonGameUtils.HWMZUX(chooseArray);
 
             default:
                 ArrayList<String> codeArray = new ArrayList<>();

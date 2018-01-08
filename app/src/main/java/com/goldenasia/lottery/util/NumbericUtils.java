@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class NumbericUtils
 {
-    //ÅĞ¶Ï×Ö·û´®ÊÇ·ñÎªÊı×ÖµÄ
+    //åˆ¤æ–­å­—ç¬¦ä¸²æ˜¯å¦ä¸ºæ•°å­—çš„
     public static boolean isNumeric(String str)
     {
         int length = str.length();
@@ -92,7 +92,7 @@ public class NumbericUtils
         return newList;
     }
 
-    //ÅĞ¶Ï×Ö·ûÊÇ·ñÎªÊı×ÖµÄ·½·¨
+    //åˆ¤æ–­å­—ç¬¦æ˜¯å¦ä¸ºæ•°å­—çš„æ–¹æ³•
     public static boolean isNumericChar(String str){
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
@@ -102,7 +102,7 @@ public class NumbericUtils
         return true;
     }
 
-    //ÓÃÓÚÅĞ¶ÏÊÇ·ñÓĞÖØ¸´ÖµµÄ±ê¼Ç
+    //ç”¨äºåˆ¤æ–­æ˜¯å¦æœ‰é‡å¤å€¼çš„æ ‡è®°
     public static boolean hasEqualsArr(String[] arry) {
         boolean flag = false;
 
@@ -111,12 +111,12 @@ public class NumbericUtils
             int count = 0;
             for (int j = 0; j < arry.length; j++) {
                 String temp2 = arry[j];
-                //ÓĞÖØ¸´Öµ¾Ícount+1
-                if (temp == temp2) {
+                //æœ‰é‡å¤å€¼å°±count+1
+                if (temp.equals(temp2) ) {
                     count++;
                 }
             }
-            //ÓÉÓÚÖĞ¼äÓÖÒ»´Î»á¸ú×Ô¼º±¾Éí±È½ÏËùÓĞÕâÀïÒªÅĞ¶Ïcount>=2
+            //ç”±äºä¸­é—´åˆä¸€æ¬¡ä¼šè·Ÿè‡ªå·±æœ¬èº«æ¯”è¾ƒæ‰€æœ‰è¿™é‡Œè¦åˆ¤æ–­count>=2
             if (count >= 2) {
                 flag = true;
             }

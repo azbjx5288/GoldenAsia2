@@ -260,7 +260,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
             ToastUtils.showShortToast(getActivity(), "本次投注与购物车订单的奖金模式不一致，需分开投注");
             return;
         }
-        if (game.getSingleNum() > 0 && game.isExchange() == true) {
+        if (game.getSingleNum() > 0 && game.isExchange() == true) {//选号 投注
             switch (game.getMethod().getName()) {
                 case "QSHHZX":
                 case "SXHHZX":
@@ -277,7 +277,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
                     shoppingCart.init(lottery);
                     shoppingCart.addTicket(ticket);
             }
-        } else if (game.getSingleNum() > 0 && !game.isExchange()) {
+        } else if (game.getSingleNum() > 0 && !game.isExchange()) {//手工入录 投注
             taskWay();
         }
         Bundle bundle = new Bundle();

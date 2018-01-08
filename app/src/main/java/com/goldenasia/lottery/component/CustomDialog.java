@@ -510,5 +510,11 @@ public class CustomDialog extends Dialog
         }
     }
     
-    
+    @Override
+    public void show()
+    {
+        Context context = getContext();
+        if (!(context instanceof Activity)||!((Activity) context).isFinishing())
+            super.show();
+    }
 }
