@@ -120,29 +120,29 @@ public class Pk10CommonGame extends Game {
                 return pk10CommonGameUtils.HEMZUX(chooseArray);
 
             case "HSMZX": //后三名直选
-                return pk10CommonGameUtils.HEMZX(chooseArray);
+                return pk10CommonGameUtils.HSMZX(chooseArray);
             case "HSMZL": //后三名组六
                 return pk10CommonGameUtils.HSMZL(chooseArray);
             case "QSMZX": //前三名直选
-                return pk10CommonGameUtils.HEMZX(chooseArray);
+                return pk10CommonGameUtils.HSMZX(chooseArray);
             case "QSMZL": //前三名组六
                 return pk10CommonGameUtils.HSMZL(chooseArray);
 
             case "HSIMZX": //后四名直选
-                return pk10CommonGameUtils.HEMZX(chooseArray);
+                return pk10CommonGameUtils.HSIMZX(chooseArray);
             case "HSIMZUX": //后四名组选
                 return pk10CommonGameUtils.HSIMZUX(chooseArray);
             case "QSIMZX": //前四名直选
-                return pk10CommonGameUtils.HEMZX(chooseArray);
+                return pk10CommonGameUtils.HSIMZX(chooseArray);
             case "QSIMZUX": //前四名组选
                 return pk10CommonGameUtils.HSIMZUX(chooseArray);
 
             case "HWMZX"://后五名直选
-                return pk10CommonGameUtils.HEMZX(chooseArray);
+                return pk10CommonGameUtils.HWMZX(chooseArray);
             case "HWMZUX": //后五名组选
                 return pk10CommonGameUtils.HWMZUX(chooseArray);
             case "QWMZX": //前五名直选
-                return pk10CommonGameUtils.HEMZX(chooseArray);
+                return pk10CommonGameUtils.HWMZX(chooseArray);
             case "QWMZUX": //前五名组选
                 return pk10CommonGameUtils.HWMZUX(chooseArray);
 
