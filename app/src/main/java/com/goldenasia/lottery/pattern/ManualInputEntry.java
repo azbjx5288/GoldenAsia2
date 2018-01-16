@@ -70,7 +70,7 @@ public class ManualInputEntry {
 
         for (int i = 0; i < verifyCode.length; i++) {
             if (!verifyCode[i].isEmpty()) {
-                String[] singleNumber =verifyCode[i].split(",|，");
+                String[] singleNumber =verifyCode[i].split(",|，|\\s+");
 
                 list.add(singleNumber);
             }

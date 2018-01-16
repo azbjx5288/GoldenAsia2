@@ -79,8 +79,9 @@ public class ManualInputView {
                         calculateNotes();
                         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                         return true;
-                    default:
-                        return true;
+                    /*解决 EditText 无法换行*/
+                    /*default:
+                        return true;*/
                 }
             }
             return false;
