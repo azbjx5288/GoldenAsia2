@@ -105,6 +105,9 @@ public class GameConfig
             case 13:
             case 22:
             case 23:
+            case 41://河北快三
+            case 42://河南快三
+            case 43://福建快三
                 return new KsCommonGame(method);
             case 9://福彩3D
                 return new Fc3dCommonGame(method);
