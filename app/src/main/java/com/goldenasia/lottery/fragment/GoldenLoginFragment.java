@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,7 +167,12 @@ public class GoldenLoginFragment extends BaseFragment {
     }
 
     private void login() {
-        loginBtn.setEnabled(false);
+        if(loginBtn.isEnabled()){
+            loginBtn.setEnabled(false);
+        }else{
+            return;
+        }
+        Log.i(TAG, "login()");
         LoginCommand command = new LoginCommand();
         // 2016/9/14
         account = userName.getText().toString();
@@ -190,6 +196,8 @@ public class GoldenLoginFragment extends BaseFragment {
     private RestCallback restCallback = new RestCallback<UserInfo>() {
         @Override
         public boolean onRestComplete(RestRequest request, RestResponse<UserInfo> response) {
+            Log.i(TAG, "onRestComplete(RestRequest request, RestResponse<UserInfo> response)");
+            loginBtn.setEnabled(true);
             startActivity(new Intent(getActivity(), ContainerActivity.class));
             getActivity().finish();
             return true;
@@ -197,17 +205,20 @@ public class GoldenLoginFragment extends BaseFragment {
 
         @Override
         public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            Log.i(TAG, "onRestError(RestRequest request, int errCode, String errDesc)");
+            loginBtn.setEnabled(true);
             return false;
         }
 
         @Override
         public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+            Log.i(TAG, "onRestStateChanged(RestRequest request, @RestRequest.RestState int state)");
             if (state == RestRequest.RUNNING) {
                 showProgress("登录中");
             } else {
                 hideProgress();
             }
-            loginBtn.setEnabled(true);
+
         }
     };
 
