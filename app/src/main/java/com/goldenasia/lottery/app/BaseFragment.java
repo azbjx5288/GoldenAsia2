@@ -47,7 +47,7 @@ import butterknife.Unbinder;
 /**
  * Created by Alashi on 2015/12/18.
  */
-public class BaseFragment extends Fragment implements NetStateHelper.NetStateListener {
+public class BaseFragment extends Fragment implements NetStateHelper.NetStateListener, FragmentLauncher.FragmentKeyListener{
     private static final String TAG = "BaseFragment";
 
     private TextView titleBarTitle;
@@ -56,6 +56,26 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     protected LinearLayout actionBarMenuLayout;
     private boolean fitSystem = true;
     private Unbinder unbinder;
+    /*拦截BACK返回键 Home键盘,默认不拦截*/
+    private boolean mKeyIsIntercept=false;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //注册监听
+        if( getActivity() instanceof  FragmentLauncher) {
+            ((FragmentLauncher) getActivity()).setKeyListener(this);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        //取消监听
+        if( getActivity() instanceof  FragmentLauncher) {
+            ((FragmentLauncher) getActivity()).setKeyListener(null);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +102,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     protected View inflateView(LayoutInflater inflater, @Nullable ViewGroup container, boolean homeButton, String title, @LayoutRes int resource) {
         View top = inflater.inflate(R.layout.title_bar_fragment, container, false);
         inflater.inflate(resource, (LinearLayout) top.findViewById(R.id.title_bar_fragment_content), true);
+        homeBtn = (ImageButton) top.findViewById(android.R.id.home);
         globalNetState = (TextView) top.findViewById(R.id.global_net_state);
         titleBarTitle = (TextView) top.findViewById(android.R.id.title);
         actionBarMenuLayout = (LinearLayout) top.findViewById(R.id.action_bar_menu_layout);
@@ -184,12 +205,15 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         return top;
     }
 
+    /*home键可点击 true， 返回键拦截为false*/
     protected void enableHomeButton(boolean homeButton) {
-        if (homeButton) {
-            homeBtn.setVisibility(View.VISIBLE);
-        } else {
-            homeBtn.setVisibility(View.GONE);
-        }
+//        if (homeButton) {
+//            homeBtn.setVisibility(View.VISIBLE);
+//        } else {
+//            homeBtn.setVisibility(View.GONE);
+//        }
+        mKeyIsIntercept=!homeButton;
+        homeBtn.setEnabled(homeButton);
     }
 
     /**
@@ -495,5 +519,15 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
 
     public void setFitSystem(boolean fitSystem) {
         this.fitSystem = fitSystem;
+    }
+
+    //捕捉返回键点击动作
+    @Override
+    public boolean onKeyForward() {
+        if (mKeyIsIntercept) {
+            // 监听到按键点击事件
+            return true;
+        }
+        return false;
     }
 }

@@ -108,6 +108,8 @@ public class ShoppingMmcFragment extends BaseFragment
      * 辅助用，投注异常时，上报到服务器的错误信息
      */
     private String unusualInfo;
+
+    private int  mLotteryNumber=1;//开奖次数
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -133,6 +135,7 @@ public class ShoppingMmcFragment extends BaseFragment
         lottery = (Lottery) getArguments().getSerializable("lottery");
         userCentre = GoldenAsiaApp.getUserCentre();
         cart = ShoppingCart.getInstance();
+        mLotteryNumber=1;
     }
     
     private void initInfo()
@@ -341,8 +344,7 @@ public class ShoppingMmcFragment extends BaseFragment
         isInTraceState = false;
         shoppingBuyButton.setEnabled(false);
         chaseMmcButton.setEnabled(false);
-        //        enableHomeButton(false);
-        
+        enableHomeButton(false);
         //BigDecimal becimal = new BigDecimal(cart.getPlanAmount());
         //double planAmount = becimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         final PayMoneyCommand command = new PayMoneyCommand();
@@ -410,7 +412,7 @@ public class ShoppingMmcFragment extends BaseFragment
      */
     private void roll(ArrayList<MmcEntity> openCodeList)
     {
-        //        enableHomeButton(false);
+        enableHomeButton(false);
         chaseMmcButton.setEnabled(false);
         shoppingBuyButton.setEnabled(false);
         
@@ -437,9 +439,9 @@ public class ShoppingMmcFragment extends BaseFragment
                 //滚动完毕
                 if (rollCount < length)
                 {
-                    //亚洲秒秒彩的中奖情况插入数据库中start
-                    insertMmcWinHistory(openCodeList, cart.getPlanAmount());
-                    //亚洲秒秒彩的中奖情况插入数据库中end
+//                    //亚洲秒秒彩的中奖情况插入数据库中start
+//                    insertMmcWinHistory(openCodeList, cart.getPlanAmount());
+//                    //亚洲秒秒彩的中奖情况插入数据库中end
                     mmcOneArmBanditView.start(openCodeList.get(rollCount).getOpenCode());
                     tempPrize = openCodeList.get(rollCount).getPrize();
                     prize += tempPrize;
@@ -544,7 +546,7 @@ public class ShoppingMmcFragment extends BaseFragment
         initInfo();
         chaseMmcButton.setEnabled(true);
         shoppingBuyButton.setEnabled(true);
-        //        enableHomeButton(true);
+        enableHomeButton(true);
     }
     
     private void saveLastMethod()
@@ -589,7 +591,7 @@ public class ShoppingMmcFragment extends BaseFragment
         @Override
         public boolean onRestError(RestRequest request, int errCode, String errDesc)
         {
-            //            enableHomeButton(true);
+            enableHomeButton(true);
             if (errCode == 7006)
             {
                 CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
@@ -626,7 +628,7 @@ public class ShoppingMmcFragment extends BaseFragment
             mmcEntity = openCodeList.get(i);
             mmcWinHistory = new MmcWinHistory();
             
-            mmcWinHistory.setCount(String.valueOf(i + 1));
+            mmcWinHistory.setCount(String.valueOf(mLotteryNumber));
             mmcWinHistory.setNumber(mmcEntity.getOpenCode());
             
             //投注金额 保留小数点三位后
@@ -639,6 +641,8 @@ public class ShoppingMmcFragment extends BaseFragment
             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
             mmcWinHistory.setWinMoney(String.valueOf(bd));
             mmcWinHistoryDao.savaMmcWinHistory(mmcWinHistory);
+            mLotteryNumber++;
         }
     }
+
 }

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.goldenasia.lottery.base.Preferences;
 import com.goldenasia.lottery.service.BadgeIntentService;
@@ -123,5 +124,25 @@ public class FragmentLauncher extends AppCompatActivity {
 
    public Fragment getfragmentCaller(){
         return fragment;
+    }
+
+    private FragmentKeyListener keyListener;
+
+    public void setKeyListener(FragmentKeyListener keyListener) {
+        this.keyListener = keyListener;
+    }
+    //键监听实现
+    interface FragmentKeyListener {
+        boolean onKeyForward();
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+        //all按键被点击了 就自己拦截实现掉
+        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+            if (keyListener != null) {
+                return keyListener.onKeyForward();
+            }
+        }
+        return super.onKeyDown(keyCode, keyEvent);
     }
 }
