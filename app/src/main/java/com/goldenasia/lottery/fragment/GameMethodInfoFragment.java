@@ -47,6 +47,7 @@ public class GameMethodInfoFragment extends BaseFragment {
             case 33:
             case 34:
             case 36://山西11选5
+            case 44://11选5秒秒彩
                 view=inflater.inflate(R.layout.fragment_game_method_info_11select5, container, false);  //11选5 玩法说明
                 break;
             case 1://重庆时时彩
@@ -69,6 +70,7 @@ public class GameMethodInfoFragment extends BaseFragment {
             case 41://河北快三
             case 42://河南快三
             case 43://福建快三
+            case 45://快三秒秒彩
                 view=inflater.inflate(R.layout.fragment_game_method_info_kuaisan, container, false);//快三 玩法说明
                 break;
             case 9://福彩3D
