@@ -138,9 +138,11 @@ public class FragmentLauncher extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
         //all按键被点击了 就自己拦截实现掉
-        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (keyListener != null) {
-                return keyListener.onKeyForward();
+                if(keyListener.onKeyForward()){
+                    return true;
+                }
             }
         }
         return super.onKeyDown(keyCode, keyEvent);
