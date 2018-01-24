@@ -437,6 +437,9 @@ public class ShoppingMmcFragment extends BaseFragment
                 //滚动完毕
                 if (rollCount < length)
                 {
+                    //亚洲秒秒彩的中奖情况插入数据库中start
+                    insertMmcWinHistory(openCodeList, cart.getPlanAmount());
+                    //亚洲秒秒彩的中奖情况插入数据库中end
                     mmcOneArmBanditView.start(openCodeList.get(rollCount).getOpenCode());
                     tempPrize = openCodeList.get(rollCount).getPrize();
                     prize += tempPrize;
