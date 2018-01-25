@@ -218,7 +218,14 @@ public class FragmentUser extends BaseFragment {
         launchFragment(GoldenLoginFragment.class);
         RestRequestManager.cancelAll();
         deleteMmcWinHistoryDB();
+        deleteMmcAwardNumber();
 //        deleteNoticeSP();
+    }
+
+    private void deleteMmcAwardNumber() {
+        SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.SSC_MMC_COUNT,1);//亚洲妙妙彩
+        SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.ESELECTF_MMC_COUNT,1);//11选5秒秒彩
+        SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,1);//快三秒秒彩
     }
 
     /**

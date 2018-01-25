@@ -109,7 +109,7 @@ public class ShoppingMmcFragment extends BaseFragment
      */
     private String unusualInfo;
 
-    private int  mLotteryNumber=1;//开奖次数
+    private int mAwardsNumber =1;//开奖次数
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -128,14 +128,31 @@ public class ShoppingMmcFragment extends BaseFragment
         loadFunction();
         loadListInfo();
         planPrompt();
+        countAwardsNumber();
     }
-    
+
+    /*计算开奖次数*/
+    private void countAwardsNumber() {
+        switch (lottery.getLotteryId()) {
+            case 15://亚洲妙妙彩
+                mAwardsNumber=SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.SSC_MMC_COUNT,1);
+                break;
+            case 44://11选5秒秒彩
+                mAwardsNumber=SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.ESELECTF_MMC_COUNT,1);
+                break;
+            case 45://快三秒秒彩
+                mAwardsNumber=SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,1);
+                break;
+            default:
+                mAwardsNumber=1;
+        }
+    }
+
     private void parameter()
     {
         lottery = (Lottery) getArguments().getSerializable("lottery");
         userCentre = GoldenAsiaApp.getUserCentre();
         cart = ShoppingCart.getInstance();
-        mLotteryNumber=1;
     }
     
     private void initInfo()
@@ -187,7 +204,28 @@ public class ShoppingMmcFragment extends BaseFragment
         chooseTips.setTipsText(String.format("%d", cart.getPlanNotes()), String.format("%.3f", cart.getPlanAmount()),
                 String.format("%.3f", userCentre.getUserInfo().getBalance()));
     }
-    
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveAwardsNumber();
+    }
+
+    private void saveAwardsNumber() {
+        switch (lottery.getLotteryId()) {
+            case 15://亚洲妙妙彩
+                SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.SSC_MMC_COUNT,mAwardsNumber);
+                break;
+            case 44://11选5秒秒彩
+                SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.ESELECTF_MMC_COUNT,mAwardsNumber);
+                break;
+            case 45://快三秒秒彩
+                SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,mAwardsNumber);
+                break;
+            default:
+        }
+    }
+
     @Override
     public void onDestroyView()
     {
@@ -628,7 +666,7 @@ public class ShoppingMmcFragment extends BaseFragment
             mmcEntity = openCodeList.get(i);
             mmcWinHistory = new MmcWinHistory();
             
-            mmcWinHistory.setCount(String.valueOf(mLotteryNumber));
+            mmcWinHistory.setCount(String.valueOf(mAwardsNumber));
             mmcWinHistory.setNumber(mmcEntity.getOpenCode());
             
             //投注金额 保留小数点三位后
@@ -641,7 +679,7 @@ public class ShoppingMmcFragment extends BaseFragment
             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
             mmcWinHistory.setWinMoney(String.valueOf(bd));
             mmcWinHistoryDao.savaMmcWinHistory(mmcWinHistory);
-            mLotteryNumber++;
+            mAwardsNumber++;
         }
     }
 

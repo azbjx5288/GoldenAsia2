@@ -44,6 +44,12 @@ public class SharedPreferencesUtils
         SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Activity.MODE_PRIVATE);
         return sharedPreferences.getInt(key, -1);
     }
+
+    public static int getInt(Context context, String fileName, String key,int defValue)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Activity.MODE_PRIVATE);
+        return sharedPreferences.getInt(key, defValue);
+    }
     
     public static void putLong(Context context, String fileName, String key, long value)
     {
