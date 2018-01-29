@@ -32,6 +32,8 @@ import com.goldenasia.lottery.data.PayMmcCommand;
 import com.goldenasia.lottery.data.PayMoneyCommand;
 import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.data.UserInfoCommand;
+import com.goldenasia.lottery.db.MmcElevenSelectFiveWinHistory;
+import com.goldenasia.lottery.db.MmcElevenSelectFiveWinHistoryDao;
 import com.goldenasia.lottery.db.MmcWinHistory;
 import com.goldenasia.lottery.db.MmcWinHistoryDao;
 import com.goldenasia.lottery.game.PromptManager;
@@ -88,7 +90,7 @@ public class ShoppingMmcFragment extends BaseFragment
     private Lottery lottery;
     private ShoppingCart cart;
     private UserCentre userCentre;
-    
+
     private boolean isInTraceState;
     private int rollCount;
     private double prize;
@@ -98,25 +100,25 @@ public class ShoppingMmcFragment extends BaseFragment
     private int[] traceData;
     private boolean winStop;
     private double totalCost;
-    
+
     private Handler rollHandler;
     private Handler toastHandler;
     private Runnable rollRunnable;
     private Runnable toastRunnable;
-    
+
     /**
      * 辅助用，投注异常时，上报到服务器的错误信息
      */
     private String unusualInfo;
 
     private int mAwardsNumber =1;//开奖次数
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         return inflateView(inflater, container, "投注", R.layout.shopping_mmc_fragment);
     }
-    
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
@@ -140,9 +142,6 @@ public class ShoppingMmcFragment extends BaseFragment
             case 44://11选5秒秒彩
                 mAwardsNumber=SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.ESELECTF_MMC_COUNT,1);
                 break;
-            case 45://快三秒秒彩
-                mAwardsNumber=SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,1);
-                break;
             default:
                 mAwardsNumber=1;
         }
@@ -154,14 +153,14 @@ public class ShoppingMmcFragment extends BaseFragment
         userCentre = GoldenAsiaApp.getUserCentre();
         cart = ShoppingCart.getInstance();
     }
-    
+
     private void initInfo()
     {
         cart.init(lottery);
         setTitle(lottery.getCname());
         executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
     }
-    
+
     /**
      * 初始化秒秒彩老虎机
      */
@@ -169,7 +168,7 @@ public class ShoppingMmcFragment extends BaseFragment
     {
         mmcOneArmBanditView = new MmcOneArmBanditView(getActivity(), findViewById(R.id.one_arm_bandit));
     }
-    
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser)
     {
@@ -179,13 +178,13 @@ public class ShoppingMmcFragment extends BaseFragment
             executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
         }
     }
-    
+
     private void loadFunction()
     {
         shroudViewNoChase = new ShroudViewNoChase(findViewById(R.id.shopping_bottom));
         chooseTips = new ChooseTips(findViewById(R.id.shopping_choosetip));
     }
-    
+
     private void loadListInfo()
     {
         adapter = new ShoppingMmcAdapter();
@@ -198,7 +197,7 @@ public class ShoppingMmcFragment extends BaseFragment
             planPrompt();
         });
     }
-    
+
     public void planPrompt()
     {
         chooseTips.setTipsText(String.format("%d", cart.getPlanNotes()), String.format("%.3f", cart.getPlanAmount()),
@@ -219,9 +218,6 @@ public class ShoppingMmcFragment extends BaseFragment
             case 44://11选5秒秒彩
                 SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.ESELECTF_MMC_COUNT,mAwardsNumber);
                 break;
-            case 45://快三秒秒彩
-                SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,mAwardsNumber);
-                break;
             default:
         }
     }
@@ -239,7 +235,7 @@ public class ShoppingMmcFragment extends BaseFragment
             toastHandler.removeCallbacks(toastRunnable);
         }
     }
-    
+
     @OnClick(R.id.chase_mmc_button)
     public void chase()
     {
@@ -257,7 +253,7 @@ public class ShoppingMmcFragment extends BaseFragment
             this.traceData = traceData;
             this.winStop = winStop;
             this.totalCost = totalCost;
-            
+
             // ②判断：用户是否登录——被动登录
             if (userCentre.isLogin())
             {
@@ -277,12 +273,12 @@ public class ShoppingMmcFragment extends BaseFragment
                     payMmcCommand.setStopOnWin(winStop);
                     payMmcCommand.setOpenCounts(openCount);
                     payMmcCommand.setTraceNum(traceData.length);
-                    
+
                     TypeToken typeToken = new TypeToken<RestResponse<ArrayList<MmcEntity>>>()
                     {};
                     RestRequestManager.executeCommand(getActivity(), payMmcCommand, typeToken, restCallback,
                             BUY_TRACE_ID, this);
-                    
+
                     ToastUtils.showShortToast(getActivity(), "开奖中……");
                 } else
                 {
@@ -296,7 +292,7 @@ public class ShoppingMmcFragment extends BaseFragment
             }
         });
     }
-    
+
     private void rollAgain()
     {
         // ①判断：购物车中是否有投注
@@ -325,7 +321,7 @@ public class ShoppingMmcFragment extends BaseFragment
                 payMmcCommand.setStopOnWin(winStop);
                 payMmcCommand.setOpenCounts(openCount);
                 payMmcCommand.setTraceNum(CUSTOMER_OPEN);
-                
+
                 TypeToken typeToken = new TypeToken<RestResponse<ArrayList<MmcEntity>>>()
                 {};
                 RestRequestManager.executeCommand(getActivity(), payMmcCommand, typeToken, restCallback,
@@ -341,7 +337,7 @@ public class ShoppingMmcFragment extends BaseFragment
             tipDialog("温馨提示", "请重新登录", TRACK_TURNED_PAGE_LOGIN, true);
         }
     }
-    
+
     @OnClick(R.id.lottery_shopping_buy)
     public void buySingle()
     {
@@ -373,7 +369,7 @@ public class ShoppingMmcFragment extends BaseFragment
             tipDialog("温馨提示", "您需要选择一注", TRACK_TURNED_PAGE_PICK, true);
         }
     }
-    
+
     /**
      * 数据验证
      */
@@ -395,13 +391,13 @@ public class ShoppingMmcFragment extends BaseFragment
         command.setTraceNum(cart.getTraceNumber());
         command.setStopOnWin(cart.isStopOnWin());
         command.setToken(ConstantInformation.randomToken());
-        
+
         unusualInfo = ConstantInformation.gatherInfo(getActivity(), command);
         TypeToken typeToken = new TypeToken<RestResponse<ArrayList<MmcEntity>>>()
         {};
         RestRequestManager.executeCommand(getActivity(), command, typeToken, restCallback, BUY_TRACE_ID, this);
     }
-    
+
     private void tipDialog(String title, String msg, final int track, final boolean withFace)
     {
         CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
@@ -444,7 +440,7 @@ public class ShoppingMmcFragment extends BaseFragment
         }
         builder.create().show();
     }
-    
+
     /**
      * 循环做开奖动画处理
      */
@@ -453,12 +449,12 @@ public class ShoppingMmcFragment extends BaseFragment
         enableHomeButton(false);
         chaseMmcButton.setEnabled(false);
         shoppingBuyButton.setEnabled(false);
-        
+
         int length = openCodeList.size();
         rollCount = 0;
         prize = 0.00;
         tempPrize = 0.00;
-        
+
         toastRunnable = new Runnable()
         {
             @Override
@@ -477,9 +473,6 @@ public class ShoppingMmcFragment extends BaseFragment
                 //滚动完毕
                 if (rollCount < length)
                 {
-//                    //亚洲秒秒彩的中奖情况插入数据库中start
-//                    insertMmcWinHistory(openCodeList, cart.getPlanAmount());
-//                    //亚洲秒秒彩的中奖情况插入数据库中end
                     mmcOneArmBanditView.start(openCodeList.get(rollCount).getOpenCode());
                     tempPrize = openCodeList.get(rollCount).getPrize();
                     prize += tempPrize;
@@ -504,7 +497,7 @@ public class ShoppingMmcFragment extends BaseFragment
                     //亚洲秒秒彩的中奖情况插入数据库中start
                     insertMmcWinHistory(openCodeList, cart.getPlanAmount());
                     //亚洲秒秒彩的中奖情况插入数据库中end
-                    
+
                     //中奖弹窗
                     if (prize > 0)
                     {
@@ -561,16 +554,16 @@ public class ShoppingMmcFragment extends BaseFragment
         };
         rollHandler.postDelayed(rollRunnable, MmcOneArmBanditView.START_DELAY);
     }
-    
+
     private void playAgain()
     {
         buySingle();
     }
-    
+
     private void cancel()
     {
     }
-    
+
     private void playDouble()
     {
         multiple *= 2;
@@ -654,26 +647,38 @@ public class ShoppingMmcFragment extends BaseFragment
         }
     };
     
-    //亚洲秒秒彩的中奖情况插入数据库中
+    //中奖情况插入数据库中
     private void insertMmcWinHistory(ArrayList<MmcEntity> openCodeList, double betMoney)
     {
+        switch (lottery.getLotteryId()) {
+            case 15://亚洲妙妙彩
+                insertSscMmcWinHistory(openCodeList, betMoney);
+                break;
+            case 44://11选5秒秒彩
+                insertElevenSelectFiveMmcWinHistory(openCodeList, betMoney);
+                break;
+        }
+    }
+
+    //亚洲秒秒彩的
+    private void insertSscMmcWinHistory(ArrayList<MmcEntity> openCodeList, double betMoney){
         MmcWinHistoryDao mmcWinHistoryDao = new MmcWinHistoryDao(getActivity());
         MmcEntity mmcEntity = null;
         MmcWinHistory mmcWinHistory = null;
-        
+
         for (int i = 0; i < openCodeList.size(); i++)
         {
             mmcEntity = openCodeList.get(i);
             mmcWinHistory = new MmcWinHistory();
-            
+
             mmcWinHistory.setCount(String.valueOf(mAwardsNumber));
             mmcWinHistory.setNumber(mmcEntity.getOpenCode());
-            
+
             //投注金额 保留小数点三位后
             BigDecimal bd = new BigDecimal(betMoney);
             bd = bd.setScale(3, BigDecimal.ROUND_HALF_UP);
             mmcWinHistory.setBetMoney(String.valueOf(bd));
-            
+
             //奖金金额 保留小数点二位后
             bd = new BigDecimal(mmcEntity.getPrize());
             bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -683,4 +688,31 @@ public class ShoppingMmcFragment extends BaseFragment
         }
     }
 
+    //11选5秒秒彩
+    private void insertElevenSelectFiveMmcWinHistory(ArrayList<MmcEntity>  openCodeList, double betMoney){
+        MmcElevenSelectFiveWinHistoryDao mmcWinHistoryDao = new MmcElevenSelectFiveWinHistoryDao(getActivity());
+        MmcEntity mmcEntity = null;
+        MmcElevenSelectFiveWinHistory mmcWinHistory = null;
+
+        for (int i = 0; i < openCodeList.size(); i++)
+        {
+            mmcEntity = openCodeList.get(i);
+            mmcWinHistory = new MmcElevenSelectFiveWinHistory();
+
+            mmcWinHistory.setCount(String.valueOf(mAwardsNumber));
+            mmcWinHistory.setNumber(mmcEntity.getOpenCode());
+
+            //投注金额 保留小数点三位后
+            BigDecimal bd = new BigDecimal(betMoney);
+            bd = bd.setScale(3, BigDecimal.ROUND_HALF_UP);
+            mmcWinHistory.setBetMoney(String.valueOf(bd));
+
+            //奖金金额 保留小数点二位后
+            bd = new BigDecimal(mmcEntity.getPrize());
+            bd = bd.setScale(2, BigDecimal.ROUND_HALF_UP);
+            mmcWinHistory.setWinMoney(String.valueOf(bd));
+            mmcWinHistoryDao.savaMmcWinHistory(mmcWinHistory);
+            mAwardsNumber++;
+        }
+    }
 }

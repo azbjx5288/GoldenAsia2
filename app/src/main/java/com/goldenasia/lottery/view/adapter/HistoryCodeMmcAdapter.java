@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.db.MmcElevenSelectFiveWinHistory;
+import com.goldenasia.lottery.db.MmcKuaiSanWinHistory;
 import com.goldenasia.lottery.db.MmcWinHistory;
 import com.goldenasia.lottery.util.UiUtils;
 
@@ -22,11 +24,24 @@ import butterknife.ButterKnife;
  */
 
 public class HistoryCodeMmcAdapter extends BaseAdapter {
+    //—«÷ﬁ√Ó√Ó≤ 
+    private final int  SSC_MMC=1;
+    //11—°5√Î√Î≤ 
+    private final int  ELEVEN_SDELECT_FIVE_MMC=2;
+    //øÏ»˝√Î√Î≤ 
+    private final int  KUAI_SAN_MMC=3;
+
+    //√Î√Î≤ ¿‡–Õ
+    private  int mLoteryType=SSC_MMC;
+
+    public void setmLoteryType(int mLoteryType) {
+        this.mLoteryType = mLoteryType;
+    }
 
     private List codeList;
 
     public HistoryCodeMmcAdapter(){
-        this.codeList=new ArrayList<MmcWinHistory>();
+        this.codeList=new ArrayList();
     }
 
     public void setCodeList(List codeList) {
@@ -65,11 +80,29 @@ public class HistoryCodeMmcAdapter extends BaseAdapter {
             holder = (HistoryCodeMmcAdapter.ViewHolder) convertView.getTag();
         }
 
-        MmcWinHistory historyCode = (MmcWinHistory) codeList.get(position);
-        holder.count.setText(historyCode.getCount());
-        holder.code.setText(historyCode.getNumber());
-        holder.betMoney.setText(historyCode.getBetMoney());
-        holder.winMoney.setText(historyCode.getWinMoney());
+        switch (mLoteryType){
+            case SSC_MMC://—«÷ﬁ√Ó√Ó≤ 
+                MmcWinHistory historyCode = (MmcWinHistory) codeList.get(position);
+                holder.count.setText(historyCode.getCount());
+                holder.code.setText(historyCode.getNumber());
+                holder.betMoney.setText(historyCode.getBetMoney());
+                holder.winMoney.setText(historyCode.getWinMoney());
+                break;
+            case ELEVEN_SDELECT_FIVE_MMC://11—°5√Î√Î≤ 
+                MmcElevenSelectFiveWinHistory MmcElenenSelectFiveWinHistory = (MmcElevenSelectFiveWinHistory) codeList.get(position);
+                holder.count.setText(MmcElenenSelectFiveWinHistory.getCount());
+                holder.code.setText(MmcElenenSelectFiveWinHistory.getNumber());
+                holder.betMoney.setText(MmcElenenSelectFiveWinHistory.getBetMoney());
+                holder.winMoney.setText(MmcElenenSelectFiveWinHistory.getWinMoney());
+                break;
+            case KUAI_SAN_MMC://øÏ»˝√Î√Î≤ 
+                MmcKuaiSanWinHistory mmcKuaiSanWinHistory = (MmcKuaiSanWinHistory) codeList.get(position);
+                holder.count.setText(mmcKuaiSanWinHistory.getCount());
+                holder.code.setText(mmcKuaiSanWinHistory.getNumber());
+                holder.betMoney.setText(mmcKuaiSanWinHistory.getBetMoney());
+                holder.winMoney.setText(mmcKuaiSanWinHistory.getWinMoney());
+        }
+
 
         if(position%2!=0){
             holder.llHistoryResult.setBackgroundColor(UiUtils.getColor(parent.getContext(),R.color.app_main_rim));

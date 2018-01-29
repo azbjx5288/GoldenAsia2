@@ -33,6 +33,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             //建立MmcWinHistory表
             TableUtils.createTable(connectionSource, MmcWinHistory.class);
+            TableUtils.createTable(connectionSource, MmcElevenSelectFiveWinHistory.class);
+            TableUtils.createTable(connectionSource, MmcKuaiSanWinHistory.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -43,6 +45,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int oldVersion, int newVersion) {
         try {
             TableUtils.dropTable(connectionSource, MmcWinHistory.class, true);
+            TableUtils.createTable(connectionSource, MmcElevenSelectFiveWinHistory.class);
+            TableUtils.createTable(connectionSource, MmcKuaiSanWinHistory.class);
             onCreate(sqLiteDatabase, connectionSource);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -11,6 +11,11 @@ import android.widget.ListView;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.data.Lottery;
+import com.goldenasia.lottery.db.MmcElevenSelectFiveWinHistory;
+import com.goldenasia.lottery.db.MmcElevenSelectFiveWinHistoryDao;
+import com.goldenasia.lottery.db.MmcKuaiSanWinHistory;
+import com.goldenasia.lottery.db.MmcKuaiSanWinHistoryDao;
 import com.goldenasia.lottery.db.MmcWinHistory;
 import com.goldenasia.lottery.db.MmcWinHistoryDao;
 import com.goldenasia.lottery.view.adapter.HistoryCodeMmcAdapter;
@@ -31,6 +36,7 @@ public class ResultsMmcFragment extends BaseFragment {
     @BindView(R.id.history_lottery_listviewcode)
     ListView listView;
     private static HistoryCodeMmcAdapter adapter;
+    private Lottery lottery;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,6 +46,8 @@ public class ResultsMmcFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        lottery = (Lottery) getArguments().getSerializable("lottery");
+
         adapter = new HistoryCodeMmcAdapter();
         listView.setAdapter(adapter);
 
@@ -48,9 +56,23 @@ public class ResultsMmcFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        new LoadDataAsyncTask(getActivity()).execute();
+
+        switch (lottery.getLotteryId()) {
+            case 15://亚洲妙妙彩
+                adapter.setmLoteryType(1);
+                new LoadDataAsyncTask(getActivity()).execute();
+                break;
+            case 44://11选5秒秒彩
+                adapter.setmLoteryType(2);
+                new ElevenSelect5LoadDataAsyncTask(getActivity()).execute();
+                break;
+            case 45://快三秒秒彩
+                adapter.setmLoteryType(3);
+                new KuaiSanLoadDataAsyncTask(getActivity()).execute();
+        }
     }
 
+    //亚洲妙妙彩
     private static class LoadDataAsyncTask extends AsyncTask<Void, Void, List<MmcWinHistory>> {
         private final WeakReference<Context> mContext;
 
@@ -73,6 +95,74 @@ public class ResultsMmcFragment extends BaseFragment {
 
         @Override
         protected void onPostExecute(List<MmcWinHistory> mmcWinHistories) {
+            if(mmcWinHistories!=null&&adapter!=null) {
+                adapter.setCodeList(mmcWinHistories);
+                adapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
+    //11选5秒秒彩
+    private static class ElevenSelect5LoadDataAsyncTask extends AsyncTask<Void, Void, List<MmcElevenSelectFiveWinHistory>> {
+        private final WeakReference<Context> mContext;
+
+        public ElevenSelect5LoadDataAsyncTask(Context context) {
+            mContext = new WeakReference<Context>(context);
+        }
+
+        @Override
+        protected List<MmcElevenSelectFiveWinHistory> doInBackground(Void... params) {
+
+            Context context = mContext.get();
+
+            if(context==null){
+                return  null;
+            }
+            MmcElevenSelectFiveWinHistoryDao mMmcWinHistoryDao = new MmcElevenSelectFiveWinHistoryDao(context);
+
+            return mMmcWinHistoryDao.getAllMmcWinHistory();
+        }
+
+        @Override
+        protected void onPostExecute(List<MmcElevenSelectFiveWinHistory> mmcWinHistories) {
+            if(mmcWinHistories!=null&&adapter!=null) {
+                adapter.setCodeList(mmcWinHistories);
+                adapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
+    //快三秒秒彩
+    private static class KuaiSanLoadDataAsyncTask extends AsyncTask<Void, Void, List<MmcKuaiSanWinHistory>> {
+        private final WeakReference<Context> mContext;
+
+        public KuaiSanLoadDataAsyncTask(Context context) {
+            mContext = new WeakReference<Context>(context);
+        }
+
+        @Override
+        protected List<MmcKuaiSanWinHistory> doInBackground(Void... params) {
+
+            Context context = mContext.get();
+
+            if(context==null){
+                return  null;
+            }
+            MmcKuaiSanWinHistoryDao mMmcWinHistoryDao = new MmcKuaiSanWinHistoryDao(context);
+
+            return mMmcWinHistoryDao.getAllMmcWinHistory();
+        }
+
+        @Override
+        protected void onPostExecute(List<MmcKuaiSanWinHistory> mmcWinHistories) {
             if(mmcWinHistories!=null&&adapter!=null) {
                 adapter.setCodeList(mmcWinHistories);
                 adapter.notifyDataSetChanged();

@@ -33,8 +33,8 @@ import com.goldenasia.lottery.data.PayMmcCommand;
 import com.goldenasia.lottery.data.PayMoneyCommand;
 import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.data.UserInfoCommand;
-import com.goldenasia.lottery.db.MmcWinHistory;
-import com.goldenasia.lottery.db.MmcWinHistoryDao;
+import com.goldenasia.lottery.db.MmcKuaiSanWinHistory;
+import com.goldenasia.lottery.db.MmcKuaiSanWinHistoryDao;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.ShoppingCart;
@@ -133,19 +133,7 @@ public class ShoppingKuaiSanMmcFragment extends BaseFragment
 
     /*计算开奖次数*/
     private void countAwardsNumber() {
-        switch (lottery.getLotteryId()) {
-            case 15://亚洲妙妙彩
-                mAwardsNumber= SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.SSC_MMC_COUNT,1);
-                break;
-            case 44://11选5秒秒彩
-                mAwardsNumber=SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.ESELECTF_MMC_COUNT,1);
-                break;
-            case 45://快三秒秒彩
-                mAwardsNumber=SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,1);
-                break;
-            default:
-                mAwardsNumber=1;
-        }
+        mAwardsNumber=SharedPreferencesUtils.getInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,1);
     }
 
     private void parameter()
@@ -212,18 +200,7 @@ public class ShoppingKuaiSanMmcFragment extends BaseFragment
     }
 
     private void saveAwardsNumber() {
-        switch (lottery.getLotteryId()) {
-            case 15://亚洲妙妙彩
-                SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.SSC_MMC_COUNT,mAwardsNumber);
-                break;
-            case 44://11选5秒秒彩
-                SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.ESELECTF_MMC_COUNT,mAwardsNumber);
-                break;
-            case 45://快三秒秒彩
-                SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,mAwardsNumber);
-                break;
-            default:
-        }
+        SharedPreferencesUtils.putInt(getActivity(), ConstantInformation.APP_INFO, ConstantInformation.KUAISAN_MMC_COUNT,mAwardsNumber);
     }
 
     @Override
@@ -654,14 +631,14 @@ public class ShoppingKuaiSanMmcFragment extends BaseFragment
     //亚洲秒秒彩的中奖情况插入数据库中
     private void insertMmcWinHistory(ArrayList<MmcEntity> openCodeList, double betMoney)
     {
-        MmcWinHistoryDao mmcWinHistoryDao = new MmcWinHistoryDao(getActivity());
+        MmcKuaiSanWinHistoryDao mmcWinHistoryDao = new MmcKuaiSanWinHistoryDao(getActivity());
         MmcEntity mmcEntity = null;
-        MmcWinHistory mmcWinHistory = null;
+        MmcKuaiSanWinHistory mmcWinHistory = null;
 
         for (int i = 0; i < openCodeList.size(); i++)
         {
             mmcEntity = openCodeList.get(i);
-            mmcWinHistory = new MmcWinHistory();
+            mmcWinHistory = new MmcKuaiSanWinHistory();
 
             mmcWinHistory.setCount(String.valueOf(mAwardsNumber));
             mmcWinHistory.setNumber(mmcEntity.getOpenCode());
