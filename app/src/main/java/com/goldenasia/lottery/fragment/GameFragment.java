@@ -284,10 +284,16 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
         bundle.putSerializable("lottery", lottery);
         bundle.putSerializable("lastMethod", game.getMethod());
         shoppingCart.setPrizeMode(prizeMode);
-        if (lottery.getLotteryId() != 15) {
-            launchFragmentForResult(ShoppingFragment.class, bundle, 1);
-        } else {
-            launchFragmentForResult(ShoppingMmcFragment.class, bundle, 1);
+        switch (lottery.getLotteryId()) {
+            case 15://亚洲妙妙彩
+            case 44://11选5秒秒彩
+                launchFragmentForResult(ShoppingMmcFragment.class, bundle, 1);
+                break;
+            case 45://快三秒秒彩
+                launchFragmentForResult(ShoppingKuaiSanMmcFragment.class, bundle, 1);
+                break;
+            default:
+                launchFragmentForResult(ShoppingFragment.class, bundle, 1);
         }
     }
 
