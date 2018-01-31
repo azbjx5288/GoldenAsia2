@@ -113,7 +113,11 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
     private void loadTimingView() {
         if (lottery.getLotteryId() == 15) {
             titleTimeView.setVisibility(View.GONE);
-        } else {
+        } else if (lottery.getLotteryId() == 44) {
+            titleTimeView.setVisibility(View.GONE);
+        }else if (lottery.getLotteryId() == 45) {
+            titleTimeView.setVisibility(View.GONE);
+        }else {
             timingView = new TitleTimingView(getActivity(), findViewById(R.id.pick_title_view), lottery);
         }
     }
