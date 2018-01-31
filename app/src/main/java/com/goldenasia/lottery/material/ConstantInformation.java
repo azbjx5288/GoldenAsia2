@@ -102,6 +102,11 @@ public class ConstantInformation
     /*收件箱 消息的 数量*/
     public static int MESSAGE_COUNT = -1;
 
+    /*账号退出后重新计数*/
+    public static String SSC_MMC_COUNT = "ssc_mmc_count";//时时彩秒秒彩
+    public static String ESELECTF_MMC_COUNT = "eselectf_mmc_count";//11选5秒秒彩
+    public static String KUAISAN_MMC_COUNT = "kuaisan_mmc_count";//快三秒秒彩
+
     public static final ArrayList<Integer> CURRENT_LOTTERY_ID_LIST = new ArrayList<Integer>()
     {
         {
@@ -216,7 +221,17 @@ public class ConstantInformation
         sLotteryLogo.put(38, new int[]{R.drawable.id_lottery_pk10ffc, R.drawable.id_lottery_pk10ffc_2});
         //黑龙江11选5
         sLotteryLogo.put(40, new int[]{R.drawable.id_lottery_hlj11x5, R.drawable.id_lottery_hlj11x5});
-        
+        //河北快三
+        sLotteryLogo.put(41, new int[]{R.drawable.id_lottery_hebks, R.drawable.id_lottery_hebks});
+        //河南快三
+        sLotteryLogo.put(42, new int[]{R.drawable.id_lottery_hnks, R.drawable.id_lottery_hnks});
+        //福建快三
+        sLotteryLogo.put(43, new int[]{R.drawable.id_lottery_fjks, R.drawable.id_lottery_fjks});
+        //11选5秒秒彩
+        sLotteryLogo.put(44, new int[]{R.drawable.id_lottery_11x5mmc, R.drawable.id_lottery_11x5mmc});
+        //快三秒秒彩
+        sLotteryLogo.put(45, new int[]{R.drawable.id_lottery_ksmmc, R.drawable.id_lottery_ksmmc});
+
         //百家乐
         sLotteryLogo.put(101, new int[]{R.drawable.id_lottery_mybjl, R.drawable.id_lottery_mybjl_rest});
         //幸运大转盘
@@ -251,7 +266,14 @@ public class ConstantInformation
         sLotteryLogo.put(116, new int[]{R.drawable.id_lottery_sgsgj, R.drawable.id_lottery_sgsgj});
         //三公
         sLotteryLogo.put(117, new int[]{R.drawable.icon_sg, R.drawable.icon_sg});
-
+        //神奇弹珠
+        sLotteryLogo.put(118, new int[]{R.drawable.shenqitanzhu_logo02, R.drawable.shenqitanzhu_logo02});
+        //加勒比扑克
+        sLotteryLogo.put(119, new int[]{R.drawable.jialebipuke_logo, R.drawable.jialebipuke_logo});
+        //打地鼠
+        sLotteryLogo.put(120, new int[]{R.drawable.dadishu_logo, R.drawable.dadishu_logo});
+        //新百家乐
+        sLotteryLogo.put(121, new int[]{R.drawable.xinbaijiale_logo, R.drawable.xinbaijiale_logo});
         //支付logo
         rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});
         rechargeLogo.put(1, new int[]{2, 0, R.drawable.unionpay});
