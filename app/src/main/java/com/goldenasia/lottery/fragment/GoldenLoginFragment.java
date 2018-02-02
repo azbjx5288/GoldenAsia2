@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -59,7 +60,7 @@ public class GoldenLoginFragment extends BaseFragment {
     View userNameClear;
     @BindView(R.id.login_password_edit_clear)
     View passwordClear;*/
-    @BindView(R.id.save)
+    @BindView(R.id.checkbox_save)
     CheckBox save;
     @BindView(R.id.login_login_btn)
     Button loginBtn;
@@ -138,6 +139,14 @@ public class GoldenLoginFragment extends BaseFragment {
             userName.setText(name);
             password.requestFocus();
         }
+        save.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferencesUtils.putBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave",isChecked);
+            }
+        });
+        save.setChecked(SharedPreferencesUtils.getBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave"));
     }
 
     @OnClick({R.id.login_login_btn, R.id.login_account_edit_clear, R.id.login_password_edit_clear,R.id.forget_password,R.id.contact_customer_service})
@@ -177,7 +186,7 @@ public class GoldenLoginFragment extends BaseFragment {
         // 2016/9/14
         account = userName.getText().toString();
         pass = DigestUtils.md5Hex(password.getText().toString());
-        /*if (save.isChecked())
+        if (save.isChecked())
         {
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.ACCOUNT_INFO, "userName", account);
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.ACCOUNT_INFO, "password", password
@@ -186,7 +195,7 @@ public class GoldenLoginFragment extends BaseFragment {
         {
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.ACCOUNT_INFO, "userName", "");
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.ACCOUNT_INFO, "password", "");
-        }*/
+        }
         command.setUsername(account);
         command.setEncpassword(pass);
         command.setVersion(BuildConfig.VERSION_CODE);
