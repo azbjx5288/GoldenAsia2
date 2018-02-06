@@ -84,6 +84,7 @@ public class GameConfig
             case 34://福建11选5
             case 36://山西11选5
             case 40://黑龙江11选5
+            case 44://11选5秒秒彩
                 if (name.equals("SDDDS"))
                 {
                     return new SdddsGame(method);//无手工录入
@@ -108,6 +109,7 @@ public class GameConfig
             case 41://河北快三
             case 42://河南快三
             case 43://福建快三
+            case 45://快三秒秒彩
                 return new KsCommonGame(method);
             case 9://福彩3D
                 return new Fc3dCommonGame(method);
@@ -157,11 +159,11 @@ public class GameConfig
             case "ZTBZ10":
                 return new LhcRxGame(method);
             //六合彩生肖玩法
-            case "TMSX":
-            case "ZTYX":
-            case "ERLX":
-            case "SNLX":
-            case "SILX":
+            case "TMSX"://特码生肖
+            case "ZTYX"://正特一肖
+            case "ERLX"://二连肖
+            case "SNLX"://三连肖
+            case "SILX"://四连肖
                 return new LhcSxGame(method);
             //六合彩尾数玩法
             case "TMWS":

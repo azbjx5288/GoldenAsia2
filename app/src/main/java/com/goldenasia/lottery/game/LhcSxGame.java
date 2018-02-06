@@ -23,11 +23,14 @@ public class LhcSxGame extends LhcGame
 {
     private boolean showAnimal;
     private ArrayList<String> pickSxList;
+    /*全部12个*/
     private int[] sxList = new int[]{R.id.layout_mouse, R.id.layout_cow, R.id.layout_tiger, R.id.layout_rabbit, R.id
             .layout_dragon, R.id.layout_snake, R.id.layout_horse, R.id.layout_sheep, R.id.layout_monkey, R.id
             .layout_chicken, R.id.layout_dog, R.id.layout_pig};
+    /*家禽6个*/
     private int[] poultryList = new int[]{R.id.layout_cow, R.id.layout_horse, R.id.layout_sheep, R.id
             .layout_chicken, R.id.layout_dog, R.id.layout_pig};
+    /*野兽6个*/
     private int[] beastList = new int[]{R.id.layout_mouse, R.id.layout_tiger, R.id.layout_rabbit, R.id.layout_dragon,
             R.id.layout_snake, R.id.layout_monkey};
 
