@@ -616,8 +616,18 @@ public class ConstantInformation
             add("10");
         }
     };
-    
+    /*鼠*/
     public static ArrayList<Integer> MOUSE_NUM = new ArrayList<Integer>()
+    {
+        {
+            add(11);
+            add(23);
+            add(35);
+            add(47);
+        }
+    };
+    /*牛*/
+    public static ArrayList<Integer> COW_NUM = new ArrayList<Integer>()
     {
         {
             add(10);
@@ -626,7 +636,7 @@ public class ConstantInformation
             add(46);
         }
     };
-    public static ArrayList<Integer> COW_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> TIGER_NUM = new ArrayList<Integer>()
     {
         {
             add(9);
@@ -635,7 +645,7 @@ public class ConstantInformation
             add(45);
         }
     };
-    public static ArrayList<Integer> TIGER_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> RABBIT_NUM = new ArrayList<Integer>()
     {
         {
             add(8);
@@ -644,7 +654,8 @@ public class ConstantInformation
             add(44);
         }
     };
-    public static ArrayList<Integer> RABBIT_NUM = new ArrayList<Integer>()
+    /*龙*/
+    public static ArrayList<Integer> DRAGON_NUM = new ArrayList<Integer>()
     {
         {
             add(7);
@@ -653,7 +664,7 @@ public class ConstantInformation
             add(43);
         }
     };
-    public static ArrayList<Integer> DRAGON_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> SNAKE_NUM = new ArrayList<Integer>()
     {
         {
             add(6);
@@ -662,7 +673,8 @@ public class ConstantInformation
             add(42);
         }
     };
-    public static ArrayList<Integer> SNAKE_NUM = new ArrayList<Integer>()
+    /*马*/
+    public static ArrayList<Integer> HORSE_NUM = new ArrayList<Integer>()
     {
         {
             add(5);
@@ -671,7 +683,7 @@ public class ConstantInformation
             add(41);
         }
     };
-    public static ArrayList<Integer> HORSE_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> SHEEP_NUM = new ArrayList<Integer>()
     {
         {
             add(4);
@@ -680,7 +692,7 @@ public class ConstantInformation
             add(40);
         }
     };
-    public static ArrayList<Integer> SHEEP_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> MONKEY_NUM = new ArrayList<Integer>()
     {
         {
             add(3);
@@ -689,7 +701,7 @@ public class ConstantInformation
             add(39);
         }
     };
-    public static ArrayList<Integer> MONKEY_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> CHIKEN_NUM = new ArrayList<Integer>()
     {
         {
             add(2);
@@ -698,7 +710,7 @@ public class ConstantInformation
             add(38);
         }
     };
-    public static ArrayList<Integer> CHIKEN_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> DOG_NUM = new ArrayList<Integer>()
     {
         {
             add(1);
@@ -708,22 +720,13 @@ public class ConstantInformation
             add(49);
         }
     };
-    public static ArrayList<Integer> DOG_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> PIG_NUM = new ArrayList<Integer>()
     {
         {
             add(12);
             add(24);
             add(36);
             add(48);
-        }
-    };
-    public static ArrayList<Integer> PIG_NUM = new ArrayList<Integer>()
-    {
-        {
-            add(11);
-            add(23);
-            add(35);
-            add(47);
         }
     };
     
