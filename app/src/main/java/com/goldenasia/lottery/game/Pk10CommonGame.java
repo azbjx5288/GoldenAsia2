@@ -149,6 +149,8 @@ public class Pk10CommonGame extends Game {
                 return pk10CommonGameUtils.QSMBDW(chooseArray);
             case "HSMBDW"://后三名不定位
                 return pk10CommonGameUtils.QSMBDW(chooseArray);
+            case "CCW"://猜车位
+                return pk10CommonGameUtils.CCW(chooseArray);
 
             default:
                 ArrayList<String> codeArray = new ArrayList<>();

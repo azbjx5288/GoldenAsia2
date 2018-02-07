@@ -310,4 +310,22 @@ public class Pk10CommonGameUtils {
         return codeArray;
     }
 
+    //猜车位
+    public ArrayList<String> CCW(ArrayList<String[]> chooseArray) {
+        ArrayList<String> codeArray = new ArrayList<>();
+        for (int i = 0; i < chooseArray.size(); i++) {
+
+            for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
+                String  charChoose=chooseArray.get(i)[j];
+
+                StringBuilder codeBuilder = new StringBuilder();
+                if(NumbericUtils.isNumericChar(charChoose)){
+                    codeBuilder.append(charChoose);
+                    codeBuilder.append(",-,-,-,-,-,-,-,-,-");
+                    codeArray.add(codeBuilder.toString());
+                }
+            }
+        }
+        return codeArray;
+    }
 }
