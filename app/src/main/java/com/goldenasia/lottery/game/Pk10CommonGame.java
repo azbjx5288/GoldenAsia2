@@ -145,6 +145,10 @@ public class Pk10CommonGame extends Game {
                 return pk10CommonGameUtils.HWMZX(chooseArray);
             case "QWMZUX": //前五名组选
                 return pk10CommonGameUtils.HWMZUX(chooseArray);
+            case "QSMBDW"://前三名不定位
+                return pk10CommonGameUtils.QSMBDW(chooseArray);
+            case "HSMBDW"://后三名不定位
+                return pk10CommonGameUtils.QSMBDW(chooseArray);
 
             default:
                 ArrayList<String> codeArray = new ArrayList<>();

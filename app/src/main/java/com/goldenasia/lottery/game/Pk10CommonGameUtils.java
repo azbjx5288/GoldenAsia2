@@ -279,5 +279,35 @@ public class Pk10CommonGameUtils {
         return codeArray;
     }
 
+    //前三名不定位
+    public ArrayList<String> QSMBDW(ArrayList<String[]> chooseArray) {
+        ArrayList<String> codeArray = new ArrayList<>();
+        for (int i = 0; i < chooseArray.size(); i++) {
+            StringBuilder codeBuilder = new StringBuilder();
+
+            String[] chooseLineArray=chooseArray.get(i);
+            if(chooseLineArray.length!=1){
+                codeArray.clear();
+                return  codeArray;
+            }
+
+            for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
+                String  charChoose=chooseArray.get(i)[j];
+
+                if(!NumbericUtils.isNumericChar(charChoose)){
+                    codeArray.clear();
+                    return  codeArray;
+                }else{
+                    codeBuilder.append(charChoose);
+                    if (j != length - 1) {
+                        codeBuilder.append(",");
+                    }
+                }
+
+            }
+            codeArray.add(codeBuilder.toString());
+        }
+        return codeArray;
+    }
 
 }
