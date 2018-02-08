@@ -1,6 +1,5 @@
 package com.goldenasia.lottery.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -154,6 +153,10 @@ public class TransferLowerMemberFragment extends BaseFragment {
 
     @OnClick(R.id.btn_submit)
     public void btnSubmit() {
+        if (TextUtils.isEmpty(lowerMember.getText())) {
+            showToast("请选择下级", Toast.LENGTH_SHORT);
+            return;
+        }
         if (TextUtils.isEmpty(accountName.getText())) {
             showToast("请输入开户人姓名", Toast.LENGTH_SHORT);
             return;
@@ -232,7 +235,7 @@ public class TransferLowerMemberFragment extends BaseFragment {
                         }
                         //是否是模糊查询
                         String searchInfo = lowerMember.getText().toString();
-                        if("".equals(searchInfo)) { //不是模糊查询
+//                        if("".equals(searchInfo)) { //不是模糊查询
                             if(items.size()>0){
                                 mAdapter.setData(items,lowerMemberUserId);
                                 if(page == FIRST_PAGE) {
@@ -243,25 +246,25 @@ public class TransferLowerMemberFragment extends BaseFragment {
                                 return true;
                             }
 
-                        }else{//是模糊查询
-                            if (items.size() + 1 < totalCount) {
-                                netLoadPopupWindow( page + 1);
-                                return true;
-                            }
-                            List<Platform> findList = new ArrayList<Platform>();
-                            for (Iterator<Platform> iterator = items.iterator(); iterator.hasNext(); ) {
-                                Platform nextMember = iterator.next();
-                                if (nextMember.getCnname().contains(searchInfo))
-                                    findList.add(nextMember);
-                            }
-                            if(findList.size()>0){
-                                mAdapter.setData(findList,lowerMemberUserId);
-                                adapterPopupWindow.showArrowTo(mClickView, BubbleStyle.ArrowDirection.Up);
-                            }else{
-                                tipDialog("当前用户没有下级...");
-                                return true;
-                            }
-                        }
+//                        }else{//是模糊查询
+//                            if (items.size() + 1 < totalCount) {
+//                                netLoadPopupWindow( page + 1);
+//                                return true;
+//                            }
+//                            List<Platform> findList = new ArrayList<Platform>();
+//                            for (Iterator<Platform> iterator = items.iterator(); iterator.hasNext(); ) {
+//                                Platform nextMember = iterator.next();
+//                                if (nextMember.getCnname().contains(searchInfo))
+//                                    findList.add(nextMember);
+//                            }
+//                            if(findList.size()>0){
+//                                mAdapter.setData(findList,lowerMemberUserId);
+//                                adapterPopupWindow.showArrowTo(mClickView, BubbleStyle.ArrowDirection.Up);
+//                            }else{
+//                                tipDialog("当前用户没有下级...");
+//                                return true;
+//                            }
+//                        }
                         mImageFrom.setEnabled(true);
                     }
                     break;

@@ -120,7 +120,8 @@ public class GoldenResetPasswordFragment extends BaseFragment {
     private RestCallback restCallback = new RestCallback() {
         @Override
         public boolean onRestComplete(RestRequest request, RestResponse response) {
-            tipDialog( "您的登录密码已重置为："+password.getText().toString());
+//            tipDialog( "您的登录密码已重置为："+password.getText().toString());
+            tipDialog( "登录密码重置成功！");
             return true;
         }
 

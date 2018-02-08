@@ -25,7 +25,7 @@ import com.goldenasia.lottery.data.LowerMemberCommand;
 import com.goldenasia.lottery.data.LowerMemberList;
 import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.data.UserInfoCommand;
-import com.goldenasia.lottery.db.MmcWinHistoryDao;
+import com.goldenasia.lottery.db.DBHelper;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.VersionChecker;
@@ -239,12 +239,12 @@ public class FragmentUser extends BaseFragment {
     }
 
     public void deleteMmcWinHistoryDB() {
-        MmcWinHistoryDao mmcWinHistoryDao = new MmcWinHistoryDao(getActivity());
+        DBHelper dBHelper = new DBHelper(getActivity());
 
         new Thread() {
             @Override
             public void run() {
-                mmcWinHistoryDao.deleteAllMmcWinHistory();
+                dBHelper.deleteAllTable();
             }
         }.start();
     }
