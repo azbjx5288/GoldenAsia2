@@ -93,12 +93,15 @@ public class FragmentUser extends BaseFragment {
             }
 
         }
-        executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        //用户余额实时更新
+        executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
 
         loadLowerMember();
         initMessageCount();
