@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -169,6 +170,15 @@ public class ChaseMmcWinView {
                     if (onPlayDoubleListner != null) {
                         onPlayDoubleListner.onPlayDouble();
                     }
+                    dialog.dismiss();
+                }
+            });
+
+            //弹出对话框 添加X号
+            ImageView imageView_exit=(ImageView) view.findViewById(R.id.imageView_exit);
+            imageView_exit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     dialog.dismiss();
                 }
             });
