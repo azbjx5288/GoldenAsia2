@@ -192,6 +192,9 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             selectPage(0);
             if (!bundle.getBoolean("hasTab"))
                 radioGroup.setVisibility(View.GONE);
+
+            //防止ViewPager中的Fragment被销毁  --可以让ViewPager多缓存一个页面，这样上面的问题就得到了解决。
+            viewPager.setOffscreenPageLimit(2);
         }
     }
     
@@ -292,7 +295,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 trend.setVisibility(View.VISIBLE);
         }
     }
-    
+
     private void LHCFragment(Method method)
     {
         GameLhcFragment gameLhcFragment = (GameLhcFragment) fragments.get(0);
