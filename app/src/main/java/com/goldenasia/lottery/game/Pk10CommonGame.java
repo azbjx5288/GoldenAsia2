@@ -145,12 +145,19 @@ public class Pk10CommonGame extends Game {
                 return pk10CommonGameUtils.HWMZX(chooseArray);
             case "QWMZUX": //前五名组选
                 return pk10CommonGameUtils.HWMZUX(chooseArray);
+
             case "QSMBDW"://前三名不定位
                 return pk10CommonGameUtils.QSMBDW(chooseArray);
             case "HSMBDW"://后三名不定位
                 return pk10CommonGameUtils.QSMBDW(chooseArray);
+
             case "CCW"://猜车位
                 return pk10CommonGameUtils.CCW(chooseArray);
+            case "QWMC"://猜前五 QWMC
+                return pk10CommonGameUtils.QWMC(chooseArray);
+            case "HWMC":////猜后五 HWMC
+                return pk10CommonGameUtils.QWMC(chooseArray);
+
 
             default:
                 ArrayList<String> codeArray = new ArrayList<>();
@@ -349,12 +356,12 @@ public class Pk10CommonGame extends Game {
     /**============================================手工录入start=============================================================**/
     //猜前五 QWMC
     public static void QWMCInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 1);
     }
 
     //猜后五 HWMC
     public static void HWMCInput(Game game) {
-        addInputLayout(game, game.getColumn());
+        addInputLayout(game, 1);
     }
 
     //猜车位 CCW
