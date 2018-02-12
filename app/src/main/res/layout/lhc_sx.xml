@@ -80,7 +80,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_special_complete_circle_defalut_ball_lhc"
                 android:gravity="center"
-                android:text="37"
+                android:text="49"
                 android:textColor="@color/app_main"
                 android:textSize="@dimen/ball_text_size" />
         </com.goldenasia.lottery.pattern.LhcLayout>

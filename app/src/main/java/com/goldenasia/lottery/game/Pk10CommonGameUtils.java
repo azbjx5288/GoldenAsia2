@@ -291,7 +291,7 @@ public class Pk10CommonGameUtils {
                 return  codeArray;
             }
 
-            for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
+            for (int j = 0, length = chooseLineArray.length; j < length; j++) {
                 String  charChoose=chooseArray.get(i)[j];
 
                 if(!NumbericUtils.isNumericChar(charChoose)){
@@ -315,6 +315,13 @@ public class Pk10CommonGameUtils {
         ArrayList<String> codeArray = new ArrayList<>();
         for (int i = 0; i < chooseArray.size(); i++) {
 
+            String[] chooseLineArray=chooseArray.get(i);
+            if(chooseLineArray.length!=1){
+                codeArray.clear();
+                return  codeArray;
+            }
+
+
             for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
                 String  charChoose=chooseArray.get(i)[j];
 
@@ -323,6 +330,9 @@ public class Pk10CommonGameUtils {
                     codeBuilder.append(charChoose);
                     codeBuilder.append(",-,-,-,-,-,-,-,-,-");
                     codeArray.add(codeBuilder.toString());
+                }else{
+                    codeArray.clear();
+                    return  codeArray;
                 }
             }
         }
@@ -334,7 +344,14 @@ public class Pk10CommonGameUtils {
         ArrayList<String> codeArray = new ArrayList<>();
         for (int i = 0; i < chooseArray.size(); i++) {
 
-            for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
+            String[] chooseLineArray=chooseArray.get(i);
+
+            if(chooseLineArray.length!=1){
+                codeArray.clear();
+                return  codeArray;
+            }
+
+            for (int j = 0 ; j < chooseLineArray.length; j++) {
                 String  charChoose=chooseArray.get(i)[j];
 
                 StringBuilder codeBuilder = new StringBuilder();
@@ -343,6 +360,9 @@ public class Pk10CommonGameUtils {
                     codeBuilder.append(charChoose);
                     codeBuilder.append(",-,-,-,-");
                     codeArray.add(codeBuilder.toString());
+                }else{
+                    codeArray.clear();
+                    return  codeArray;
                 }
             }
         }
