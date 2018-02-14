@@ -35,7 +35,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append(",");
                     }
@@ -70,7 +72,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append(",");
                     }
@@ -105,7 +109,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append(",");
                     }
@@ -140,7 +146,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append(",");
                     }
@@ -172,7 +180,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append("_");
                     }
@@ -204,7 +214,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append("_");
                     }
@@ -236,7 +248,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append("_");
                     }
@@ -267,7 +281,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append("_");
                     }
@@ -298,7 +314,9 @@ public class Pk10CommonGameUtils {
                     codeArray.clear();
                     return  codeArray;
                 }else{
-                    codeBuilder.append(charChoose);
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult);
+
                     if (j != length - 1) {
                         codeBuilder.append(",");
                     }
@@ -316,25 +334,32 @@ public class Pk10CommonGameUtils {
         for (int i = 0; i < chooseArray.size(); i++) {
 
             String[] chooseLineArray=chooseArray.get(i);
-            if(chooseLineArray.length!=1){
-                codeArray.clear();
-                return  codeArray;
-            }
 
+            StringBuilder codeBuilder = new StringBuilder();
 
-            for (int j = 0, length = chooseArray.get(i).length; j < length; j++) {
-                String  charChoose=chooseArray.get(i)[j];
+            int count=10;
 
-                StringBuilder codeBuilder = new StringBuilder();
+            for (int j = 0, length = chooseLineArray.length; j < length; j++) {
+                String  charChoose=chooseLineArray[j];
+                count--;
+
                 if(NumbericUtils.isNumericChar(charChoose)){
-                    codeBuilder.append(charChoose);
-                    codeBuilder.append(",-,-,-,-,-,-,-,-,-");
-                    codeArray.add(codeBuilder.toString());
-                }else{
-                    codeArray.clear();
-                    return  codeArray;
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult+",");
+
+                }else if("-".equals(charChoose)){
+                    codeBuilder.append("-,");
+                }
+
+            }
+            if(count>0){
+                for(int k=0;k<count;k++){
+                    codeBuilder.append("-,");
                 }
             }
+            //去掉最后一个,
+            codeBuilder.deleteCharAt(codeBuilder.length() - 1);
+            codeArray.add(codeBuilder.toString());
         }
         return codeArray;
     }
@@ -346,26 +371,33 @@ public class Pk10CommonGameUtils {
 
             String[] chooseLineArray=chooseArray.get(i);
 
-            if(chooseLineArray.length!=1){
-                codeArray.clear();
-                return  codeArray;
-            }
+            int count=5;
+
+            StringBuilder codeBuilder = new StringBuilder();
 
             for (int j = 0 ; j < chooseLineArray.length; j++) {
                 String  charChoose=chooseArray.get(i)[j];
 
-                StringBuilder codeBuilder = new StringBuilder();
+                count--;
 
                 if(NumbericUtils.isNumericChar(charChoose)){
-                    codeBuilder.append(charChoose);
-                    codeBuilder.append(",-,-,-,-");
-                    codeArray.add(codeBuilder.toString());
-                }else{
-                    codeArray.clear();
-                    return  codeArray;
+                    int intResult = Integer.parseInt(charChoose);
+                    codeBuilder.append(intResult+",");
+                }else if("-".equals(charChoose)){
+                    codeBuilder.append("-,");
                 }
             }
+
+            if(count>0){
+                for(int k=0;k<count;k++){
+                    codeBuilder.append("-,");
+                }
+            }
+            //去掉最后一个,
+            codeBuilder.deleteCharAt(codeBuilder.length() - 1);
+            codeArray.add(codeBuilder.toString());
         }
+
         return codeArray;
     }
 }

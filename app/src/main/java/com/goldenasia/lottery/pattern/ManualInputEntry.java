@@ -66,11 +66,11 @@ public class ManualInputEntry {
     private ArrayList<String[]> rulePK10Analysis(String enterstr) {
         ArrayList<String[]> list=new ArrayList<String[]>();
 
-        String[] verifyCode = enterstr.split("\n");
+        String[] verifyCode = enterstr.split(",|，|\\n|:|：|;|；|\\|");//split("\n")
 
         for (int i = 0; i < verifyCode.length; i++) {
             if (!verifyCode[i].isEmpty()) {
-                String[] singleNumber =verifyCode[i].split(",|，|\\s+|:|：|;|；|\\|");//\n|,|，|;|；|\||｜
+                String[] singleNumber =verifyCode[i].split("\\s+");// .split(",|，|\\s+|:|：|;|；|\\|") 支持回车 逗号[,] 分号[;]冒号[:]竖线[|]
 
                 list.add(singleNumber);
             }

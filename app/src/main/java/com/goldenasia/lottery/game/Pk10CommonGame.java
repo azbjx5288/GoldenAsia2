@@ -356,12 +356,12 @@ public class Pk10CommonGame extends Game {
     /**============================================手工录入start=============================================================**/
     //猜前五 QWMC
     public static void QWMCInput(Game game) {
-        addInputLayout(game, 1);
+        addInputLayout(game, 100);
     }
 
     //猜后五 HWMC
     public static void HWMCInput(Game game) {
-        addInputLayout(game, 1);
+        addInputLayout(game, 100);
     }
 
     //猜车位 CCW

@@ -150,21 +150,25 @@ public class ManualInputView {
                         colPK10="1"+"\n"+"2";
                         break;
                     case 2:
-                        colPK10="1,2"+"\n"+"1,2";
+                        colPK10="1 2"+"\n"+"1 2";
                         break;
                     case 3:
-                        colPK10="1,2,3"+"\n"+"1,2,3";
+                        colPK10="1 2 3"+"\n"+"1 2 3";
                         break;
                     case 4:
-                        colPK10="1,2,3,4"+"\n"+"1,2,3,4";
+                        colPK10="1 2 3 4"+"\n"+"1 2 3 4";
                         break;
                     case 5:
-                        colPK10="1,2,3,4,5" +"\n"+
-                                "1,2,3,4,5";
+                        colPK10="1 2 3 4 5" +"\n"+
+                                "1 2 3 4 5";
                         break;
                     case 10:
-                        colPK10="1,,,,,,,,," +"\n"+
-                                "2,,,,,,,,,";
+                        colPK10="1 - - - - - - - - -" +"\n"+
+                                "2 - - - - - - - - -";
+                        break;
+                    case 100: // //猜前五 QWMC   //猜后五 HWMC
+                        colPK10="1 - - - -" +"\n"+
+                                "2 - - - -";
                         break;
                 }
                 hintStr = "提示：\n" +

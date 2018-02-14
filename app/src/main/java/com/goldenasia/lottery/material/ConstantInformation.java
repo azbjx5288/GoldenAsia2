@@ -275,17 +275,17 @@ public class ConstantInformation
         //新百家乐
         sLotteryLogo.put(121, new int[]{R.drawable.xinbaijiale_logo, R.drawable.xinbaijiale_logo});
         //支付logo
-        rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});
+        rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});//支付宝转账
         rechargeLogo.put(1, new int[]{2, 0, R.drawable.unionpay});
         rechargeLogo.put(2, new int[]{3, 0, R.drawable.unionpay});
         rechargeLogo.put(3, new int[]{6, 0, R.drawable.pay_baidu_icon});
         rechargeLogo.put(4, new int[]{7, 0, R.drawable.qq});
         rechargeLogo.put(5, new int[]{8, 0, R.drawable.pay_weixin_icon});
         rechargeLogo.put(6, new int[]{9, 0, R.drawable.zfb_icon});
-        rechargeLogo.put(7, new int[]{1, 100, R.drawable.pay_wyzz_icon});
-        rechargeLogo.put(8, new int[]{5, 0, R.drawable.jd_icon});//京东支付 id=5
+        rechargeLogo.put(7, new int[]{1, 100, R.drawable.pay_wyzz_icon});//网银转账
+        rechargeLogo.put(8, new int[]{5, 0, R.drawable.jd_icon});//京东支付 id=5 tradeType=5,
         rechargeLogo.put(9, new int[]{10, 120, R.drawable.unionpay});//银联扫码
-        
+
         transferList.add(new Platform(0, "主钱包", "JYZ"));
         /*transferArray.put(1, new String[]{"pt", "PT游戏"});
         transferArray.put(2, new String[]{"jc", "竞彩游戏"});*/
@@ -357,6 +357,10 @@ public class ConstantInformation
     
     public static int getRechargeLogo(int tradeType, int bankID)
     {
+        if(tradeType== 1 && bankID == 225){//网银转账
+            return R.drawable.pay_wyzz_icon;
+        }
+
         int logo = 0;
         for (int i = 0; i < rechargeLogo.size(); i++)
         {
