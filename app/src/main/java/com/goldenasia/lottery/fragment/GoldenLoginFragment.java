@@ -146,7 +146,7 @@ public class GoldenLoginFragment extends BaseFragment {
                 SharedPreferencesUtils.putBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave",isChecked);
             }
         });
-        save.setChecked(SharedPreferencesUtils.getBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave"));
+        save.setChecked(SharedPreferencesUtils.getBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave",false));
     }
 
     @OnClick({R.id.login_login_btn, R.id.login_account_edit_clear, R.id.login_password_edit_clear,R.id.forget_password,R.id.contact_customer_service})

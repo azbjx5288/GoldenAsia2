@@ -74,6 +74,12 @@ public class SharedPreferencesUtils
         SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Activity.MODE_PRIVATE);
         return sharedPreferences.getBoolean(key, true);
     }
+
+    public static Boolean getBoolean(Context context, String fileName, String key,boolean isTrue)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(fileName, Activity.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(key, isTrue);
+    }
     
     public static void putObject(Context context, String fileName, String key, Object object) throws Exception
     {
