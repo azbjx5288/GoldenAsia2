@@ -108,6 +108,14 @@ public class GAGameFragment extends BaseFragment {
         super.onDestroyView();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(webView!=null){
+            webView.destroy();
+        }
+    }
+
     private class JsInterface {
         /**
          * 给网页调用，网页点“离开”游戏时使用 --> androidJs.finishGame()
