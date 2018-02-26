@@ -1208,7 +1208,6 @@ public class CountdownView extends View
         {
             countDownInterval = 1000;
         }
-        mPreviouIntervalCallbackTime=0;
 
         mCustomCountDownTimer = new CustomCountDownTimer(millisecond, countDownInterval)
         {
