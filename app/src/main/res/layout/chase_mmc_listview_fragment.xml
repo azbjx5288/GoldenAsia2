@@ -21,7 +21,8 @@
             android:id="@+id/imageView_exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/exit_pressed" />
+            android:layout_alignParentRight="true"
+            app:srcCompat="@drawable/delete" />
 
         <TextView
             android:id="@+id/tip_award"

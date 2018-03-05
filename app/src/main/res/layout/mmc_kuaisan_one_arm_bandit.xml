@@ -11,17 +11,16 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="6.5dp"
-        android:background="@drawable/background_slot"
+        android:background="@drawable/background_slot_kuaisan"
         android:gravity="center"
         android:orientation="horizontal">
 
         <ViewFlipper
             android:id="@+id/flipper1"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-5dp"
-            android:layout_marginLeft="17.5dp"
-            android:layout_marginRight="17.75dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:flipInterval="@integer/flipper_duration1">
 
             <ImageView
@@ -87,11 +86,10 @@
 
         <ViewFlipper
             android:id="@+id/flipper2"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-5dp"
-            android:layout_marginLeft="17.75dp"
-            android:layout_marginRight="17.75dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:flipInterval="@integer/flipper_duration2">
 
             <ImageView
@@ -157,11 +155,10 @@
 
         <ViewFlipper
             android:id="@+id/flipper3"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="-5dp"
-            android:layout_marginLeft="17.75dp"
-            android:layout_marginRight="17.75dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:flipInterval="@integer/flipper_duration3">
 
             <ImageView

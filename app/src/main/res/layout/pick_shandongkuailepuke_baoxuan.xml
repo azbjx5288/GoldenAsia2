@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_main_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/pick_column_area"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minHeight="48dp">
+
+        <TextView
+            android:id="@+id/pick_column_title"
+            style="@style/pick_column_style"
+            android:layout_marginLeft="24dp"
+            android:background="@drawable/digit_tab"
+            android:text="@string/is_ssc_shi_title" />
+
+        <LinearLayout
+            android:id="@+id/pick_column_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            >
+
+            <Button
+                android:id="@+id/pick_column_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全"
+                android:textColor="@drawable/pink_number_button_text_color"
+                android:textSize="15sp"
+                android:background="@null"/>
+
+            <Button
+                android:id="@+id/pick_column_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/pink_number_button_text_color"
+                android:textSize="15sp"
+                android:background="@null"
+                android:text="清" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pick_column_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
+        >
+
+        <ImageView
+            android:id="@+id/image_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/szbx"
+            android:background="@drawable/sdklpk_bx_selector"/>
+
+        <ImageView
+            android:id="@+id/image_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:src="@drawable/szbx"
+            android:background="@drawable/sdklpk_bx_selector"/>
+
+        <ImageView
+            android:id="@+id/image_03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:src="@drawable/szbx" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
+        >
+
+        <ImageView
+            android:id="@+id/image_04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/szbx"
+            android:background="@drawable/sdklpk_bx_selector"/>
+
+        <ImageView
+            android:id="@+id/image_05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:src="@drawable/szbx"
+            android:background="@drawable/sdklpk_bx_selector"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

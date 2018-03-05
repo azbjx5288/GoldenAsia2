@@ -35,7 +35,7 @@
             android:background="@drawable/animal_button_selector"
             android:button="@null"
             android:gravity="center"
-            android:text="猛兽"
+            android:text="野兽"
             android:textColor="@drawable/selector_lhc_sx_textcolor"
             android:textSize="@dimen/text_size_small" />
     </RadioGroup>
