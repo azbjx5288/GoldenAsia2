@@ -576,6 +576,10 @@ function isLegalCode(codes) {
                     singleNum = codes[0].length;
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
+             case 'PKBX':  //包选
+                    singleNum = codes[0].length;
+                    isDup = singleNum > 1 ? 1 : 0;
+                    break;
                 case 'CEBUC':
                 case 'CEBIC':
                     if(codes[0].length<2)
