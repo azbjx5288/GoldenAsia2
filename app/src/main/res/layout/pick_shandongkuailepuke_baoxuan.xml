@@ -57,33 +57,37 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         >
 
         <ImageView
-            android:id="@+id/image_01"
+            android:id="@+id/image_01_01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:clickable="true"
+            android:src="@drawable/thbx"
+            android:background="@drawable/sdklpk_bx_selector"/>
+
+        <ImageView
+            android:id="@+id/image_01_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="2dp"
             android:clickable="true"
             android:src="@drawable/szbx"
             android:background="@drawable/sdklpk_bx_selector"/>
 
         <ImageView
-            android:id="@+id/image_02"
+            android:id="@+id/image_01_03"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:padding="2dp"
             android:clickable="true"
-            android:src="@drawable/szbx"
+            android:src="@drawable/thsbx"
             android:background="@drawable/sdklpk_bx_selector"/>
-
-        <ImageView
-            android:id="@+id/image_03"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/sdklpk_bx_selector"
-            android:src="@drawable/szbx" />
 
     </LinearLayout>
 
@@ -94,25 +98,28 @@
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         >
 
         <ImageView
-            android:id="@+id/image_04"
+            android:id="@+id/image_01_04"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:src="@drawable/szbx"
+            android:padding="2dp"
+            android:src="@drawable/bzbx"
             android:background="@drawable/sdklpk_bx_selector"/>
 
+        <android.support.v4.widget.Space
+            android:layout_width="30dp"
+            android:layout_height="1dp" />
         <ImageView
-            android:id="@+id/image_05"
+            android:id="@+id/image_01_05"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="20dp"
+            android:padding="2dp"
             android:clickable="true"
-            android:src="@drawable/szbx"
+            android:src="@drawable/dzbx"
             android:background="@drawable/sdklpk_bx_selector"/>
 
 
