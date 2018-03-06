@@ -1,22 +1,16 @@
 package com.goldenasia.lottery.game;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Method;
-import com.goldenasia.lottery.pattern.LhcLayout;
-import com.goldenasia.lottery.pattern.PickNumber;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -29,14 +23,11 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     private String TAG=ShanDongKuaiLePuKeGame.class.getName();
 
-    @BindView(R.id.image_01_01)
-    ImageView image_01_01;
-
-
-    private int  mPickCount=0;
+    private ArrayList<CharSequence> mPickList;//当前选中的图片的中文名字集合
 
     public ShanDongKuaiLePuKeGame(Method method) {
         super(method);
+        mPickList = new ArrayList<>();
     }
 
     @Override
@@ -52,12 +43,6 @@ public class ShanDongKuaiLePuKeGame extends Game {
 //            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
 //        }
 
-//        LayoutInflater.from(topLayout.getContext()).inflate(R.layout.pick_shandongkuailepuke_baoxuan, , true);
-//        ButterKnife.bind(this, topLayout);
-
-//        image_01.setSelected(true);
-//
-
         if("PKBX".equals(method.getName())){
             PKBX(this);
         }
@@ -67,7 +52,7 @@ public class ShanDongKuaiLePuKeGame extends Game {
     public String getWebViewCode()
     {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < mPickCount; i++)
+        for (int i = 0; i < mPickList.size(); i++)
         {
             stringBuilder.append(i);
         }
@@ -77,20 +62,91 @@ public class ShanDongKuaiLePuKeGame extends Game {
     }
 
 
-    public String getSubmitCodes() {
-        StringBuilder builder = new StringBuilder();
-        if (isDigital)
-            builder.append(transformDigit(digits));
-        for (int i = 0, size = pickNumbers.size(); i < size; i++) {
-            builder.append(transform(pickNumbers.get(i).getCheckedNumber(), true, false));
-            if (i != size - 1) {
-                builder.append(",");
+    //确定按钮按下后 带到 购物车中的
+    @Override
+    public String getSubmitCodes()
+    {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        int length = mPickList.size();
+        for (int i = 0; i < length; i++)
+        {
+            stringBuilder.append(mPickList.get(i));
+            if (i != length - 1)
+            {
+                stringBuilder.append('_');
             }
         }
-        return builder.toString();
+        return stringBuilder.toString();
     }
 
+    @Override
+    public void reset()
+    {
+        setAllImageState(false);
+    }
 
+    private void setAllImageState(boolean state) {
+        //界面变化
+        if("PKBX".equals(method.getName())){//R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05//包选界面
+            topLayout.findViewById(R.id.image_01_01).setSelected(state);
+            topLayout.findViewById(R.id.image_01_02).setSelected(state);
+            topLayout.findViewById(R.id.image_01_03).setSelected(state);
+            topLayout.findViewById(R.id.image_01_04).setSelected(state);
+            topLayout.findViewById(R.id.image_01_05).setSelected(state);
+
+            //数据变化
+            if(state){
+                mPickList.clear();
+                mPickList.add("同花包选");
+                mPickList.add("顺子包选");
+                mPickList.add("同花顺包选");
+                mPickList.add("豹子包选");
+                mPickList.add("对子包选");
+            }else{
+                mPickList.clear();
+            }
+
+        }//同花  PKTH
+
+
+
+        notifyListener();
+    }
+
+    @OnClick({R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05,//包选界面
+
+
+    R.id.sdklpk_all, R.id.sdklpk_clear//全 清
+    })
+    public void onLayoutClick(View view)
+    {
+
+        switch (view.getId()){
+            case R.id.sdklpk_all://全选
+                setAllImageState(true);
+                break;
+            case R.id.sdklpk_clear://清除
+                setAllImageState(false);
+                break;
+            default://点击图片
+                if (view.isSelected())
+                {
+                    view.setSelected(false);
+                    mPickList.remove(view.getTag().toString());
+                } else
+                {
+                    view.setSelected(true);
+                    mPickList.add(view.getTag().toString());
+                }
+        }
+
+
+
+        notifyListener();
+    }
+
+    /*====================================具体玩法添加开始===========================================================================*/
     private static void addTopLayout(Game game, View view) {
         ViewGroup topLayout = game.getTopLayout();
         topLayout.addView(view);
@@ -98,64 +154,11 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     //包选
     public static void PKBX(Game game) {
-
         View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_baoxuan, null, false);
         ButterKnife.bind(game, view);
-
         addTopLayout(game, view);
-//        LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column2, null, false);
-
-//        return LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.popup_write_comment, null, false));;
-//
-//
-//        LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_column_cow_cow, game.getTopLayout(), true);
-//        ButterKnife.bind(this, game.getTopLayout());
-//        ButterKnife.bind(this, topLayout);
     }
 
-/*onc
-    @OnClick({R.id.image_01_01, R.id.layout_blue, R.id.layout_green})
-    public void OnClick(LhcLayout view)
-    {
-        if (view.isSelected())
-        {
-            view.setSelected(false);
-            pickColorList.remove(view.getColor());
-        } else
-        {
-            view.setSelected(true);
-            pickColorList.add(view.getColor());
-        }
-
-        notifyListener();
-    }*/
-
-    @OnClick({R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05//包选界面
-
-    })
-    public void onLayoutClick(ImageView view)
-    {
-        if (view.isSelected())
-        {
-            view.setSelected(false);
-            mPickCount--;
-        } else
-        {
-            view.setSelected(true);
-            mPickCount++;
-        }
-
-        notifyListener();
-    }
-
-    @Override
-    public void onClearPick(Game game)
-    {
-        reset();
-    }
-
-
-    /*====================================具体玩法添加开始===========================================================================*/
     //同花  PKTH
     public static void PKTH(Game game) {
 
