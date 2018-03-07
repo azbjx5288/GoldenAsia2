@@ -1,11 +1,14 @@
 package com.goldenasia.lottery.pattern;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import com.goldenasia.lottery.data.Lottery;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.PeriodInfo;
+import com.goldenasia.lottery.util.UiUtils;
 import com.google.gson.reflect.TypeToken;
 
 import java.text.DateFormat;
@@ -37,6 +41,7 @@ import static com.goldenasia.lottery.material.ConstantInformation.ONE_SECOND;
 
 /**
  * 开奖与销售 倒计时
+ * 4.4.7	获取奖期信息
  * Created by ACE-PC on 2016/1/18.
  */
 public class TitleTimingView
@@ -44,7 +49,9 @@ public class TitleTimingView
     private String Tag = TitleTimingView.class.getSimpleName();
     private final long TRACK_INTERVAL_SHORT = 8;
     private final long TRACK_INTERVAL_LONG = 50;
+    /*获取当前奖期*/
     private static final int ISSUE_TRACE_ID = 2;
+    /*获取上期奖期*/
     private static final int OPEN_ISSUE_TRACE_ID = 3;
     private static final long RETRY_INTERVAL = 15 * ONE_SECOND;
     
@@ -54,7 +61,14 @@ public class TitleTimingView
     private TextView openCodeTextView;
     private TextView salesIssueView;
     private CountdownView salesTimeView;
-    
+    private LinearLayout mLlAwardSdlklpu;
+    private ImageView  mImageSdlklpu01;
+    private TextView  mTextSdlklpu01;
+    private ImageView  mImageSdlklpu02;
+    private TextView  mTextSdlklpu02;
+    private ImageView  mImageSdlklpu03;
+    private TextView  mTextSdlklpu03;
+
     private boolean isSelling;
     private Lottery lottery;
     private String issue;
@@ -145,7 +159,14 @@ public class TitleTimingView
         openCodeTextView = (TextView) view.findViewById(R.id.timing_title_opennumber);
         salesIssueView = (TextView) view.findViewById(R.id.timing_title_salesissue);
         salesTimeView = (CountdownView) view.findViewById(R.id.timing_title_salestime);
-        
+        mLlAwardSdlklpu = (LinearLayout) view.findViewById(R.id.ll_award_sdlklpu);
+        mImageSdlklpu01 = (ImageView) view.findViewById(R.id.image_sdlklpu01);
+        mTextSdlklpu01 = (TextView) view.findViewById(R.id.text_sdlklpu01);
+        mImageSdlklpu02 = (ImageView) view.findViewById(R.id.image_sdlklpu02);
+        mTextSdlklpu02 = (TextView) view.findViewById(R.id.text_sdlklpu02);
+        mImageSdlklpu03 = (ImageView) view.findViewById(R.id.image_sdlklpu03);
+        mTextSdlklpu03 = (TextView) view.findViewById(R.id.text_sdlklpu03);
+
         isSelling = true;
         issue = "";
         issueLast = "";
@@ -257,10 +278,55 @@ public class TitleTimingView
         Date curDate = new Date(System.currentTimeMillis());
         agoIssueTextView.setText(openIssue != null && openIssue.length() > 0 ? openIssue : df.format(curDate) + "-" +
                 "****期");
-        openCodeTextView.setText(codeOpen != null && codeOpen.length() > 0 ? codeOpen : "-\t-\t-\t-\t-");
+        if(lottery!=null&&lottery.getLotteryId()==14){//14://山东快乐扑克
+            openCodeTextView.setVisibility(View.GONE);
+            mLlAwardSdlklpu.setVisibility(View.VISIBLE);
+            showSsklpuAwardCode(codeOpen);
+        }else{
+            openCodeTextView.setText(codeOpen != null && codeOpen.length() > 0 ? codeOpen : "-\t-\t-\t-\t-");
+        }
         getIntervalTimer(getInterval());
     }
-    
+
+    //显示快乐扑克开奖信息 （文字+图片形式）
+    private void showSsklpuAwardCode(String codeOpen) {
+        if(codeOpen != null &&codeOpen.length()>0) {
+      /*      StringBuffer sb1;
+           char c= sb1.charAt(1);*/
+            mTextSdlklpu01.setText(codeOpen.charAt(0)+"");
+            mTextSdlklpu02.setText(codeOpen.charAt(3)+"");
+            mTextSdlklpu03.setText(codeOpen.charAt(6)+"");
+
+            //图片
+            mImageSdlklpu01.setImageDrawable(letterToDrawable(codeOpen.charAt(1)+""));
+            mImageSdlklpu02.setImageDrawable(letterToDrawable(codeOpen.charAt(4)+""));
+            mImageSdlklpu03.setImageDrawable(letterToDrawable(codeOpen.charAt(7)+""));
+        }else{
+            mTextSdlklpu01.setText("");
+            mTextSdlklpu02.setText("-\t-\t-\t-\t-");
+            mTextSdlklpu03.setText("");
+
+            //图片
+            mImageSdlklpu01.setImageDrawable(null);
+            mImageSdlklpu02.setImageDrawable(null);
+            mImageSdlklpu03.setImageDrawable(null);
+        }
+    }
+
+    //根据字母判定花色  花色♠s,♥h ♣c ♦d(一律小写)
+    private Drawable letterToDrawable(String letter){
+        if ("s".equals(letter)){
+            return UiUtils.getDrawable(activity,R.drawable.ht_icon);
+        }else if("h".equals(letter)){
+            return UiUtils.getDrawable(activity,R.drawable.hongt_icon);
+        }else if("c".equals(letter)){
+            return UiUtils.getDrawable(activity,R.drawable.mh_icon);
+        }else if("d".equals(letter)){
+            return UiUtils.getDrawable(activity,R.drawable.fk_icon);
+        }else{
+            return null;
+        }
+    }
     /**
      * 销售完成后 等待开奖倒计时触发
      */
