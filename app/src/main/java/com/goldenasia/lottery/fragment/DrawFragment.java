@@ -30,6 +30,8 @@ import com.goldenasia.lottery.data.UserInfoCommand;
 import com.goldenasia.lottery.data.WithdrawCommand;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -91,8 +93,14 @@ public class DrawFragment extends BaseFragment {
 
     @OnClick(R.id.submit)
     public void onClickSubmit() {
+        //不为空
         if (TextUtils.isEmpty(fundPassword.getText())) {
             Toast.makeText(getActivity(), "请输入资金密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //长度6~15，不能只有数字也不能只有字母
+        if (fundPassword.getText().toString().matches("^[a-zA-Z0-9]{6,15}$")) {
+            Toast.makeText(getActivity(), "资金密码长度为6~15，不能只有数字也不能只有字母", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -122,8 +130,12 @@ public class DrawFragment extends BaseFragment {
     private void submit() {
         CardDetail checkCard = cardDetails.get(lastCheckIndex);
 
+        //资金密码两次MD5加密
+        String  pFundPassword= DigestUtils.md5Hex(fundPassword.getText().toString());
+        pFundPassword= DigestUtils.md5Hex(pFundPassword);
+
         WithdrawCommand command = new WithdrawCommand();
-        command.setSecurityPassword(fundPassword.getText().toString());
+        command.setSecurityPassword(pFundPassword);
         command.setWithdrawBankId(checkCard.getBankId());
         command.setWithdrawAmount(Double.parseDouble(drawMoneyEditText.getText().toString()));
         command.setBindCardId(checkCard.getBindCardId());
