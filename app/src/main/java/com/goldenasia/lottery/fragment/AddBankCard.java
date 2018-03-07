@@ -30,6 +30,8 @@ import com.goldenasia.lottery.material.CheckBankNumber;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -154,13 +156,17 @@ public class AddBankCard extends BaseFragment {
                     bankid=bank.getBankId();
             }
             String cardNo = cardNumber.getText().toString().replace(" ", "");
+
+            String  pFundPassword= DigestUtils.md5Hex(securityPassword.getText().toString());
+            pFundPassword= DigestUtils.md5Hex(pFundPassword);
+
             BindCardCommand command = new BindCardCommand();
             command.setBind_card_id(bankid);
             command.setBind_card_num(cardNo);
             command.setProvince(province.getText().toString());
             command.setCity(city.getText().toString());
             command.setBranch_name(detailed.getText().toString());
-            command.setSecpwd(securityPassword.getText().toString());
+            command.setSecpwd(pFundPassword);
             executeCommand(command,restCallback,BINDCARD_TRACE_ID);
         }
     }
@@ -200,6 +206,12 @@ public class AddBankCard extends BaseFragment {
 
         if (TextUtils.isEmpty(securityPassword.getText().toString())) {
             Toast.makeText(getContext(), "请输入资金密码", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        //长度6~15，不能只有数字也不能只有字母
+        if (securityPassword.getText().toString().matches("^[a-zA-Z0-9]{6,15}$")) {
+            Toast.makeText(getActivity(), "资金密码长度为6~15，不能只有数字也不能只有字母", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
