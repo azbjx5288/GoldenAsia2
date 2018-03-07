@@ -47,6 +47,7 @@ public class TextMultipleGame extends Game
     private static final int TYPE_JSDX=10; //大小
     private static final int TYPE_JSDS=11;//单双
     private static final int TYPE_JSYS=12;//颜色
+    private static final int TYPE_JSETFX =13;//二同号复选 JSETFX
 
     public TextMultipleGame(Method method)
     {
@@ -237,6 +238,17 @@ public class TextMultipleGame extends Game
                     }
                 }
                 break;
+            case TYPE_JSETFX://二同号复选 JSETFX
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(), twoSameMulPickText,
+                            false, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -375,7 +387,7 @@ public class TextMultipleGame extends Game
     //二同号复选 JSETFX
     public static void JSETFX(Game game)
     {
-        TYPE = TYPE_ETFX;
+        TYPE = TYPE_JSETFX;//二同号复选 JSETFX
         createPicklayout(game, new String[]{"二同号复选"}, twoSameMulPickText, false);
     }
     
