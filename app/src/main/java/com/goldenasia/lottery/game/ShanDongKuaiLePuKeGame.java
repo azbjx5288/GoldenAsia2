@@ -1,9 +1,10 @@
 package com.goldenasia.lottery.game;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Method;
@@ -33,18 +34,45 @@ public class ShanDongKuaiLePuKeGame extends Game {
     @Override
     public void onInflate() {
 
-//        try {
-//            java.lang.reflect.Method function = getClass().getMethod(method.getName(), Game.class);
-//            function.invoke(null, this);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Log.e("SscCommonGame", "onInflate: " + "//" + method.getCname() + " " + method.getName() + " public static " +
-//                    "" + "void " + method.getName() + "(Game game) {}");
-//            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
-//        }
-
-        if("PKBX".equals(method.getName())){
+        //ButterKnife.bind(game, view); 和反射冲突 所以放弃用反射的方法
+        /*try {
+            java.lang.reflect.Method function = getClass().getDeclaredMethod(method.getName(), Game.class);
+            function.setAccessible(true);//设置允许访问
+            function.invoke(getClass(), this);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("ShanDongKuaiLePuKeGame", "onInflate: " + "//" + method.getCname() + " " + method.getName() + " public static " +
+                    "" + "void " + method.getName() + "(Game game) {}");
+            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
+        }*/
+        if("PKBX".equals(method.getName())){       //包选 PKBX
             PKBX(this);
+        }else if("PKTH".equals(method.getName())){ //同花  PKTH
+            PKTH(this);
+        }else if("PKSZ".equals(method.getName())){ //顺子 PKSZ
+
+        }else if("PKTH".equals(method.getName())){ //同花顺 PKTHS
+
+        }else if("PKBZ".equals(method.getName())){ //豹子 PKBZ
+
+        }else if("PKDZ".equals(method.getName())){ //对子 PKDZ
+
+        }else if("PKRX1".equals(method.getName())){ //任选一 PKRX1
+
+        }else if("PKRX2".equals(method.getName())){ //任选二 PKRX2
+
+        }else if("PKRX3".equals(method.getName())){ //任选三 PKRX3
+
+        }else if("PKRX4".equals(method.getName())){ //任选四 PKRX4
+
+        }else if("PKRX5".equals(method.getName())){ //任选五 PKRX5
+
+        }else if("PKRX6".equals(method.getName())){ //任选六 PKRX6
+
+        }else{
+            Log.e("ShanDongKuaiLePuKeGame", "onInflate: " + "//" + method.getCname() + " " + method.getName() + " public static " +
+                    "" + "void " + method.getName() + "(Game game) {}");
+            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -61,12 +89,10 @@ public class ShanDongKuaiLePuKeGame extends Game {
         return jsonArray.toString();
     }
 
-
     //确定按钮按下后 带到 购物车中的
     @Override
     public String getSubmitCodes()
     {
-
         StringBuilder stringBuilder = new StringBuilder();
         int length = mPickList.size();
         for (int i = 0; i < length; i++)
@@ -107,15 +133,29 @@ public class ShanDongKuaiLePuKeGame extends Game {
                 mPickList.clear();
             }
 
-        }//同花  PKTH
+        }else if("PKTH".equals(method.getName())) {//同花  PKTH
+            topLayout.findViewById(R.id.image_01_01).setSelected(state);
+            topLayout.findViewById(R.id.image_01_02).setSelected(state);
+            topLayout.findViewById(R.id.image_01_03).setSelected(state);
+            topLayout.findViewById(R.id.image_01_04).setSelected(state);
 
-
-
+            //数据变化
+            if(state){
+                mPickList.clear();
+                mPickList.add("黑桃");
+                mPickList.add("红桃");
+                mPickList.add("梅花");
+                mPickList.add("方块");
+            }else{
+                mPickList.clear();
+            }
+        }
         notifyListener();
     }
 
     @OnClick({R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05,//包选界面
-
+            R.id.image_01_06, R.id.image_01_07, R.id.image_01_08, R.id.image_01_09, R.id.image_01_10,//包选界面
+            R.id.image_01_11, R.id.image_01_12, R.id.image_01_13,//包选界面  每个玩法一共 13张图片
 
     R.id.sdklpk_all, R.id.sdklpk_clear//全 清
     })
@@ -141,8 +181,6 @@ public class ShanDongKuaiLePuKeGame extends Game {
                 }
         }
 
-
-
         notifyListener();
     }
 
@@ -161,12 +199,13 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     //同花  PKTH
     public static void PKTH(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_tonghua, null, false);
+        ButterKnife.bind(game, view);
+        addTopLayout(game, view);
     }
 
 
     //顺子 PKSZ
-
     public static void PKSZ(Game game) {
 
     }
@@ -176,12 +215,12 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     }
 
-    //豹子         PKBZ
+    //豹子 PKBZ
     public static void PKBZ(Game game) {
 
     }
-    //对子 PKDZ
 
+    //对子 PKDZ
     public static void PKDZ(Game game) {
 
     }

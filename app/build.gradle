@@ -43,7 +43,7 @@ android {
     }
 }
 
-/*support 强制使用相同版本的库*/
+/*support 寮哄埗浣跨敤鐩稿悓鐗堟湰鐨勫簱*/
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         def requested = details.requested
