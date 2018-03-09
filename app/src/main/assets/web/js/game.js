@@ -578,6 +578,7 @@ function isLegalCode(codes) {
                     break;
              case 'PKBX':  //包选
              case "PKTH"://同花  PKTH
+             case "PKSZ"://顺子 PKSZ
                     singleNum = codes[0].length;
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
