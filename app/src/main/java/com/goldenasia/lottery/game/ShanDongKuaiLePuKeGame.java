@@ -54,7 +54,7 @@ public class ShanDongKuaiLePuKeGame extends Game {
         }else if("PKTHS".equals(method.getName())){ //同花顺 PKTHS
             PKTHS(this);
         }else if("PKBZ".equals(method.getName())){ //豹子 PKBZ
-
+            PKBZ(this);
         }else if("PKDZ".equals(method.getName())){ //对子 PKDZ
 
         }else if("PKRX1".equals(method.getName())){ //任选一 PKRX1
@@ -128,8 +128,11 @@ public class ShanDongKuaiLePuKeGame extends Game {
                     ,"678" ,"789" ,"8910", "910J","10JQA","JQK","QKA"});
 
         }else if("PKTHS".equals(method.getName())) {//同花顺 PKTHS
-            //有12张图片
             gameMethodDate(state,new String[]{"黑桃顺子","红桃顺子","梅花顺子","方块顺子"});
+
+        }else if("PKBZ".equals(method.getName())) {//豹子 PKBZ
+            gameMethodDate(state,new String[]{"AAA","222","333","444","555"
+            ,"666","777","888","999","101010","JJJ","QQQ","KKK"});
 
         }
         notifyListener();
@@ -222,7 +225,9 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     //豹子 PKBZ
     public static void PKBZ(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_baozi, null, false);
+        ButterKnife.bind(game, view);
+        addTopLayout(game, view);
     }
 
     //对子 PKDZ

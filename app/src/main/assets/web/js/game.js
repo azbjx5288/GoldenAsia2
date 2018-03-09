@@ -580,6 +580,7 @@ function isLegalCode(codes) {
              case "PKTH"://同花  PKTH
              case "PKSZ"://顺子 PKSZ
              case "PKTHS"://同花顺 PKTHS
+             case "PKBZ"://豹子 PKBZ
                     singleNum = codes[0].length;
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
