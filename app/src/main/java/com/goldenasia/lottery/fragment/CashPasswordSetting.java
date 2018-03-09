@@ -22,6 +22,8 @@ import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.ChangePasswordCommand;
 import com.goldenasia.lottery.data.UserInfo;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -55,9 +57,9 @@ public class CashPasswordSetting extends BaseFragment {
         }
         ChangePasswordCommand command = new ChangePasswordCommand();
         command.setSa("modifySecurityPassword");
-        command.setOldsecpassword(nowPassword.getText().toString());
-        command.setSecpassword(newPassword.getText().toString());
-        command.setSecpassword2(newPasswordVerify.getText().toString());
+        command.setOldsecpassword(DigestUtils.md5Hex(nowPassword.getText().toString()));
+        command.setSecpassword(DigestUtils.md5Hex(newPassword.getText().toString()));
+        command.setSecpassword2(DigestUtils.md5Hex(newPasswordVerify.getText().toString()));
 
         executeCommand(command, callback);
     }
