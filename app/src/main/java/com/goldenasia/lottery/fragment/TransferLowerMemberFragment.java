@@ -37,6 +37,8 @@ import com.goldenasia.lottery.user.UserCentre;
 import com.goldenasia.lottery.util.NumbericTextWatcher;
 import com.goldenasia.lottery.view.adapter.TransferAdapter;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -165,8 +167,26 @@ public class TransferLowerMemberFragment extends BaseFragment {
             showToast("请输入转移金额", Toast.LENGTH_SHORT);
             return;
         }
-        if (TextUtils.isEmpty(fundsPassword.getText())) {
+        String pFundsPassword = fundsPassword.getText().toString();
+
+        if (TextUtils.isEmpty(pFundsPassword)) {
             showToast("请输入资金密码", Toast.LENGTH_SHORT);
+            return;
+        }
+
+        if (pFundsPassword.length() < 6) {
+            showToast("资金密码太短，请重新输入", Toast.LENGTH_SHORT);
+            return;
+        }
+        if (pFundsPassword.length() > 20) {
+            showToast("资金密码太长，请重新输入", Toast.LENGTH_SHORT);
+            return;
+        }
+
+
+        String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$";
+        if (!pFundsPassword.matches(regex)) {
+            showToast("资金密码必须包含数字和字母，请重新输入", Toast.LENGTH_SHORT);
             return;
         }
 
@@ -182,11 +202,16 @@ public class TransferLowerMemberFragment extends BaseFragment {
         }
 
         btnSubmit.setEnabled(false);
+
+        //第四个接口 上级代理给下级会员转账  user/transfermoney  ，2次md5后提交资金密码，依然在提交前判断有效性
+        pFundsPassword=DigestUtils.md5Hex(pFundsPassword);
+        pFundsPassword=DigestUtils.md5Hex(pFundsPassword);
+
         TransferLowerMemberCommand fundsCommand = new TransferLowerMemberCommand();
         fundsCommand.setUser_id(lowerMemberUserId);
         fundsCommand.setReal_name(accountName.getText().toString());
         fundsCommand.setAmount(Double.parseDouble(mTransferAmount));
-        fundsCommand.setSecpassword(fundsPassword.getText().toString());
+        fundsCommand.setSecpassword(pFundsPassword);
 
         executeCommand(fundsCommand, restCallback, TRACE_TRANSFER_SUBMIT);
     }

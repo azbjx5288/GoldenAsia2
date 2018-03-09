@@ -21,6 +21,8 @@ import com.goldenasia.lottery.data.EditSecurityCommand;
 import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.data.UserInfoCommand;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -72,8 +74,9 @@ public class SecuritySetting extends BaseFragment {
 
         EditSecurityCommand command = new EditSecurityCommand();
         command.setRealName(stateEmptyName.getText().toString());
-        command.setSecpassword(newPassword.getText().toString());
-        command.setSecpassword2(newPasswordVerify.getText().toString());
+        //资金密码MD5加密
+        command.setSecpassword(DigestUtils.md5Hex(newPassword.getText().toString()));
+        command.setSecpassword2( DigestUtils.md5Hex(newPasswordVerify.getText().toString()));
         //command.setEmail(stateEmptyMail.getText().toString());
 
         executeCommand(command, restCallback, ID_SUBMIT_INFO);
