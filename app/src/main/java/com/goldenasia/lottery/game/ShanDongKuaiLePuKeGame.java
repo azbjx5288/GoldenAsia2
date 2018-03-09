@@ -50,7 +50,7 @@ public class ShanDongKuaiLePuKeGame extends Game {
         }else if("PKTH".equals(method.getName())){ //同花  PKTH
             PKTH(this);
         }else if("PKSZ".equals(method.getName())){ //顺子 PKSZ
-
+            PKSZ(this);
         }else if("PKTH".equals(method.getName())){ //同花顺 PKTHS
 
         }else if("PKBZ".equals(method.getName())){ //豹子 PKBZ
@@ -115,49 +115,46 @@ public class ShanDongKuaiLePuKeGame extends Game {
     private void setAllImageState(boolean state) {
         //界面变化
         if("PKBX".equals(method.getName())){//R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05//包选界面
-            topLayout.findViewById(R.id.image_01_01).setSelected(state);
-            topLayout.findViewById(R.id.image_01_02).setSelected(state);
-            topLayout.findViewById(R.id.image_01_03).setSelected(state);
-            topLayout.findViewById(R.id.image_01_04).setSelected(state);
-            topLayout.findViewById(R.id.image_01_05).setSelected(state);
-
-            //数据变化
-            if(state){
-                mPickList.clear();
-                mPickList.add("同花包选");
-                mPickList.add("顺子包选");
-                mPickList.add("同花顺包选");
-                mPickList.add("豹子包选");
-                mPickList.add("对子包选");
-            }else{
-                mPickList.clear();
-            }
+            //有5张图片
+            gameMethodDate(state,new String[]{"同花包选","顺子包选","同花顺包选","豹子包选","对子包选"});
 
         }else if("PKTH".equals(method.getName())) {//同花  PKTH
-            topLayout.findViewById(R.id.image_01_01).setSelected(state);
-            topLayout.findViewById(R.id.image_01_02).setSelected(state);
-            topLayout.findViewById(R.id.image_01_03).setSelected(state);
-            topLayout.findViewById(R.id.image_01_04).setSelected(state);
+            //有4张图片
+            gameMethodDate(state,new String[]{"黑桃","红桃","梅花","方块"});
 
-            //数据变化
-            if(state){
-                mPickList.clear();
-                mPickList.add("黑桃");
-                mPickList.add("红桃");
-                mPickList.add("梅花");
-                mPickList.add("方块");
-            }else{
-                mPickList.clear();
-            }
+        }else if("PKSZ".equals(method.getName())) {//顺子 PKSZ
+            //有12张图片
+            gameMethodDate(state,new String[]{"A23","234","345","456","567"
+                    ,"678" ,"789" ,"8910", "910J","10JQA","JQK","QKA"});
+
         }
         notifyListener();
+    }
+
+    //填充游戏不同玩法的数据  imageCount代表该玩法有多少张图片
+    private void gameMethodDate(boolean state,String[] imageTagString) {
+        int[] imageRes=new int[]{R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05,
+                R.id.image_01_06, R.id.image_01_07, R.id.image_01_08, R.id.image_01_09, R.id.image_01_10,
+                R.id.image_01_11, R.id.image_01_12, R.id.image_01_13};
+
+        for(int i=0;i<imageTagString.length;i++){//最多玩法中有13个图片
+            topLayout.findViewById(imageRes[i]).setSelected(state);
+        }
+        //数据变化
+        if(state){
+            mPickList.clear();
+            for(int i=0;i<imageTagString.length;i++){
+                mPickList.add(imageTagString[i]);
+            }
+        }else{
+            mPickList.clear();
+        }
     }
 
     @OnClick({R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05,//包选界面
             R.id.image_01_06, R.id.image_01_07, R.id.image_01_08, R.id.image_01_09, R.id.image_01_10,//包选界面
             R.id.image_01_11, R.id.image_01_12, R.id.image_01_13,//包选界面  每个玩法一共 13张图片
-
-    R.id.sdklpk_all, R.id.sdklpk_clear//全 清
+            R.id.sdklpk_all, R.id.sdklpk_clear//全 清
     })
     public void onLayoutClick(View view)
     {
@@ -207,7 +204,9 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     //顺子 PKSZ
     public static void PKSZ(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_shunzi, null, false);
+        ButterKnife.bind(game, view);
+        addTopLayout(game, view);
     }
 
     //同花顺 PKTHS
