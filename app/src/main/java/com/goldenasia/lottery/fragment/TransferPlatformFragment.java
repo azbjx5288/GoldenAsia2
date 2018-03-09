@@ -34,6 +34,8 @@ import com.goldenasia.lottery.util.NumbericUtils;
 import com.goldenasia.lottery.view.adapter.TransferAdapter;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -212,6 +214,24 @@ public class TransferPlatformFragment extends BaseFragment {
             return;
         }
 
+        String pFundsPassword = fundsPassword.getText().toString();
+        if (pFundsPassword.length() < 6) {
+            showToast("资金密码太短，请重新输入", Toast.LENGTH_SHORT);
+            return;
+        }
+        if (pFundsPassword.length() > 20) {
+            showToast("资金密码太长，请重新输入", Toast.LENGTH_SHORT);
+            return;
+        }
+        String regex = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$";
+        if (!pFundsPassword.matches(regex)) {
+            showToast("资金密码必须包含数字和字母，请重新输入", Toast.LENGTH_SHORT);
+            return;
+        }
+        //第五个接口 平台转账  ?c=fin&a=tranMoney&op=tran ，2次md5后提交资金密码，依然在提交前判断有效性
+        pFundsPassword= DigestUtils.md5Hex(pFundsPassword);
+        pFundsPassword=DigestUtils.md5Hex(pFundsPassword);
+
         if (positionFrom == positionTo) {
             showToast("资金转移平台不能相同");
             return;
@@ -236,7 +256,7 @@ public class TransferPlatformFragment extends BaseFragment {
         fundsCommand.setTranFrom(positionFrom);
         fundsCommand.setTranTo(positionTo);
         fundsCommand.setTranAmount(drawMoney);
-        fundsCommand.setTranPass(fundsPassword.getText().toString());
+        fundsCommand.setTranPass(pFundsPassword);
         executeCommand(fundsCommand, restCallback, TRACE_TRANSFER_SUBMIT);
     }
 
