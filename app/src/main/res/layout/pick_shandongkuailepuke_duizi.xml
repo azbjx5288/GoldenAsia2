@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_main_background"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/pick_column_area"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minHeight="48dp">
+
+        <TextView
+            android:id="@+id/pick_column_title"
+            style="@style/pick_column_style"
+            android:layout_marginLeft="24dp"
+            android:background="@drawable/digit_tab"
+            android:text="@string/is_ssc_shi_title" />
+
+        <LinearLayout
+            android:id="@+id/pick_column_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            >
+
+            <Button
+                android:id="@+id/sdklpk_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全"
+                android:textColor="@drawable/pink_number_button_text_color"
+                android:textSize="15sp"
+                android:background="@null"/>
+
+            <Button
+                android:id="@+id/sdklpk_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@drawable/pink_number_button_text_color"
+                android:textSize="15sp"
+                android:background="@null"
+                android:text="清" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_2_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pick_column_area"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        >
+
+        <ImageView
+            android:id="@+id/image_01_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dza"
+            android:tag="AA" />
+
+        <ImageView
+            android:id="@+id/image_01_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz2"
+            android:tag="22" />
+        <ImageView
+            android:id="@+id/image_01_03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz3"
+            android:tag="33" />
+        <ImageView
+            android:id="@+id/image_01_04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz4"
+            android:tag="44" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_2_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_2_1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        >
+        <ImageView
+            android:id="@+id/image_01_05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz5"
+            android:tag="55" />
+
+        <ImageView
+            android:id="@+id/image_01_06"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz6"
+            android:tag="66" />
+
+        <ImageView
+            android:id="@+id/image_01_07"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz7"
+            android:tag="77" />
+        <ImageView
+            android:id="@+id/image_01_08"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz8"
+            android:tag="88" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_2_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_2_2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        >
+        <ImageView
+            android:id="@+id/image_01_09"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz9"
+            android:tag="99" />
+        <ImageView
+            android:id="@+id/image_01_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dz10"
+            android:tag="1010" />
+        <ImageView
+            android:id="@+id/image_01_11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dzj"
+            android:tag="JJ" />
+
+        <ImageView
+            android:id="@+id/image_01_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dzq"
+            android:tag="QQ" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_2_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_2_3"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        >
+        <ImageView
+            android:id="@+id/image_01_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/sdklpk_bx_selector"
+            android:clickable="true"
+            android:padding="2dp"
+            android:src="@drawable/dzk"
+            android:tag="KK" />
+
+    </LinearLayout>
+
+</RelativeLayout>

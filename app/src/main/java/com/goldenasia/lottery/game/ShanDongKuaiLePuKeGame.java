@@ -56,7 +56,7 @@ public class ShanDongKuaiLePuKeGame extends Game {
         }else if("PKBZ".equals(method.getName())){ //豹子 PKBZ
             PKBZ(this);
         }else if("PKDZ".equals(method.getName())){ //对子 PKDZ
-
+            PKDZ(this);
         }else if("PKRX1".equals(method.getName())){ //任选一 PKRX1
 
         }else if("PKRX2".equals(method.getName())){ //任选二 PKRX2
@@ -133,6 +133,10 @@ public class ShanDongKuaiLePuKeGame extends Game {
         }else if("PKBZ".equals(method.getName())) {//豹子 PKBZ
             gameMethodDate(state,new String[]{"AAA","222","333","444","555"
             ,"666","777","888","999","101010","JJJ","QQQ","KKK"});
+
+        }else if("PKDZ".equals(method.getName())) {//对子 PKDZ
+            gameMethodDate(state,new String[]{"AA","22","33","44","55"
+                    ,"66","77","88","99","1010","JJ","QQ","KK"});
 
         }
         notifyListener();
@@ -232,7 +236,9 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     //对子 PKDZ
     public static void PKDZ(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_duizi, null, false);
+        ButterKnife.bind(game, view);
+        addTopLayout(game, view);
     }
 
     //任选一 PKRX1
