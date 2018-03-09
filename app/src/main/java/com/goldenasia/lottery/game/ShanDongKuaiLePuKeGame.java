@@ -51,8 +51,8 @@ public class ShanDongKuaiLePuKeGame extends Game {
             PKTH(this);
         }else if("PKSZ".equals(method.getName())){ //顺子 PKSZ
             PKSZ(this);
-        }else if("PKTH".equals(method.getName())){ //同花顺 PKTHS
-
+        }else if("PKTHS".equals(method.getName())){ //同花顺 PKTHS
+            PKTHS(this);
         }else if("PKBZ".equals(method.getName())){ //豹子 PKBZ
 
         }else if("PKDZ".equals(method.getName())){ //对子 PKDZ
@@ -126,6 +126,10 @@ public class ShanDongKuaiLePuKeGame extends Game {
             //有12张图片
             gameMethodDate(state,new String[]{"A23","234","345","456","567"
                     ,"678" ,"789" ,"8910", "910J","10JQA","JQK","QKA"});
+
+        }else if("PKTHS".equals(method.getName())) {//同花顺 PKTHS
+            //有12张图片
+            gameMethodDate(state,new String[]{"黑桃顺子","红桃顺子","梅花顺子","方块顺子"});
 
         }
         notifyListener();
@@ -211,7 +215,9 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     //同花顺 PKTHS
     public static void PKTHS(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_tonghuashun, null, false);
+        ButterKnife.bind(game, view);
+        addTopLayout(game, view);
     }
 
     //豹子 PKBZ
