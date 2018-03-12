@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
@@ -58,17 +59,17 @@ public class ShanDongKuaiLePuKeGame extends Game {
         }else if("PKDZ".equals(method.getName())){ //对子 PKDZ
             PKDZ(this);
         }else if("PKRX1".equals(method.getName())){ //任选一 PKRX1
-
+            PKRX1(this);
         }else if("PKRX2".equals(method.getName())){ //任选二 PKRX2
-
+            PKRX2(this);
         }else if("PKRX3".equals(method.getName())){ //任选三 PKRX3
-
+            PKRX3(this);
         }else if("PKRX4".equals(method.getName())){ //任选四 PKRX4
-
+            PKRX4(this);
         }else if("PKRX5".equals(method.getName())){ //任选五 PKRX5
-
+            PKRX5(this);
         }else if("PKRX6".equals(method.getName())){ //任选六 PKRX6
-
+            PKRX6(this);
         }else{
             Log.e("ShanDongKuaiLePuKeGame", "onInflate: " + "//" + method.getCname() + " " + method.getName() + " public static " +
                     "" + "void " + method.getName() + "(Game game) {}");
@@ -79,13 +80,38 @@ public class ShanDongKuaiLePuKeGame extends Game {
     @Override
     public String getWebViewCode()
     {
+        switch (method.getName()){
+            case "PKRX1"://任选一 PKRX1
+            case "PKRX2":// 任选二 PKRX2
+            case "PKRX3"://任选三 PKRX3
+            case "PKRX4"://任选四 PKRX4
+            case "PKRX5": //任选五 PKRX5
+            case "PKRX6"://任选六 PKRX6
+                return getWebViewCodeRenXuan();
+            default:
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < mPickList.size(); i++)
+                {
+                    stringBuilder.append(i);
+                }
+                JsonArray jsonArray = new JsonArray();
+                jsonArray.add(stringBuilder.toString());
+                return jsonArray.toString();
+        }
+    }
+
+    private String getWebViewCodeRenXuan() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < mPickList.size(); i++)
         {
             stringBuilder.append(i);
+            if (i != mPickList.size() - 1) {
+                stringBuilder.append("_");
+            }
         }
         JsonArray jsonArray = new JsonArray();
         jsonArray.add(stringBuilder.toString());
+
         return jsonArray.toString();
     }
 
@@ -137,6 +163,30 @@ public class ShanDongKuaiLePuKeGame extends Game {
         }else if("PKDZ".equals(method.getName())) {//对子 PKDZ
             gameMethodDate(state,new String[]{"AA","22","33","44","55"
                     ,"66","77","88","99","1010","JJ","QQ","KK"});
+
+        } else if("PKRX1".equals(method.getName())) {//任选一 PKRX1
+            gameMethodDate(state,new String[]{"A","2","3","4","5"
+                    ,"6","7","8","9","10","J","Q","K"});
+
+        }else if("PKRX2".equals(method.getName())) {//任选一 PKRX2
+            gameMethodDate(state,new String[]{"A","2","3","4","5"
+                    ,"6","7","8","9","10","J","Q","K"});
+
+        }else if("PKRX3".equals(method.getName())) {//任选三 PKRX3
+            gameMethodDate(state,new String[]{"A","2","3","4","5"
+                    ,"6","7","8","9","10","J","Q","K"});
+
+        }else if("PKRX4".equals(method.getName())) {//任选四 PKRX4
+            gameMethodDate(state,new String[]{"A","2","3","4","5"
+                    ,"6","7","8","9","10","J","Q","K"});
+
+        }else if("PKRX5".equals(method.getName())) {//任选五 PKRX5
+            gameMethodDate(state,new String[]{"A","2","3","4","5"
+                    ,"6","7","8","9","10","J","Q","K"});
+
+        }else if("PKRX6".equals(method.getName())) {//任选六 PKRX6
+            gameMethodDate(state,new String[]{"A","2","3","4","5"
+                    ,"6","7","8","9","10","J","Q","K"});
 
         }
         notifyListener();
@@ -243,32 +293,56 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     //任选一 PKRX1
     public static void PKRX1(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_renxuan, null, false);
+        ButterKnife.bind(game, view);
+        TextView   pickColumnTitleTextView=view.findViewById(R.id.pick_column_title);
+        pickColumnTitleTextView.setText("任选一");
+        addTopLayout(game, view);
     }
 
     //任选二  PKRX2
     public static void PKRX2(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_renxuan, null, false);
+        ButterKnife.bind(game, view);
+        TextView   pickColumnTitleTextView=view.findViewById(R.id.pick_column_title);
+        pickColumnTitleTextView.setText("任选二");
+        addTopLayout(game, view);
     }
 
     //任选三 PKRX3
     public static void PKRX3(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_renxuan, null, false);
+        ButterKnife.bind(game, view);
+        TextView   pickColumnTitleTextView=view.findViewById(R.id.pick_column_title);
+        pickColumnTitleTextView.setText("任选三");
+        addTopLayout(game, view);
     }
 
     //任选四  PKRX4
     public static void PKRX4(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_renxuan, null, false);
+        ButterKnife.bind(game, view);
+        TextView   pickColumnTitleTextView=view.findViewById(R.id.pick_column_title);
+        pickColumnTitleTextView.setText("任选四");
+        addTopLayout(game, view);
     }
 
     //任选五 PKRX5
     public static void PKRX5(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_renxuan, null, false);
+        ButterKnife.bind(game, view);
+        TextView   pickColumnTitleTextView=view.findViewById(R.id.pick_column_title);
+        pickColumnTitleTextView.setText("任选五");
+        addTopLayout(game, view);
     }
 
     //任选六  PKRX6
     public static void PKRX6(Game game) {
-
+        View view = LayoutInflater.from(game.getTopLayout().getContext()).inflate(R.layout.pick_shandongkuailepuke_renxuan, null, false);
+        ButterKnife.bind(game, view);
+        TextView   pickColumnTitleTextView=view.findViewById(R.id.pick_column_title);
+        pickColumnTitleTextView.setText("任选六");
+        addTopLayout(game, view);
     }
     /*====================================具体玩法添加结束===========================================================================*/
 }
