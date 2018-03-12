@@ -68,7 +68,7 @@
             android:clickable="true"
             android:tag="同花包选"
             android:src="@drawable/thbx"
-            android:background="@drawable/sdklpk_bx_selector"/>
+            android:background="@drawable/sdklpk_rxy_selector"/>
 
         <ImageView
             android:id="@+id/image_01_02"
@@ -80,7 +80,7 @@
             android:clickable="true"
             android:tag="顺子包选"
             android:src="@drawable/szbx"
-            android:background="@drawable/sdklpk_bx_selector"/>
+            android:background="@drawable/sdklpk_rxy_selector"/>
 
         <ImageView
             android:id="@+id/image_01_03"
@@ -90,7 +90,7 @@
             android:clickable="true"
             android:tag="同花顺包选"
             android:src="@drawable/thsbx"
-            android:background="@drawable/sdklpk_bx_selector"/>
+            android:background="@drawable/sdklpk_rxy_selector"/>
 
     </LinearLayout>
 
@@ -112,7 +112,7 @@
             android:padding="2dp"
             android:tag="豹子包选"
             android:src="@drawable/bzbx"
-            android:background="@drawable/sdklpk_bx_selector"/>
+            android:background="@drawable/sdklpk_rxy_selector"/>
 
         <android.support.v4.widget.Space
             android:layout_width="30dp"
@@ -125,7 +125,7 @@
             android:clickable="true"
             android:tag="对子包选"
             android:src="@drawable/dzbx"
-            android:background="@drawable/sdklpk_bx_selector"/>
+            android:background="@drawable/sdklpk_rxy_selector"/>
 
 
     </LinearLayout>
