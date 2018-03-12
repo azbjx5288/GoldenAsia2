@@ -182,7 +182,7 @@ public class ConstantInformation
         //快三分分彩
         sLotteryLogo.put(13, new int[]{R.drawable.id_lottery_k3ffc, R.drawable.id_lottery_k3ffc});
         // 14:山东快乐扑克
-        sLotteryLogo.put(14, new int[]{R.drawable.id_lottery_sdklpk_m, R.drawable.id_lottery_sdklpk_m});
+        sLotteryLogo.put(14, new int[]{R.drawable.id_lottery_sdklpk_m, R.drawable.id_lottery_sdklpk_rest});
         //亚洲秒秒彩
         sLotteryLogo.put(15, new int[]{R.drawable.id_lottery_yzmmc, R.drawable.id_lottery_yzmmc_rest});
         //11选5分分彩
