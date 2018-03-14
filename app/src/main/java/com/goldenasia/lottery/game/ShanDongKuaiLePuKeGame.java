@@ -11,7 +11,8 @@ import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Method;
 import com.google.gson.JsonArray;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,11 +26,18 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     private String TAG=ShanDongKuaiLePuKeGame.class.getName();
 
-    private ArrayList<CharSequence> mPickList;//当前选中的图片的中文名字集合
+    private Map<String,Boolean> mPickMap=new HashMap<>();//当前选中的图片的中文名字集合
+
+    private String[] mMethod01=new String[]{"同花包选","顺子包选","同花顺包选","豹子包选","对子包选"};//包选 PKBX
+    private String[] mMethod02=new String[]{"黑桃","红桃","梅花","方块"};       //同花  PKTH
+    private String[] mMethod03=new String[]{"A23","234","345","456","567","678" ,"789" ,"8910", "910J","10JQ","JQK","QKA"};//顺子 PKSZ
+    private String[] mMethod04=new String[]{"黑桃顺子","红桃顺子","梅花顺子","方块顺子"};//同花顺 PKTHS
+    private String[] mMethod05=new String[]{"AAA","222","333","444","555","666","777","888","999","101010","JJJ","QQQ","KKK"};//豹子 PKBZ
+    private String[] mMethod06=new String[]{"AA","22","33","44","55","66","77","88","99","1010","JJ","QQ","KK"};//对子 PKDZ
+    private String[] mMethod07=new String[]{"A","2","3","4","5","6","7","8","9","10","J","Q","K"};//任选
 
     public ShanDongKuaiLePuKeGame(Method method) {
         super(method);
-        mPickList = new ArrayList<>();
     }
 
     @Override
@@ -89,10 +97,16 @@ public class ShanDongKuaiLePuKeGame extends Game {
             case "PKRX6"://任选六 PKRX6
                 return getWebViewCodeRenXuan();
             default:
+
                 StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < mPickList.size(); i++)
+
+                String[] methodStringArray = getGameMethodStringArray();
+
+                for (int i = 0; i < methodStringArray.length; i++)
                 {
-                    stringBuilder.append(i);
+                    if(mPickMap.containsKey(methodStringArray[i])&&mPickMap.get(methodStringArray[i])) {
+                        stringBuilder.append("1");
+                    }
                 }
                 JsonArray jsonArray = new JsonArray();
                 jsonArray.add(stringBuilder.toString());
@@ -102,12 +116,18 @@ public class ShanDongKuaiLePuKeGame extends Game {
 
     private String getWebViewCodeRenXuan() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < mPickList.size(); i++)
+
+        String[] methodStringArray = getGameMethodStringArray();
+
+        for (int i = 0; i < methodStringArray.length; i++)
         {
-            stringBuilder.append(i);
-            if (i != mPickList.size() - 1) {
+            if(mPickMap.containsKey(methodStringArray[i])&&mPickMap.get(methodStringArray[i])) {
+                stringBuilder.append("1");
                 stringBuilder.append("_");
             }
+        }
+        if(stringBuilder.length()>2) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
         JsonArray jsonArray = new JsonArray();
         jsonArray.add(stringBuilder.toString());
@@ -116,20 +136,43 @@ public class ShanDongKuaiLePuKeGame extends Game {
     }
 
     //确定按钮按下后 带到 购物车中的
+    //对选中的扑克要进行排序
     @Override
     public String getSubmitCodes()
     {
         StringBuilder stringBuilder = new StringBuilder();
-        int length = mPickList.size();
-        for (int i = 0; i < length; i++)
+        String[] methodStringArray = getGameMethodStringArray();
+        for (int i = 0; i < methodStringArray.length; i++)
         {
-            stringBuilder.append(mPickList.get(i));
-            if (i != length - 1)
-            {
-                stringBuilder.append('_');
+            if(mPickMap.containsKey(methodStringArray[i])&&mPickMap.get(methodStringArray[i])) {
+                stringBuilder.append(methodStringArray[i]);
+                stringBuilder.append("_");
             }
         }
+        if(stringBuilder.length()>2) {
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        }
         return stringBuilder.toString();
+    }
+
+    //根据不同玩法返回不同的String数组
+    private String[] getGameMethodStringArray() {
+        switch (method.getName()) {
+            case "PKBX"://包选 PKBX
+                return mMethod01;
+            case "PKTH"://同花  PKTH
+                return mMethod02;
+            case "PKSZ"://顺子 PKSZ
+                return mMethod03;
+            case "PKTHS"://同花顺 PKTHS
+                return mMethod04;
+            case "PKBZ": //豹子 PKBZ
+                return mMethod05;
+            case "PKDZ"://对子 PKDZ
+                return mMethod06;
+            default:
+                return mMethod07;
+        }
     }
 
     @Override
@@ -138,78 +181,23 @@ public class ShanDongKuaiLePuKeGame extends Game {
         setAllImageState(false);
     }
 
-    private void setAllImageState(boolean state) {
-        //界面变化
-        if("PKBX".equals(method.getName())){//R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05//包选界面
-            //有5张图片
-            gameMethodDate(state,new String[]{"同花包选","顺子包选","同花顺包选","豹子包选","对子包选"});
-
-        }else if("PKTH".equals(method.getName())) {//同花  PKTH
-            //有4张图片
-            gameMethodDate(state,new String[]{"黑桃","红桃","梅花","方块"});
-
-        }else if("PKSZ".equals(method.getName())) {//顺子 PKSZ
-            //有12张图片
-            gameMethodDate(state,new String[]{"A23","234","345","456","567"
-                    ,"678" ,"789" ,"8910", "910J","10JQ","JQK","QKA"});
-
-        }else if("PKTHS".equals(method.getName())) {//同花顺 PKTHS
-            gameMethodDate(state,new String[]{"黑桃顺子","红桃顺子","梅花顺子","方块顺子"});
-
-        }else if("PKBZ".equals(method.getName())) {//豹子 PKBZ
-            gameMethodDate(state,new String[]{"AAA","222","333","444","555"
-            ,"666","777","888","999","101010","JJJ","QQQ","KKK"});
-
-        }else if("PKDZ".equals(method.getName())) {//对子 PKDZ
-            gameMethodDate(state,new String[]{"AA","22","33","44","55"
-                    ,"66","77","88","99","1010","JJ","QQ","KK"});
-
-        } else if("PKRX1".equals(method.getName())) {//任选一 PKRX1
-            gameMethodDate(state,new String[]{"A","2","3","4","5"
-                    ,"6","7","8","9","10","J","Q","K"});
-
-        }else if("PKRX2".equals(method.getName())) {//任选一 PKRX2
-            gameMethodDate(state,new String[]{"A","2","3","4","5"
-                    ,"6","7","8","9","10","J","Q","K"});
-
-        }else if("PKRX3".equals(method.getName())) {//任选三 PKRX3
-            gameMethodDate(state,new String[]{"A","2","3","4","5"
-                    ,"6","7","8","9","10","J","Q","K"});
-
-        }else if("PKRX4".equals(method.getName())) {//任选四 PKRX4
-            gameMethodDate(state,new String[]{"A","2","3","4","5"
-                    ,"6","7","8","9","10","J","Q","K"});
-
-        }else if("PKRX5".equals(method.getName())) {//任选五 PKRX5
-            gameMethodDate(state,new String[]{"A","2","3","4","5"
-                    ,"6","7","8","9","10","J","Q","K"});
-
-        }else if("PKRX6".equals(method.getName())) {//任选六 PKRX6
-            gameMethodDate(state,new String[]{"A","2","3","4","5"
-                    ,"6","7","8","9","10","J","Q","K"});
-
-        }
-        notifyListener();
-    }
-
     //填充游戏不同玩法的数据  imageCount代表该玩法有多少张图片
-    private void gameMethodDate(boolean state,String[] imageTagString) {
+    private void setAllImageState(boolean state) {
+        //不同玩法数据变化
+        String[] methodStringArray = getGameMethodStringArray();
+        //界面变化
         int[] imageRes=new int[]{R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05,
                 R.id.image_01_06, R.id.image_01_07, R.id.image_01_08, R.id.image_01_09, R.id.image_01_10,
                 R.id.image_01_11, R.id.image_01_12, R.id.image_01_13};
-
-        for(int i=0;i<imageTagString.length;i++){//最多玩法中有13个图片
+        for(int i=0;i<methodStringArray.length;i++){//最多玩法中有13个图片
             topLayout.findViewById(imageRes[i]).setSelected(state);
         }
-        //数据变化
-        if(state){
-            mPickList.clear();
-            for(int i=0;i<imageTagString.length;i++){
-                mPickList.add(imageTagString[i]);
-            }
-        }else{
-            mPickList.clear();
+        for (int i = 0; i < methodStringArray.length; i++)
+        {
+            mPickMap.put(methodStringArray[i],state);
         }
+
+        notifyListener();
     }
 
     @OnClick({R.id.image_01_01, R.id.image_01_02, R.id.image_01_03, R.id.image_01_04, R.id.image_01_05,//包选界面
@@ -231,11 +219,11 @@ public class ShanDongKuaiLePuKeGame extends Game {
                 if (view.isSelected())
                 {
                     view.setSelected(false);
-                    mPickList.remove(view.getTag().toString());
+                    mPickMap.put(view.getTag().toString(),false);
                 } else
                 {
                     view.setSelected(true);
-                    mPickList.add(view.getTag().toString());
+                    mPickMap.put(view.getTag().toString(),true);
                 }
         }
 
