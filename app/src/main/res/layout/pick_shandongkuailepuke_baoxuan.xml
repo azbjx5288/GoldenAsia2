@@ -18,7 +18,7 @@
             style="@style/pick_column_style"
             android:layout_marginLeft="24dp"
             android:background="@drawable/digit_tab"
-            android:text="@string/is_ssc_shi_title" />
+            android:text="包选" />
 
         <LinearLayout
             android:id="@+id/pick_column_control"
