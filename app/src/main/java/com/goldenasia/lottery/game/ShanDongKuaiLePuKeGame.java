@@ -151,7 +151,7 @@ public class ShanDongKuaiLePuKeGame extends Game {
         }else if("PKSZ".equals(method.getName())) {//顺子 PKSZ
             //有12张图片
             gameMethodDate(state,new String[]{"A23","234","345","456","567"
-                    ,"678" ,"789" ,"8910", "910J","10JQA","JQK","QKA"});
+                    ,"678" ,"789" ,"8910", "910J","10JQ","JQK","QKA"});
 
         }else if("PKTHS".equals(method.getName())) {//同花顺 PKTHS
             gameMethodDate(state,new String[]{"黑桃顺子","红桃顺子","梅花顺子","方块顺子"});

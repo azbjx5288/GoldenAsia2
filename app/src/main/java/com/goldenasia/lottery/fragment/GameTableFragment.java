@@ -388,6 +388,9 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 case 27://北京PK10
                     name = "LMGYH";
                     break;
+                case 14://山东快乐扑克
+                    name = "PKBX";//包选 PKBX
+                    break;
                 default:
                     break;
             }
