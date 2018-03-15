@@ -99,7 +99,7 @@ public class DrawFragment extends BaseFragment {
             return;
         }
         //长度6~20，不能只有数字也不能只有字母
-        if (fundPassword.getText().toString().matches("^[a-zA-Z0-9]{6,20}$")) {
+        if (!fundPassword.getText().toString().matches("^[a-zA-Z0-9]{6,20}$")) {
             Toast.makeText(getActivity(), "资金密码长度为6~15，不能只有数字也不能只有字母", Toast.LENGTH_SHORT).show();
             return;
         }
