@@ -92,7 +92,7 @@ public class SecuritySetting extends BaseFragment {
             showToast("请输入取款人姓名", Toast.LENGTH_SHORT);
             return false;
         }
-        if (!name.matches("[\\u4E00-\\u9FA5]*")) {
+        if (!name.matches("[\\u4E00-\\u9FA5.-]*")) {
             showToast("请输入正确的取款人姓名", Toast.LENGTH_SHORT);
             return false;
         }
