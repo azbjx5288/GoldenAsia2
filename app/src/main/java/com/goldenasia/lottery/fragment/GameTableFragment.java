@@ -28,7 +28,10 @@ import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.component.TabPageAdapter;
+import com.goldenasia.lottery.data.IssueEntity;
+import com.goldenasia.lottery.data.LotteriesHistoryCommand;
 import com.goldenasia.lottery.data.Lottery;
+import com.goldenasia.lottery.data.LotteryHistoryCode;
 import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.data.MethodList;
 import com.goldenasia.lottery.data.MethodListCommand;
@@ -152,11 +155,26 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     {
         super.onViewCreated(view, savedInstanceState);
         initTab();
+        LoadWinHistory();
         initMenu();
         loadMenu();
         loadMethods();
     }
-    
+
+    /**
+     * 加载开奖结果放在内存中
+     */
+    private  void  LoadWinHistory(){
+        LotteriesHistoryCommand command = new LotteriesHistoryCommand();
+        command.setLotteryID( lottery.getLotteryId());
+        command.setCurPage(1);
+        command.setPerPage(200);
+        TypeToken typeToken = new TypeToken<RestResponse<LotteryHistoryCode>>() {
+        };
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback, 2, this);
+        restRequest.execute();
+    }
+
     /**
      * 初始化标签
      */
@@ -581,6 +599,12 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                         break;
                 }
                 updateMenu(methodList);
+            }else if(request.getId() == 2){
+                List<IssueEntity> items =((LotteryHistoryCode) response.getData()).getIssue();
+
+                for (IssueEntity issueEntity:items){
+                    ConstantInformation.mHistoryCodeList.add(issueEntity.getCode());
+                }
             }
             return true;
         }
