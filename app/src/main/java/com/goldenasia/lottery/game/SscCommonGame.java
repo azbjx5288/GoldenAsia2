@@ -1,17 +1,25 @@
 package com.goldenasia.lottery.game;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.cpiz.android.bubbleview.BubbleLinearLayout;
+import com.cpiz.android.bubbleview.BubblePopupWindow;
+import com.cpiz.android.bubbleview.BubbleStyle;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Method;
+import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.ManualInputView;
 import com.goldenasia.lottery.pattern.OnAddListner;
 import com.goldenasia.lottery.pattern.PickNumber;
+import com.goldenasia.lottery.view.NumberGroupView;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
@@ -323,7 +331,7 @@ public class SscCommonGame extends Game {
         return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column_digits, null, false);
     }
 
-    private static void createDigitPicklayout(Game game, String[] name,int digit) {
+    private static void createDigitPicklayout(Game game, String[] name,int digit,String  gameMethod) {
         View[] views = new View[name.length];
         for (int i = 0; i < name.length; i++) {
             View view = createDigitPickLayout(game.getTopLayout());
@@ -331,80 +339,188 @@ public class SscCommonGame extends Game {
             addPickNumber2Game(game, view, name[i]);
             views[i] = view;
         }
-        addViewLayout(game,views);
+        addViewLayout(game,views,gameMethod);
     }
 
-    private static void createPicklayout(Game game, String[] name) {
+    private static void createPicklayout(Game game, String[] name,String  gameMethod) {
         View[] views = new View[name.length];
         for (int i = 0; i < name.length; i++) {
             View view = createDefaultPickLayout(game.getTopLayout());
             addPickNumber2Game(game, view, name[i]);
             views[i] = view;
         }
-        addViewLayout(game,views);
+        addViewLayout(game,views,gameMethod);
     }
 
-    private static void addViewLayout(Game game,View[] views){
+    private static void addViewLayout(Game game,View[] views,String  gameMethod){
         ViewGroup topLayout = game.getTopLayout();
-        for (View view : views) {
-            topLayout.addView(view);
+
+        if( ConstantInformation.HISTORY_CODE_LIST.size()==0
+                ||gameMethod==ConstantInformation.NO_YILOU_AND_LENGRE){//没有冷热和遗漏的情况
+            for (View view : views) {
+                topLayout.addView(view);
+            }
+        }else{
+            addViewLayoutHasLengRe(topLayout,views,gameMethod);
         }
+
         game.setColumn(views.length);
     }
 
+    private static void addViewLayoutHasLengRe(ViewGroup topLayout,View[] views,String  gameMethod) {
+        SscCommonGameUtils sscCommonGameUtils=new SscCommonGameUtils();
+
+        View sscLengreLayout=LayoutInflater.from(topLayout.getContext()).inflate(R.layout.ssc_lengre_layout, null, false);
+        CheckBox yilou_tv=sscLengreLayout.findViewById(R.id.yilou);
+        CheckBox lengre_tv=sscLengreLayout.findViewById(R.id.lengre);
+        CheckBox lengre_Checkbox=sscLengreLayout.findViewById(R.id.lengre_checked);
+
+        yilou_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.YI_LOU_IS_SHOW =!ConstantInformation.YI_LOU_IS_SHOW;
+
+                yilou_tv.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.onChangeLengYiLoy();
+                }
+            }
+        });
+
+        lengre_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initLengrePopupwindow(views,topLayout.getContext(),v);
+            }
+        });
+
+        lengre_Checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.LENG_RE_IS_SHOW =!ConstantInformation.LENG_RE_IS_SHOW;
+                lengre_tv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    ConstantInformation.LENG_RE_COUNT=100;
+                    numberGroupView.onChangeLengRe();
+                }
+            }
+        });
+
+        topLayout.addView(sscLengreLayout);
+
+        for (int i=0;i<  views.length;i++) {
+            NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+            numberGroupView.setmYiLouList(sscCommonGameUtils.getYiLouList(gameMethod,i));
+            numberGroupView.setmLengReList(sscCommonGameUtils.getLengReList(gameMethod,i));
+
+            numberGroupView.refreshViewGroup();
+            topLayout.addView(views[i]);
+        }
+    }
+
+    //弹出冷热期数选择框
+    private static void initLengrePopupwindow(View[] views,Context  context,View v) {
+        View rootView = LayoutInflater.from(context).inflate(R.layout.lengre_diff_popupwindow, null);
+
+        BubbleLinearLayout bubbleLinearLayout = (BubbleLinearLayout) rootView.findViewById(R.id.popup_bubble);
+        BubblePopupWindow bubblePopupWindow = new BubblePopupWindow(rootView, bubbleLinearLayout);
+        RadioButton  lengreOne = (RadioButton) rootView.findViewById(R.id.lengre_one);
+        RadioButton lengreTwo = (RadioButton) rootView.findViewById(R.id.lengre_two);
+        RadioButton lengreThree = (RadioButton) rootView.findViewById(R.id.lengre_three);
+
+        lengreOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    ConstantInformation.LENG_RE_COUNT=100;
+                    numberGroupView.onChangeLengRe();
+                }
+                bubblePopupWindow.dismiss();
+            }
+        });
+        lengreTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    ConstantInformation.LENG_RE_COUNT=50;
+                    numberGroupView.onChangeLengRe();
+                }
+                bubblePopupWindow.dismiss();
+            }
+        });
+        lengreThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    ConstantInformation.LENG_RE_COUNT=20;
+                    numberGroupView.onChangeLengRe();
+                }
+                bubblePopupWindow.dismiss();
+            }
+        });
+        bubblePopupWindow.showArrowTo(v, BubbleStyle.ArrowDirection.Down);
+    }
 
     //五星定位 WXDW
     public static void WXDW(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"},"WXDW");
     }
 
     //后一直选 YXZX
     public static void YXZX(Game game) {
-        createPicklayout(game, new String[]{"个位"});
+        createPicklayout(game, new String[]{"个位"},"YXZX");
     }
 
     //后二直选: EXZX
     public static void EXZX(Game game) {
-        createPicklayout(game, new String[]{"十位", "个位"});
+        createPicklayout(game, new String[]{"十位", "个位"},"EXZX");
         game.setSupportInput(true);
     }
 
     //后二组选 EXZUX
     public static void EXZUX(final Game game) {
-        createPicklayout(game, new String[]{"组二"});
+        createPicklayout(game, new String[]{"组二"},"EXZUX");
     }
 
     //后二连选 EXLX
     public static void EXLX(Game game) {
-        createPicklayout(game, new String[]{"十位", "个位"});
+        createPicklayout(game, new String[]{"十位", "个位"},"EXLX");
         game.setSupportInput(true);
     }
 
     //后三直选 SXZX
     public static void SXZX(Game game) {
-        createPicklayout(game, new String[]{"百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"百位", "十位", "个位"},"SXZX");
         game.setSupportInput(true);
     }
 
     //后三组三 SXZS
     public static void SXZS(Game game) {
-        createPicklayout(game, new String[]{"组三"});
+        createPicklayout(game, new String[]{"组三"},"SXZS");
     }
 
     //后三组六 SXZL
     public static void SXZL(Game game) {
-        createPicklayout(game, new String[]{"组六"});
+        createPicklayout(game, new String[]{"组六"},"SXZL");
     }
 
     //后三连选 SXLX
     public static void SXLX(Game game) {
-        createPicklayout(game, new String[]{"百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"百位", "十位", "个位"},"SXLX");
         game.setSupportInput(true);
     }
 
     //前二组选 QEZUX
     public static void QEZUX(final Game game) {
-        createPicklayout(game, new String[]{"组二"});
+        createPicklayout(game, new String[]{"组二"},"QEZUX");
         /*final PickNumber pickNumber = game.pickNumbers.get(0);
         pickNumber.setChooseItemClickListener(() -> {
             ArrayList<Integer> numList = pickNumber.getCheckedNumber();
@@ -418,262 +534,262 @@ public class SscCommonGame extends Game {
 
     //前二连选 QELX
     public static void QELX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位"});
+        createPicklayout(game, new String[]{"万位", "千位"},"QELX");
         game.setSupportInput(true);
     }
 
 
     //前二直选 QEZX
     public static void QEZX(Game game) {
-        createPicklayout(game, new String[]{"第一位", "第二位"});
+        createPicklayout(game, new String[]{"第一位", "第二位"},"QEZX");
         game.setSupportInput(true);
     }
 
     //前三组六 QSZL
     public static void QSZL(Game game) {
-        createPicklayout(game, new String[]{"组六"});
+        createPicklayout(game, new String[]{"组六"},"QSZL");
     }
 
     //前三连选 QSLX
     public static void QSLX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位"},"QSLX");
         game.setSupportInput(true);
     }
 
     //前三直选 QSZX
     public static void QSZX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位"},"QSZX");
         game.setSupportInput(true);
     }
 
     //后三包胆 HSZUXBD
     public static void HSZUXBD(Game game) {
-        createPicklayout(game, new String[]{"后三包胆"});
+        createPicklayout(game, new String[]{"后三包胆"},"HSZUXBD");
     }
 
     //前三包胆 QSZUXBD
     public static void QSZUXBD(Game game) {
-        createPicklayout(game, new String[]{"前三包胆"});
+        createPicklayout(game, new String[]{"前三包胆"},"QSZUXBD");
     }
 
     //前三组三 QSZS
     public static void QSZS(Game game) {
-        createPicklayout(game, new String[]{"组三"});
+        createPicklayout(game, new String[]{"组三"},"QSZS");
     }
 
     //中三直选 ZSZX
     public static void ZSZX(Game game) {
-        createPicklayout(game, new String[]{"千位", "百位", "十位"});
+        createPicklayout(game, new String[]{"千位", "百位", "十位"},"ZSZX");
         game.setSupportInput(true);
     }
 
     //中三包胆 ZSZUXBD
     public static void ZSZUXBD(Game game) {
-        createPicklayout(game, new String[]{"中三包胆"});
+        createPicklayout(game, new String[]{"中三包胆"},"ZSZUXBD");
     }
 
     //中三组三 ZSZS
     public static void ZSZS(Game game) {
-        createPicklayout(game, new String[]{"组三"});
+        createPicklayout(game, new String[]{"组三"},"ZSZS");
     }
 
     //中三组六 ZSZL
     public static void ZSZL(Game game) {
-        createPicklayout(game, new String[]{"组六"});
+        createPicklayout(game, new String[]{"组六"},"ZSZL");
     }
 
     //中三连选 ZSLX
     public static void ZSLX(Game game) {
-        createPicklayout(game, new String[]{"千位", "百位", "十位"});
+        createPicklayout(game, new String[]{"千位", "百位", "十位"},"ZSLX");
         game.setSupportInput(true);
     }
 
     //后四直选 SIXZX
     public static void SIXZX(Game game) {
-        createPicklayout(game, new String[]{"千位", "百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"千位", "百位", "十位", "个位"},"SIXZX");
         game.setSupportInput(true);
     }
 
     //前四直选 QSIZX
     public static void QSIZX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位"},"QSIZX");
         game.setSupportInput(true);
     }
 
     //前四组选12 QSIZUX12
     public static void QSIZUX12(Game game) {
-        createPicklayout(game, new String[]{"二重号位", "单号位"});
+        createPicklayout(game, new String[]{"二重号位", "单号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //前四组选6 QSIZUX6
     public static void QSIZUX6(Game game) {
-        createPicklayout(game, new String[]{"二重号位"});
+        createPicklayout(game, new String[]{"二重号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //前四组选4 QSIZUX4
     public static void QSIZUX4(Game game) {
-        createPicklayout(game, new String[]{"三重号位", "单号位"});
+        createPicklayout(game, new String[]{"三重号位", "单号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //前四组选24 QSIZUX24
     public static void QSIZUX24(Game game) {
-        createPicklayout(game, new String[]{"组选24"});
+        createPicklayout(game, new String[]{"组选24"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //后四组选12 ZUX12
     public static void ZUX12(Game game) {
-        createPicklayout(game, new String[]{"二重号位", "单号位"});
+        createPicklayout(game, new String[]{"二重号位", "单号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //后四组选6 ZUX6
     public static void ZUX6(Game game) {
-        createPicklayout(game, new String[]{"二重号位"});
+        createPicklayout(game, new String[]{"二重号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //后四组选4 ZUX4
     public static void ZUX4(Game game) {
-        createPicklayout(game, new String[]{"三重号位", "单号位"});
+        createPicklayout(game, new String[]{"三重号位", "单号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //后四组选24 ZUX24
     public static void ZUX24(Game game) {
-        createPicklayout(game, new String[]{"组选24"});
+        createPicklayout(game, new String[]{"组选24"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //组选20 ZUX20
     public static void ZUX20(Game game) {
-        createPicklayout(game, new String[]{"三重号位", "单号位"});
+        createPicklayout(game, new String[]{"三重号位", "单号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //五星直选 WXZX
     public static void WXZX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"},"WXZX");
         game.setSupportInput(true);
     }
 
     //组选120 ZUX120
     public static void ZUX120(Game game) {
-        createPicklayout(game, new String[]{"组选120"});
+        createPicklayout(game, new String[]{"组选120"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //组选10 ZUX10
     public static void ZUX10(Game game) {
-        createPicklayout(game, new String[]{"三重号位", "二重号位"});
+        createPicklayout(game, new String[]{"三重号位", "二重号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //五星连选 WXLX
     public static void WXLX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"},"WXLX");
         game.setSupportInput(true);
     }
 
     //组选60 ZUX60
     public static void ZUX60(Game game) {
-        createPicklayout(game, new String[]{"二重号位", "单号位"});
+        createPicklayout(game, new String[]{"二重号位", "单号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //组选5 ZUX5
     public static void ZUX5(Game game) {
-        createPicklayout(game, new String[]{"四重号位", "单号位"});
+        createPicklayout(game, new String[]{"四重号位", "单号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //组选30 ZUX30
     public static void ZUX30(Game game) {
-        createPicklayout(game, new String[]{"二重号位", "单号位"});
+        createPicklayout(game, new String[]{"二重号位", "单号位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     
 
     //任三直选 RSZX
     public static void RSZX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"},"RSZX");
         game.setSupportInput(true);
     }
 
     //任二直选 REZX
     public static void REZX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"},"REZX");
         game.setSupportInput(true);
     }
 
     //后三一码不定位 YMBDW
     public static void YMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"YMBDW");
     }
 
     //前三二码不定位 QSEMBDW
     public static void QSEMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"QSEMBDW");
     }
 
     //四星二码不定位 SXEMBDW
     public static void SXEMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"SXEMBDW");
     }
 
     //后三二码不定位 EMBDW
     public static void EMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"EMBDW");
     }
 
     //中三一码不定位 ZSYMBDW
     public static void ZSYMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"ZSYMBDW");
     }
 
     //五星一码不定位 WXYMBDW
     public static void WXYMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"WXYMBDW");
     }
 
     //中三二码不定位 ZSEMBDW
     public static void ZSEMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"ZSEMBDW");
     }
 
     //五星二码不定位 WXEMBDW
     public static void WXEMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"WXEMBDW");
     }
 
     //前三一码不定位 QSYMBDW
     public static void QSYMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"QSYMBDW");
     }
 
     //四星一码不定位 SXYMBDW
     public static void SXYMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"SXYMBDW");
     }
 
     //五星三码不定位 WXSMBDW
     public static void WXSMBDW(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"WXSMBDW");
     }
 
     //四季发财 SJFC
     public static void SJFC(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //一帆风顺 YFFS
     public static void YFFS(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},"YFFS");
     }
 
     //好事成双 HSCS
     public static void HSCS(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //三星报喜 SXBX
     public static void SXBX(Game game) {
-        createPicklayout(game, new String[]{"胆码"});
+        createPicklayout(game, new String[]{"胆码"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //任四直选 RSIZX
     public static void RSIZX(Game game) {
-        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"万位", "千位", "百位", "十位", "个位"},"RSIZX");
         game.setSupportInput(true);
     }
 
@@ -686,21 +802,21 @@ public class SscCommonGame extends Game {
 
     //定位胆 SXDW
     public static void SXDW(Game game) {
-        createPicklayout(game, new String[]{"百位", "十位", "个位"});
+        createPicklayout(game, new String[]{"百位", "十位", "个位"},"SXDW");
     }
 
     //任二组选 REZUX
     public static void REZUX(Game game) {
-        createDigitPicklayout(game, new String[]{"任二组选"},2);
+        createDigitPicklayout(game, new String[]{"任二组选"},2,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //任三组三 RSZS
     public static void RSZS(Game game) {
-        createDigitPicklayout(game, new String[]{"任三组三"},3);
+        createDigitPicklayout(game, new String[]{"任三组三"},3,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     //任三组六 RSZL
      public static void RSZL(Game game) {
-         createDigitPicklayout(game, new String[]{"任三组六"},3);
+         createDigitPicklayout(game, new String[]{"任三组六"},3,ConstantInformation.NO_YILOU_AND_LENGRE);
      }
     /**============================================手工录入=============================================================**/
     //后二直选 EXZX
@@ -774,11 +890,11 @@ public class SscCommonGame extends Game {
     
     //前二包胆 QEZUXBD
     public static void QEZUXBD(Game game) {
-        createPicklayout(game, new String[]{"前二包胆"});
+        createPicklayout(game, new String[]{"前二包胆"},"QEZUXBD");
     }
     //后二包胆 EXZUXBD
     public static void EXZUXBD(Game game) {
-        createPicklayout(game, new String[]{"后二包胆"});
+        createPicklayout(game, new String[]{"后二包胆"},"EXZUXBD");
     }
 
     //五星定位随机 WXDW
