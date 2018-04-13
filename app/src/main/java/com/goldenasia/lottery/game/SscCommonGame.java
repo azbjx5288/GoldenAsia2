@@ -31,6 +31,10 @@ import java.util.ArrayList;
 public class SscCommonGame extends Game {
     private String TAG=SscCommonGame.class.getName();
 
+    private static CheckBox mLengreTv;
+
+    private  static   SscCommonGameUtils mScCommonGameUtils=new SscCommonGameUtils();
+
     public SscCommonGame(Method method) {
         super(method);
         switch (method.getName()) {
@@ -368,11 +372,11 @@ public class SscCommonGame extends Game {
     }
 
     private static void addViewLayoutHasLengRe(ViewGroup topLayout,View[] views,String  gameMethod) {
-        SscCommonGameUtils sscCommonGameUtils=new SscCommonGameUtils();
+
 
         View sscLengreLayout=LayoutInflater.from(topLayout.getContext()).inflate(R.layout.ssc_lengre_layout, null, false);
         CheckBox yilou_tv=sscLengreLayout.findViewById(R.id.yilou);
-        CheckBox lengre_tv=sscLengreLayout.findViewById(R.id.lengre);
+        mLengreTv=sscLengreLayout.findViewById(R.id.lengre);
         CheckBox lengre_Checkbox=sscLengreLayout.findViewById(R.id.lengre_checked);
 
         yilou_tv.setOnClickListener(new View.OnClickListener() {
@@ -384,15 +388,16 @@ public class SscCommonGame extends Game {
 
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
-                    numberGroupView.onChangeLengYiLoy();
+                    numberGroupView.refreshViewGroup();
                 }
             }
         });
 
-        lengre_tv.setOnClickListener(new View.OnClickListener() {
+        mLengreTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initLengrePopupwindow(views,topLayout.getContext(),v);
+                mLengreTv.setChecked(true);
+                initLengrePopupwindow(views,topLayout.getContext(),v,gameMethod);
             }
         });
 
@@ -400,12 +405,12 @@ public class SscCommonGame extends Game {
             @Override
             public void onClick(View v) {
                 ConstantInformation.LENG_RE_IS_SHOW =!ConstantInformation.LENG_RE_IS_SHOW;
-                lengre_tv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
+                mLengreTv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
 
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
                     ConstantInformation.LENG_RE_COUNT=100;
-                    numberGroupView.onChangeLengRe();
+                    numberGroupView.refreshViewGroup();
                 }
             }
         });
@@ -414,8 +419,8 @@ public class SscCommonGame extends Game {
 
         for (int i=0;i<  views.length;i++) {
             NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
-            numberGroupView.setmYiLouList(sscCommonGameUtils.getYiLouList(gameMethod,i));
-            numberGroupView.setmLengReList(sscCommonGameUtils.getLengReList(gameMethod,i));
+            numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
+            numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
 
             numberGroupView.refreshViewGroup();
             topLayout.addView(views[i]);
@@ -423,7 +428,7 @@ public class SscCommonGame extends Game {
     }
 
     //弹出冷热期数选择框
-    private static void initLengrePopupwindow(View[] views,Context  context,View v) {
+    private static void initLengrePopupwindow(View[] views,Context  context,View v,String  gameMethod) {
         View rootView = LayoutInflater.from(context).inflate(R.layout.lengre_diff_popupwindow, null);
 
         BubbleLinearLayout bubbleLinearLayout = (BubbleLinearLayout) rootView.findViewById(R.id.popup_bubble);
@@ -436,33 +441,44 @@ public class SscCommonGame extends Game {
             @Override
             public void onClick(View v) {
 
-                for (View view : views) {
-                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
-                    ConstantInformation.LENG_RE_COUNT=100;
-                    numberGroupView.onChangeLengRe();
+                ConstantInformation.LENG_RE_COUNT=100;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
+                    numberGroupView.refreshViewGroup();
                 }
+
+                mLengreTv.setText("100期冷热");
                 bubblePopupWindow.dismiss();
             }
         });
         lengreTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (View view : views) {
-                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
-                    ConstantInformation.LENG_RE_COUNT=50;
-                    numberGroupView.onChangeLengRe();
+                ConstantInformation.LENG_RE_COUNT=50;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
+                    numberGroupView.refreshViewGroup();
                 }
+                mLengreTv.setText("50期冷热");
                 bubblePopupWindow.dismiss();
             }
         });
         lengreThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (View view : views) {
-                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
-                    ConstantInformation.LENG_RE_COUNT=20;
-                    numberGroupView.onChangeLengRe();
+                ConstantInformation.LENG_RE_COUNT=20;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
+
+                    numberGroupView.refreshViewGroup();
                 }
+                mLengreTv.setText("20期冷热");
                 bubblePopupWindow.dismiss();
             }
         });

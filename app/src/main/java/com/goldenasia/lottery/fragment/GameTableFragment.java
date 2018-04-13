@@ -165,14 +165,24 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
      * 加载开奖结果放在内存中
      */
     private  void  LoadWinHistory(){
-        LotteriesHistoryCommand command = new LotteriesHistoryCommand();
-        command.setLotteryID( lottery.getLotteryId());
-        command.setCurPage(1);
-        command.setPerPage(200);
-        TypeToken typeToken = new TypeToken<RestResponse<LotteryHistoryCode>>() {
-        };
-        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback, 2, this);
-        restRequest.execute();
+        if(lottery.getLotteryId()==1//1: 重庆时时彩
+                ||lottery.getLotteryId()==3//3:黑龙江时时彩
+                ||lottery.getLotteryId()==4//4:新疆时时彩
+                ||lottery.getLotteryId()==8//8:天津时时彩
+                ||lottery.getLotteryId()==11//11:亚洲分分彩
+                ||lottery.getLotteryId()==19//19:亚洲5分彩
+                ||lottery.getLotteryId()==35//35:台湾五分彩
+                ||lottery.getLotteryId()==37//37:亚洲2分彩)
+         ) {
+            LotteriesHistoryCommand command = new LotteriesHistoryCommand();
+            command.setLotteryID(lottery.getLotteryId());
+            command.setCurPage(1);
+            command.setPerPage(200);
+            TypeToken typeToken = new TypeToken<RestResponse<LotteryHistoryCode>>() {
+            };
+            RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback, 2, this);
+            restRequest.execute();
+        }
     }
 
     /**
@@ -603,7 +613,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 List<IssueEntity> items =((LotteryHistoryCode) response.getData()).getIssue();
 
                 for (IssueEntity issueEntity:items){
-                    ConstantInformation.mHistoryCodeList.add(issueEntity.getCode());
+                    ConstantInformation.HISTORY_CODE_LIST.add(issueEntity.getCode());
                 }
             }
             return true;

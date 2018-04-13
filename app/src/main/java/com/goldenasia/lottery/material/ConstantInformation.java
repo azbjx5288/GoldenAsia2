@@ -107,6 +107,12 @@ public class ConstantInformation
     public static String ESELECTF_MMC_COUNT = "eselectf_mmc_count";//11选5秒秒彩
     public static String KUAISAN_MMC_COUNT = "kuaisan_mmc_count";//快三秒秒彩
 
+    public  static List<String> HISTORY_CODE_LIST = new ArrayList();//从网络上加载的最近200条开奖结果数据
+    public  static String NO_YILOU_AND_LENGRE = "noyilouandlengre";//没有遗漏冷热的玩法和彩种
+    public static boolean YI_LOU_IS_SHOW =true;//遗漏是否显示
+    public  static boolean LENG_RE_IS_SHOW =true;//冷热是否显示
+    public static int LENG_RE_COUNT =100;//冷热的期数
+
     public static final ArrayList<Integer> CURRENT_LOTTERY_ID_LIST = new ArrayList<Integer>()
     {
         {
@@ -276,6 +282,10 @@ public class ConstantInformation
         sLotteryLogo.put(120, new int[]{R.drawable.dadishu_logo, R.drawable.dadishu_logo});
         //新百家乐
         sLotteryLogo.put(121, new int[]{R.drawable.xinbaijiale_logo, R.drawable.xinbaijiale_logo});
+        //大富翁
+        sLotteryLogo.put(122, new int[]{R.drawable.icon_dfw, R.drawable.icon_dfw});
+        //石头剪刀布
+        sLotteryLogo.put(123, new int[]{R.drawable.icon_stjdb, R.drawable.icon_stjdb});
         //支付logo
         rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});//支付宝转账
         rechargeLogo.put(1, new int[]{2, 0, R.drawable.unionpay});
