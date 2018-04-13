@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
@@ -18,14 +17,16 @@ import android.view.View;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.material.Calculation;
+import com.goldenasia.lottery.material.ConstantInformation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用于显示彩票选择时的数字栏
  * Created by Alashi on 2016/1/13.
  */
-public class NumberGroupView extends View {
+public class NumberGroupView extends View{
     private static final String TAG = NumberGroupView.class.getSimpleName();
 
     private TextPaint paint;
@@ -53,10 +54,13 @@ public class NumberGroupView extends View {
     private float textSize;
     private int textColor,textCheckedColor;
 
+
     private OnChooseItemClickListener chooseItemListener;
 
     private ArrayList<Integer> pickList;
     private int lastPick;
+    private List<String>  mYiLouList=new ArrayList<>();
+    private List<String>  mLengReList=new ArrayList<>();
 
     public NumberGroupView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -246,10 +250,13 @@ public class NumberGroupView extends View {
     private void calculateClick(int eventX, int eventY) {
         int x, y;
         Rect rect = new Rect();
+        int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?itemSize:0;
+        int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?itemSize:0;
+
         for (int i = 0, count = maxNumber - minNumber + 1; i < count; i++) {
             x = i % column * (itemSize + horizontalGap);
             y = i / column * (itemSize + verticalGap);
-            rect.set(x, y, x + itemSize, y + itemSize);
+            rect.set(x, y, x + itemSize, y + itemSize+yiLouHeight+lengReHeight);
 
             if (rect.contains(eventX, eventY)) {
                 if (isRadioStyle()) {
@@ -281,11 +288,18 @@ public class NumberGroupView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.i(TAG,"onMeasure(int widthMeasureSpec, int heightMeasureSpec) ....  ");
+
         int specSize = MeasureSpec.getSize(widthMeasureSpec);
         horizontalGap = (specSize - column * itemSize) / (column - 1);
         int itemCount = maxNumber - minNumber + 1;
         int line = (itemCount) / column + ((itemCount) % column != 0 ? 1 : 0);
-        int specHeight = line * itemSize + (line - 1) * verticalGap;
+
+        int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?itemSize:0;
+        int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?itemSize:0;
+
+        int specHeight = line * (itemSize+yiLouHeight+lengReHeight) + (line - 1) * verticalGap;
+
         setMeasuredDimension(specSize, specHeight);
     }
 
@@ -302,11 +316,19 @@ public class NumberGroupView extends View {
 
         float x, y;
         float offTextY = itemSize * 0.5f + paint.getTextSize() * 0.5f - paint.getTextSize() * 0.2f;
+
         for (int i = 0, count = maxNumber - minNumber + 1; i < count; i++) {
             x = i % column * (itemSize + horizontalGap);
             y = i / column * (itemSize + verticalGap);
             canvas.save();
-            canvas.translate(x, y);
+            if(y==0){
+                canvas.translate(x, y);
+            }else{
+                int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?itemSize:0;
+                int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?itemSize:0;
+                canvas.translate(x, y+yiLouHeight+lengReHeight);
+            }
+
             if (checkedArray.get(i + minNumber)) {
                 checkedDrawable.draw(canvas);
                 paint.setColor(textCheckedColor);
@@ -327,6 +349,19 @@ public class NumberGroupView extends View {
             }
             float offTextX = (itemSize - paint.measureText(text)) / 2;
             canvas.drawText(text, offTextX, offTextY, paint);
+
+            /*添加遗漏和冷热具体数据start*/
+            int  yiLouHeight=itemSize;
+            if(ConstantInformation.YI_LOU_IS_SHOW) {
+                canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+itemSize, paint);
+                yiLouHeight+=itemSize;
+            }
+			
+            if(ConstantInformation.LENG_RE_IS_SHOW) {
+                canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, paint);
+            }
+            /*添加遗漏和冷热具体数据end*/
+
             canvas.restore();
         }
     }
@@ -403,4 +438,18 @@ public class NumberGroupView extends View {
     public interface OnChooseItemClickListener {
         void onChooseItemClick();
     }
+
+    public void setmYiLouList(List<String> mYiLouList) {
+        this.mYiLouList = mYiLouList;
+    }
+
+    public void setmLengReList(List<String> mLengReList) {
+        this.mLengReList = mLengReList;
+    }
+
+    //刷新界面
+    public void refreshViewGroup(){
+        requestLayout();
+    }
+
 }
