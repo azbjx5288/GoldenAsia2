@@ -22,6 +22,8 @@ public class SscCommonGameUtils {
                 return yiLouSXDW( digit+3);
             case "EXZUX"://后二组选 EXZUX
                 return yiLouEXZUX( 3,4);
+            case "EXZUXBD"://后二包胆 EXZUXBD
+                return yiLouEXZUX( 3,4);
 
 
         }
