@@ -37,6 +37,13 @@ public class SscCommonGameUtils {
             case "SXZL"://后三组六 SXZL
             case "HSZUXBD"://后三包胆 HSZUXBD
                 return yiLouEXZUX( 2,3,4);
+            case "QSZX"://前三直选 QSZX
+            case "QSLX"://前三连选 QSLX
+                return yiLouSXDW( digit);
+            case "QSZS": //前三组三 QSZS
+            case "QSZL"://前三组六 QSZL
+            case "QSZUXBD"://前三包胆 QSZUXBD
+                return yiLouEXZUX( 0,1,2);
 
 
         }
