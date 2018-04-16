@@ -24,6 +24,12 @@ public class SscCommonGameUtils {
                 return yiLouEXZUX( 3,4);
             case "EXZUXBD"://后二包胆 EXZUXBD
                 return yiLouEXZUX( 3,4);
+            case "QEZX"://前二直选 QEZX
+            case "QELX"://前二连选 QELX
+                return yiLouSXDW( digit);
+            case "QEZUX": //前二组选 QEZUX
+            case "QEZUXBD"://前二包胆 QEZUXBD
+                return yiLouEXZUX( 0,1);
 
 
         }
