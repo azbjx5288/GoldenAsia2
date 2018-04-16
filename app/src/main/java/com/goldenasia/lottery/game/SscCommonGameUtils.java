@@ -14,10 +14,39 @@ public class SscCommonGameUtils {
     //获得遗漏的集合
     public List<String> getYiLouList(String gameMethod, int digit) {
         switch (gameMethod) {
-            case "SXDW":////定位胆 SXDW
+            case "SXDW"://定位胆 SXDW
                 return yiLouSXDW( digit);
+            case "EXZX"://后二直选: EXZX
+                return yiLouSXDW( digit+3);
+            case "EXLX"://后二连选 EXLX
+                return yiLouSXDW( digit+3);
+            case "EXZUX"://后二组选 EXZUX
+                return yiLouEXZUX( 3,4);
+
+
         }
         return yiLouSXDW( digit);
+    }
+
+    //后二组选 EXZUX
+    private List<String> yiLouEXZUX(int... digits) {
+        List<String> list = new ArrayList<>();
+
+        for (int i = 0; i <= 9; i++) {
+            list.add(getSingleYiLouEXZUXDate(String.valueOf(i), digits));
+        }
+        return list;
+    }
+
+    private String getSingleYiLouEXZUXDate(String number,int... digits){
+        for (int j = 0;j < ConstantInformation.HISTORY_CODE_LIST.size(); j++) {
+            for(int z=0;z<digits.length;z++){
+                if (number.equals(ConstantInformation.HISTORY_CODE_LIST.get(j).substring(digits[z],digits[z]+1))) {//55209
+                    return String.valueOf(j);
+                }
+            }
+        }
+        return "";
     }
 
     private List<String> yiLouSXDW( int digit) {
