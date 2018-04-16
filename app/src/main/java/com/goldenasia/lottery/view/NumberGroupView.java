@@ -30,6 +30,9 @@ public class NumberGroupView extends View{
     private static final String TAG = NumberGroupView.class.getSimpleName();
 
     private TextPaint paint;
+    private TextPaint minPaint = new TextPaint();
+    private TextPaint maxPaint = new TextPaint();
+    private TextPaint normalPaint = new TextPaint();
     private Drawable checkedDrawable;
     private Drawable uncheckedDrawable;
     private int itemSize;
@@ -61,6 +64,9 @@ public class NumberGroupView extends View{
     private int lastPick;
     private List<String>  mYiLouList=new ArrayList<>();
     private List<String>  mLengReList=new ArrayList<>();
+    private int MAX_YILOU =0;///遗漏中最大的数
+    private int MAX_LENGRE =0;//冷热中最小的数
+    private int MIN_LENGRE =0;//冷热中最大的数
 
     public NumberGroupView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -308,8 +314,14 @@ public class NumberGroupView extends View{
         super.onDraw(canvas);
 
         paint.setTextSize(textSize);
-        paint.setColor(textColor);
         paint.setAntiAlias(true);
+        minPaint.set(paint);
+        maxPaint.set(paint);
+        normalPaint.set(paint);
+        paint.setColor(textColor);
+        minPaint.setColor(getResources().getColor(R.color.app_chart_shiball_color));
+        maxPaint.setColor(getResources().getColor(R.color.app_main_support));
+        normalPaint.setColor(getResources().getColor(R.color.gray));
 
         checkedDrawable.setBounds(0, 0, itemSize, itemSize);
         uncheckedDrawable.setBounds(0, 0, itemSize, itemSize);
@@ -353,12 +365,22 @@ public class NumberGroupView extends View{
             /*添加遗漏和冷热具体数据start*/
             int  yiLouHeight=itemSize;
             if(ConstantInformation.YI_LOU_IS_SHOW) {
-                canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+itemSize, paint);
+                if(mYiLouList.get(i).equals(String.valueOf(MAX_YILOU))){
+                    canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+itemSize, minPaint);
+                }else{
+                    canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+itemSize, normalPaint);
+                }
                 yiLouHeight+=itemSize;
             }
 			
             if(ConstantInformation.LENG_RE_IS_SHOW) {
-                canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, paint);
+                if(mLengReList.get(i).equals(String.valueOf(MAX_LENGRE))){
+                    canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, maxPaint);
+                }else if(mLengReList.get(i).equals(String.valueOf(MIN_LENGRE))){
+                    canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, minPaint);
+                }else{
+                    canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, normalPaint);
+                }
             }
             /*添加遗漏和冷热具体数据end*/
 
@@ -439,12 +461,32 @@ public class NumberGroupView extends View{
         void onChooseItemClick();
     }
 
-    public void setmYiLouList(List<String> mYiLouList) {
-        this.mYiLouList = mYiLouList;
+    public void setmYiLouList(List<String> yiLouList) {
+        this.mYiLouList = yiLouList;
+        //取出遗漏中最大值
+        MAX_YILOU=Integer.parseInt(yiLouList.get(0));
+        for(int i=1;i<yiLouList.size();i++){
+            if(MAX_YILOU<Integer.parseInt(yiLouList.get(i))){
+                MAX_YILOU=Integer.parseInt(yiLouList.get(i));
+            }
+        }
     }
 
-    public void setmLengReList(List<String> mLengReList) {
-        this.mLengReList = mLengReList;
+    public void setmLengReList(List<String> lengReList) {
+        this.mLengReList = lengReList;
+
+        //取出冷热中最大值和最小值
+        MAX_LENGRE=Integer.parseInt(lengReList.get(0));
+        MIN_LENGRE=Integer.parseInt(lengReList.get(0));
+        for(int i=1;i<lengReList.size();i++){
+            if(MAX_LENGRE<Integer.parseInt(lengReList.get(i))){
+                MAX_LENGRE=Integer.parseInt(lengReList.get(i));
+            }
+            if(MIN_LENGRE>Integer.parseInt(lengReList.get(i))){
+                MIN_LENGRE=Integer.parseInt(lengReList.get(i));
+            }
+        }
+
     }
 
     //刷新界面
