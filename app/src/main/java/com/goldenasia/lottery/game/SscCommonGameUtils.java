@@ -55,6 +55,9 @@ public class SscCommonGameUtils {
                 return yiLouSXDW( digit+1);
             case "QSIZX": //前四直选 QSIZX
                 return yiLouSXDW( digit);
+            case "WXZX": //五星直选 WXZX
+            case "WXLX": //五星连选 WXLX
+                return yiLouSXDW( digit);
 
 
         }
