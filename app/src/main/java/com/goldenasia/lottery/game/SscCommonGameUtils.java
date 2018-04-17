@@ -58,7 +58,22 @@ public class SscCommonGameUtils {
             case "WXZX": //五星直选 WXZX
             case "WXLX": //五星连选 WXLX
                 return yiLouSXDW( digit);
-
+            case "YMBDW"://后三一码不定位 YMBDW
+            case "EMBDW"://后三二码不定位 EMBDW
+                return yiLouEXZUX( 2,3,4);
+            case "QSYMBDW"://前三一码不定位 QSYMBDW
+            case "QSEMBDW"://前三二码不定位 QSEMBDW
+                return yiLouEXZUX( 0,1,2);
+            case "ZSYMBDW"://中三一码不定位 ZSYMBDW
+            case "ZSEMBDW"://中三二码不定位 ZSEMBDW
+                return yiLouEXZUX( 1,2,3);
+            case "SXYMBDW"://四星一码不定位 SXYMBDW
+            case "SXEMBDW"://四星二码不定位 SXEMBDW
+                return yiLouEXZUX( 1,2,3,4);
+            case "WXYMBDW"://五星一码不定位 WXYMBDW
+            case "WXEMBDW"://五星二码不定位 WXEMBDW
+            case "WXSMBDW"://五星三码不定位 WXSMBDW
+                return yiLouEXZUX( 0,1,2,3,4);
 
         }
         return yiLouSXDW( digit);
