@@ -87,6 +87,9 @@ public class SscCommonGameUtils {
             case "RSZX"://任三直选 RSZX
             case "RSIZX"://任四直选 RSIZX
                 return yiLouSXDW( digit);
+            case "YFFS"://一帆风顺 YFFS
+                return yiLouEXZUX( 0,1,2,3,4);
+
 
         }
         return yiLouSXDW( digit);
