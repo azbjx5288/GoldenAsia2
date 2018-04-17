@@ -1,14 +1,22 @@
 package com.goldenasia.lottery.game;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.cpiz.android.bubbleview.BubbleLinearLayout;
+import com.cpiz.android.bubbleview.BubblePopupWindow;
+import com.cpiz.android.bubbleview.BubbleStyle;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Method;
+import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.PickNumber;
+import com.goldenasia.lottery.view.NumberGroupView;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
@@ -48,6 +56,8 @@ public class TextMultipleGame extends Game
     private static final int TYPE_JSDS=11;//单双
     private static final int TYPE_JSYS=12;//颜色
     private static final int TYPE_JSETFX =13;//二同号复选 JSETFX
+    private  static   SscCommonGameUtils mScCommonGameUtils=new SscCommonGameUtils();
+    private static CheckBox mLengreTv;
 
     public TextMultipleGame(Method method)
     {
@@ -293,7 +303,7 @@ public class TextMultipleGame extends Game
         game.addPickNumber(pickNumberText);
     }
     
-    private static void createPicklayout(Game game, String[] name, String[] disText, boolean chooseMode)
+    private static void createPicklayout(Game game, String[] name, String[] disText, boolean chooseMode,String  gameMethod)
     {
         View[] views = new View[name.length];
         if (!game.isRanking())
@@ -313,14 +323,137 @@ public class TextMultipleGame extends Game
             }
         
         ViewGroup topLayout = game.getTopLayout();
-        for (View view : views)
-        {
-            topLayout.addView(view);
+        //遗漏功能添加的start
+        if( ConstantInformation.HISTORY_CODE_LIST.size()==0
+                ||gameMethod==ConstantInformation.NO_YILOU_AND_LENGRE){//没有冷热和遗漏的情况
+            ConstantInformation.YI_LOU_IS_SHOW=false;
+            ConstantInformation.LENG_RE_IS_SHOW=false;
+
+            for (View view : views) {
+                topLayout.addView(view);
+            }
+        }else{
+            ConstantInformation.YI_LOU_IS_SHOW=true;
+            ConstantInformation.LENG_RE_IS_SHOW=true;
+            addViewLayoutHasLengRe(topLayout,views,gameMethod);
         }
-        
+        //遗漏功能添加的start
+
         game.setColumn(name.length);
     }
-    
+
+    private static void addViewLayoutHasLengRe(ViewGroup topLayout,View[] views,String  gameMethod) {
+        View sscLengreLayout=LayoutInflater.from(topLayout.getContext()).inflate(R.layout.ssc_lengre_layout, null, false);
+        CheckBox yilou_tv=sscLengreLayout.findViewById(R.id.yilou);
+        mLengreTv=sscLengreLayout.findViewById(R.id.lengre);
+        CheckBox lengre_Checkbox=sscLengreLayout.findViewById(R.id.lengre_checked);
+
+        yilou_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.YI_LOU_IS_SHOW =!ConstantInformation.YI_LOU_IS_SHOW;
+
+                yilou_tv.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.refreshViewGroup();
+                }
+            }
+        });
+
+        mLengreTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLengreTv.setChecked(true);
+                initLengrePopupwindow(views,topLayout.getContext(),v,gameMethod);
+            }
+        });
+
+        lengre_Checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.LENG_RE_IS_SHOW =!ConstantInformation.LENG_RE_IS_SHOW;
+                mLengreTv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    ConstantInformation.LENG_RE_COUNT=100;
+                    numberGroupView.refreshViewGroup();
+                }
+            }
+        });
+
+        topLayout.addView(sscLengreLayout);
+
+        for (int i=0;i<  views.length;i++) {
+            NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+            numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
+            numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
+
+            numberGroupView.refreshViewGroup();
+            topLayout.addView(views[i]);
+        }
+    }
+
+    //弹出冷热期数选择框
+    private static void initLengrePopupwindow(View[] views, Context context, View v, String  gameMethod) {
+        View rootView = LayoutInflater.from(context).inflate(R.layout.lengre_diff_popupwindow, null);
+
+        BubbleLinearLayout bubbleLinearLayout = (BubbleLinearLayout) rootView.findViewById(R.id.popup_bubble);
+        BubblePopupWindow bubblePopupWindow = new BubblePopupWindow(rootView, bubbleLinearLayout);
+        RadioButton lengreOne = (RadioButton) rootView.findViewById(R.id.lengre_one);
+        RadioButton lengreTwo = (RadioButton) rootView.findViewById(R.id.lengre_two);
+        RadioButton lengreThree = (RadioButton) rootView.findViewById(R.id.lengre_three);
+
+        lengreOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ConstantInformation.LENG_RE_COUNT=100;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
+                    numberGroupView.refreshViewGroup();
+                }
+
+                mLengreTv.setText("100期冷热");
+                bubblePopupWindow.dismiss();
+            }
+        });
+        lengreTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.LENG_RE_COUNT=50;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
+                    numberGroupView.refreshViewGroup();
+                }
+                mLengreTv.setText("50期冷热");
+                bubblePopupWindow.dismiss();
+            }
+        });
+        lengreThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.LENG_RE_COUNT=20;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
+
+                    numberGroupView.refreshViewGroup();
+                }
+                mLengreTv.setText("20期冷热");
+                bubblePopupWindow.dismiss();
+            }
+        });
+        bubblePopupWindow.showArrowTo(v, BubbleStyle.ArrowDirection.Down);
+    }
+
     private static void createPicklayout(Game game, String[] name, ArrayList<String[]> disText, boolean chooseMode)
     {
         View[] views = new View[name.length];
@@ -344,7 +477,7 @@ public class TextMultipleGame extends Game
     public static void LMGYH(Game game)
     {
         TYPE = TYPE_LMGYH;
-        createPicklayout(game, new String[]{"冠亚和"}, digitText, false);
+        createPicklayout(game, new String[]{"冠亚和"}, digitText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     
     //名次 LMMC
@@ -352,21 +485,21 @@ public class TextMultipleGame extends Game
     {
         TYPE = TYPE_LMMC;
         createPicklayout(game, new String[]{"冠军", "亚军", "季军", "第四名", "第五名", "第六名", "第七名", "第八名", "第九名", "第十名"},
-                digitText, false);
+                digitText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     
     //龙虎 LMLH
     public static void LMLH(Game game)
     {
         TYPE = TYPE_LMLH;
-        createPicklayout(game, new String[]{"1V10", "2V9", "3V8", "4V7", "5V6"}, dragonTigerText, false);
+        createPicklayout(game, new String[]{"1V10", "2V9", "3V8", "4V7", "5V6"}, dragonTigerText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     
     //五星和值大小单双 WXHZDXDS
     public static void WXHZDXDS(Game game)
     {
         TYPE = TYPE_DIGIT;
-        createPicklayout(game, new String[]{"五星和值大小单双"}, digitText, false);
+        createPicklayout(game, new String[]{"五星和值大小单双"}, digitText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     
     //五星和值大小单双随机 WXHZDXDSRandom
@@ -388,73 +521,73 @@ public class TextMultipleGame extends Game
     public static void JSETFX(Game game)
     {
         TYPE = TYPE_JSETFX;//二同号复选 JSETFX
-        createPicklayout(game, new String[]{"二同号复选"}, twoSameMulPickText, false);
+        createPicklayout(game, new String[]{"二同号复选"}, twoSameMulPickText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     
     //三同号单选 JSSTDX
     public static void JSSTDX(Game game)
     {
         TYPE = TYPE_STDX;
-        createPicklayout(game, new String[]{"三同号单选"}, threeSameSinglePickText, false);
+        createPicklayout(game, new String[]{"三同号单选"}, threeSameSinglePickText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     //JSDX  大小
     public static void JSDX(Game game)
     {
         TYPE = TYPE_JSDX;
-        createPicklayout(game, new String[]{"大小"}, daXiaoText, false);
+        createPicklayout(game, new String[]{"大小"}, daXiaoText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     //JSDS   单双
     public static void JSDS(Game game)
     {
         TYPE = TYPE_JSDS;
-        createPicklayout(game, new String[]{"单双"}, danShuangText, false);
+        createPicklayout(game, new String[]{"单双"}, danShuangText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     //JSYS 颜色
     public static void JSYS(Game game)
     {
         TYPE = TYPE_JSYS;
-        createPicklayout(game, new String[]{"颜色"}, yanSeText, false);
+        createPicklayout(game, new String[]{"颜色"}, yanSeText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     //竞速 JSPK
     public static void JSPK(Game game)
     {
         TYPE = TYPE_JSPK;
-        createPicklayout(game, new String[]{"竞速"}, raceText, false);
+        createPicklayout(game, new String[]{"竞速"}, raceText, false,ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     
     //后二大小单双 EXDXDS
     public static void EXDXDS(Game game)
     {
         TYPE = TYPE_DIGIT;
-        createPicklayout(game, new String[]{"十位", "个位"}, digitText, false);
+        createPicklayout(game, new String[]{"十位", "个位"}, digitText, false,"EXDXDS");
     }
     
     //后三大小单双 SXDXDS
     public static void SXDXDS(Game game)
     {
         TYPE = TYPE_DIGIT;
-        createPicklayout(game, new String[]{"百位", "十位", "个位"}, digitText, false);
+        createPicklayout(game, new String[]{"百位", "十位", "个位"}, digitText, false,"SXDXDS");
     }
     
     //前二大小单双 QEDXDS
     public static void QEDXDS(Game game)
     {
         TYPE = TYPE_DIGIT;
-        createPicklayout(game, new String[]{"百位", "十位"}, digitText, false);
+        createPicklayout(game, new String[]{"百位", "十位"}, digitText, false,"QEDXDS");
     }
     
     //前三大小单双 QSDXDS
     public static void QSDXDS(Game game)
     {
         TYPE = TYPE_DIGIT;
-        createPicklayout(game, new String[]{"万位","千位","百位"}, digitText, false);
+        createPicklayout(game, new String[]{"万位","千位","百位"}, digitText, false,"QSDXDS");
     }
     
     //中三大小单双 ZSDXDS
     public static void ZSDXDS(Game game)
     {
         TYPE = TYPE_DIGIT;
-        createPicklayout(game, new String[]{"千位","百位", "十位"}, digitText, false);
+        createPicklayout(game, new String[]{"千位","百位", "十位"}, digitText, false,"ZSDXDS");
     }
     
     //清空

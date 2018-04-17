@@ -74,6 +74,19 @@ public class SscCommonGameUtils {
             case "WXEMBDW"://五星二码不定位 WXEMBDW
             case "WXSMBDW"://五星三码不定位 WXSMBDW
                 return yiLouEXZUX( 0,1,2,3,4);
+            case "EXDXDS": //后二大小单双 EXDXDS
+                return yiLouSXDW( digit+3);
+            case "SXDXDS": //后三大小单双 SXDXDS
+                return yiLouSXDW( digit+2);
+            case "QEDXDS": //前二大小单双 QEDXDS
+            case "QSDXDS": //前三大小单双 QSDXDS
+                 return yiLouSXDW( digit);
+            case "ZSDXDS": //中三大小单双 ZSDXDS
+                return yiLouSXDW( digit+1);
+            case "REZX"://任二直选 REZX
+            case "RSZX"://任三直选 RSZX
+            case "RSIZX"://任四直选 RSIZX
+                return yiLouSXDW( digit);
 
         }
         return yiLouSXDW( digit);
