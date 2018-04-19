@@ -75,14 +75,14 @@ public class SscCommonGameUtils {
             case "WXSMBDW"://五星三码不定位 WXSMBDW
                 return yiLouEXZUX( 0,1,2,3,4);
             case "EXDXDS": //后二大小单双 EXDXDS
-                return yiLouSXDW( digit+3);
+                return yiLouDXDS( digit+3);
             case "SXDXDS": //后三大小单双 SXDXDS
-                return yiLouSXDW( digit+2);
+                return yiLouDXDS( digit+2);
             case "QEDXDS": //前二大小单双 QEDXDS
             case "QSDXDS": //前三大小单双 QSDXDS
-                 return yiLouSXDW( digit);
+                 return yiLouDXDS( digit);
             case "ZSDXDS": //中三大小单双 ZSDXDS
-                return yiLouSXDW( digit+1);
+                return yiLouDXDS( digit+1);
             case "REZX"://任二直选 REZX
             case "RSZX"://任三直选 RSZX
             case "RSIZX"://任四直选 RSIZX
@@ -93,6 +93,49 @@ public class SscCommonGameUtils {
 
         }
         return yiLouSXDW( digit);
+    }
+
+    //大小单双 遗漏
+    private List<String> yiLouDXDS(int digit) {
+        List<String> list = new ArrayList<>();
+
+        int bigNum=0;
+        int smallNum=0;
+        int singleNum=0;
+        int doubleNum=0;
+
+        boolean hasBig=false;//没有大
+        boolean hasSmall=false;//没有小
+        boolean hasSingle=false;//没有单数
+        boolean hasDouble=false;//没有双数
+
+        for (int i = 0; i < ConstantInformation.HISTORY_CODE_LIST.size(); i++) {
+           int singleDigit=Integer.parseInt( ConstantInformation.HISTORY_CODE_LIST.get(i).substring(digit,digit+1));
+
+            if(!hasBig &&singleDigit>=5){//大
+                hasBig=true;
+                bigNum=i;
+            }
+            if(!hasSmall &&singleDigit<5){//小
+                hasSmall=true;
+                smallNum=i;
+            }
+            if(!hasSingle && singleDigit%2!=0){//单
+                hasSingle=true;
+                singleNum=i;
+            }
+            if(!hasDouble && singleDigit%2==0){//双
+                hasDouble=true;
+                doubleNum=i;
+            }
+        }
+
+        list.add(String.valueOf(bigNum));
+        list.add(String.valueOf(smallNum));
+        list.add(String.valueOf(singleNum));
+        list.add(String.valueOf(doubleNum));
+
+        return list;
     }
 
     //后二组选 EXZUX
@@ -201,14 +244,14 @@ public class SscCommonGameUtils {
             case "WXSMBDW"://五星三码不定位 WXSMBDW
                 return lengReEXZUX( 0,1,2,3,4);
             case "EXDXDS": //后二大小单双 EXDXDS
-                return lengReSXDW( digit+3);
+                return lengReDXDS( digit+3);
             case "SXDXDS": //后三大小单双 SXDXDS
-                return lengReSXDW( digit+2);
+                return lengReDXDS( digit+2);
             case "QEDXDS": //前二大小单双 QEDXDS
             case "QSDXDS": //前三大小单双 QSDXDS
-                return lengReSXDW( digit);
+                return lengReDXDS( digit);
             case "ZSDXDS": //中三大小单双 ZSDXDS
-                return lengReSXDW( digit+1);
+                return lengReDXDS( digit+1);
             case "REZX"://任二直选 REZX
             case "RSZX"://任三直选 RSZX
             case "RSIZX"://任四直选 RSIZX
@@ -219,6 +262,42 @@ public class SscCommonGameUtils {
 
         }
         return lengReSXDW( digit);
+    }
+
+    //大小单双 --冷热
+    private List<String> lengReDXDS( int digit) {
+        List<String> list = new ArrayList<>();
+
+        int bigNum=0;
+        int smallNum=0;
+        int singleNum=0;
+        int doubleNum=0;
+
+        int minNumber= ConstantInformation.LENG_RE_COUNT >ConstantInformation.HISTORY_CODE_LIST.size()?ConstantInformation.HISTORY_CODE_LIST.size(): ConstantInformation.LENG_RE_COUNT;
+
+        for (int i = 0; i <minNumber; i++) {
+            int singleDigit=Integer.parseInt( ConstantInformation.HISTORY_CODE_LIST.get(i).substring(digit,digit+1));
+
+            if(singleDigit>=5){
+                bigNum++;//大
+            }else{
+                smallNum++;//小
+            }
+
+            if(singleDigit%2!=0){//单
+                singleNum++;
+            }else{//双
+                doubleNum++;
+            }
+
+        }
+
+        list.add(String.valueOf(bigNum));
+        list.add(String.valueOf(smallNum));
+        list.add(String.valueOf(singleNum));
+        list.add(String.valueOf(doubleNum));
+
+        return list;
     }
 
     private List<String> lengReSXDW( int digit) {
