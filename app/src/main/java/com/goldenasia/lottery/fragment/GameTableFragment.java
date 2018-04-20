@@ -174,6 +174,8 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 ||lottery.getLotteryId()==35//35:台湾五分彩
                 ||lottery.getLotteryId()==37//37:亚洲2分彩)
          ) {
+            ConstantInformation.HISTORY_CODE_LIST.clear();
+
             LotteriesHistoryCommand command = new LotteriesHistoryCommand();
             command.setLotteryID(lottery.getLotteryId());
             command.setCurPage(1);
@@ -182,6 +184,10 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             };
             RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback, 2, this);
             restRequest.execute();
+        }else{
+            ConstantInformation.HISTORY_CODE_LIST.clear();
+            ConstantInformation.YI_LOU_IS_SHOW=false;
+            ConstantInformation.LENG_RE_IS_SHOW=false;
         }
     }
 

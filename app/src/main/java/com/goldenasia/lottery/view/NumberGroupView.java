@@ -364,7 +364,7 @@ public class NumberGroupView extends View{
 
             /*添加遗漏和冷热具体数据start*/
             int  yiLouHeight=itemSize;
-            if(ConstantInformation.YI_LOU_IS_SHOW) {
+            if(ConstantInformation.YI_LOU_IS_SHOW&&mYiLouList.size()>0) {
                 if(mYiLouList.get(i).equals(String.valueOf(MAX_YILOU))){
                     canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+itemSize, minPaint);
                 }else{
@@ -373,7 +373,7 @@ public class NumberGroupView extends View{
                 yiLouHeight+=itemSize;
             }
 			
-            if(ConstantInformation.LENG_RE_IS_SHOW) {
+            if(ConstantInformation.LENG_RE_IS_SHOW&&mLengReList.size()>0) {
                 if(mLengReList.get(i).equals(String.valueOf(MAX_LENGRE))){
                     canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, maxPaint);
                 }else if(mLengReList.get(i).equals(String.valueOf(MIN_LENGRE))){

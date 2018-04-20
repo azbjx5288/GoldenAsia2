@@ -60,6 +60,7 @@ public class SscCommonGame extends Game {
     @Override
     public void onInflate() {
         try {
+            ConstantInformation.LENG_RE_COUNT=100;
             java.lang.reflect.Method function = getClass().getMethod(method.getName(), Game.class);
             function.invoke(null, this);
         } catch (Exception e) {
@@ -361,10 +362,15 @@ public class SscCommonGame extends Game {
 
         if( ConstantInformation.HISTORY_CODE_LIST.size()==0
                 ||gameMethod==ConstantInformation.NO_YILOU_AND_LENGRE){//没有冷热和遗漏的情况
+            ConstantInformation.YI_LOU_IS_SHOW=false;
+            ConstantInformation.LENG_RE_IS_SHOW=false;
+
             for (View view : views) {
                 topLayout.addView(view);
             }
         }else{
+            ConstantInformation.YI_LOU_IS_SHOW=true;
+            ConstantInformation.LENG_RE_IS_SHOW=true;
             addViewLayoutHasLengRe(topLayout,views,gameMethod);
         }
 
@@ -372,8 +378,6 @@ public class SscCommonGame extends Game {
     }
 
     private static void addViewLayoutHasLengRe(ViewGroup topLayout,View[] views,String  gameMethod) {
-
-
         View sscLengreLayout=LayoutInflater.from(topLayout.getContext()).inflate(R.layout.ssc_lengre_layout, null, false);
         CheckBox yilou_tv=sscLengreLayout.findViewById(R.id.yilou);
         mLengreTv=sscLengreLayout.findViewById(R.id.lengre);
@@ -818,6 +822,8 @@ public class SscCommonGame extends Game {
 
     //定位胆 SXDW
     public static void SXDW(Game game) {
+        ConstantInformation.YI_LOU_IS_SHOW=true;
+        ConstantInformation.LENG_RE_IS_SHOW=true;
         createPicklayout(game, new String[]{"百位", "十位", "个位"},"SXDW");
     }
 

@@ -81,6 +81,7 @@ public class TextMultipleGame extends Game
     {
         try
         {
+            ConstantInformation.LENG_RE_COUNT=100;
             java.lang.reflect.Method function = getClass().getMethod(method.getName(), Game.class);
             function.invoke(null, this);
         } catch (Exception e)

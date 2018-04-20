@@ -252,4 +252,12 @@
         ]]>
     </string>
     <string name="title_activity_umessage">UMessageActivity</string>
+    <string name="sdklpk_bd">
+        至少选择一种形态进行投注(一注可包选此形态)，所包形态和当期开奖号码形态一致即中奖。\n
+        一等奖：同花顺：中奖金额为644.5833元；\n
+        二等奖：豹子：中奖金额为595元；\n
+        三等奖：顺子：中奖金额为40.2865元；\n
+        四等奖：同花：中奖金额为27.0455元；\n
+        五等奖：对子：中奖金额为8.2639元。
+    </string>
 </resources>
