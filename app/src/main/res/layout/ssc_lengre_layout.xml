@@ -2,14 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="5dp"
     android:gravity="center_vertical">
 
     <CheckBox
         android:id="@+id/lengre_checked"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:checked="true"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:button="@drawable/checkbox_login_bg_selector"
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"/>
@@ -17,28 +20,33 @@
     <CheckBox
         android:id="@+id/lengre"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/lengre_checked"
         android:layout_toStartOf="@+id/lengre_checked"
         android:button="@null"
         android:drawableLeft="@drawable/yilou_selector"
         android:drawablePadding="5dp"
-        android:checked="true"
-        android:text="100期冷热"
+        android:text="冷热"
         android:textColor="@color/orders_color"
         android:textSize="16sp" />
 
     <CheckBox
+        android:id="@+id/yilou_checked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/lengre"
+        android:button="@drawable/checkbox_login_bg_selector"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="5dp"/>
+
+    <CheckBox
         android:id="@+id/yilou"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignBaseline="@+id/lengre"
-        android:layout_alignBottom="@+id/lengre"
-        android:layout_marginRight="35dp"
-        android:layout_toLeftOf="@+id/lengre"
-        android:layout_toStartOf="@+id/lengre"
-        android:checked="true"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/yilou_checked"
         android:button="@null"
         android:drawableLeft="@drawable/lengre_selector"
         android:drawablePadding="5dp"

@@ -57,7 +57,6 @@ public class TextMultipleGame extends Game
     private static final int TYPE_JSYS=12;//颜色
     private static final int TYPE_JSETFX =13;//二同号复选 JSETFX
     private  static   SscCommonGameUtils mScCommonGameUtils=new SscCommonGameUtils();
-    private static CheckBox mLengreTv;
 
     public TextMultipleGame(Method method)
     {
@@ -81,7 +80,6 @@ public class TextMultipleGame extends Game
     {
         try
         {
-            ConstantInformation.LENG_RE_COUNT=100;
             java.lang.reflect.Method function = getClass().getMethod(method.getName(), Game.class);
             function.invoke(null, this);
         } catch (Exception e)
@@ -327,15 +325,16 @@ public class TextMultipleGame extends Game
         //遗漏功能添加的start
         if( ConstantInformation.HISTORY_CODE_LIST.size()==0
                 ||gameMethod==ConstantInformation.NO_YILOU_AND_LENGRE){//没有冷热和遗漏的情况
-            ConstantInformation.YI_LOU_IS_SHOW=false;
-            ConstantInformation.LENG_RE_IS_SHOW=false;
+            ConstantInformation.YI_LOU_IS_SUPPORTED=false;
 
             for (View view : views) {
                 topLayout.addView(view);
             }
         }else{
-            ConstantInformation.YI_LOU_IS_SHOW=true;
-            ConstantInformation.LENG_RE_IS_SHOW=true;
+            ConstantInformation.YI_LOU_IS_SUPPORTED=true;
+            ConstantInformation.YI_LOU_IS_SHOW=false;
+            ConstantInformation.LENG_RE_IS_SHOW=false;
+            ConstantInformation.LENG_RE_COUNT=100;
             addViewLayoutHasLengRe(topLayout,views,gameMethod);
         }
         //遗漏功能添加的start
@@ -346,7 +345,9 @@ public class TextMultipleGame extends Game
     private static void addViewLayoutHasLengRe(ViewGroup topLayout,View[] views,String  gameMethod) {
         View sscLengreLayout=LayoutInflater.from(topLayout.getContext()).inflate(R.layout.ssc_lengre_layout, null, false);
         CheckBox yilou_tv=sscLengreLayout.findViewById(R.id.yilou);
-        mLengreTv=sscLengreLayout.findViewById(R.id.lengre);
+        CheckBox yilou_Checkbox=sscLengreLayout.findViewById(R.id.yilou_checked);
+
+        CheckBox lengre_tv=sscLengreLayout.findViewById(R.id.lengre);
         CheckBox lengre_Checkbox=sscLengreLayout.findViewById(R.id.lengre_checked);
 
         yilou_tv.setOnClickListener(new View.OnClickListener() {
@@ -362,11 +363,25 @@ public class TextMultipleGame extends Game
                 }
             }
         });
-
-        mLengreTv.setOnClickListener(new View.OnClickListener() {
+        yilou_Checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLengreTv.setChecked(true);
+                ConstantInformation.YI_LOU_IS_SHOW =!ConstantInformation.YI_LOU_IS_SHOW;
+
+                yilou_tv.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+                yilou_Checkbox.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.refreshViewGroup();
+                }
+            }
+        });
+
+        lengre_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lengre_tv.setChecked(true);
                 initLengrePopupwindow(views,topLayout.getContext(),v,gameMethod);
             }
         });
@@ -375,7 +390,7 @@ public class TextMultipleGame extends Game
             @Override
             public void onClick(View v) {
                 ConstantInformation.LENG_RE_IS_SHOW =!ConstantInformation.LENG_RE_IS_SHOW;
-                mLengreTv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
+                lengre_tv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
 
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
@@ -419,7 +434,6 @@ public class TextMultipleGame extends Game
                     numberGroupView.refreshViewGroup();
                 }
 
-                mLengreTv.setText("100期冷热");
                 bubblePopupWindow.dismiss();
             }
         });
@@ -433,7 +447,6 @@ public class TextMultipleGame extends Game
                     numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
                     numberGroupView.refreshViewGroup();
                 }
-                mLengreTv.setText("50期冷热");
                 bubblePopupWindow.dismiss();
             }
         });
@@ -448,7 +461,6 @@ public class TextMultipleGame extends Game
 
                     numberGroupView.refreshViewGroup();
                 }
-                mLengreTv.setText("20期冷热");
                 bubblePopupWindow.dismiss();
             }
         });

@@ -186,8 +186,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             restRequest.execute();
         }else{
             ConstantInformation.HISTORY_CODE_LIST.clear();
-            ConstantInformation.YI_LOU_IS_SHOW=false;
-            ConstantInformation.LENG_RE_IS_SHOW=false;
+            ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         }
     }
 

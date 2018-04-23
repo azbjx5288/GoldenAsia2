@@ -109,6 +109,7 @@ public class ConstantInformation
 
     public  static List<String> HISTORY_CODE_LIST = new ArrayList();//从网络上加载的最近200条开奖结果数据
     public  static String NO_YILOU_AND_LENGRE = "noyilouandlengre";//没有遗漏冷热的玩法和彩种
+    public static boolean YI_LOU_IS_SUPPORTED =false;//该玩法中遗漏冷热是否被支持  只针对
     public static boolean YI_LOU_IS_SHOW =false;//遗漏是否显示
     public  static boolean LENG_RE_IS_SHOW =false;//冷热是否显示
     public static int LENG_RE_COUNT =100;//冷热的期数

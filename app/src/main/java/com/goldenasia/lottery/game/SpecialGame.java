@@ -107,88 +107,77 @@ public class SpecialGame extends Game
     //后二包点 EXBD
     public static void EXBD(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"二星包点"}, 0, 2 * 9);
     }
     
     //后二和值 EXHZ
     public static void EXHZ(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"二星和值"}, 0, 2 * 9);
     }
     
     //前二包点 QEBD
     public static void QEBD(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"二星包点"}, 0, 2 * 9);
     }
     
     //前二和值 QEHZ
     public static void QEHZ(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"二星和值"}, 0, 2 * 9);
     }
     
     //后三包点 SXBD
     public static void SXBD(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"三星包点"}, 0, 3 * 9);
     }
     
     //后三和值 SXHZ
     public static void SXHZ(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"三星和值"}, 0, 3 * 9);
     }
     
     //前三包点 QSBD
     public static void QSBD(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"三星包点"}, 0, 3 * 9);
     }
     
     //前三和值 QSHZ
     public static void QSHZ(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"三星和值"}, 0, 3 * 9);
     }
     
     //中三包点 ZSBD
     public static void ZSBD(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"三星包点"}, 0, 3 * 9);
     }
     
     //中三和值 ZSHZ
     public static void ZSHZ(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"三星和值"}, 0, 3 * 9);
     }
     
     //五星和值 WXHZ
     public static void WXHZ(Game game)
     {
-        ConstantInformation.YI_LOU_IS_SHOW=false;
-        ConstantInformation.LENG_RE_IS_SHOW=false;
+        ConstantInformation.YI_LOU_IS_SUPPORTED=false;
         createPicklayout(game, new String[]{"五星和值"}, 0, 5 * 9);
     }
     
