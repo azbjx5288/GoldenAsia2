@@ -18,6 +18,7 @@ import android.view.View;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.material.Calculation;
 import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.util.DisplayUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class NumberGroupView extends View{
     private int MAX_YILOU =0;///遗漏中最大的数
     private int MAX_LENGRE =0;//冷热中最小的数
     private int MIN_LENGRE =0;//冷热中最大的数
+    private int YILOU_HEIGHT=0;//遗漏冷热数字的高度
 
     public NumberGroupView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -109,7 +111,7 @@ public class NumberGroupView extends View{
             }
 
         });
-
+        YILOU_HEIGHT=DisplayUtil.dip2px(getContext(),30);
     }
 
     /**
@@ -256,8 +258,8 @@ public class NumberGroupView extends View{
     private void calculateClick(int eventX, int eventY) {
         int x, y;
         Rect rect = new Rect();
-        int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?itemSize:0;
-        int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?itemSize:0;
+        int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?YILOU_HEIGHT:0;
+        int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?YILOU_HEIGHT:0;
 
         for (int i = 0, count = maxNumber - minNumber + 1; i < count; i++) {
             x = i % column * (itemSize + horizontalGap);
@@ -301,8 +303,8 @@ public class NumberGroupView extends View{
         int itemCount = maxNumber - minNumber + 1;
         int line = (itemCount) / column + ((itemCount) % column != 0 ? 1 : 0);
 
-        int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?itemSize:0;
-        int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?itemSize:0;
+        int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?YILOU_HEIGHT:0;
+        int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?YILOU_HEIGHT:0;
 
         int specHeight = line * (itemSize+yiLouHeight+lengReHeight) + (line - 1) * verticalGap;
 
@@ -321,7 +323,10 @@ public class NumberGroupView extends View{
         paint.setColor(textColor);
         minPaint.setColor(getResources().getColor(R.color.app_chart_shiball_color));
         maxPaint.setColor(getResources().getColor(R.color.app_main_support));
-        normalPaint.setColor(getResources().getColor(R.color.gray));
+        normalPaint.setColor(getResources().getColor(R.color.app_font_dark_color));
+        minPaint.setTextSize(DisplayUtil.sp2px(getContext(),14));
+        maxPaint.setTextSize(DisplayUtil.sp2px(getContext(),14));
+        normalPaint.setTextSize(DisplayUtil.sp2px(getContext(),14));
 
         checkedDrawable.setBounds(0, 0, itemSize, itemSize);
         uncheckedDrawable.setBounds(0, 0, itemSize, itemSize);
@@ -336,8 +341,8 @@ public class NumberGroupView extends View{
             if(y==0){
                 canvas.translate(x, y);
             }else{
-                int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?itemSize:0;
-                int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?itemSize:0;
+                int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?YILOU_HEIGHT:0;
+                int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?YILOU_HEIGHT:0;
                 canvas.translate(x, y+yiLouHeight+lengReHeight);
             }
 
@@ -363,14 +368,14 @@ public class NumberGroupView extends View{
             canvas.drawText(text, offTextX, offTextY, paint);
 
             /*添加遗漏和冷热具体数据start*/
-            int  yiLouHeight=itemSize;
+            int  yiLouHeight=YILOU_HEIGHT;
             if(ConstantInformation.YI_LOU_IS_SHOW&&mYiLouList.size()>0) {
                 if(mYiLouList.get(i).equals(String.valueOf(MAX_YILOU))){
-                    canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+itemSize, minPaint);
+                    canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+YILOU_HEIGHT, minPaint);
                 }else{
-                    canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+itemSize, normalPaint);
+                    canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+YILOU_HEIGHT, normalPaint);
                 }
-                yiLouHeight+=itemSize;
+                yiLouHeight+=YILOU_HEIGHT; 
             }
 			
             if(ConstantInformation.LENG_RE_IS_SHOW&&mLengReList.size()>0) {
