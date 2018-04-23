@@ -428,9 +428,13 @@ public class SscCommonGame extends Game {
                 ConstantInformation.LENG_RE_IS_SHOW =!ConstantInformation.LENG_RE_IS_SHOW;
                 lengre_tv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
 
+                //选中了冷热的复选框就会弹出冷热期数对话框
+                if(ConstantInformation.LENG_RE_IS_SHOW){
+                    initLengrePopupwindow(views,topLayout.getContext(),lengre_tv,gameMethod);
+                }
+
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
-                    ConstantInformation.LENG_RE_COUNT=100;
                     numberGroupView.refreshViewGroup();
                 }
             }

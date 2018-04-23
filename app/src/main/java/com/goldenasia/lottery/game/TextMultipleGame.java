@@ -356,6 +356,7 @@ public class TextMultipleGame extends Game
                 ConstantInformation.YI_LOU_IS_SHOW =!ConstantInformation.YI_LOU_IS_SHOW;
 
                 yilou_tv.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+                yilou_Checkbox.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
 
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
@@ -392,9 +393,13 @@ public class TextMultipleGame extends Game
                 ConstantInformation.LENG_RE_IS_SHOW =!ConstantInformation.LENG_RE_IS_SHOW;
                 lengre_tv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
 
+                //选中了冷热的复选框就会弹出冷热期数对话框
+                if(ConstantInformation.LENG_RE_IS_SHOW){
+                    initLengrePopupwindow(views,topLayout.getContext(),lengre_tv,gameMethod);
+                }
+
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
-                    ConstantInformation.LENG_RE_COUNT=100;
                     numberGroupView.refreshViewGroup();
                 }
             }
@@ -421,6 +426,18 @@ public class TextMultipleGame extends Game
         RadioButton lengreOne = (RadioButton) rootView.findViewById(R.id.lengre_one);
         RadioButton lengreTwo = (RadioButton) rootView.findViewById(R.id.lengre_two);
         RadioButton lengreThree = (RadioButton) rootView.findViewById(R.id.lengre_three);
+
+        switch ( ConstantInformation.LENG_RE_COUNT){
+            case 20:
+                lengreThree.setChecked(true);
+                break;
+            case 50:
+                lengreTwo.setChecked(true);
+                break;
+            default:
+                lengreOne.setChecked(true);
+                break;
+        }
 
         lengreOne.setOnClickListener(new View.OnClickListener() {
             @Override

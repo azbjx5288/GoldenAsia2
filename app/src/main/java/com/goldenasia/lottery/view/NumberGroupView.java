@@ -111,7 +111,7 @@ public class NumberGroupView extends View{
             }
 
         });
-        YILOU_HEIGHT=DisplayUtil.dip2px(getContext(),30);
+        YILOU_HEIGHT=DisplayUtil.dip2px(getContext(),20);
     }
 
     /**
@@ -324,9 +324,12 @@ public class NumberGroupView extends View{
         minPaint.setColor(getResources().getColor(R.color.app_chart_shiball_color));
         maxPaint.setColor(getResources().getColor(R.color.app_main_support));
         normalPaint.setColor(getResources().getColor(R.color.app_font_dark_color));
-        minPaint.setTextSize(DisplayUtil.sp2px(getContext(),14));
-        maxPaint.setTextSize(DisplayUtil.sp2px(getContext(),14));
-        normalPaint.setTextSize(DisplayUtil.sp2px(getContext(),14));
+        minPaint.setTextSize(DisplayUtil.sp2px(getContext(),13));
+        maxPaint.setTextSize(DisplayUtil.sp2px(getContext(),13));
+        normalPaint.setTextSize(DisplayUtil.sp2px(getContext(),13));
+//        minPaint.setTextAlign(Paint.Align.RIGHT);
+//        maxPaint.setTextAlign(Paint.Align.CENTER);
+//        normalPaint.setTextAlign(Paint.Align.CENTER);
 
         checkedDrawable.setBounds(0, 0, itemSize, itemSize);
         uncheckedDrawable.setBounds(0, 0, itemSize, itemSize);
@@ -370,21 +373,23 @@ public class NumberGroupView extends View{
             /*添加遗漏和冷热具体数据start*/
             int  yiLouHeight=YILOU_HEIGHT;
             if(ConstantInformation.YI_LOU_IS_SHOW&&mYiLouList.size()>0) {
+                float offTextYiLouX = (itemSize - minPaint.measureText(mYiLouList.get(i))) / 2;
                 if(mYiLouList.get(i).equals(String.valueOf(MAX_YILOU))){
-                    canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+YILOU_HEIGHT, minPaint);
+                    canvas.drawText(mYiLouList.get(i), offTextYiLouX,  itemSize+YILOU_HEIGHT, minPaint);
                 }else{
-                    canvas.drawText(mYiLouList.get(i), offTextX,  offTextY+YILOU_HEIGHT, normalPaint);
+                    canvas.drawText(mYiLouList.get(i), offTextYiLouX,  itemSize+YILOU_HEIGHT, normalPaint);
                 }
                 yiLouHeight+=YILOU_HEIGHT; 
             }
 			
             if(ConstantInformation.LENG_RE_IS_SHOW&&mLengReList.size()>0) {
+                float offTextLengReX = (itemSize - minPaint.measureText(mLengReList.get(i))) / 2;
                 if(mLengReList.get(i).equals(String.valueOf(MAX_LENGRE))){
-                    canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, maxPaint);
+                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight, maxPaint);
                 }else if(mLengReList.get(i).equals(String.valueOf(MIN_LENGRE))){
-                    canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, minPaint);
+                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight, minPaint);
                 }else{
-                    canvas.drawText(mLengReList.get(i), offTextX,  offTextY+yiLouHeight, normalPaint);
+                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight, normalPaint);
                 }
             }
             /*添加遗漏和冷热具体数据end*/
