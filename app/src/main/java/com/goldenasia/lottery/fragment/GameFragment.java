@@ -177,7 +177,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
         if (webView != null) {
             return;
         }
-        lotteryChooseBottom.postDelayed(new Runnable() {
+        lotteryChooseBottom.post(new Runnable() {
             @Override
             public void run() {
                 synchronized (getActivity()) {
@@ -194,7 +194,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
                     webView.loadUrl("file:///android_asset/web/game.html");
                 }
             }
-        }, 0);
+        });
     }
 
     @Override
@@ -290,8 +290,10 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
         shoppingCart.setPrizeMode(prizeMode);
         switch (lottery.getLotteryId()) {
             case 15://亚洲妙妙彩
-            case 44://11选5秒秒彩
                 launchFragmentForResult(ShoppingMmcFragment.class, bundle, 1);
+                break;
+            case 44://11选5秒秒彩
+                launchFragmentForResult(Shopping11Select5MmcFragment.class, bundle, 1);
                 break;
             case 45://快三秒秒彩
                 launchFragmentForResult(ShoppingKuaiSanMmcFragment.class, bundle, 1);

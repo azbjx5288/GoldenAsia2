@@ -240,6 +240,8 @@ public class ConstantInformation
         sLotteryLogo.put(44, new int[]{R.drawable.id_lottery_11x5mmc, R.drawable.id_lottery_11x5mmc});
         //快三秒秒彩
         sLotteryLogo.put(45, new int[]{R.drawable.id_lottery_ksmmc, R.drawable.id_lottery_ksmmc});
+        //PK10二分彩
+        sLotteryLogo.put(47, new int[]{R.drawable.id_lottery_pk10efc, R.drawable.id_lottery_pk10efc});
 
         //百家乐
         sLotteryLogo.put(101, new int[]{R.drawable.id_lottery_mybjl, R.drawable.id_lottery_mybjl_rest});

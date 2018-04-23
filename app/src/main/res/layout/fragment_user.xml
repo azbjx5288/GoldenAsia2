@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#DFDFDF"
-    android:fitsSystemWindows="true">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#DFDFDF"
+            android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,12 +40,12 @@
                     android:src="@drawable/ic_tap_customer_service"/>
 
                 <TextView
-                    android:layout_marginTop="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="客服"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -61,30 +61,30 @@
                     android:layout_height="70dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_launcher"
-                    app:border_width="1dp"
-                    app:border_color="@color/app_main"/>
+                    app:border_color="@color/app_main"
+                    app:border_width="1dp"/>
 
                 <TextView
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="UserName223"
-                    android:textColor="@color/white"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
-                    android:textSize="18sp" />
+                    android:text="UserName223"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/user_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
                     android:drawableLeft="@drawable/ic_tap_balance"
                     android:drawablePadding="3dp"
                     android:text=" 账号余额：8000.00"
-                    android:layout_gravity="center_horizontal"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -106,18 +106,18 @@
                     android:src="@drawable/ic_tap_setting"/>
 
                 <TextView
-                    android:layout_marginTop="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="设置"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
         </RelativeLayout>
 
-        <View style="@style/horizontal_divide_line" />
+        <View style="@style/horizontal_divide_line"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,21 +129,21 @@
                 style="@style/horizontal_item"
                 android:drawableTop="@drawable/ic_deposit"
                 android:paddingTop="@dimen/pad_ud"
-                android:text="充值" />
+                android:text="充值"/>
 
             <TextView
                 android:id="@+id/withdraw_deposit"
                 style="@style/horizontal_item"
                 android:drawableTop="@drawable/ic_withdraw"
                 android:paddingTop="@dimen/pad_ud"
-                android:text="提现" />
+                android:text="提现"/>
 
             <TextView
                 android:id="@+id/transfer"
                 style="@style/horizontal_item"
                 android:drawableTop="@drawable/ic_transfer"
                 android:paddingTop="@dimen/pad_ud"
-                android:text="转帐" />
+                android:text="转帐"/>
         </LinearLayout>
 
         <!-- 下级管理 立即开户 会员报表 ，代理账号独有-->
@@ -152,8 +152,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            >
-            <View style="@style/big_divideLine" />
+        >
+            <View style="@style/big_divideLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -167,25 +167,25 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:paddingLeft="22dp"
                     android:descendantFocusability="blocksDescendants"
-                    >
+                    android:paddingLeft="22dp"
+                >
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45.5dp"
-                        android:minWidth="45.5dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_subordinate_management"
                         android:clickable="false"
                         android:focusable="false"
-                        android:background="@drawable/ic_subordinate_management"/>
+                        android:minHeight="45.5dp"
+                        android:minWidth="45.5dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
-                        android:paddingTop="17dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="17dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -206,7 +206,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <View style="@style/vertical_divide_line" />
+                <View style="@style/vertical_divide_line"/>
 
                 <!--立即开户-->
                 <LinearLayout
@@ -215,28 +215,28 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:paddingLeft="22dp"
-                    android:onClick="fff"
                     android:descendantFocusability="blocksDescendants"
-                    >
+                    android:focusable="true"
+                    android:onClick="fff"
+                    android:paddingLeft="22dp"
+                >
                     <ImageView
                         android:id="@+id/icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45.5dp"
-                        android:minWidth="45.5dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_open_account"
                         android:clickable="false"
                         android:focusable="false"
-                        android:background="@drawable/ic_open_account"/>
+                        android:minHeight="45.5dp"
+                        android:minWidth="45.5dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
-                        android:paddingTop="17dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="17dp">
 
                         <TextView
                             android:id="@+id/name"
@@ -258,7 +258,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            <View style="@style/horizontal_divide_line" />
+            <View style="@style/horizontal_divide_line"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -271,8 +271,8 @@
                     android:clickable="true"
                     android:descendantFocusability="blocksDescendants"
                     android:gravity="center_vertical"
-                    android:paddingLeft="22dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -326,19 +326,19 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:clickable="true"
+                    android:descendantFocusability="blocksDescendants"
                     android:gravity="center_vertical"
                     android:paddingLeft="22dp"
-                    android:descendantFocusability="blocksDescendants"
-                    >
+                >
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="45.5dp"
-                        android:minWidth="45.5dp"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/ico_report"
                         android:clickable="false"
                         android:focusable="false"
-                        android:background="@drawable/ico_report"/>
+                        android:minHeight="45.5dp"
+                        android:minWidth="45.5dp"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -347,13 +347,55 @@
                         android:maxLines="1"
                         android:text="会员报表"
                         android:textColor="@color/text_dark"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"/>
 
                 </LinearLayout>
             </LinearLayout>
+            <View style="@style/horizontal_divide_line"/>
+            <LinearLayout
+                android:id="@+id/order_layout"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/member_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:descendantFocusability="blocksDescendants"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="22dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_open_account"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:minHeight="45.5dp"
+                        android:minWidth="45.5dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:maxLines="1"
+                        android:text="下级订单"
+                        android:textColor="@color/text_dark"
+                        android:textSize="14sp"/>
+
+                </LinearLayout>
+
+                <View style="@style/vertical_divide_line"/>
+                <!--会员报表-->
+                <Space android:layout_width="match_parent" android:layout_height="match_parent"
+                       android:layout_weight="1"/>
+            </LinearLayout>
         </LinearLayout>
 
-        <View style="@style/big_divideLine" />
+        <View style="@style/big_divideLine"/>
 
         <RelativeLayout
             android:id="@+id/notice"
@@ -362,11 +404,11 @@
                 style="@style/tabMyUserItemText"
                 android:drawableLeft="@drawable/notice_icon"
                 android:text="平台公告"
-                />
-            <ImageView style="@style/tabUserItemImgArrow" />
+            />
+            <ImageView style="@style/tabUserItemImgArrow"/>
         </RelativeLayout>
 
-        <View style="@style/horizontal_divide_line" />
+        <View style="@style/horizontal_divide_line"/>
 
 
         <RelativeLayout
@@ -379,45 +421,45 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="32dp"
-                android:src="@drawable/stationemail_icon" />
+                android:src="@drawable/stationemail_icon"/>
 
             <TextView
                 android:id="@+id/station_letter_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/station_letter_icon"
                 android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/station_letter_icon"
                 android:text="站内信"
-                />
+            />
             <TextView
                 android:id="@+id/station_letter_badge"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="-5dp"
                 android:layout_marginTop="5dp"
-                android:layout_width="50dp"
-                android:layout_toRightOf="@+id/station_letter_icon"
-                android:layout_height="match_parent"/>
+                android:layout_toRightOf="@+id/station_letter_icon"/>
             <ImageView
                 android:id="@+id/station_letter_image"
-                style="@style/tabUserItemImgArrow" />
+                style="@style/tabUserItemImgArrow"/>
         </RelativeLayout>
 
-        <View style="@style/horizontal_divide_line" />
+        <View style="@style/horizontal_divide_line"/>
 
         <!--<TextView-->
-            <!--android:id="@+id/rebates_setting"-->
-            <!--style="@style/tabUserItemText"-->
-            <!--android:drawableLeft="@drawable/bonus_setting_icon"-->
-            <!--android:visibility="gone"-->
-            <!--android:text="奖金设置" />-->
+        <!--android:id="@+id/rebates_setting"-->
+        <!--style="@style/tabUserItemText"-->
+        <!--android:drawableLeft="@drawable/bonus_setting_icon"-->
+        <!--android:visibility="gone"-->
+        <!--android:text="奖金设置" />-->
 
         <!--<View style="@style/horizontal_divide_line" />-->
 
         <!--<TextView-->
-            <!--android:id="@+id/notice"-->
-            <!--style="@style/tabUserItemText"-->
-            <!--android:drawableLeft="@drawable/notice_icon"-->
-            <!--android:text="历史公告" />-->
+        <!--android:id="@+id/notice"-->
+        <!--style="@style/tabUserItemText"-->
+        <!--android:drawableLeft="@drawable/notice_icon"-->
+        <!--android:text="历史公告" />-->
 
         <!--<View style="@style/horizontal_divide_line" />-->
 
@@ -429,24 +471,24 @@
                 style="@style/tabMyUserItemText"
                 android:drawableLeft="@drawable/feedback_icon"
                 android:text="意见反馈"/>
-            <ImageView style="@style/tabUserItemImgArrow" />
+            <ImageView style="@style/tabUserItemImgArrow"/>
         </RelativeLayout>
 
-        <View  style="@style/horizontal_divide_line" />
+        <View style="@style/horizontal_divide_line"/>
 
         <RelativeLayout
             android:id="@+id/version"
-            android:layout_below="@+id/card_setting_line"
-            style="@style/tabUserItemLinearLayout">
+            style="@style/tabUserItemLinearLayout"
+            android:layout_below="@+id/card_setting_line">
             <TextView
                 style="@style/tabMyUserItemText"
                 android:drawableLeft="@drawable/check_update_icon"
                 android:text="检查更新"/>
-            <ImageView style="@style/tabUserItemImgArrow" />
+            <ImageView style="@style/tabUserItemImgArrow"/>
         </RelativeLayout>
 
         <View
-            style="@style/horizontal_divide_line" />
+            style="@style/horizontal_divide_line"/>
 
         <RelativeLayout
             android:id="@+id/logout"
@@ -455,10 +497,10 @@
                 style="@style/tabMyUserItemText"
                 android:drawableLeft="@drawable/logout_icon"
                 android:text="退出登录"/>
-            <ImageView style="@style/tabUserItemImgArrow" />
+            <ImageView style="@style/tabUserItemImgArrow"/>
         </RelativeLayout>
 
-        <View android:visibility="gone" style="@style/horizontal_divide_line" />
+        <View style="@style/horizontal_divide_line" android:visibility="gone"/>
 
     </LinearLayout>
 

@@ -134,12 +134,35 @@ public class TimeUtils {
         return time_string;
     }
 
-
     //获取当前时间的前7天的日期
     public static Date getLatelyDateOfSeven() {
         Calendar cal = new GregorianCalendar();
         cal.setTime(getBeginDateOfToday());
         cal.add(Calendar.DAY_OF_MONTH, -6);
+        return cal.getTime();
+    }
+    
+    //获取当前时间的前3天的日期
+    public static Date getLatelyDateOfThree() {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DAY_OF_MONTH, -2);
+        return cal.getTime();
+    }
+    
+    //获取当前时间的前15天的日期
+    public static Date getLatelyDateOf15() {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DAY_OF_MONTH, -14);
+        return cal.getTime();
+    }
+    
+    //获取当前时间的前30天的日期
+    public static Date getLatelyDateOf30() {
+        Calendar cal = new GregorianCalendar();
+        cal.setTime(getBeginDateOfToday());
+        cal.add(Calendar.DAY_OF_MONTH, -29);
         return cal.getTime();
     }
 }

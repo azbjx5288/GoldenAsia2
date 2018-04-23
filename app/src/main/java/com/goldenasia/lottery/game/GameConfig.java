@@ -98,11 +98,10 @@ public class GameConfig
             case 8://天津时时彩
             case 11://亚洲分分彩
             case 19://亚洲5分彩
-            case 24://超快3D
             case 35://台湾五分彩
             case 37://亚洲2分彩
                 return new SscCommonGame(method);
-            case 12:
+            case 12://江苏快三
             case 13:
             case 22:
             case 23:
@@ -112,6 +111,7 @@ public class GameConfig
             case 45://快三秒秒彩
                 return new KsCommonGame(method);
             case 9://福彩3D
+            case 24://超快3D
                 return new Fc3dCommonGame(method);
             case 10://P3p5
                 return new P3p5CommonGame(method);
@@ -119,7 +119,10 @@ public class GameConfig
                 return new MmcCommonGame(method);
             case 27://北京赛车PK10
             case 38://PK10分分彩
+            case 47://PK10二分彩
                 return new Pk10CommonGame(method);
+            case 14://山东快乐扑克
+                return new ShanDongKuaiLePuKeGame(method);
             default:
                 break;
         }
