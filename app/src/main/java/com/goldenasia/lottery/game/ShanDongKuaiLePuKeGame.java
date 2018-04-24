@@ -97,7 +97,6 @@ public class ShanDongKuaiLePuKeGame extends Game {
             case "PKRX6"://任选六 PKRX6
                 return getWebViewCodeRenXuan();
             default:
-
                 StringBuilder stringBuilder = new StringBuilder();
 
                 String[] methodStringArray = getGameMethodStringArray();
@@ -126,7 +125,7 @@ public class ShanDongKuaiLePuKeGame extends Game {
                 stringBuilder.append("_");
             }
         }
-        if(stringBuilder.length()>2) {
+        if(stringBuilder.length()>=2) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
         JsonArray jsonArray = new JsonArray();
@@ -149,7 +148,7 @@ public class ShanDongKuaiLePuKeGame extends Game {
                 stringBuilder.append("_");
             }
         }
-        if(stringBuilder.length()>2) {
+        if(stringBuilder.length()>=2) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
         return stringBuilder.toString();

@@ -67,7 +67,7 @@
             android:background="@drawable/sdklpk_rxy_selector"
             android:clickable="true"
             android:padding="2dp"
-            android:src="@drawable/htsz"
+            android:src="@drawable/ht"
             android:tag="黑桃" />
 
         <ImageView
@@ -79,7 +79,7 @@
             android:background="@drawable/sdklpk_rxy_selector"
             android:clickable="true"
             android:padding="2dp"
-            android:src="@drawable/hongtsz"
+            android:src="@drawable/hongt"
             android:tag="红桃" />
 
     </LinearLayout>
@@ -101,7 +101,7 @@
             android:background="@drawable/sdklpk_rxy_selector"
             android:clickable="true"
             android:padding="2dp"
-            android:src="@drawable/mhsz"
+            android:src="@drawable/mh"
             android:tag="梅花" />
 
         <ImageView
@@ -113,7 +113,7 @@
             android:background="@drawable/sdklpk_rxy_selector"
             android:clickable="true"
             android:padding="2dp"
-            android:src="@drawable/fksz"
+            android:src="@drawable/fk"
             android:tag="方块" />
 
 
