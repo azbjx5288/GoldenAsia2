@@ -336,13 +336,19 @@ public class SscCommonGameUtils {
         int  count=0;
         int minNumber= ConstantInformation.LENG_RE_COUNT >ConstantInformation.HISTORY_CODE_LIST.size()?ConstantInformation.HISTORY_CODE_LIST.size(): ConstantInformation.LENG_RE_COUNT;
         for (int j = 0;j < minNumber; j++) {
-            for(int z=0;z<digits.length;z++){
-                if (number.equals(ConstantInformation.HISTORY_CODE_LIST.get(j).substring(digits[z],digits[z]+1))) {//55209
-                    count++;
-                }
-            }
+            count = getSingleEXZUXCount(number, count, j, digits);
         }
         return String.valueOf(count);
+    }
+
+    private int getSingleEXZUXCount(String number, int count, int j, int[] digits) {
+        for(int z=0;z<digits.length;z++){
+            if (number.equals(ConstantInformation.HISTORY_CODE_LIST.get(j).substring(digits[z],digits[z]+1))) {//55209
+                count++;
+                return count;
+            }
+        }
+        return count;
     }
 
     //============================冷热end============================================================
