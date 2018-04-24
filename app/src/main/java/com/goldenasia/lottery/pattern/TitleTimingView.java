@@ -283,6 +283,8 @@ public class TitleTimingView
             mLlAwardSdlklpu.setVisibility(View.VISIBLE);
             showSsklpuAwardCode(codeOpen);
         }else{
+            openCodeTextView.setVisibility(View.VISIBLE);
+            mLlAwardSdlklpu.setVisibility(View.GONE);
             openCodeTextView.setText(codeOpen != null && codeOpen.length() > 0 ? codeOpen : "-\t-\t-\t-\t-");
         }
         getIntervalTimer(getInterval());
