@@ -85,6 +85,7 @@ public class GameMethodInfoFragment extends BaseFragment {
                 break;
             case 27://北京PK10
             case 38://PK10分分彩
+            case 47://PK10二分彩
                 view=inflater.inflate(R.layout.fragment_game_method_info_pk10, container, false);//北京PK10 玩法说明
                 break;
             case 14://山东快乐扑克

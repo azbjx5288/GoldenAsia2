@@ -110,7 +110,8 @@ public class MemberOrderFragment extends BaseFragment implements RadioGroup.OnCh
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_member_order, container, false);
+        //View view = inflater.inflate(R.layout.fragment_member_order, container, false);
+        View view =inflateView(inflater, container, false, "下级订单", R.layout.fragment_member_order);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
