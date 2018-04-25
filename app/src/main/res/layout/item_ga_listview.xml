@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/app_main_background"
@@ -50,15 +51,16 @@
         android:textSize="@dimen/text_size_tiny"/>
     <TextView
         android:id="@+id/play"
-        android:layout_width="50dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:background="@color/app_main"
-        android:text="进入"
         android:gravity="center"
+        android:text="开始游戏"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_small"
-        android:layout_alignParentTop="true" android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
-        android:layout_marginTop="9dp"/>
+        android:textSize="@dimen/text_size_small"/>
     <TextView
         android:id="@+id/player_num"
         android:layout_width="wrap_content"
@@ -70,5 +72,15 @@
         android:visibility="gone"
         android:textColor="@color/app_main_support"
         android:textSize="@dimen/text_size_tiny"/>
+    <TextView
+        android:id="@+id/trial"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content" android:layout_alignLeft="@+id/play" android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" android:layout_alignStart="@+id/play" android:layout_alignTop="@+id/desc"
+        android:text="免费试玩"
+        android:background="@color/app_main_rim"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/text_size_small"/>
 </RelativeLayout>
 

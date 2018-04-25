@@ -300,6 +300,7 @@ public class ConstantInformation
         rechargeLogo.put(7, new int[]{1, 100, R.drawable.pay_wyzz_icon});//网银转账
         rechargeLogo.put(8, new int[]{5, 0, R.drawable.jd_icon});//京东支付 id=5 tradeType=5,
         rechargeLogo.put(9, new int[]{10, 120, R.drawable.unionpay});//银联扫码
+        rechargeLogo.put(10, new int[]{1, 102, R.drawable.pay_weixin_icon});
 
         transferList.add(new Platform(0, "主钱包", "JYZ"));
         /*transferArray.put(1, new String[]{"pt", "PT游戏"});
@@ -374,6 +375,9 @@ public class ConstantInformation
     {
         if(tradeType== 1 && bankID == 225){//网银转账
             return R.drawable.pay_wyzz_icon;
+        }
+        if(tradeType== 1 && bankID == 102){//微信转账
+            return R.drawable.pay_weixin_icon;
         }
 
         int logo = 0;

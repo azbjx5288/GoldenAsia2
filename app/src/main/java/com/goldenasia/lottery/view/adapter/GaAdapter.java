@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.goldenasia.lottery.R;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 public class GaAdapter extends BaseAdapter
 {
+    private OnPlayListner onPlayListner;
     private ArrayList<GaBean> data;
     
     public void setData(ArrayList<GaBean> data)
@@ -27,12 +29,27 @@ public class GaAdapter extends BaseAdapter
         notifyDataSetChanged();
     }
     
+    public interface OnPlayListner
+    {
+        void onPlay(int position);
+        
+        void onTrial(int position);
+    }
+    
+    public void setOnPlayListner(OnPlayListner onPlayListner)
+    {
+        this.onPlayListner = onPlayListner;
+    }
+    
     private class ViewHolder
     {
+        RelativeLayout layout;
         ImageView icon;
         TextView name;
         TextView desc;
         TextView playerNum;
+        TextView play;
+        TextView trial;
     }
     
     public int getCount()
@@ -58,10 +75,37 @@ public class GaAdapter extends BaseAdapter
         {
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ga_listview, parent, false);
             holder = new ViewHolder();
-            holder.icon = (ImageView) convertView.findViewById(R.id.icon);
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.desc = (TextView) convertView.findViewById(R.id.desc);
-            holder.playerNum = (TextView) convertView.findViewById(R.id.player_num);
+            holder.layout = convertView.findViewById(R.id.layout);
+            holder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    if(onPlayListner!=null)
+                        onPlayListner.onPlay(position);
+                }
+            });
+            holder.icon = convertView.findViewById(R.id.icon);
+            holder.name = convertView.findViewById(R.id.name);
+            holder.desc = convertView.findViewById(R.id.desc);
+            holder.playerNum = convertView.findViewById(R.id.player_num);
+            holder.play = convertView.findViewById(R.id.play);
+            holder.play.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    if(onPlayListner!=null)
+                        onPlayListner.onPlay(position);
+                }
+            });
+            holder.trial = convertView.findViewById(R.id.trial);
+            holder.trial.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    if(onPlayListner!=null)
+                        onPlayListner.onTrial(position);
+                }
+            });
             convertView.setTag(holder);
         } else
         {

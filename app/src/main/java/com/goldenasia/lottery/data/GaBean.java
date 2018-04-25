@@ -23,6 +23,7 @@ public class GaBean implements Serializable
     private int lotteryId;
     private String cname;
     private String url;
+    private String url_try;
     private String desc;
     @SerializedName("player_num")
     private String playerNum;
@@ -38,6 +39,16 @@ public class GaBean implements Serializable
     public String getUrl() { return url;}
     
     public void setUrl(String url) { this.url = url;}
+    
+    public String getUrl_try()
+    {
+        return url_try;
+    }
+    
+    public void setUrl_try(String url_try)
+    {
+        this.url_try = url_try;
+    }
     
     public String getDesc() { return desc;}
     

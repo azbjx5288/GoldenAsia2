@@ -43,7 +43,8 @@ import butterknife.OnItemClick;
  * Created by Sakura on 2017/3/14.
  */
 
-public class GaFragment extends BaseFragment {
+public class GaFragment extends BaseFragment implements GaAdapter.OnPlayListner
+{
     private static final String TAG = GaFragment.class.getSimpleName();
 
     private static final int GA_TRACE_ID = 1;
@@ -123,11 +124,25 @@ public class GaFragment extends BaseFragment {
      */
     private void initListView() {
         gaAdapter = new GaAdapter();
+        gaAdapter.setOnPlayListner(this);
         gaListLoad();
     }
 
     @OnItemClick(R.id.ga_listview)
     public void onItemClick(int position) {
+        /*GaBean gaBean = gaList.get(position);
+        Log.i(TAG,"onItemClick gaBean.getLotteryId()="+"lotteryid_"+gaBean.getLotteryId());
+        //友盟数据埋点start
+        HashMap<String,String> m =new HashMap<String,String>();
+        m.put("__ct__", String.valueOf("1"));
+        MobclickAgent.onEventValue(getActivity(), "lotteryid_"+gaBean.getLotteryId(), null,  +1);
+        //友盟数据埋点end
+        GAGameFragment.launch(GaFragment.this, gaBean);*/
+    }
+    
+    @Override
+    public void onPlay(int position)
+    {
         GaBean gaBean = gaList.get(position);
         Log.i(TAG,"onItemClick gaBean.getLotteryId()="+"lotteryid_"+gaBean.getLotteryId());
         //友盟数据埋点start
@@ -135,7 +150,14 @@ public class GaFragment extends BaseFragment {
         m.put("__ct__", String.valueOf("1"));
         MobclickAgent.onEventValue(getActivity(), "lotteryid_"+gaBean.getLotteryId(), null,  +1);
         //友盟数据埋点end
-        GAGameFragment.launch(GaFragment.this, gaBean);
+        GAGameFragment.launch(GaFragment.this, gaBean.getUrl());
+    }
+    
+    @Override
+    public void onTrial(int position)
+    {
+        GaBean gaBean = gaList.get(position);
+        GAGameFragment.launch(GaFragment.this, gaBean.getUrl_try());
     }
 
     @Override
