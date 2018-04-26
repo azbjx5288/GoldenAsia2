@@ -69,16 +69,26 @@
 
              document.getElementById('opencode01').style.display="none";
              document.getElementById('opencode02').style.display="";
-             document.getElementById('span01').innerHTML=openCode.charAt(0);
-             document.getElementById('span02').innerHTML=openCode.charAt(3);
+             var tempChar01=openCode.charAt(0);
+             if(tempChar01=="T"){
+                document.getElementById('span01').innerHTML="10";
+             }else{
+                document.getElementById('span01').innerHTML=openCode.charAt(0);
+             }
 
-            var  tempChar=openCode.charAt(6);
-            if(tempChar=="T"){
-                document.getElementById('span03').innerHTML="10";
-            }else{
-                document.getElementById('span03').innerHTML=openCode.charAt(6);
-            }
+             var tempChar02=openCode.charAt(3);
+             if(tempChar01=="T"){
+                 document.getElementById('span02').innerHTML="10";
+             }else{
+                 document.getElementById('span02').innerHTML=openCode.charAt(3);
+             }
 
+             var  tempChar=openCode.charAt(6);
+             if(tempChar=="T"){
+                 document.getElementById('span03').innerHTML="10";
+             }else{
+                 document.getElementById('span03').innerHTML=openCode.charAt(6);
+             }
 
              var img01 = document.getElementById('img01');
              if(openCode.charAt(1)=="s"){

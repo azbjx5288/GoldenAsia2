@@ -76,8 +76,8 @@ public class HistoryCodeAdapter extends BaseAdapter {
 
             //开奖号码
             String codeOpen=historyCode.getCode();
-            holder.textSdlklpu01.setText(codeOpen.charAt(0)+"");
-            holder.textSdlklpu02.setText(codeOpen.charAt(3)+"");
+            holder.textSdlklpu01.setText((codeOpen.charAt(0)+"").replace("T", "10"));
+            holder.textSdlklpu02.setText((codeOpen.charAt(3)+"").replace("T", "10"));
             holder.textSdlklpu03.setText((codeOpen.charAt(6)+"").replace("T", "10"));
 
             //图片
