@@ -297,7 +297,7 @@ public class TitleTimingView
            char c= sb1.charAt(1);*/
             mTextSdlklpu01.setText(codeOpen.charAt(0)+"");
             mTextSdlklpu02.setText(codeOpen.charAt(3)+"");
-            mTextSdlklpu03.setText(codeOpen.charAt(6)+"");
+            mTextSdlklpu03.setText((codeOpen.charAt(6)+"").replace("T", "10"));
 
             //图片
             mImageSdlklpu01.setImageDrawable(letterToDrawable(codeOpen.charAt(1)+""));

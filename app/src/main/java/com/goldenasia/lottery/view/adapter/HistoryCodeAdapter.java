@@ -78,7 +78,7 @@ public class HistoryCodeAdapter extends BaseAdapter {
             String codeOpen=historyCode.getCode();
             holder.textSdlklpu01.setText(codeOpen.charAt(0)+"");
             holder.textSdlklpu02.setText(codeOpen.charAt(3)+"");
-            holder.textSdlklpu03.setText(codeOpen.charAt(6)+"");
+            holder.textSdlklpu03.setText((codeOpen.charAt(6)+"").replace("T", "10"));
 
             //图片
             holder.imageSdlklpu01.setImageDrawable(letterToDrawable(codeOpen.charAt(1)+""));

@@ -395,7 +395,11 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
 //        command.setPrizeMode(!(userCentre.getBonusMode(lottery.getLotteryId()) == 0));
         command.setPrizeMode(cart.getPrizeMode() > 0 ? 1 : 0);
         command.setModes(cart.getLucreMode().getModes());
-        command.setCodes(cart.getCodeStr());
+        if(lottery.getLotteryId()==14){//山东快乐扑克
+            command.setCodes(cart.getCodeStr().replace("10", "T"));
+        }else{
+            command.setCodes(cart.getCodeStr());
+        }
         command.setMultiple(cart.getMultiple());
         command.setTraceNum(chaseRowLV.size());
         command.setTraceData(traceDatas);

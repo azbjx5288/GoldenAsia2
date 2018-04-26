@@ -265,8 +265,8 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
             Bet bet = (Bet) adapter.getItem(position);
             int lotteryId = bet.getLotteryId();
             switch (lotteryId) {
-                /*case 14://山东快乐扑克
-                    BetOrTraceDetailSdklpkFragment.launch(this, (Bet) adapter.getItem(position));
+                /*case 15:
+                    BetOrTraceDetailMmcFragment.launch(this, (Bet) adapter.getItem(position));
                     break;*/
                 case 17:
                 case 16:
@@ -501,6 +501,8 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
                      ArrayList<Lottery> ksLotteryList = new ArrayList<>();
                      ArrayList<Lottery> lowLotteryList = new ArrayList<>();
                      ArrayList<Lottery> othersLotteryList = new ArrayList<>();
+                     ArrayList<Lottery> qwList = new ArrayList<>();
+                     ArrayList<Lottery> pk10List = new ArrayList<>();
 
                     Lottery  headLottery=new Lottery();
                     headLottery.setLotteryId(-1);
@@ -517,11 +519,17 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
                         lowLotteryList = lotteryMenu.getLow();
                     if (lotteryMenu.getOthers() != null)
                         othersLotteryList = lotteryMenu.getOthers();
+                    if (lotteryMenu.getQw() != null)
+                        qwList = lotteryMenu.getQw();
+                    if (lotteryMenu.getPk10() != null)
+                        pk10List = lotteryMenu.getPk10();
                     lotteryList.addAll(sscLotteryList);
                     lotteryList.addAll(syxwLotteryList);
                     lotteryList.addAll(ksLotteryList);
                     lotteryList.addAll(lowLotteryList);
                     lotteryList.addAll(othersLotteryList);
+                    lotteryList.addAll(qwList);
+                    lotteryList.addAll(pk10List);
 
                     mTransferAdapter.setData(lotteryList, mSelectLotteryPosition);
 

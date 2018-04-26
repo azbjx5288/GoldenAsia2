@@ -71,7 +71,14 @@
              document.getElementById('opencode02').style.display="";
              document.getElementById('span01').innerHTML=openCode.charAt(0);
              document.getElementById('span02').innerHTML=openCode.charAt(3);
-             document.getElementById('span03').innerHTML=openCode.charAt(6);
+
+            var  tempChar=openCode.charAt(6);
+            if(tempChar=="T"){
+                document.getElementById('span03').innerHTML="10";
+            }else{
+                document.getElementById('span03').innerHTML=openCode.charAt(6);
+            }
+
 
              var img01 = document.getElementById('img01');
              if(openCode.charAt(1)=="s"){
