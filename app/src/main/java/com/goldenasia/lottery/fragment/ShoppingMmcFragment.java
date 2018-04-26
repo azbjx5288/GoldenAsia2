@@ -225,6 +225,7 @@ public class ShoppingMmcFragment extends BaseFragment
     @Override
     public void onDestroyView()
     {
+        cart.init(lottery);
         super.onDestroyView();
         if (rollHandler != null)
         {
@@ -574,7 +575,8 @@ public class ShoppingMmcFragment extends BaseFragment
     
     private void reset()
     {
-        initInfo();
+        setTitle(lottery.getCname());
+        executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
         chaseMmcButton.setEnabled(true);
         shoppingBuyButton.setEnabled(true);
         enableHomeButton(true);
