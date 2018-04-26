@@ -265,8 +265,8 @@ public class FragmentHistoryBetOrTrace extends BaseFragment implements RadioGrou
             Bet bet = (Bet) adapter.getItem(position);
             int lotteryId = bet.getLotteryId();
             switch (lotteryId) {
-                /*case 15:
-                    BetOrTraceDetailMmcFragment.launch(this, (Bet) adapter.getItem(position));
+                /*case 14://山东快乐扑克
+                    BetOrTraceDetailSdklpkFragment.launch(this, (Bet) adapter.getItem(position));
                     break;*/
                 case 17:
                 case 16:
