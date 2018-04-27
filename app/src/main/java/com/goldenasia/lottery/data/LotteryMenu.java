@@ -16,6 +16,7 @@ public class LotteryMenu
     private ArrayList<Lottery> ks;
     private ArrayList<Lottery> low;
     private ArrayList<Lottery> qw;
+    private ArrayList<Lottery> pk10;
     private ArrayList<Lottery> others;
     
     public ArrayList<Lottery> getSsc()
@@ -66,6 +67,16 @@ public class LotteryMenu
     public void setQw(ArrayList<Lottery> qw)
     {
         this.qw = qw;
+    }
+    
+    public ArrayList<Lottery> getPk10()
+    {
+        return pk10;
+    }
+    
+    public void setPk10(ArrayList<Lottery> pk10)
+    {
+        this.pk10 = pk10;
     }
     
     public ArrayList<Lottery> getOthers()

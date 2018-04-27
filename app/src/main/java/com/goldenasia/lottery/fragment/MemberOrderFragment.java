@@ -26,6 +26,7 @@ import com.goldenasia.lottery.base.net.RestRequest;
 import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.data.Bet;
 import com.goldenasia.lottery.data.BetListResponse;
 import com.goldenasia.lottery.data.Lottery;
 import com.goldenasia.lottery.data.LotteryMenu;
@@ -45,6 +46,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import butterknife.Unbinder;
 
 /**
@@ -85,7 +87,7 @@ public class MemberOrderFragment extends BaseFragment implements RadioGroup.OnCh
     private int mCurrentLotterySelectId = -1;//选择彩种ID
     private Date mCurrentTimeSelectStart;//起始时间
     private Date mCurrentTimeSelectEnd;//结束时间
-    private int mCurrentMemberSelect = -1;//状态
+    private int mCurrentMemberSelect = 0;//状态
     
     private RadioButton mCheckedView;
     
@@ -111,7 +113,7 @@ public class MemberOrderFragment extends BaseFragment implements RadioGroup.OnCh
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         //View view = inflater.inflate(R.layout.fragment_member_order, container, false);
-        View view =inflateView(inflater, container, false, "下级订单", R.layout.fragment_member_order);
+        View view =inflateView(inflater, container, true, "下级订单", R.layout.fragment_member_order);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -283,10 +285,6 @@ public class MemberOrderFragment extends BaseFragment implements RadioGroup.OnCh
     {
         switch (position)
         {
-            case 0://"今天"
-                mCurrentTimeSelectStart = TimeUtils.getBeginDateOfToday();
-                mCurrentTimeSelectEnd = TimeUtils.getEndDateOfToday();
-                break;
             case 1://"昨天"
                 mCurrentTimeSelectStart = TimeUtils.getBeginDateOfYesterday();
                 mCurrentTimeSelectEnd = TimeUtils.getEndDateOfYesterday();
@@ -307,7 +305,11 @@ public class MemberOrderFragment extends BaseFragment implements RadioGroup.OnCh
                 mCurrentTimeSelectStart = TimeUtils.getLatelyDateOf30();
                 mCurrentTimeSelectEnd = TimeUtils.getEndDateOfToday();
                 break;
+            case 0://"今天"
             default:
+                mCurrentTimeSelectStart = TimeUtils.getBeginDateOfToday();
+                mCurrentTimeSelectEnd = TimeUtils.getEndDateOfToday();
+                break;
         }
     }
     
@@ -370,6 +372,25 @@ public class MemberOrderFragment extends BaseFragment implements RadioGroup.OnCh
                 
                 popupAdapter.setData(lotteryList, mSelectTimePosition);
                 adapterPopupWindow.showArrowTo(mCheckedView, BubbleStyle.ArrowDirection.Up);
+                break;
+        }
+    }
+    
+    @OnItemClick(R.id.list_view)
+    public void onItemClick(int position)
+    {
+        Bet bet = (Bet) gameHistoryAdapter.getItem(position);
+        int lotteryId = bet.getLotteryId();
+        switch (lotteryId) {
+                /*case 15:
+                    BetOrTraceDetailMmcFragment.launch(this, (Bet) adapter.getItem(position));
+                    break;*/
+            case 17:
+            case 16:
+                BetOrTraceDetailLhcFragment.launch(this, (Bet) gameHistoryAdapter.getItem(position));
+                break;
+            default:
+                BetOrTraceDetailFragment.launch(this, (Bet) gameHistoryAdapter.getItem(position));
                 break;
         }
     }

@@ -14,7 +14,6 @@ import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.data.Bet;
 import com.goldenasia.lottery.data.Lottery;
-import com.goldenasia.lottery.data.PackageBean;
 import com.goldenasia.lottery.data.Trace;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.user.UserCentre;
@@ -104,14 +103,14 @@ public class GameHistoryAdapter extends BaseAdapter
         if (data instanceof Bet)
         {
             setBetData(viewHolder, (Bet) data);
-        } else if (data instanceof Trace)
+        } else //if (data instanceof Trace)
         {
             viewHolder.prize.setVisibility(View.GONE);
             setTraceData(viewHolder, (Trace) data);
-        } else
+        } /*else
         {
             setPackageData((viewHolder), (PackageBean) data);
-        }
+        }*/
         return convertView;
     }
     
@@ -191,7 +190,7 @@ public class GameHistoryAdapter extends BaseAdapter
         }
     }
     
-    private void setPackageData(ViewHolder viewHolder, PackageBean packageBean)
+    /*private void setPackageData(ViewHolder viewHolder, PackageBean packageBean)
     {
         viewHolder.icon.setImageResource(ConstantInformation.getLotteryLogo(Integer.parseInt(packageBean
                 .getLottery_id()), true));
@@ -227,7 +226,7 @@ public class GameHistoryAdapter extends BaseAdapter
                 viewHolder.state.setText("未中奖");
                 break;
         }
-    }
+    }*/
     
     static class ViewHolder
     {

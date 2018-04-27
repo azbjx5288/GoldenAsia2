@@ -67,6 +67,10 @@ public class LotteryFragment extends BaseFragment {
     ScrollGridView ksGridview;
     @BindView(R.id.low_gridview)
     ScrollGridView lowGridview;
+    @BindView(R.id.qwc_gridview)
+    ScrollGridView qwcGridview;
+    @BindView(R.id.pk10_gridview)
+    ScrollGridView pk10Gridview;
     @BindView(R.id.others_gridview)
     ScrollGridView othersGridview;
     @BindView(R.id.edit_favourite)
@@ -80,11 +84,15 @@ public class LotteryFragment extends BaseFragment {
     private TextView syxwDesc;
     private TextView ksDesc;
     private TextView lowDesc;
+    private TextView qwcDesc;
+    private TextView pk10Desc;
 
     private ImageAdapter sscAdapter;
     private ImageAdapter syxwAdapter;
     private ImageAdapter ksAdapter;
     private ImageAdapter lowAdapter;
+    private ImageAdapter qwcAdapter;
+    private ImageAdapter pk10Adapter;
     private ImageAdapter othersAdapter;
     private CycleViewPager cycleViewPager;
     private ArrayList<Lottery> lotteryList = new ArrayList<>();
@@ -92,6 +100,8 @@ public class LotteryFragment extends BaseFragment {
     private ArrayList<Lottery> syxwLotteryList = new ArrayList<>();
     private ArrayList<Lottery> ksLotteryList = new ArrayList<>();
     private ArrayList<Lottery> lowLotteryList = new ArrayList<>();
+    private ArrayList<Lottery> qwcLotteryList = new ArrayList<>();
+    private ArrayList<Lottery> pk10LotteryList = new ArrayList<>();
     private ArrayList<Lottery> othersLotteryList = new ArrayList<>();
     private ArrayList<Lottery> favouriteLotteryList = new ArrayList<>();
     private ArrayList<Notice> notices;
@@ -154,6 +164,26 @@ public class LotteryFragment extends BaseFragment {
         lowName.setText("低频彩");
         lowDesc = (TextView) lowLayout.findViewById(R.id.desc);
         lowDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
+                .app_main_support));
+    
+        View qwcLayout = findViewById(R.id.qwc);
+        ImageView qwcImage = (ImageView) qwcLayout.findViewById(R.id.qwc)
+                .findViewById(R.id.icon);
+        qwcImage.setImageResource(R.drawable.ico_group_qwc);
+        TextView qwcName = (TextView) qwcLayout.findViewById(R.id.name);
+        qwcName.setText("趣味彩");
+        qwcDesc = (TextView) qwcLayout.findViewById(R.id.desc);
+        qwcDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
+                .app_main_support));
+    
+        View pk10Layout = findViewById(R.id.pk10);
+        ImageView pk10Image = (ImageView) pk10Layout.findViewById(R.id.pk10)
+                .findViewById(R.id.icon);
+        pk10Image.setImageResource(R.drawable.ico_group_qwc);
+        TextView pk10Name = (TextView) pk10Layout.findViewById(R.id.name);
+        pk10Name.setText("PK10");
+        pk10Desc = (TextView) pk10Layout.findViewById(R.id.desc);
+        pk10Desc.setTextColor(ContextCompat.getColor(getActivity(), R.color
                 .app_main_support));
         
         /*scrollView.setFocusable(false);
@@ -222,6 +252,10 @@ public class LotteryFragment extends BaseFragment {
         ksAdapter.setExpandable(true);
         lowAdapter = new ImageAdapter();
         lowAdapter.setExpandable(true);
+        qwcAdapter = new ImageAdapter();
+        qwcAdapter.setExpandable(true);
+        pk10Adapter = new ImageAdapter();
+        pk10Adapter.setExpandable(true);
         othersAdapter = new ImageAdapter();
         othersAdapter.setExpandable(false);
         lotteryListLoad();
@@ -276,7 +310,7 @@ public class LotteryFragment extends BaseFragment {
         }*/
     }
 
-    @OnClick({R.id.ssc, R.id.syxw, R.id.ks, R.id.low})
+    @OnClick({R.id.ssc, R.id.syxw, R.id.ks, R.id.low,R.id.qwc,R.id.pk10})
     public void onExpand(View view) {
         switch (view.getId()) {
             case R.id.ssc:
@@ -289,6 +323,8 @@ public class LotteryFragment extends BaseFragment {
                     syxwGridview.setVisibility(View.GONE);
                     ksGridview.setVisibility(View.GONE);
                     lowGridview.setVisibility(View.GONE);
+                    qwcGridview.setVisibility(View.GONE);
+                    pk10Gridview.setVisibility(View.GONE);
                 }
                 break;
             case R.id.syxw:
@@ -301,6 +337,8 @@ public class LotteryFragment extends BaseFragment {
                     sscGridview.setVisibility(View.GONE);
                     ksGridview.setVisibility(View.GONE);
                     lowGridview.setVisibility(View.GONE);
+                    qwcGridview.setVisibility(View.GONE);
+                    pk10Gridview.setVisibility(View.GONE);
                 }
                 break;
             case R.id.ks:
@@ -313,6 +351,8 @@ public class LotteryFragment extends BaseFragment {
                     sscGridview.setVisibility(View.GONE);
                     syxwGridview.setVisibility(View.GONE);
                     lowGridview.setVisibility(View.GONE);
+                    qwcGridview.setVisibility(View.GONE);
+                    pk10Gridview.setVisibility(View.GONE);
                 }
                 break;
             case R.id.low:
@@ -321,6 +361,36 @@ public class LotteryFragment extends BaseFragment {
                     //boxBottomLayout.setVisibility(View.GONE);
                 } else {
                     lowGridview.setVisibility(View.VISIBLE);
+                    //boxBottomLayout.setVisibility(View.VISIBLE);
+                    sscGridview.setVisibility(View.GONE);
+                    syxwGridview.setVisibility(View.GONE);
+                    ksGridview.setVisibility(View.GONE);
+                    qwcGridview.setVisibility(View.GONE);
+                    pk10Gridview.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.qwc:
+                if (qwcGridview.getVisibility() == View.VISIBLE) {
+                    qwcGridview.setVisibility(View.GONE);
+                    //boxBottomLayout.setVisibility(View.GONE);
+                } else {
+                    qwcGridview.setVisibility(View.VISIBLE);
+                    lowGridview.setVisibility(View.GONE);
+                    //boxBottomLayout.setVisibility(View.VISIBLE);
+                    sscGridview.setVisibility(View.GONE);
+                    syxwGridview.setVisibility(View.GONE);
+                    ksGridview.setVisibility(View.GONE);
+                    pk10Gridview.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.pk10:
+                if (pk10Gridview.getVisibility() == View.VISIBLE) {
+                    pk10Gridview.setVisibility(View.GONE);
+                    //boxBottomLayout.setVisibility(View.GONE);
+                } else {
+                    pk10Gridview.setVisibility(View.VISIBLE);
+                    qwcGridview.setVisibility(View.GONE);
+                    lowGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     sscGridview.setVisibility(View.GONE);
                     syxwGridview.setVisibility(View.GONE);
@@ -349,7 +419,17 @@ public class LotteryFragment extends BaseFragment {
     public void onLowClick(int position) {
         launchLottery(lowLotteryList, position);
     }
-
+    
+    @OnItemClick(R.id.qwc_gridview)
+    public void onQwcClick(int position) {
+        launchLottery(qwcLotteryList, position);
+    }
+    
+    @OnItemClick(R.id.pk10_gridview)
+    public void onPk10Click(int position) {
+        launchLottery(pk10LotteryList, position);
+    }
+    
     @OnItemClick(R.id.others_gridview)
     public void onItemClick(int position) {
         launchLottery(othersLotteryList, position);
@@ -365,6 +445,8 @@ public class LotteryFragment extends BaseFragment {
                 //友盟数据埋点end
                 switch (lottery.getLotteryId()) {
                     case 15://亚洲妙妙彩
+                    case 44://11选5秒秒彩
+                    case 45://快三秒秒彩
                         GameTableFragment.launchMmc(LotteryFragment.this,
                                 lottery);
                         break;
@@ -528,12 +610,18 @@ public class LotteryFragment extends BaseFragment {
                 ksLotteryList = lotteryMenu.getKs();
             if (lotteryMenu.getLow() != null)
                 lowLotteryList = lotteryMenu.getLow();
+            if (lotteryMenu.getQw() != null)
+                qwcLotteryList = lotteryMenu.getQw();
+            if (lotteryMenu.getPk10() != null)
+                pk10LotteryList = lotteryMenu.getPk10();
             if (lotteryMenu.getOthers() != null)
                 othersLotteryList = lotteryMenu.getOthers();
             lotteryList.addAll(sscLotteryList);
             lotteryList.addAll(syxwLotteryList);
             lotteryList.addAll(ksLotteryList);
             lotteryList.addAll(lowLotteryList);
+            lotteryList.addAll(qwcLotteryList);
+            lotteryList.addAll(pk10LotteryList);
             lotteryList.addAll(othersLotteryList);
             GoldenAsiaApp.getUserCentre().setLotteryList(lotteryList);
             //othersAdapter.notifyDataSetChanged();
@@ -548,13 +636,22 @@ public class LotteryFragment extends BaseFragment {
 
             lowAdapter.setData(lowLotteryList);
             lowGridview.setAdapter(lowAdapter);
+    
+            qwcAdapter.setData(qwcLotteryList);
+            qwcGridview.setAdapter(qwcAdapter);
+    
+            pk10Adapter.setData(pk10LotteryList);
+            pk10Gridview.setAdapter(pk10Adapter);
 
             othersAdapter.setData(othersLotteryList);
             othersGridview.setAdapter(othersAdapter);
-
+    
             sscDesc.setText("畅销组合/" + sscLotteryList.size() + "个");
-            syxwDesc.setText("震撼开售/" + syxwLotteryList.size() + "个");
-            ksDesc.setText("人品爆发/" + ksLotteryList.size() + "个");
+            syxwDesc.setText("热门组合/" + syxwLotteryList.size() + "个");
+            ksDesc.setText("好玩易中/" + ksLotteryList.size() + "个");
+            lowDesc.setText("人品爆发/" + lowLotteryList.size() + "个");
+            qwcDesc.setText("趣夺大奖/" + qwcLotteryList.size() + "个");
+            pk10Desc.setText("人气旺旺/" + pk10LotteryList.size() + "个");
         }
         restRequest.execute();
     }
@@ -574,12 +671,17 @@ public class LotteryFragment extends BaseFragment {
                         ksLotteryList = lotteryMenu.getKs();
                     if (lotteryMenu.getLow() != null)
                         lowLotteryList = lotteryMenu.getLow();
+                    if (lotteryMenu.getQw() != null)
+                        qwcLotteryList = lotteryMenu.getQw();
+                    if (lotteryMenu.getPk10() != null)
+                        pk10LotteryList = lotteryMenu.getPk10();
                     if (lotteryMenu.getOthers() != null)
                         othersLotteryList = lotteryMenu.getOthers();
                     lotteryList.addAll(sscLotteryList);
                     lotteryList.addAll(syxwLotteryList);
                     lotteryList.addAll(ksLotteryList);
                     lotteryList.addAll(lowLotteryList);
+                    lotteryList.addAll(pk10LotteryList);
                     lotteryList.addAll(othersLotteryList);
                     GoldenAsiaApp.getUserCentre().setLotteryList(lotteryList);
                     //othersAdapter.notifyDataSetChanged();
@@ -594,14 +696,22 @@ public class LotteryFragment extends BaseFragment {
 
                     lowAdapter.setData(lowLotteryList);
                     lowGridview.setAdapter(lowAdapter);
+    
+                    qwcAdapter.setData(qwcLotteryList);
+                    qwcGridview.setAdapter(qwcAdapter);
+    
+                    pk10Adapter.setData(pk10LotteryList);
+                    pk10Gridview.setAdapter(pk10Adapter);
 
                     othersAdapter.setData(othersLotteryList);
                     othersGridview.setAdapter(othersAdapter);
 
                     sscDesc.setText("畅销组合/" + sscLotteryList.size() + "个");
                     syxwDesc.setText("热门组合/" + syxwLotteryList.size() + "个");
-                    ksDesc.setText("震撼开售/" + ksLotteryList.size() + "个");
+                    ksDesc.setText("好玩易中/" + ksLotteryList.size() + "个");
                     lowDesc.setText("人品爆发/" + lowLotteryList.size() + "个");
+                    qwcDesc.setText("趣夺大奖/" + qwcLotteryList.size() + "个");
+                    pk10Desc.setText("人气旺旺/" + pk10LotteryList.size() + "个");
                     break;
                 case BANNER_LIST_ID:
                     updateBanner((ArrayList<Notice>) response.getData());

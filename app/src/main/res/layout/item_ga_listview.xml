@@ -51,8 +51,8 @@
         android:textSize="@dimen/text_size_tiny"/>
     <TextView
         android:id="@+id/play"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_width="62.5dp"
+        android:layout_height="20dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -74,11 +74,11 @@
         android:textSize="@dimen/text_size_tiny"/>
     <TextView
         android:id="@+id/trial"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content" android:layout_alignLeft="@+id/play" android:layout_alignParentEnd="true"
+        android:layout_width="62.5dp"
+        android:layout_height="20dp" android:layout_alignLeft="@+id/play" android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true" android:layout_alignStart="@+id/play" android:layout_alignTop="@+id/desc"
         android:text="免费试玩"
-        android:background="@color/app_main_rim"
+        android:background="@drawable/border_frame"
         android:gravity="center"
         android:textColor="@color/gray"
         android:textSize="@dimen/text_size_small"/>

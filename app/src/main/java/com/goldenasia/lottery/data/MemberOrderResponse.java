@@ -38,7 +38,7 @@ public class MemberOrderResponse
     private String end_time;
     private String pageList;
     @SerializedName("package")
-    private List<PackageBean> packageBeans;
+    private List<Bet> packageBeans;
     private String packageList;
     
     public String getWrap_id() { return wrap_id;}
@@ -77,7 +77,7 @@ public class MemberOrderResponse
     
     public void setPageList(String pageList) { this.pageList = pageList;}
     
-    public List<PackageBean> getPackageBeans() { return packageBeans;}
+    public List<Bet> getPackageBeans() { return packageBeans;}
     
-    public void setPackageBeans(List<PackageBean> packageBeans) { this.packageBeans = packageBeans;}
+    public void setPackageBeans(List<Bet> packageBeans) { this.packageBeans = packageBeans;}
 }
