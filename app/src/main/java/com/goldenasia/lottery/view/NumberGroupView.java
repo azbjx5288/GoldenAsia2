@@ -339,15 +339,11 @@ public class NumberGroupView extends View{
 
         for (int i = 0, count = maxNumber - minNumber + 1; i < count; i++) {
             x = i % column * (itemSize + horizontalGap);
-            y = i / column * (itemSize + verticalGap);
+            int  yiLouHeight1= ConstantInformation.YI_LOU_IS_SHOW ?YILOU_HEIGHT:0;
+            int  lengReHeight1= ConstantInformation.LENG_RE_IS_SHOW ?YILOU_HEIGHT:0;
+            y = i / column * (itemSize + verticalGap+yiLouHeight1+lengReHeight1);
             canvas.save();
-            if(y==0){
-                canvas.translate(x, y);
-            }else{
-                int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?YILOU_HEIGHT:0;
-                int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?YILOU_HEIGHT:0;
-                canvas.translate(x, y+yiLouHeight+lengReHeight);
-            }
+            canvas.translate(x, y);
 
             if (checkedArray.get(i + minNumber)) {
                 checkedDrawable.draw(canvas);
