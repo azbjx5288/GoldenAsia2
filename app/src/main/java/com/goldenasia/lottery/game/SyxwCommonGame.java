@@ -1,14 +1,21 @@
 package com.goldenasia.lottery.game;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.cpiz.android.bubbleview.BubbleLinearLayout;
+import com.cpiz.android.bubbleview.BubblePopupWindow;
+import com.cpiz.android.bubbleview.BubbleStyle;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.material.Calculation;
+import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.ManualInputView;
 import com.goldenasia.lottery.pattern.OnAddListner;
 import com.goldenasia.lottery.pattern.PickNumber;
@@ -23,6 +30,7 @@ import java.util.List;
  */
 public class SyxwCommonGame extends Game {
     private static final String TAG = SyxwCommonGame.class.getSimpleName();
+    private  static   SyxwCommonGameUtils mSyxwCommonGameUtils=new SyxwCommonGameUtils();
 
     public SyxwCommonGame(Method method) {
         super(method);
@@ -43,7 +51,7 @@ public class SyxwCommonGame extends Game {
         return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column2, null, false);
     }
 
-    private static void createPicklayout(Game game, String[] name) {
+    private static void createPicklayout(Game game, String[] name,String  gameMethod) {
         View[] views = new View[name.length];
         for (int i = 0; i < name.length; i++) {
             View view = createDefaultPickLayout(game.getTopLayout());
@@ -51,10 +59,7 @@ public class SyxwCommonGame extends Game {
             views[i] = view;
         }
 
-        ViewGroup topLayout = game.getTopLayout();
-        for (View view : views) {
-            topLayout.addView(view);
-        }
+        addViewLayout(game,views,gameMethod);
         game.setColumn(name.length);
     }
 
@@ -224,7 +229,7 @@ public class SyxwCommonGame extends Game {
         return  -1;
     }
 
-    private static void createLexuanLayout(Game game, int danSize,String[] name) {
+    private static void createLexuanLayout(Game game, int danSize,String[] name,String  gameMethod) {
         View[] views = new View[name.length];
         List<NumberGroupView> numViewList=new ArrayList<NumberGroupView>();
         for(int  i=0;i<name.length;i++){
@@ -255,26 +260,23 @@ public class SyxwCommonGame extends Game {
             });
         }
 
-        ViewGroup topLayout = game.getTopLayout();
-        for (View v : views) {
-            topLayout.addView(v);
-        }
+        addViewLayout(game,views,gameMethod);
     }
     //乐选二
     public static void SDLX2(Game game) {
-        createLexuanLayout(game, 11, new String[]{"第一位", "第二位"});
+        createLexuanLayout(game, 11, new String[]{"第一位", "第二位"},"SDLX2");
     }
     //乐选三
     public static void SDLX3(Game game) {
-        createLexuanLayout(game, 11, new String[]{"第一位", "第二位", "第三位"});
+        createLexuanLayout(game, 11, new String[]{"第一位", "第二位", "第三位"},"SDLX3");
     }
     //乐选四
     public static void SDLX4(Game game) {
-        createPicklayout(game, new String[]{"乐选四"});
+        createPicklayout(game, new String[]{"乐选四"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
     //乐选五
     public static void SDLX5(Game game) {
-        createPicklayout(game, new String[]{"乐选五"});
+        createPicklayout(game, new String[]{"乐选五"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //前二组选胆拖
@@ -324,75 +326,75 @@ public class SyxwCommonGame extends Game {
 
     //前三直选
     public static void SDQSZX(Game game) {
-        createPicklayout(game, new String[]{"第一位", "第二位", "第三位"});
+        createPicklayout(game, new String[]{"第一位", "第二位", "第三位"},"SDQSZX");
         game.setSupportInput(true);
     }
 
     //前三组选
     public static void SDQSZUX(Game game) {
-        createPicklayout(game, new String[]{"前三组"});
+        createPicklayout(game, new String[]{"前三组"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     //前二直选
     public static void SDQEZX(Game game) {
-        createPicklayout(game, new String[]{"第一位", "第二位"});
+        createPicklayout(game, new String[]{"第一位", "第二位"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     //前二组选
     public static void SDQEZUX(Game game) {
-        createPicklayout(game, new String[]{"前二组"});
+        createPicklayout(game, new String[]{"前二组"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     public static void SDRX1(Game game) {
-        createPicklayout(game, new String[]{"任选一"});
+        createPicklayout(game, new String[]{"任选一"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     public static void SDRX2(Game game) {
-        createPicklayout(game, new String[]{"任选二"});
+        createPicklayout(game, new String[]{"任选二"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     public static void SDRX3(Game game) {
-        createPicklayout(game, new String[]{"任选三"});
+        createPicklayout(game, new String[]{"任选三"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     public static void SDRX4(Game game) {
-        createPicklayout(game, new String[]{"任选四"});
+        createPicklayout(game, new String[]{"任选四"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     public static void SDRX5(Game game) {
-        createPicklayout(game, new String[]{"任选五"});
+        createPicklayout(game, new String[]{"任选五"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     public static void SDRX6(Game game) {
-        createPicklayout(game, new String[]{"任选六"});
+        createPicklayout(game, new String[]{"任选六"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     public static void SDRX7(Game game) {
-        createPicklayout(game, new String[]{"任选七"});
+        createPicklayout(game, new String[]{"任选七"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     public static void SDRX8(Game game) {
-        createPicklayout(game, new String[]{"任选八"});
+        createPicklayout(game, new String[]{"任选八"},ConstantInformation.NO_YILOU_AND_LENGRE);
         game.setSupportInput(true);
     }
 
     //前三不定位胆
     public static void SDQSBDW(Game game) {
-        createPicklayout(game, new String[]{"前三位"});
+        createPicklayout(game, new String[]{"前三位"},ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
     //前三定位胆
     public static void SDQSDWD(Game game) {
-        createPicklayout(game, new String[]{"第一位", "第二位", "第三位"});
+        createPicklayout(game, new String[]{"第一位", "第二位", "第三位"},"SDQSDWD");
     }
 
     //猜中位
@@ -640,4 +642,167 @@ public class SyxwCommonGame extends Game {
             pickNumber.onRandom(randomCommon(1, 11, 1, new ArrayList<>()));
         game.notifyListener();
     }
+
+    /*====================================处理冷热遗漏添加的方法start=========================================================================*/
+    private static void addViewLayout(Game game,View[] views,String  gameMethod){
+        ViewGroup topLayout = game.getTopLayout();
+
+        if( ConstantInformation.HISTORY_CODE_LIST.size()==0
+                ||gameMethod==ConstantInformation.NO_YILOU_AND_LENGRE){//没有冷热和遗漏的情况
+            ConstantInformation.YI_LOU_IS_SUPPORTED=false;
+
+            for (View view : views) {
+                topLayout.addView(view);
+            }
+        }else{
+            ConstantInformation.YI_LOU_IS_SUPPORTED=true;
+            ConstantInformation.YI_LOU_IS_SHOW=false;
+            ConstantInformation.LENG_RE_IS_SHOW=false;
+            ConstantInformation.LENG_RE_COUNT=100;
+            addViewLayoutHasLengRe(topLayout,views,gameMethod);
+        }
+    }
+
+    private static void addViewLayoutHasLengRe(ViewGroup topLayout,View[] views,String  gameMethod) {
+        View sscLengreLayout=LayoutInflater.from(topLayout.getContext()).inflate(R.layout.ssc_lengre_layout, null, false);
+        CheckBox yilou_tv=sscLengreLayout.findViewById(R.id.yilou);
+        CheckBox yilou_Checkbox=sscLengreLayout.findViewById(R.id.yilou_checked);
+
+        CheckBox lengre_tv=sscLengreLayout.findViewById(R.id.lengre);
+        CheckBox lengre_Checkbox=sscLengreLayout.findViewById(R.id.lengre_checked);
+
+        yilou_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.YI_LOU_IS_SHOW =!ConstantInformation.YI_LOU_IS_SHOW;
+
+                yilou_tv.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+                yilou_Checkbox.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.refreshViewGroup();
+                }
+            }
+        });
+        yilou_Checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.YI_LOU_IS_SHOW =!ConstantInformation.YI_LOU_IS_SHOW;
+
+                yilou_tv.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+                yilou_Checkbox.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.refreshViewGroup();
+                }
+            }
+        });
+
+        lengre_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lengre_tv.setChecked(true);
+                initLengrePopupwindow(views,topLayout.getContext(),v,gameMethod);
+            }
+        });
+
+        lengre_Checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.LENG_RE_IS_SHOW =!ConstantInformation.LENG_RE_IS_SHOW;
+                lengre_tv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
+
+                //选中了冷热的复选框就会弹出冷热期数对话框
+                if(ConstantInformation.LENG_RE_IS_SHOW){
+                    initLengrePopupwindow(views,topLayout.getContext(),lengre_tv,gameMethod);
+                }
+
+                for (View view : views) {
+                    NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.refreshViewGroup();
+                }
+            }
+        });
+
+        topLayout.addView(sscLengreLayout);
+
+        for (int i=0;i<  views.length;i++) {
+            NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+            numberGroupView.setmYiLouList(mSyxwCommonGameUtils.getYiLouList(gameMethod,i));
+            numberGroupView.setmLengReList(mSyxwCommonGameUtils.getLengReList(gameMethod,i));
+
+            numberGroupView.refreshViewGroup();
+            topLayout.addView(views[i]);
+        }
+    }
+
+    //弹出冷热期数选择框
+    private static void initLengrePopupwindow(View[] views, Context context, View v, String  gameMethod) {
+        View rootView = LayoutInflater.from(context).inflate(R.layout.lengre_diff_popupwindow, null);
+
+        BubbleLinearLayout bubbleLinearLayout = (BubbleLinearLayout) rootView.findViewById(R.id.popup_bubble);
+        BubblePopupWindow bubblePopupWindow = new BubblePopupWindow(rootView, bubbleLinearLayout);
+        RadioButton lengreOne = (RadioButton) rootView.findViewById(R.id.lengre_one);
+        RadioButton lengreTwo = (RadioButton) rootView.findViewById(R.id.lengre_two);
+        RadioButton lengreThree = (RadioButton) rootView.findViewById(R.id.lengre_three);
+
+        switch ( ConstantInformation.LENG_RE_COUNT){
+            case 20:
+                lengreThree.setChecked(true);
+                break;
+            case 50:
+                lengreTwo.setChecked(true);
+                break;
+            default:
+                lengreOne.setChecked(true);
+                break;
+        }
+
+        lengreOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ConstantInformation.LENG_RE_COUNT=100;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mSyxwCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mSyxwCommonGameUtils.getLengReList(gameMethod,i));
+                    numberGroupView.refreshViewGroup();
+                }
+
+                bubblePopupWindow.dismiss();
+            }
+        });
+        lengreTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.LENG_RE_COUNT=50;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mSyxwCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mSyxwCommonGameUtils.getLengReList(gameMethod,i));
+                    numberGroupView.refreshViewGroup();
+                }
+                bubblePopupWindow.dismiss();
+            }
+        });
+        lengreThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstantInformation.LENG_RE_COUNT=20;
+                for (int i=0;i<  views.length;i++) {
+                    NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
+                    numberGroupView.setmYiLouList(mSyxwCommonGameUtils.getYiLouList(gameMethod,i));
+                    numberGroupView.setmLengReList(mSyxwCommonGameUtils.getLengReList(gameMethod,i));
+
+                    numberGroupView.refreshViewGroup();
+                }
+                bubblePopupWindow.dismiss();
+            }
+        });
+        bubblePopupWindow.showArrowTo(v, BubbleStyle.ArrowDirection.Down);
+    }
+    /*====================================处理冷热遗漏添加的方法end=========================================================================*/
 }

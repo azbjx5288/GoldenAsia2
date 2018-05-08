@@ -165,14 +165,28 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
      * 加载开奖结果放在内存中
      */
     private  void  LoadWinHistory(){
-        if(lottery.getLotteryId()==1//1: 重庆时时彩
-                ||lottery.getLotteryId()==3//3:黑龙江时时彩
-                ||lottery.getLotteryId()==4//4:新疆时时彩
-                ||lottery.getLotteryId()==8//8:天津时时彩
-                ||lottery.getLotteryId()==11//11:亚洲分分彩
-                ||lottery.getLotteryId()==19//19:亚洲5分彩
-                ||lottery.getLotteryId()==35//35:台湾五分彩
-                ||lottery.getLotteryId()==37//37:亚洲2分彩)
+        if(
+            /*时时彩系列*/
+            lottery.getLotteryId()==1//1: 重庆时时彩
+            ||lottery.getLotteryId()==3//3:黑龙江时时彩
+            ||lottery.getLotteryId()==4//4:新疆时时彩
+            ||lottery.getLotteryId()==8//8:天津时时彩
+            ||lottery.getLotteryId()==11//11:亚洲分分彩
+            ||lottery.getLotteryId()==19//19:亚洲5分彩
+            ||lottery.getLotteryId()==35//35:台湾五分彩
+            ||lottery.getLotteryId()==37//37:亚洲2分彩)
+            /* 11选5系列*/
+            ||lottery.getLotteryId()==2//山东11选5
+            ||lottery.getLotteryId()==6//江西11选5
+            ||lottery.getLotteryId()==7//广东11选5
+            ||lottery.getLotteryId()== 16//11选5分分彩
+            || lottery.getLotteryId()== 20//北京11选5
+            ||lottery.getLotteryId()== 21//上海11选5
+            || lottery.getLotteryId()== 32//江苏11选5
+            || lottery.getLotteryId()== 33//浙江11选5
+            || lottery.getLotteryId()== 34//福建11选5
+            ||lottery.getLotteryId()== 36//山西11选5
+            || lottery.getLotteryId()== 40//黑龙江11选5
          ) {
             ConstantInformation.HISTORY_CODE_LIST.clear();
 
