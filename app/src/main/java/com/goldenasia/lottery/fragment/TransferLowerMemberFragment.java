@@ -3,7 +3,9 @@ package com.goldenasia.lottery.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,7 @@ public class TransferLowerMemberFragment extends BaseFragment {
     private static final String TAG = TransferLowerMemberFragment.class.getSimpleName();
     private static final int TRACE_TRANSFER_ROUTE = 1;//获取 下级名称
     private static final int TRACE_TRANSFER_SUBMIT = 2;//转账
+    private static final int TRACE_TRANSFER_ROUTE2 = 3;//获取 下级名称
 
 
     @BindView(R.id.account_name)
@@ -110,7 +113,10 @@ public class TransferLowerMemberFragment extends BaseFragment {
 
         initPopupWindow();
 
+        netLoadPopupWindow2(FIRST_PAGE);
+
         transferAmount.addTextChangedListener(new NumbericTextWatcher(8, 2));//整数位最大8位，小数两位
+        lowerMember.addTextChangedListener(new FindLowerMemberByNameTextWatcher());
     }
 
     private void initPopupWindow() {
@@ -155,6 +161,10 @@ public class TransferLowerMemberFragment extends BaseFragment {
 
     @OnClick(R.id.btn_submit)
     public void btnSubmit() {
+        if (lowerMemberUserId==-1) {
+            showToast("请选择合适的下级", Toast.LENGTH_SHORT);
+            return;
+        }
         if (TextUtils.isEmpty(lowerMember.getText())) {
             showToast("请选择下级", Toast.LENGTH_SHORT);
             return;
@@ -226,6 +236,16 @@ public class TransferLowerMemberFragment extends BaseFragment {
         executeCommand(command, restCallback, TRACE_TRANSFER_ROUTE);
     }
 
+    private void netLoadPopupWindow2(int page) {
+        this.page = page;
+        LowerMemberCommand command = new LowerMemberCommand();
+        command.setUsername(userCentre.getUserName());
+        command.setCurPage(this.page);
+        command.setRange(0);
+
+        executeCommand(command, restCallback, TRACE_TRANSFER_ROUTE2);
+    }
+
     //金额验证 整数位最大8位，小数两位
     public static boolean VerifyMoney(double str){
         Pattern pattern=Pattern.compile("\\\\d{1,8}\\\\.\\\\d{1,2}");
@@ -240,6 +260,31 @@ public class TransferLowerMemberFragment extends BaseFragment {
         @Override
         public boolean onRestComplete(RestRequest request, RestResponse response) {
             switch (request.getId()) {
+                case TRACE_TRANSFER_ROUTE2:
+                    if (response != null) {
+                        LowerMemberList lowerMemberList = (LowerMemberList) response.getData();
+                        List<LowerMember> lowerMembers = lowerMemberList.getUsers();
+
+                        if (page == FIRST_PAGE) {
+                            items.clear();
+                            totalCount = lowerMemberList.getUsersCount();
+                        }
+
+                        for (LowerMember lower : lowerMembers) {
+                            if (!userCentre.getUserInfo().getUserName().equals(lower.getUsername())//去掉当前用户
+                                    && lower.getStatus() == 8//去掉冻结用户 status=8表示正常，不等于8的不显示出来
+                                    ) {
+                                Platform platform = new Platform(lower.getUserId(), lower.getUsername(), lower.getUsername());
+                                items.add(platform);
+                            }
+                        }
+
+                        if ((items.size() + 1) < totalCount ) {
+                            netLoadPopupWindow( page + 1);
+                        }
+                    }
+
+                    break;
                 case TRACE_TRANSFER_ROUTE:
                     if (response != null) {
                         LowerMemberList lowerMemberList = (LowerMemberList) response.getData();
@@ -365,4 +410,36 @@ public class TransferLowerMemberFragment extends BaseFragment {
         );
         refreshLayout.setLayoutParams(lp);
     }
+
+
+     class FindLowerMemberByNameTextWatcher  implements TextWatcher {
+        public FindLowerMemberByNameTextWatcher() {
+        }
+
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            lowerMemberUserId=-1;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String temp = editable.toString();
+
+            for (Iterator<Platform> iterator = items.iterator(); iterator.hasNext(); ) {
+                Platform nextMember = iterator.next();
+
+                if (nextMember.getCnname().equals(temp)){
+                    lowerMemberUserId=nextMember.getId();
+                }
+            }
+        }
+
+    }
+
 }
