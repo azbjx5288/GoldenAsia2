@@ -187,6 +187,10 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             || lottery.getLotteryId()== 34//福建11选5
             ||lottery.getLotteryId()== 36//山西11选5
             || lottery.getLotteryId()== 40//黑龙江11选5
+//            /* PK10系列*/
+            ||lottery.getLotteryId()== 27//北京PK10
+            ||lottery.getLotteryId()== 38//PK10分分彩
+            ||lottery.getLotteryId()== 47//PK10二分彩
          ) {
             ConstantInformation.HISTORY_CODE_LIST.clear();
 
