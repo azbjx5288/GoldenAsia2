@@ -56,7 +56,9 @@ public class MmcKuaiSanWinHistoryDao {
 
     public int deleteAllMmcWinHistory() {
         List<MmcKuaiSanWinHistory> allMmcWinHistory=getAllMmcWinHistory();
-
+        if(allMmcWinHistory==null||allMmcWinHistory.size()==0)
+            return 0;
+        
         int  count=0;
         for(MmcKuaiSanWinHistory mmcWinHistory:allMmcWinHistory) {
             delete(mmcWinHistory);

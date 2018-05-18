@@ -1,13 +1,13 @@
 package com.goldenasia.lottery.db;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import android.content.Context;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Gan on 2017/9/29.
@@ -55,7 +55,8 @@ public class MmcWinHistoryDao {
 
     public int deleteAllMmcWinHistory() {
         List<MmcWinHistory> allMmcWinHistory=getAllMmcWinHistory();
-
+        if(allMmcWinHistory==null||allMmcWinHistory.size()==0)
+            return 0;
         int  count=0;
         for(MmcWinHistory mmcWinHistory:allMmcWinHistory) {
             delete(mmcWinHistory);

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- *快三秒秒彩
+ *11选5秒秒彩
  * Created by Gan on 2018/1/29.
  */
 
@@ -56,6 +56,8 @@ public class MmcElevenSelectFiveWinHistoryDao {
 
     public int deleteAllMmcWinHistory() {
         List<MmcElevenSelectFiveWinHistory> allMmcWinHistory=getAllMmcWinHistory();
+        if(allMmcWinHistory==null||allMmcWinHistory.size()==0)
+            return 0;
 
         int  count=0;
         for(MmcElevenSelectFiveWinHistory mmcWinHistory:allMmcWinHistory) {
