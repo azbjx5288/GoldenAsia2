@@ -12,6 +12,8 @@ import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.LhcQuickStart;
 import com.goldenasia.lottery.pattern.LhcPickNumber;
+import com.goldenasia.lottery.pattern.ManualInputView;
+import com.goldenasia.lottery.pattern.OnAddListner;
 import com.goldenasia.lottery.view.LhcNumberGroupView;
 
 import java.util.ArrayList;
@@ -101,6 +103,11 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
                 }
             });
         }
+        if("ZTYM".equals(method.getName())){//正特一码
+            game.setSupportInput(false);
+        }else{
+            game.setSupportInput(true);
+        }
     }
     
     private void initQuickStart()
@@ -139,7 +146,7 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
     {
         selectedID = id;
     }
-    
+
     private void setSelected(int id)
     {
         int max = numberGroupView.getMaxNumber();
@@ -652,7 +659,7 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
         numberGroupView.setCheckNumber(list);
         notifyListener();
     }
-    
+
     /*//特码直选 TMZX
     public static void TMZX(LhcGame game)
     {
@@ -765,4 +772,40 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
             pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
         game.notifyListener();
     }*/
+
+    //2018.05.22 六合彩单式投注涉及玩法 特码直选、正码一直选、正码二直选、正码三直选、正码四直选、正码五直选、正码六直选  start
+    public void onInputInflate() {
+        addInputLayout( this, this.getColumn());
+    }
+
+    public void displayInputView() {
+        if (onManualEntryListener != null || manualInputView != null) {
+            manualInputView.setOnAddListner(new OnAddListner() {
+
+                @Override
+                public void onAdd(ArrayList<String[]> chooseArray) {
+                    ArrayList<String> codeArray = new ArrayList<>();
+                    for (int i =0,size= chooseArray.size(); i<size; i++) {
+                        StringBuilder codeBuilder = new StringBuilder();
+                        int chooseInt=Integer.parseInt(chooseArray.get(i)[0]);
+                        codeBuilder.append(chooseInt);
+                        codeArray.add(codeBuilder.toString());
+                    }
+                    int notes =chooseArray.size();
+                    setSubmitArray(codeArray);
+                    setSingleNum(1);
+                    onManualEntryListener.onManualEntry(notes);
+                }
+            });
+        }
+    }
+
+    public static void addInputLayout(LhcGame game, int column) {
+        ViewGroup manualInput = game.getManualInput();
+        View view =LayoutInflater.from(manualInput.getContext()).inflate(R.layout.popup_write_comment, null, false);
+        ManualInputView manualInputView = new ManualInputView(view, game.lottery, 1);
+        game.addManualInputView(manualInputView);
+        manualInput.addView(view);
+    }
+    //2018.05.22 六合彩单式投注涉及玩法 特码直选、正码一直选、正码二直选、正码三直选、正码四直选、正码五直选、正码六直选  end
 }

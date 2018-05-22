@@ -145,38 +145,45 @@ public class ManualInputView {
                 break;
             case 8: //PK10
                 String colPK10="";
+
+                hintStr = "提示：\n" +
+                        "请把号码复制或输入文本框中。\n" +
+                        "每注内的号码间隔使用空格即可。\n" +
+                        "每注号码之间的间隔符支持回车 逗号[,] 分号[;] 冒号[:] 竖线[|]\n";
+
+
                 switch (column){
                     case 1:
-                        colPK10="1"+"\n"+"2";
+                        colPK10="1,2";
                         break;
                     case 2:
-                        colPK10="1 2"+"\n"+"1 2";
+                        colPK10="1 2,3 4";
                         break;
                     case 3:
-                        colPK10="1 2 3"+"\n"+"1 2 3";
+                        colPK10="1 2 3,4 5 6";
                         break;
                     case 4:
-                        colPK10="1 2 3 4"+"\n"+"1 2 3 4";
+                        colPK10="1 2 3 4,5 6 7 8";
                         break;
                     case 5:
-                        colPK10="1 2 3 4 5" +"\n"+
-                                "1 2 3 4 5";
+                        colPK10="1 2 3 4 5,5 6 7 8 9";
                         break;
-                    case 10:
+                    case 10: //定位胆
+                        hintStr+="定位胆，不选号的位置，则用- 表示， 如：- - - - 6 - - - - -\n";
+
                         colPK10="1 - - - - - - - - -" +"\n"+
-                                "2 - - - - - - - - -";
+                                "- - - - - - - - - 2"+"\n"+
+                                "- - - - 6 - - - - -";
                         break;
                     case 100: // //猜前五 QWMC   //猜后五 HWMC
+                        hintStr+="定位胆，不选号的位置，则用- 表示， 如：- - 3 - -\n";
+
                         colPK10="1 - - - -" +"\n"+
-                                "2 - - - -";
+                                "- - 2 - -";
                         break;
                 }
-                hintStr = "提示：\n" +
-                        "请把号码复制或输入到文本框中。\n" +
-                        "1、每注号码之间的间隔符支持回车 逗号[,] 分号[;]冒号[:]竖线[|]\n" +
-                        "2、每注内的号码间隔使用空格即可\n" +
-                        "3、定位胆，如某一位不选号，则用- 表示，如3 - 5 6 7\n" +
-                        "4、仅支持单式，最高可投10万注。\n" +
+
+                hintStr= hintStr+"仅支持单式。\n" +
                         "例如：\n"
                         +colPK10+"\n";
                 break;
@@ -206,6 +213,9 @@ public class ManualInputView {
                     break;
                 case 8://pk10
                     manualInput = new ManualInputEntry(view.getContext(), inputEditText.getText().toString(), column, false, 1, 10,8);
+                    break;
+                case 3://六合彩
+                    manualInput = new ManualInputEntry(view.getContext(), inputEditText.getText().toString(), column, false, 1, 10,3);
                     break;
                 default:
                     manualInput = new ManualInputEntry(view.getContext(), inputEditText.getText().toString(), column, true, 0, 9);

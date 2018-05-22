@@ -36,6 +36,9 @@ public abstract class LhcGame implements LhcNumberGroupView.OnChooseItemClickLis
     private boolean exchange = true;
     private ArrayList<String> submitArray = new ArrayList<>();
     private int column;//开奖位数
+    protected ViewGroup inputViewGroup;
+    private boolean isSupportInput = false;
+    protected OnManualEntryListener onManualEntryListener;
 
     protected DigitCheckBoxLhcPanel digitCheckBoxPanel;
     protected SparseBooleanArray digits = new SparseBooleanArray();
@@ -71,6 +74,7 @@ public abstract class LhcGame implements LhcNumberGroupView.OnChooseItemClickLis
         topLayout.removeAllViews();
         onSelectedListener = null;
         onDestroy();
+        destroyInput();
     }
     
     public void onDestroy() {
@@ -205,7 +209,7 @@ public abstract class LhcGame implements LhcNumberGroupView.OnChooseItemClickLis
         }
         return builder.toString();
     }
-    
+
     /**
      * 将Int的list转换成字串文字信息 如[1，3]
      *
@@ -346,4 +350,53 @@ public abstract class LhcGame implements LhcNumberGroupView.OnChooseItemClickLis
         return builder.toString();
     }
     //六合彩正码任选添加的 end
+
+    //2018.05.22 六合彩单式投注涉及玩法 特码直选、正码一直选、正码二直选、正码三直选、正码四直选、正码五直选、正码六直选  start
+    public final void addManualInputView(ManualInputView manualInputView)
+    {
+        this.manualInputView = manualInputView;
+    }
+    public void onManualInput(Lottery lottery, ViewGroup inputViewGroup)
+    {
+        destroyInput();
+        this.lottery = lottery;
+        this.inputViewGroup = inputViewGroup;
+        submitArray.clear();
+        onInputInflate();
+    }
+    public void onInputInflate()
+    {
+
+    }
+    public final void destroyInput()
+    {
+        if (inputViewGroup != null)
+        {
+            inputViewGroup.removeAllViews();
+        }
+    }
+    public void setOnManualEntryListener(OnManualEntryListener onManualEntryListener)
+    {
+        submitArray.clear();
+        this.onManualEntryListener = onManualEntryListener;
+        displayInputView();
+    }
+
+    public void displayInputView()
+    {
+    }
+    public void setExchange(boolean exchange) {
+        this.exchange = exchange;
+    }
+    public boolean isSupportInput() {
+        return isSupportInput;
+    }
+    public ViewGroup getManualInput()
+    {
+        return inputViewGroup;
+    }
+    public void setSupportInput(boolean supportInput) {
+        isSupportInput = supportInput;
+    }
+    //2018.05.22 六合彩单式投注涉及玩法 特码直选、正码一直选、正码二直选、正码三直选、正码四直选、正码五直选、正码六直选  end
 }

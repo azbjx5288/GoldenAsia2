@@ -59,7 +59,24 @@ public class ManualInputEntry {
             return;
         }
         chooseArray.clear();
-        chooseArray=rulePK10Analysis(enterstr);
+        if(lotteryType==3){//六合彩
+            chooseArray=ruleLhcAnalysis(enterstr);
+        }else{
+            chooseArray=rulePK10Analysis(enterstr);
+        }
+    }
+
+    //解析正确选号
+    private ArrayList<String[]> ruleLhcAnalysis(String enterstr) {
+        ArrayList<String[]> list=new ArrayList<String[]>();
+        String[] verifyCode = enterstr.split("\\s+");
+        for (int i = 0; i < verifyCode.length; i++) {
+            if (!verifyCode[i].isEmpty()) {
+                String[] singleNumber =verifyCode[i].split("\\s+");
+                list.add(singleNumber);
+            }
+        }
+        return  list;
     }
 
     //解析正确选号

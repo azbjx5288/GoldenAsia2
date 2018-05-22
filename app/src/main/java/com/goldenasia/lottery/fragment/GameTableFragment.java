@@ -372,6 +372,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         gameLhcFragment.setLhcGame(GameConfig.createLhcGame(method));
         gameLhcFragment.changeGameMethod();
         trend.setVisibility(View.VISIBLE);
+        manualInputBotton.setVisibility(gameLhcFragment.getLhcGame().isSupportInput() ? View.VISIBLE : View.GONE);
     }
     
     private void saveRegularMethods(Method method)
@@ -523,17 +524,33 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     @OnClick(R.id.manual_input_botton)
     public void manualInput()
     {
-        //true 显示选号页面  false 显示录入
-        if (((GameFragment) fragments.get(0)).getGame().isExchange())
-        {
-            //manualInputBotton.setText("选号页面");
-            ((GameFragment) fragments.get(0)).getGame().setExchange(false);
-        } else
-        {
-            //manualInputBotton.setText("手工录入");
-            ((GameFragment) fragments.get(0)).getGame().setExchange(true);
+        if(fragments.get(0) instanceof  GameFragment){
+            //true 显示选号页面  false 显示录入
+            if (((GameFragment) fragments.get(0)).getGame().isExchange())
+            {
+                //manualInputBotton.setText("选号页面");
+                ((GameFragment) fragments.get(0)).getGame().setExchange(false);
+            } else
+            {
+                //manualInputBotton.setText("手工录入");
+                ((GameFragment) fragments.get(0)).getGame().setExchange(true);
+            }
+            ((GameFragment) fragments.get(0)).cutover();
+
+        }else if(fragments.get(0) instanceof  GameLhcFragment){
+            //true 显示选号页面  false 显示录入
+            if (((GameLhcFragment) fragments.get(0)).getLhcGame().isExchange())
+            {
+                //manualInputBotton.setText("选号页面");
+                ((GameLhcFragment) fragments.get(0)).getLhcGame().setExchange(false);
+            } else
+            {
+                //manualInputBotton.setText("手工录入");
+                ((GameLhcFragment) fragments.get(0)).getLhcGame().setExchange(true);
+            }
+            ((GameLhcFragment) fragments.get(0)).cutover();
         }
-        ((GameFragment) fragments.get(0)).cutover();
+
     }
     
     

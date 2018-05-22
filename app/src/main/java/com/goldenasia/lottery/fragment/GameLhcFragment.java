@@ -1,5 +1,6 @@
 package com.goldenasia.lottery.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -87,7 +89,7 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener
     
     private ShoppingCart shoppingCart;
     private int prizeMode = -1;
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState)
@@ -474,8 +476,13 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener
         lhcGame.setOnSelectedListener(this);
         loadWebViewIfNeed();
         initPrizes();
+        if (lhcGame.isSupportInput()) {  //支持手机录入
+            lhcGame.onManualInput(lottery, manualinputLayout);
+        } else {
+            lhcGame.destroyInput();
+        }
     }
-    
+
     @Override
     public void onChanged(Game game)
     {
@@ -518,6 +525,35 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener
             }
             //返回处理结果
             return retList;
+        }
+    }
+
+    public void cutover() {
+        if (lhcGame != null) {
+            lhcGame.onClearPick(lhcGame);
+            if (lhcGame.isSupportInput() && !lhcGame.isExchange()) {
+                pickGameLayout.setVisibility(View.GONE);
+                manualinputLayout.setVisibility(View.VISIBLE);
+                pickRandom.setVisibility(View.GONE);
+                pickClear.setVisibility(View.VISIBLE);
+                lhcGame.setOnManualEntryListener((int note) ->
+                {
+                    if (pickNotice != null)
+                        pickNotice.setText(String.format("共%d注", note));
+                    if (note > 0) {
+                        chooseDoneButton.setEnabled(note > 0);
+                    } else {
+                        chooseDoneButton.setEnabled(!shoppingCart.isEmpty());
+                    }
+                });
+            } else {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(manualinputLayout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                pickGameLayout.setVisibility(View.VISIBLE);
+                manualinputLayout.setVisibility(View.GONE);
+                /*if (lottery.getLotteryId() != 27)
+                    pickRandom.setVisibility(View.VISIBLE);*/
+            }
         }
     }
 }
