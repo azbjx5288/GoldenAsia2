@@ -474,6 +474,7 @@ public class GameLhcFragment extends BaseFragment implements OnSelectedListener
         }
         lhcGame.inflate(pickGameLayout);
         lhcGame.setOnSelectedListener(this);
+        cutover();
         loadWebViewIfNeed();
         initPrizes();
         if (lhcGame.isSupportInput()) {  //支持手机录入

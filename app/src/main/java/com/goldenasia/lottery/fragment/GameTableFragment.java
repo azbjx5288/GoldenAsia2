@@ -366,6 +366,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             menuController.addPreference(method);
             saveMethod2Xml(method);
             saveRegularMethods(method);
+            gameLhcFragment.getLhcGame().setExchange(true);
         }
         menuController.setCurrentMethod(method);
         titleView.setText(method.getCname());
