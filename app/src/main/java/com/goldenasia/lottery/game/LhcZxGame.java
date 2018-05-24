@@ -17,6 +17,7 @@ import com.goldenasia.lottery.pattern.OnAddListner;
 import com.goldenasia.lottery.view.LhcNumberGroupView;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * 六合彩直选玩法
@@ -57,6 +58,15 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
         for (LhcPickNumber pickNumber : game.pickNumbers)
             pickNumber.onClearPick();
         game.notifyListener();
+        if (manualInputView != null)
+        {
+            manualInputView.getInputEditText().setText("");
+            setSingleNum(0);
+            if (onManualEntryListener != null)
+            {
+                onManualEntryListener.onManualEntry(0);
+            }
+        }
     }
     
     
@@ -787,7 +797,12 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
                     ArrayList<String> codeArray = new ArrayList<>();
                     for (int i =0,size= chooseArray.size(); i<size; i++) {
                         StringBuilder codeBuilder = new StringBuilder();
-                        int chooseInt=Integer.parseInt(chooseArray.get(i)[0]);
+                        int chooseInt=0;
+                        try {
+                            chooseInt=Integer.parseInt(chooseArray.get(i)[0]);
+                        } catch (NumberFormatException e) {
+                            return;
+                        }
                         codeBuilder.append(chooseInt);
                         codeArray.add(codeBuilder.toString());
                     }

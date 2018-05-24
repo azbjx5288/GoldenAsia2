@@ -95,6 +95,11 @@ public class ManualInputView {
 
         String hintStr = "";
         switch (lottery.getLotteryType()) {
+            case 3://六合彩
+                hintStr = "请把您的号码复制或输入到文本框中。\n" +
+                        "每注号码之间用 空格 逗号[,] 分号[;]   竖线[|] 或者换行符 隔开。 \n" +
+                        "范例：1 2 3 ";
+                break;
             case 1://时时彩
             case 4://福彩3D
                 String colss="";
