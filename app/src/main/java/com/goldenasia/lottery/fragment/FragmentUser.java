@@ -1,29 +1,41 @@
 package com.goldenasia.lottery.fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.base.net.JsonString;
 import com.goldenasia.lottery.base.net.RestCallback;
 import com.goldenasia.lottery.base.net.RestRequest;
 import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.LogoutCommand;
 import com.goldenasia.lottery.data.LowerMemberCommand;
 import com.goldenasia.lottery.data.LowerMemberList;
+import com.goldenasia.lottery.data.ServiceSystemBean;
+import com.goldenasia.lottery.data.ServiceSystemCommand;
 import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.data.UserInfoCommand;
 import com.goldenasia.lottery.db.DBHelper;
@@ -32,7 +44,14 @@ import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.VersionChecker;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -54,6 +73,10 @@ public class FragmentUser extends BaseFragment
     private static final int ID_USER_INFO = 2;
     
     private static final int ID_LOWER_MEMBER = 3;
+
+    private static final int SERVICE_SYSTEM = 4;
+
+    private  final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 6;
     
     @BindView(R.id.user_name)
     TextView userName;
@@ -154,7 +177,88 @@ public class FragmentUser extends BaseFragment
                 ID_LOWER_MEMBER, this);
         restRequest.execute();
     }
-    
+
+    private void showServiceDialog( List<ServiceSystemBean> list){
+        View view= LayoutInflater.from(getActivity()).inflate(R.layout.service_dialog, null);
+        ListView listView=view.findViewById(R.id.list_view);
+        ImageView exit_pressed=view.findViewById(R.id.exit_pressed);
+        List<Map<String, String>> listMap=new ArrayList<Map<String, String>>();
+        // key值数组，适配器通过key值取value，与列表项组件一一对应
+        String[] from = { "name"};
+        for(int i=0;i<list.size();i++){
+            Map<String, String> map=new HashMap<>();
+            map.put("name",list.get(i).getName());
+            listMap.add(map);
+        }
+        // 列表项组件Id 数组
+        int[] to = { R.id.button_name };
+        final SimpleAdapter adapter = new SimpleAdapter(getActivity(), listMap, R.layout.service_dialog_item, from, to);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("url", list.get(arg2).getUrl());
+                launchFragment(ServiceCenterFragment2.class, bundle);
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        final AlertDialog dialog = builder.create();
+
+        dialog.setView(view, 0, 0, 0, 0);// 设置边距为0,保证在2.x的版本上运行没问题
+
+        exit_pressed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    //===================6.0运行时权限需要添加的 start==========================================================//
+    private void contactCustomerService(){
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.CAMERA)
+                        == PackageManager.PERMISSION_GRANTED)
+        {
+            executeCommand(new ServiceSystemCommand(), restCallback,SERVICE_SYSTEM);
+        }else {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        if (requestCode == MY_PERMISSIONS_REQUEST_CALL_PHONE)
+        {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1] == PackageManager.PERMISSION_GRANTED)
+            {
+                executeCommand(new ServiceSystemCommand(), restCallback,
+                        SERVICE_SYSTEM);
+            } else
+            {
+                Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    //===================6.0运行时权限需要添加的 end==========================================================//
+
+
     @OnClick({R.id.service_center, R.id.settings, R.id.withdraw_deposit, R.id.transfer, R.id.notice, R.id.recharge, R
             .id.feedback, R.id.station_letter, R.id.lower_member_manager, R.id.add_member_ll, R.id.add_member_link, R
             .id.member_report,R.id.member_order, R.id.logout, R.id.version,})
@@ -163,7 +267,8 @@ public class FragmentUser extends BaseFragment
         switch (v.getId())
         {
             case R.id.service_center://客服
-                launchFragment(ServiceCenterFragment.class);
+                contactCustomerService();
+
                 break;
             case R.id.settings://设置
                 launchFragment(UserSettingsFragment.class);
@@ -312,6 +417,23 @@ public class FragmentUser extends BaseFragment
             } else if (request.getId() == ID_LOGOUT)
             {
                 handleExit();
+            }else  if(request.getId() ==SERVICE_SYSTEM){
+                String jsonString= ((JsonString) response.getData()).getJson();
+                List<ServiceSystemBean> list = new ArrayList<ServiceSystemBean>();
+                try {
+                    JSONArray jsonArray = new JSONArray(jsonString);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        ServiceSystemBean serviceSystemBean = new ServiceSystemBean();
+                        serviceSystemBean.setName(jsonObject.getString("name"));
+                        serviceSystemBean.setUrl(jsonObject.getString("url"));
+                        list.add(serviceSystemBean);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                showServiceDialog(list);
             }
             return true;
         }
