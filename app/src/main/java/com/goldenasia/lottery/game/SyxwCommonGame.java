@@ -171,7 +171,7 @@ public class SyxwCommonGame extends Game {
 
         View view1 = createDefaultPickLayout(game.getTopLayout());
         tuoNum = new PickNumber(view1, "拖码", tuoSize);
-        tuoNum.setColumnAreaHideOrShow(false);
+//        tuoNum.setColumnAreaHideOrShow(false);
         game.addPickNumber(tuoNum);
         tuoNumView = tuoNum.getNumberGroupView();
         views[1] = view1;
@@ -197,13 +197,23 @@ public class SyxwCommonGame extends Game {
         tuoNum.setChooseItemClickListener(new NumberGroupView.OnChooseItemClickListener() {
             @Override
             public void onChooseItemClick() {
-                int lastPick = tuoNumView.getLastPick();
-                if (danNumView.getPickList().contains(lastPick) && tuoNumView.getCheckedArray().get(lastPick)) {
-                    danNumView.getCheckedArray().put(lastPick, false);
-                    danNumView.getPickList().remove(Integer.valueOf(lastPick));
-                    danNumView.invalidate();
+//                int lastPick = tuoNumView.getLastPick();
+//                if (danNumView.getPickList().contains(lastPick) && tuoNumView.getCheckedArray().get(lastPick)) {
+//                    danNumView.getCheckedArray().put(lastPick, false);
+//                    danNumView.getPickList().remove(Integer.valueOf(lastPick));
+//                    danNumView.invalidate();
+//                }
+//                game.notifyListener();
+
+                /*对 全大小奇偶反清”选择的处理 start*/
+                ArrayList<Integer>  checkedNumber= tuoNumView.getCheckedNumber();
+                for(int j=0;j<checkedNumber.size();j++){
+                    danNumView.getCheckedArray().put(checkedNumber.get(j), false);
+                    danNumView.getPickList().remove(Integer.valueOf(checkedNumber.get(j)));
                 }
+                danNumView.invalidate();
                 game.notifyListener();
+                 /*对 全大小奇偶反清”选择的处理 end*/
             }
         });
 
@@ -235,7 +245,7 @@ public class SyxwCommonGame extends Game {
         for(int  i=0;i<name.length;i++){
             View view = createDefaultPickLayout(game.getTopLayout());
             PickNumber num= new PickNumber(view, name[i], danSize);
-            num.setColumnAreaHideOrShow(false);
+//            num.setColumnAreaHideOrShow(false);
             game.addPickNumber(num);
 
             NumberGroupView numView= num.getNumberGroupView();
@@ -247,15 +257,20 @@ public class SyxwCommonGame extends Game {
             num.setChooseItemClickListener(new NumberGroupView.OnChooseItemClickListener() {
                 @Override
                 public void onChooseItemClick() {
-                    int lastPick = numView.getLastPick();
-                    int otherContainsPosition=isContainsLastPick(numViewList,lastPick,postion);
-                    if (otherContainsPosition!=-1) {
-                        NumberGroupView otherNumView=numViewList.get(otherContainsPosition);
-                        otherNumView.getCheckedArray().put(lastPick, false);
-                        otherNumView.getPickList().remove(Integer.valueOf(lastPick));
-                        otherNumView.invalidate();
+                    /*对 全大小奇偶反清”选择的处理 start*/
+                    ArrayList<Integer>  checkedNumber= numView.getCheckedNumber();
+                    for(int  i=0;i<name.length;i++){
+                        NumberGroupView otherNumView=numViewList.get(i);
+                        if (i!=postion) {
+                            for(int j=0;j<checkedNumber.size();j++){
+                                otherNumView.getCheckedArray().put(checkedNumber.get(j), false);
+                                otherNumView.getPickList().remove(Integer.valueOf(checkedNumber.get(j)));
+                            }
+                            otherNumView.invalidate();
+                        }
                     }
                     game.notifyListener();
+                     /*对 全大小奇偶反清”选择的处理 end*/
                 }
             });
         }
@@ -338,7 +353,7 @@ public class SyxwCommonGame extends Game {
 
     //前二直选
     public static void SDQEZX(Game game) {
-        createPicklayout(game, new String[]{"第一位", "第二位"},ConstantInformation.NO_YILOU_AND_LENGRE);
+        createPicklayout(game, new String[]{"第一位", "第二位"},"SDQEZX");
         game.setSupportInput(true);
     }
 
@@ -650,6 +665,8 @@ public class SyxwCommonGame extends Game {
         if( ConstantInformation.HISTORY_CODE_LIST.size()==0
                 ||gameMethod==ConstantInformation.NO_YILOU_AND_LENGRE){//没有冷热和遗漏的情况
             ConstantInformation.YI_LOU_IS_SUPPORTED=false;
+            ConstantInformation.YI_LOU_IS_SHOW=false;
+            ConstantInformation.LENG_RE_IS_SHOW=false;
 
             for (View view : views) {
                 topLayout.addView(view);

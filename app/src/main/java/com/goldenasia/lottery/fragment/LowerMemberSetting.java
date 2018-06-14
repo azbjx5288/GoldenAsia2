@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -33,6 +32,7 @@ import com.goldenasia.lottery.data.LowerMemberCommand;
 import com.goldenasia.lottery.data.LowerMemberList;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.material.Register;
 import com.goldenasia.lottery.util.ToastUtils;
 import com.goldenasia.lottery.view.adapter.LowerMemberAdapter;
 
@@ -41,13 +41,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * Created by ACE-PC on 2016/5/2.
  */
-public class LowerMemberSetting extends BaseFragment {
+public class LowerMemberSetting extends BaseFragment implements LowerMemberAdapter.OnManageListner
+{
     @BindView(R.id.lower_search)
     EditText lowerSearch;
     @BindView(R.id.list)
@@ -67,12 +67,20 @@ public class LowerMemberSetting extends BaseFragment {
     private boolean isLoading;
     private List items = new ArrayList();
     private LowerMemberAdapter adapter;
-
+    private Register register;
     private String username;
+    private boolean isHiddenEditImage=false;
 
     public static void launch(BaseFragment fragment,  String username) {
         Bundle bundle = new Bundle();
         bundle.putString("username", username);
+        FragmentLauncher.launch(fragment.getActivity(), LowerMemberSetting.class, bundle);
+    }
+
+    public static void launch(BaseFragment fragment,  String username, Boolean isHiddenEditImage) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putBoolean("isHiddenEditImage",isHiddenEditImage);
         FragmentLauncher.launch(fragment.getActivity(), LowerMemberSetting.class, bundle);
     }
 
@@ -85,7 +93,9 @@ public class LowerMemberSetting extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        register = new Register();
         username=getArguments().getString("username");
+        isHiddenEditImage=getArguments().getBoolean("isHiddenEditImage");
         if(TextUtils.isEmpty(username)) {
             username = GoldenAsiaApp.getUserCentre().getUserName();
         }
@@ -94,7 +104,8 @@ public class LowerMemberSetting extends BaseFragment {
         refreshLayout.setOnRefreshListener(() -> lowerLoad(false, FIRST_PAGE));
         View headerView = LayoutInflater.from(getContext()).inflate(R.layout.lower_member_item_title, null, false);
         list.addHeaderView(headerView);
-        adapter = new LowerMemberAdapter(items);
+        adapter = new LowerMemberAdapter(items,isHiddenEditImage);
+        adapter.setOnManageListner(this);
         list.setAdapter(adapter);
         final int endTrigger = 2; // load more content 2 items before the end
         list.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -117,9 +128,9 @@ public class LowerMemberSetting extends BaseFragment {
         );*/
 
         //该用户下的下级
-        list.setOnItemClickListener((AdapterView<?> parent, View v, int position, long id) ->
+        /*list.setOnItemClickListener((AdapterView<?> parent, View v, int position, long id) ->
                 LowerMemberSetting.launch(LowerMemberSetting.this,((LowerMember)items.get(position-1)).getUsername())
-        );
+        );*/
 
         lowerLoad(true, FIRST_PAGE);
 
@@ -297,5 +308,24 @@ public class LowerMemberSetting extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+    
+    @Override
+    public void onEdit(int position)
+    {
+        if (items != null && items.size() > position&&items.get(position) instanceof LowerMember)
+        {
+            Bundle bundle = new Bundle();
+            bundle.putString("openType","edit");
+            bundle.putInt("userID",((LowerMember) items.get(position)).getUserId());
+            launchFragmentForResult(LowerRebateSetting.class, bundle, 1);
+        }
+    }
+    
+    @Override
+    public void onDetal(int position)
+    {
+        //该用户下的下级
+        LowerMemberSetting.launch(LowerMemberSetting.this,((LowerMember)items.get(position)).getUsername(),true);
     }
 }

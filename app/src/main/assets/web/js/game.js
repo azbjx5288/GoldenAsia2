@@ -212,6 +212,7 @@ function isLegalCode(codes) {
                     break;
                 case 'SXZXHZ':  //低频3D特有 组选和值
                 case 'QSZXHZ':  //低频P3P5特有 组选和值
+                case 'ZSZXHZ':
                     parts = codes[0].split('_');
                     $.each(parts, function(k, v) {
                         singleNum += helper.SXZXHZ[v];
@@ -453,6 +454,11 @@ function isLegalCode(codes) {
                 case 'SJFC':    //趣味玩法,四季发财
                 case 'TMDXDS': //特码大小单双
                 case 'ZTHZDXDS':
+                case "HZDS":
+                case "HZ810":
+                case "HZWX":
+                case "KNJOH":
+                case 'KNSZX':
                     singleNum = codes[0].length;    //传来的数据模式 13567
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
@@ -576,12 +582,12 @@ function isLegalCode(codes) {
                     singleNum = codes[0].length;
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
-             case 'PKBX':  //包选
-             case "PKTH"://同花  PKTH
-             case "PKSZ"://顺子 PKSZ
-             case "PKTHS"://同花顺 PKTHS
-             case "PKBZ"://豹子 PKBZ
-             case "PKDZ"://对子 PKDZ
+                 case 'PKBX':  //包选
+                 case "PKTH"://同花  PKTH
+                 case "PKSZ"://顺子 PKSZ
+                 case "PKTHS"://同花顺 PKTHS
+                 case "PKBZ"://豹子 PKBZ
+                 case "PKDZ"://对子 PKDZ
                     singleNum = codes[0].length;
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
@@ -914,6 +920,58 @@ function isLegalCode(codes) {
                     singleNum =getLeXuan5(codes);
                     isDup = singleNum > 1 ? 1 : 0;
                     break;
+
+                //快乐8
+                case 'KNRX1':
+                    var firstLength = codes[0]=='' ? 0 : codes[0].split('_').length;
+                    var secondLength = codes[1]=='' ? 0 : codes[1].split('_').length;
+                    singleNum=firstLength+secondLength;
+                    isDup = singleNum > 1 ? 1 : 0;
+                    break;
+                case 'KNRX2':
+                    var firstLength = codes[0]=='' ? 0 : codes[0].split('_').length;
+                    var secondLength = codes[1]=='' ? 0 : codes[1].split('_').length;
+                    singleNum=C(firstLength+secondLength,2);
+                    isDup = singleNum > 1 ? 1 : 0;
+                    break;
+                case 'KNRX3':
+                    var firstLength = codes[0]=='' ? 0 : codes[0].split('_').length;
+                    var secondLength = codes[1]=='' ? 0 : codes[1].split('_').length;
+                    singleNum=C(firstLength+secondLength,3);
+                    isDup = singleNum > 1 ? 1 : 0;
+                    break;
+                case 'KNRX4':
+                    var firstLength = codes[0]=='' ? 0 : codes[0].split('_').length;
+                    var secondLength = codes[1]=='' ? 0 : codes[1].split('_').length;
+                    singleNum=C(firstLength+secondLength,4);
+                    isDup = singleNum > 1 ? 1 : 0;
+                    break;
+                case 'KNRX5':
+                    var firstLength = codes[0]=='' ? 0 : codes[0].split('_').length;
+                    var secondLength = codes[1]=='' ? 0 : codes[1].split('_').length;
+                    singleNum=C(firstLength+secondLength,5);
+                    isDup = singleNum > 1 ? 1 : 0;
+                    break;
+                case 'KNRX6':
+                    var firstLength = codes[0]=='' ? 0 : codes[0].split('_').length;
+                    var secondLength = codes[1]=='' ? 0 : codes[1].split('_').length;
+                    singleNum=C(firstLength+secondLength,6);
+                    isDup = singleNum > 1 ? 1 : 0;
+                    break;
+                case 'KNRX7':
+                    var firstLength = codes[0]=='' ? 0 : codes[0].split('_').length;
+                    var secondLength = codes[1]=='' ? 0 : codes[1].split('_').length;
+                    singleNum=C(firstLength+secondLength,7);
+                    isDup = singleNum > 1 ? 1 : 0;
+                    break;
+                case 'QEZXHZ':
+                case 'EXZXHZ':
+                    parts = codes[0].split('_');
+                    $.each(parts, function(k, v) {
+                        singleNum += helper.EXZXHZ[v];
+                    });
+                    isDup = parts.length > 1 ? 1 : 0;
+                    break;
                default:
                    throw "unknown method2 " + ps.curMethod.name;
                    break;
@@ -1240,6 +1298,25 @@ var helper = {
                 43: 15,
                 44: 5,
                 45: 1
+            },
+            EXZXHZ:{
+                1: 1,
+                2: 1,
+                3: 2,
+                4: 2,
+                5: 3,
+                6: 3,
+                7: 4,
+                8: 4,
+                9: 5,
+                10: 4,
+                11: 4,
+                12: 3,
+                13: 3,
+                14: 2,
+                15: 2,
+                16: 1,
+                17: 1
             },
             pokerNumMaps: {
                 A:1,

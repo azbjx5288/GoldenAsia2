@@ -108,6 +108,7 @@ public class ServiceCenterFragment2 extends BaseFragment {
         mWebSettings.setAllowContentAccess(true);
 
         webView.loadUrl(url);
+        webView.setWebContentsDebuggingEnabled(true);
         webView.setWebChromeClient(mWebChromeClient);
 
         webView.setWebViewClient(new WebViewClient() {

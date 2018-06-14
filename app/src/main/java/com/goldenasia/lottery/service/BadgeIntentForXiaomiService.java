@@ -37,17 +37,19 @@ public class BadgeIntentForXiaomiService extends IntentService {
                 return;
             }
 
-            mNotificationManager.cancel(notificationId);
-            notificationId++;
+            if(mNotificationManager!=null) {
+                mNotificationManager.cancel(notificationId);
+                notificationId++;
 
-            Notification.Builder builder = new Notification.Builder(getApplicationContext())
-                .setContentTitle("收件箱有新消息")
-                .setContentText("收件箱有"+badgeCount+"条新消息，注意查收!!!!")
-                .setSmallIcon(R.drawable.ic_launcher);
-            Notification notification = builder.build();
-            ShortcutBadger.applyNotification(getApplicationContext(), notification, badgeCount);
-            if(badgeCount!=0) {
-                mNotificationManager.notify(notificationId, notification);
+                Notification.Builder builder = new Notification.Builder(getApplicationContext())
+                        .setContentTitle("收件箱有新消息")
+                        .setContentText("收件箱有" + badgeCount + "条新消息，注意查收!!!!")
+                        .setSmallIcon(R.drawable.ic_launcher);
+                Notification notification = builder.build();
+                ShortcutBadger.applyNotification(getApplicationContext(), notification, badgeCount);
+                if (badgeCount != 0) {
+                    mNotificationManager.notify(notificationId, notification);
+                }
             }
         }
     }

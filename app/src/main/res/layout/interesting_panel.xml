@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="110dp"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/pad_lr"
+              android:paddingRight="@dimen/pad_lr">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:gravity="center"
+                  android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/up"
+            style="@style/checkbox_digits"
+            android:text="上"/>
+        <CheckBox
+            android:id="@+id/down"
+            style="@style/checkbox_digits"
+            android:text="下"/>
+        <CheckBox
+            android:id="@+id/odd"
+            style="@style/checkbox_digits"
+            android:text="奇"/>
+        <CheckBox
+            android:id="@+id/even"
+            style="@style/checkbox_digits"
+            android:text="偶"/>
+        <CheckBox
+            android:id="@+id/clear"
+            style="@style/checkbox_digits"
+            android:text="清"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:gravity="center"
+                  android:orientation="horizontal">
+    <CheckBox
+        android:id="@+id/up_odd"
+        style="@style/checkbox_digits"
+        android:text="上●单"/>
+    <CheckBox
+        android:id="@+id/up_even"
+        style="@style/checkbox_digits"
+        android:text="上●双"/>
+    <CheckBox
+        android:id="@+id/down_odd"
+        style="@style/checkbox_digits"
+        android:text="下●单"/>
+    <CheckBox
+        android:id="@+id/down_even"
+        style="@style/checkbox_digits"
+        android:text="下●双"/>
+    </LinearLayout>
+</LinearLayout>

@@ -91,6 +91,12 @@ public class GameMethodInfoFragment extends BaseFragment {
             case 14://山东快乐扑克
                 view=inflater.inflate(R.layout.fragment_game_method_info_kuailepuke, container, false);//山东快乐扑克 玩法说明
                 break;
+            case 48:
+                view=inflater.inflate(R.layout.fragment_game_method_info_kl8, container, false);
+                break;
+            case 49:
+                view=inflater.inflate(R.layout.fragment_game_method_info_tencent_ffc, container, false);
+                break;
             default:
                 break;
         }

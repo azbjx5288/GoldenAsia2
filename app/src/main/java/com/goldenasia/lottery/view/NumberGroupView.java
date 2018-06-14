@@ -368,24 +368,28 @@ public class NumberGroupView extends View{
 
             /*添加遗漏和冷热具体数据start*/
             int  yiLouHeight=YILOU_HEIGHT;
+            Rect rect = new Rect();
             if(ConstantInformation.YI_LOU_IS_SHOW&&mYiLouList.size()>0) {
                 float offTextYiLouX = (itemSize - minPaint.measureText(mYiLouList.get(i))) / 2;
+                minPaint.getTextBounds(mYiLouList.get(i), 0, mYiLouList.get(i).length(), rect);
+                int height = rect.height();//文字高
                 if(mYiLouList.get(i).equals(String.valueOf(MAX_YILOU))){
-                    canvas.drawText(mYiLouList.get(i), offTextYiLouX,  itemSize+YILOU_HEIGHT, minPaint);
+                    canvas.drawText(mYiLouList.get(i), offTextYiLouX,  itemSize+YILOU_HEIGHT - height / 2, minPaint);
                 }else{
-                    canvas.drawText(mYiLouList.get(i), offTextYiLouX,  itemSize+YILOU_HEIGHT, normalPaint);
+                    canvas.drawText(mYiLouList.get(i), offTextYiLouX,  itemSize+YILOU_HEIGHT - height / 2, normalPaint);
                 }
                 yiLouHeight+=YILOU_HEIGHT; 
             }
-			
             if(ConstantInformation.LENG_RE_IS_SHOW&&mLengReList.size()>0) {
                 float offTextLengReX = (itemSize - minPaint.measureText(mLengReList.get(i))) / 2;
+                minPaint.getTextBounds(mLengReList.get(i), 0, mLengReList.get(i).length(), rect);
+                int height = rect.height();//文字高
                 if(mLengReList.get(i).equals(String.valueOf(MAX_LENGRE))){
-                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight, maxPaint);
+                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight - height / 2, maxPaint);
                 }else if(mLengReList.get(i).equals(String.valueOf(MIN_LENGRE))){
-                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight, minPaint);
+                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight - height/ 2, minPaint);
                 }else{
-                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight, normalPaint);
+                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight - height / 2, normalPaint);
                 }
             }
             /*添加遗漏和冷热具体数据end*/

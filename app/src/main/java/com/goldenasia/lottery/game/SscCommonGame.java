@@ -362,6 +362,8 @@ public class SscCommonGame extends Game {
         if( ConstantInformation.HISTORY_CODE_LIST.size()==0
                 ||gameMethod==ConstantInformation.NO_YILOU_AND_LENGRE){//没有冷热和遗漏的情况
             ConstantInformation.YI_LOU_IS_SUPPORTED=false;
+            ConstantInformation.YI_LOU_IS_SHOW=false;
+            ConstantInformation.LENG_RE_IS_SHOW=false;
 
             for (View view : views) {
                 topLayout.addView(view);

@@ -39,6 +39,16 @@
         android:text="x 注"
         android:textColor="@color/text_dark" />
 
+<!--    <ImageButton
+        android:id="@+id/shopping_item_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:src="@drawable/modify" />-->
+
     <ImageButton
         android:id="@+id/shopping_item_delete"
         android:layout_width="wrap_content"

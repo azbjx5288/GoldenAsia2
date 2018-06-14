@@ -220,6 +220,7 @@ public class TitleTimingSalesView {
                 case 11:
                 case 13:
                 case 16:
+                case 49:
                     interval = TRACK_INTERVAL_SHORT;
                     break;
                 default:

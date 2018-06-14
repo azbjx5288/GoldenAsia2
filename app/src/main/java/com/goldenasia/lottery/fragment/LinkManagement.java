@@ -124,7 +124,7 @@ public class LinkManagement extends BaseFragment
                 restCallback, GET_LINKS, this);
         restRequest.execute();
     }
-    
+
     private RestCallback restCallback = new RestCallback()
     {
         @Override

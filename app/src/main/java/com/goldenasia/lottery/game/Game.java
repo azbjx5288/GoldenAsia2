@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.component.DigitCheckBoxPanel;
+import com.goldenasia.lottery.component.InterestingPanel;
 import com.goldenasia.lottery.component.RankCheckBoxPanel;
 import com.goldenasia.lottery.data.Lottery;
 import com.goldenasia.lottery.data.Method;
@@ -25,7 +26,9 @@ import java.util.Random;
  * Created by Alashi on 2016/2/16.
  */
 public abstract class Game implements NumberGroupView.OnChooseItemClickListener, DigitCheckBoxPanel
-        .OnChooseDigitClickListener, RankCheckBoxPanel.OnChooseRankClickListener {
+        .OnChooseDigitClickListener, RankCheckBoxPanel.OnChooseRankClickListener, InterestingPanel
+        .OnChooseModeClickListener
+{
     protected ViewGroup topLayout;
     protected ViewGroup inputViewGroup;
     protected OnSelectedListener onSelectedListener;
@@ -41,267 +44,474 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
     private List<String> submitArray = new ArrayList<>();
     private int column;//开奖位数
     private boolean hasRandom;
-
+    
     protected boolean isDigital;
     protected DigitCheckBoxPanel digitCheckBoxPanel;
     protected SparseBooleanArray digits = new SparseBooleanArray();
-
+    
     protected boolean isRanking;
     protected RankCheckBoxPanel rankCheckBoxPanel;
     protected SparseBooleanArray ranks = new SparseBooleanArray();
-
+    
+    protected boolean isInterested;
+    protected InterestingPanel interestingPanel;
+    protected int interestingSeletion = -1;
+    
     /*手动录入输入的数字 为了解决进入购物车界面 点击 再选一注  在SSCCommonGame 数据没有清空 将数据 移到父类中*/
-    protected ArrayList<String[]> mChooseArray=null;
-
-    public boolean isHasRandom() {
+    protected ArrayList<String[]> mChooseArray = null;
+    
+    public boolean isHasRandom()
+    {
         return hasRandom;
     }
-
-    public void setHasRandom(boolean hasRandom) {
+    
+    public void setHasRandom(boolean hasRandom)
+    {
         this.hasRandom = hasRandom;
     }
-
-    public boolean isDigital() {
+    
+    public boolean isDigital()
+    {
         return isDigital;
     }
-
-    public void setDigital(boolean digital) {
+    
+    public void setDigital(boolean digital)
+    {
         this.isDigital = digital;
     }
-
-    public SparseBooleanArray getDigits() {
+    
+    public SparseBooleanArray getDigits()
+    {
         return digits;
     }
-
-    public void setDigits(SparseBooleanArray digits) {
+    
+    public void setDigits(SparseBooleanArray digits)
+    {
         this.digits = digits;
     }
-
-    public boolean isRanking() {
+    
+    public boolean isRanking()
+    {
         return isRanking;
     }
-
-    public void setRanking(boolean ranking) {
+    
+    public void setRanking(boolean ranking)
+    {
         isRanking = ranking;
     }
-
-    public SparseBooleanArray getRanks() {
+    
+    public SparseBooleanArray getRanks()
+    {
         return ranks;
     }
-
-    public void setRanks(SparseBooleanArray ranks) {
+    
+    public void setRanks(SparseBooleanArray ranks)
+    {
         this.ranks = ranks;
     }
-
-    public Game(Method method) {
+    
+    public Game(Method method)
+    {
         this.method = method;
     }
-
-    public Method getMethod() {
+    
+    public Method getMethod()
+    {
         return method;
     }
-
-    public void setMethod(Method method) {
+    
+    public void setMethod(Method method)
+    {
         this.method = method;
     }
-
-    public final void inflate(ViewGroup container) {
+    
+    public final void inflate(ViewGroup container)
+    {
         topLayout = container;
         onInflate();
     }
-
-    public final void setOnSelectedListener(OnSelectedListener listener) {
+    
+    public final void setOnSelectedListener(OnSelectedListener listener)
+    {
         this.onSelectedListener = listener;
     }
-
-    protected final void notifyListener() {
-        if (onSelectedListener != null) {
+    
+    protected final void notifyListener()
+    {
+        if (onSelectedListener != null)
+        {
             onSelectedListener.onChanged(this);
         }
     }
-
-    public final void destroy() {
+    
+    public final void destroy()
+    {
         topLayout.removeAllViews();
         onSelectedListener = null;
         onDestroy();
         destroyInput();
     }
-
-    public final void destroyInput() {
-        if (inputViewGroup != null) {
+    
+    public final void destroyInput()
+    {
+        if (inputViewGroup != null)
+        {
             inputViewGroup.removeAllViews();
         }
     }
-
-    public void onDestroy() {
+    
+    public void onDestroy()
+    {
         clearDigits();
         pickNumbers.clear();
         manualInputView = null;
     }
-
-    public final void addPickNumber(PickNumber pickNumber) {
+    
+    public final void addPickNumber(PickNumber pickNumber)
+    {
         pickNumbers.add(pickNumber);
         pickNumber.setChooseItemClickListener(this);
     }
-
-    public final void initDigitPanel(View view,int digit) {
-        digitCheckBoxPanel = new DigitCheckBoxPanel(getTopLayout().getContext(), view.findViewById(R.id.digit),digit);
+    
+    public final void initDigitPanel(View view, int digit)
+    {
+        digitCheckBoxPanel = new DigitCheckBoxPanel(getTopLayout().getContext(), view.findViewById(R.id.digit), digit);
         digitCheckBoxPanel.setOnChooseDigitClickListener(this);
         digitCheckBoxPanel.initCheck();
     }
-
-    public final void initRankPanel(View view) {
+    
+    public final void initRankPanel(View view)
+    {
         rankCheckBoxPanel = new RankCheckBoxPanel(getTopLayout().getContext(), view.findViewById(R.id.rank));
         rankCheckBoxPanel.setOnChooseRankClickListener(this);
         rankCheckBoxPanel.initCheck();
     }
-
-    public final void addManualInputView(ManualInputView manualInputView) {
+    
+    public void initInterestingPanel(View view)
+    {
+        interestingPanel = new InterestingPanel(getTopLayout().getContext(), view.findViewById(R.id.interesting));
+        interestingPanel.setOnChooseModeClickListener(this);
+        //interestingPanel.initCheck();
+    }
+    
+    public final void addManualInputView(ManualInputView manualInputView)
+    {
         this.manualInputView = manualInputView;
     }
-
-    public String getWebViewCode() {
+    
+    public String getWebViewCode()
+    {
         JsonArray jsonArray = new JsonArray();
-        for (PickNumber pickNumber : pickNumbers) {
+        for (PickNumber pickNumber : pickNumbers)
+        {
             jsonArray.add(transform(pickNumber.getCheckedNumber(), false, true));
         }
         return jsonArray.toString();
     }
-
-    public String getSubmitCodes() {
+    
+    public String getSubmitCodes()
+    {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0, size = pickNumbers.size(); i < size; i++) {
+        for (int i = 0, size = pickNumbers.size(); i < size; i++)
+        {
             builder.append(transform(pickNumbers.get(i).getCheckedNumber(), false, false));
-            if (i != size - 1) {
+            if (i != size - 1)
+            {
                 builder.append(",");
             }
         }
         return builder.toString();
     }
-
-    public void onRandomCodes() {
+    
+    public void onRandomCodes()
+    {
     }
-
-    public void onClearPick(Game game) {
+    
+    public void onClearPick(Game game)
+    {
         clearDigits();
         for (PickNumber pickNumber : game.pickNumbers)
             pickNumber.onClearPick();
         game.notifyListener();
-
-        if (manualInputView != null) {
+        
+        if (manualInputView != null)
+        {
             manualInputView.getInputEditText().setText("");
             setSingleNum(0);
-            if (onManualEntryListener != null) {
+            if (onManualEntryListener != null)
+            {
                 onManualEntryListener.onManualEntry(0);
-                mChooseArray=null;
+                mChooseArray = null;
             }
         }
     }
-
-    public void onManualInput(Lottery lottery, ViewGroup inputViewGroup) {
+    
+    public void onManualInput(Lottery lottery, ViewGroup inputViewGroup)
+    {
         destroyInput();
         this.lottery = lottery;
         this.inputViewGroup = inputViewGroup;
         submitArray.clear();
         onInputInflate();
     }
-
-    public void onInputInflate() {
-
+    
+    public void onInputInflate()
+    {
+    
     }
-
-    public void displayInputView() {
+    
+    public void displayInputView()
+    {
     }
-
-    public ViewGroup getTopLayout() {
+    
+    public ViewGroup getTopLayout()
+    {
         return topLayout;
     }
-
-    public ViewGroup getManualInput() {
+    
+    public ViewGroup getManualInput()
+    {
         return inputViewGroup;
     }
-
-    public int getSingleNum() {
+    
+    public int getSingleNum()
+    {
         return singleNum;
     }
-
-    public void setSingleNum(int singleNum) {
+    
+    public void setSingleNum(int singleNum)
+    {
         this.singleNum = singleNum;
     }
-
-    public boolean isDup() {
+    
+    public boolean isDup()
+    {
         return isDup;
     }
-
-    public int getColumn() {
+    
+    public int getColumn()
+    {
         return column;
     }
-
-    public void setColumn(int column) {
+    
+    public void setColumn(int column)
+    {
         this.column = column;
     }
-
-    public boolean isSupportInput() {
+    
+    public boolean isSupportInput()
+    {
         return isSupportInput;
     }
-
-    public boolean isExchange() {
+    
+    public boolean isExchange()
+    {
         return exchange;
     }
-
-    public void setExchange(boolean exchange) {
+    
+    public void setExchange(boolean exchange)
+    {
         this.exchange = exchange;
     }
-
-    public List<String> getSubmitArray() {
+    
+    public List<String> getSubmitArray()
+    {
         return submitArray;
     }
-
-    public void setSubmitArray(List<String> submitArray) {
+    
+    public void setSubmitArray(List<String> submitArray)
+    {
         this.submitArray = submitArray;
     }
-
-    public void setOnManualEntryListener(OnManualEntryListener onManualEntryListener) {
+    
+    public void setOnManualEntryListener(OnManualEntryListener onManualEntryListener)
+    {
         submitArray.clear();
         this.onManualEntryListener = onManualEntryListener;
         displayInputView();
     }
-
-    public void setSupportInput(boolean supportInput) {
+    
+    public void setSupportInput(boolean supportInput)
+    {
         isSupportInput = supportInput;
     }
-
-    public void setNumState(int singleNum, boolean isDup) {
+    
+    public void setNumState(int singleNum, boolean isDup)
+    {
         this.singleNum = singleNum;
         this.isDup = isDup;
     }
-
+    
     public abstract void onInflate();
-
+    
     /**
      * 提示调用
      */
-    public void onCustomDialog(String msg) {
+    public void onCustomDialog(String msg)
+    {
         PromptManager.showCustomDialog(topLayout.getContext(), msg);
     }
-
+    
     @Override
-    public void onChooseItemClick() {
+    public void onChooseItemClick()
+    {
         notifyListener();
     }
-
+    
     @Override
-    public void onChooseDigitClick(SparseBooleanArray digits) {
+    public void onChooseDigitClick(SparseBooleanArray digits)
+    {
         setDigits(digits);
         notifyListener();
     }
-
+    
     @Override
-    public void onChooseRankClick(SparseBooleanArray ranks) {
+    public void onChooseRankClick(SparseBooleanArray ranks)
+    {
         setRanks(ranks);
         notifyListener();
     }
-
+    
+    @Override
+    public void onChooseModeClick(int id)
+    {
+        switch (id)
+        {
+            case 1:
+                for (PickNumber pickNumber : pickNumbers)
+                {
+                    ArrayList<Integer> list = new ArrayList<>();
+                    int max = pickNumber.getNumberGroupView().getMaxNumber();
+                    int min = pickNumber.getNumberGroupView().getMinNumber();
+                    for (int i = min; i <= max; i++)
+                    {
+                        if (i < 41)
+                        {
+                            list.add(i);
+                        }
+                    }
+                    pickNumber.getNumberGroupView().setCheckNumber(list);
+                }
+                break;
+            case 2:
+                for (PickNumber pickNumber : pickNumbers)
+                {
+                    ArrayList<Integer> list = new ArrayList<>();
+                    int max = pickNumber.getNumberGroupView().getMaxNumber();
+                    int min = pickNumber.getNumberGroupView().getMinNumber();
+                    for (int i = min; i <= max; i++)
+                    {
+                        if (i > 40)
+                        {
+                            list.add(i);
+                        }
+                    }
+                    pickNumber.getNumberGroupView().setCheckNumber(list);
+                }
+                break;
+            case 3:
+                for (PickNumber pickNumber : pickNumbers)
+                {
+                    ArrayList<Integer> list = new ArrayList<>();
+                    int max = pickNumber.getNumberGroupView().getMaxNumber();
+                    int min = pickNumber.getNumberGroupView().getMinNumber();
+                    for (int i = min; i <= max; i++)
+                    {
+                        if (i % 2 != 0)
+                        {
+                            list.add(i);
+                        }
+                    }
+                    pickNumber.getNumberGroupView().setCheckNumber(list);
+                }
+                break;
+            case 4:
+                for (PickNumber pickNumber : pickNumbers)
+                {
+                    ArrayList<Integer> list = new ArrayList<>();
+                    int max = pickNumber.getNumberGroupView().getMaxNumber();
+                    int min = pickNumber.getNumberGroupView().getMinNumber();
+                    for (int i = min; i <= max; i++)
+                    {
+                        if (i % 2 == 0)
+                        {
+                            list.add(i);
+                        }
+                    }
+                    pickNumber.getNumberGroupView().setCheckNumber(list);
+                }
+                break;
+            case 5:
+                reset();
+                break;
+            case 6:
+                for (PickNumber pickNumber : pickNumbers)
+                {
+                    ArrayList<Integer> list = new ArrayList<>();
+                    int max = pickNumber.getNumberGroupView().getMaxNumber();
+                    int min = pickNumber.getNumberGroupView().getMinNumber();
+                    for (int i = min; i <= max; i++)
+                    {
+                        if (i < 41 && i % 2 != 0)
+                        {
+                            list.add(i);
+                        }
+                    }
+                    pickNumber.getNumberGroupView().setCheckNumber(list);
+                }
+                break;
+            case 7:
+                for (PickNumber pickNumber : pickNumbers)
+                {
+                    ArrayList<Integer> list = new ArrayList<>();
+                    int max = pickNumber.getNumberGroupView().getMaxNumber();
+                    int min = pickNumber.getNumberGroupView().getMinNumber();
+                    for (int i = min; i <= max; i++)
+                    {
+                        if (i < 41 && i % 2 == 0)
+                        {
+                            list.add(i);
+                        }
+                    }
+                    pickNumber.getNumberGroupView().setCheckNumber(list);
+                }
+                break;
+            case 8:
+                for (PickNumber pickNumber : pickNumbers)
+                {
+                    ArrayList<Integer> list = new ArrayList<>();
+                    int max = pickNumber.getNumberGroupView().getMaxNumber();
+                    int min = pickNumber.getNumberGroupView().getMinNumber();
+                    for (int i = min; i <= max; i++)
+                    {
+                        if (i > 40 && i % 2 != 0)
+                        {
+                            list.add(i);
+                        }
+                    }
+                    pickNumber.getNumberGroupView().setCheckNumber(list);
+                }
+                break;
+            case 9:
+                for (PickNumber pickNumber : pickNumbers)
+                {
+                    ArrayList<Integer> list = new ArrayList<>();
+                    int max = pickNumber.getNumberGroupView().getMaxNumber();
+                    int min = pickNumber.getNumberGroupView().getMinNumber();
+                    for (int i = min; i <= max; i++)
+                    {
+                        if (i > 40 && i % 2 == 0)
+                        {
+                            list.add(i);
+                        }
+                    }
+                    pickNumber.getNumberGroupView().setCheckNumber(list);
+                }
+                break;
+        }
+        notifyListener();
+    }
+    
     /**
      * 将Int的list转换成字符串，如list[06, 07] 转成string[06_07]
      *
@@ -309,36 +519,47 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
      * @param numberStyle 数字显示风格，true: 6, false: 06
      * @param emptyStyle  数组空时的显示风格， true: ""，false: "-"
      */
-    protected static String transform(ArrayList<Integer> list, boolean numberStyle, boolean emptyStyle) {
+    
+    protected static String transform(ArrayList<Integer> list, boolean numberStyle, boolean emptyStyle)
+    {
         StringBuilder builder = new StringBuilder();
-        if (list.size() > 0) {
-            for (int i = 0, size = list.size(); i < size; i++) {
+        if (list.size() > 0)
+        {
+            for (int i = 0, size = list.size(); i < size; i++)
+            {
                 builder.append(String.format(numberStyle ? "%d" : "%02d", list.get(i)));
-                if (!numberStyle && i != size - 1) {
+                if (!numberStyle && i != size - 1)
+                {
                     builder.append("_");
                 }
             }
-        } else {
+        } else
+        {
             builder.append(emptyStyle ? "" : "-");
         }
         return builder.toString();
     }
-
-    protected static String transformSpecial(ArrayList<Integer> list, boolean numberStyle, boolean emptyStyle) {
+    
+    protected static String transformSpecial(ArrayList<Integer> list, boolean numberStyle, boolean emptyStyle)
+    {
         StringBuilder builder = new StringBuilder();
-        if (list.size() > 0) {
-            for (int i = 0, size = list.size(); i < size; i++) {
+        if (list.size() > 0)
+        {
+            for (int i = 0, size = list.size(); i < size; i++)
+            {
                 builder.append(list.get(i));
-                if (!numberStyle && i != size - 1) {
+                if (!numberStyle && i != size - 1)
+                {
                     builder.append("_");
                 }
             }
-        } else {
+        } else
+        {
             builder.append(emptyStyle ? "" : "-");
         }
         return builder.toString();
     }
-
+    
     /**
      * 将Int的list转换成字串文字信息 如[1，3]
      *
@@ -346,51 +567,66 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
      * @param disText
      * @return
      */
-    protected static String transformtext(ArrayList<Integer> list, String[] disText, boolean emptyStyle) {
+    protected static String transformtext(ArrayList<Integer> list, String[] disText, boolean emptyStyle)
+    {
         StringBuilder builder = new StringBuilder();
-        if (list.size() > 0) {
-            for (int i = 0, size = list.size(); i < size; i++) {
+        if (list.size() > 0)
+        {
+            for (int i = 0, size = list.size(); i < size; i++)
+            {
                 builder.append(disText[list.get(i) - 1]);
             }
-        } else {
+        } else
+        {
             builder.append(emptyStyle ? "" : "-");
         }
         return builder.toString();
     }
-
+    
     protected static String transformtextSpecial(ArrayList<Integer> list, String[] disText, boolean numberStyle,
-                                                 boolean emptyStyle) {
+                                                 boolean emptyStyle)
+    {
         StringBuilder builder = new StringBuilder();
-        if (list.size() > 0) {
-            for (int i = 0, size = list.size(); i < size; i++) {
+        if (list.size() > 0)
+        {
+            for (int i = 0, size = list.size(); i < size; i++)
+            {
                 builder.append(disText[list.get(i) - 1]);
-                if (!numberStyle && i != size - 1) {
+                if (!numberStyle && i != size - 1)
+                {
                     builder.append("_");
                 }
             }
-        } else {
+        } else
+        {
             builder.append(emptyStyle ? "" : "-");
         }
         return builder.toString();
     }
-
-    protected static String transformDigit(SparseBooleanArray list) {
+    
+    protected static String transformDigit(SparseBooleanArray list)
+    {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
-        for (int size = list.size(), i = size - 1; i > -1; i--) {
-            if (list.get(ConstantInformation.DIGIT_KEYS[i])) {
+        for (int size = list.size(), i = size - 1; i > -1; i--)
+        {
+            if (list.get(ConstantInformation.DIGIT_KEYS[i]))
+            {
                 builder.append(ConstantInformation.DIGIT_MAP.get(ConstantInformation.DIGIT_KEYS[i]));
             }
         }
         builder.append("]");
         return builder.toString();
     }
-
-    protected static String transformRank(SparseBooleanArray list) {
+    
+    protected static String transformRank(SparseBooleanArray list)
+    {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
-        for (int size = list.size(), i = 0; i < size; i++) {
-            if (list.get(i)) {
+        for (int size = list.size(), i = 0; i < size; i++)
+        {
+            if (list.get(i))
+            {
                 builder.append(list.keyAt(i) + 1);
                 builder.append(",");
             }
@@ -399,38 +635,48 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
         builder.append("]");
         return builder.toString();
     }
-
-    protected static String transformDigitJsonArray(SparseBooleanArray digits) {
+    
+    protected static String transformDigitJsonArray(SparseBooleanArray digits)
+    {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < digits.size(); i++) {
-            if (digits.get(ConstantInformation.DIGIT_KEYS[i])) {
+        for (int i = 0; i < digits.size(); i++)
+        {
+            if (digits.get(ConstantInformation.DIGIT_KEYS[i]))
+            {
                 stringBuilder.append("1");
             }
         }
         return stringBuilder.toString();
     }
-
-    protected static String transformRankJsonArray(SparseBooleanArray ranks) {
+    
+    protected static String transformRankJsonArray(SparseBooleanArray ranks)
+    {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < ranks.size(); i++) {
-            if (ranks.get(i)) {
+        for (int i = 0; i < ranks.size(); i++)
+        {
+            if (ranks.get(i))
+            {
                 stringBuilder.append("1");
             }
         }
         return stringBuilder.toString();
     }
-
-    protected static ArrayList<Integer> random(int min, int max, int n) {
-        if (n > (max - min + 1) || max < min) {
+    
+    protected static ArrayList<Integer> random(int min, int max, int n)
+    {
+        if (n > (max - min + 1) || max < min)
+        {
             return null;
         }
         ArrayList<Integer> result = new ArrayList<Integer>();
         int count = 0;
-        while (count < n) {
+        while (count < n)
+        {
             //int num = (int) (Math.random() * (max - min)) + min;
             Random random = new Random();
             int num = random.nextInt(max - min + 1) + min;
-            if (result.contains(num)) {
+            if (result.contains(num))
+            {
                 continue;
             }
             Log.e("random: ", num + "");
@@ -439,26 +685,33 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
         }
         return result;
     }
-
-    protected static ArrayList<Integer> randomCommon(int min, int max, int n, ArrayList<Integer> array) {
-        if (n > (max - min + 1) || max < min) {
+    
+    protected static ArrayList<Integer> randomCommon(int min, int max, int n, ArrayList<Integer> array)
+    {
+        if (n > (max - min + 1) || max < min)
+        {
             return null;
         }
         ArrayList<Integer> result = new ArrayList<>();
         int count = 0;
-        while (count < n) {
+        while (count < n)
+        {
             //int num = (int) (Math.random() * (max - min)) + min;
             Random random = new Random();
             int num = random.nextInt(max - min + 1) + min;
             boolean arrayflag = true;
-            for (Integer a : array) {
-                if (num == a) {
+            for (Integer a : array)
+            {
+                if (num == a)
+                {
                     arrayflag = false;
                     break;
                 }
             }
-            if (arrayflag) {
-                if (!result.contains(num)) {
+            if (arrayflag)
+            {
+                if (!result.contains(num))
+                {
                     result.add(num);
                     count++;
                 }
@@ -466,32 +719,40 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
         }
         return result;
     }
-
-    public void reset() {
+    
+    public void reset()
+    {
         clearDigits();
-        for (PickNumber pickNumber : pickNumbers) {
+        for (PickNumber pickNumber : pickNumbers)
+        {
             pickNumber.getNumberGroupView().setCheckNumber(new ArrayList<Integer>());
         }
         notifyListener();
     }
-
-    public void clearDigits() {
+    
+    public void clearDigits()
+    {
         if (digitCheckBoxPanel != null)
             digitCheckBoxPanel.initCheck();
         if (rankCheckBoxPanel != null)
             rankCheckBoxPanel.initCheck();
     }
-
+    
     /*专门针对 时时彩(任二直选)玩法添加的，该方法主要是响应（万位千位百位十位个位）点击和手工输入的变化 所带来的注数变化 */
-    public void sscRenXuan2ManualMethodResult(){
-
+    public void sscRenXuan2ManualMethodResult()
+    {
+    
     }
+    
     /*专门针对 时时彩(任三直选)玩法添加的，该方法主要是响应（万位千位百位十位个位）点击和手工输入的变化 所带来的注数变化 */
-    public void sscRenXuan3ManualMethodResult(){
-
+    public void sscRenXuan3ManualMethodResult()
+    {
+    
     }
+    
     /*专门针对 时时彩(任四直选)玩法添加的，该方法主要是响应（万位千位百位十位个位）点击和手工输入的变化 所带来的注数变化 */
-    public void sscRenXuan4ManualMethodResult(){
-
+    public void sscRenXuan4ManualMethodResult()
+    {
+    
     }
 }

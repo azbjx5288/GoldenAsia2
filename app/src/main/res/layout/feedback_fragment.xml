@@ -70,28 +70,38 @@
         android:textSize="14sp"
         android:text="剩余200个字" />
 
-    <Button
-        android:id="@+id/feeback_back"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/botton_log_in"
-        android:gravity="center"
-        android:text="返回"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/feeback_back"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/button_login"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/feeback_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/botton_log_in"
-        android:gravity="center"
-        android:text="提交"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        <Button
+            android:id="@+id/feeback_submit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="25dp"
+            android:background="@drawable/button_login"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

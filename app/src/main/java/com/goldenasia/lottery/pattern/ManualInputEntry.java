@@ -69,7 +69,7 @@ public class ManualInputEntry {
     //解析正确选号
     private ArrayList<String[]> ruleLhcAnalysis(String enterstr) {
         ArrayList<String[]> list=new ArrayList<String[]>();
-        String[] verifyCode = enterstr.split("\\s+");
+        String[] verifyCode = enterstr.split(",|，|\\n|:|：|;|；|\\s+|\\|");
         for (int i = 0; i < verifyCode.length; i++) {
             if (!verifyCode[i].isEmpty()) {
                 String[] singleNumber =verifyCode[i].split("\\s+");

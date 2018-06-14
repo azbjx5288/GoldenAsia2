@@ -6,7 +6,7 @@ import com.goldenasia.lottery.base.net.RequestConfig;
  * Created by Gan on 2017/10/2.
  * 下级转账
  */
-@RequestConfig(api = "?c=user&a= transferMoney")
+@RequestConfig(api = "?c=user&a=transferMoney")
 public class TransferLowerMemberCommand {
     /**
      * 对方用户ID

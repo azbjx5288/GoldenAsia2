@@ -75,7 +75,7 @@ public class SpecialGame extends Game
     private static void addPickSpecialNumberGame(Game game, View topView, String title, int min, int max)
     {
         PickNumber pickNumberSpecial = new PickNumber(topView, title);
-        pickNumberSpecial.setColumnAreaHideOrShow(false);
+        pickNumberSpecial.setColumnAreaHideOrShow(true);
         pickNumberSpecial.getNumberGroupView().setNumber(min, max);
         game.addPickNumber(pickNumberSpecial);
     }
@@ -205,6 +205,23 @@ public class SpecialGame extends Game
         createPicklayout(game, new String[]{"和值"}, 3, (2 * 9));
     }
     
+    //中三组选和值 ZSZXHZ
+    public static void ZSZXHZ(Game game)
+    {
+        createPicklayout(game, new String[]{"中三组选和值"}, 1, 26);
+    }
+    
+    //前二组选和值 QEZXHZ
+    public static void QEZXHZ(Game game)
+    {
+        createPicklayout(game, new String[]{"前二组选和值"}, 1, 17);
+    }
+    
+    //后二组选和值 EXZXHZ
+    public static void EXZXHZ(Game game)
+    {
+        createPicklayout(game, new String[]{"后二组选和值"}, 1, 17);
+    }
     
     //后二包点随机 EXBD
     public static void EXBDRandom(Game game)

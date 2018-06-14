@@ -43,6 +43,7 @@ import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.VersionChecker;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
+import com.goldenasia.lottery.view.adapter.CustometServiceAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -182,17 +183,19 @@ public class FragmentUser extends BaseFragment
         View view= LayoutInflater.from(getActivity()).inflate(R.layout.service_dialog, null);
         ListView listView=view.findViewById(R.id.list_view);
         ImageView exit_pressed=view.findViewById(R.id.exit_pressed);
-        List<Map<String, String>> listMap=new ArrayList<Map<String, String>>();
-        // key值数组，适配器通过key值取value，与列表项组件一一对应
-        String[] from = { "name"};
-        for(int i=0;i<list.size();i++){
-            Map<String, String> map=new HashMap<>();
-            map.put("name",list.get(i).getName());
-            listMap.add(map);
-        }
-        // 列表项组件Id 数组
-        int[] to = { R.id.button_name };
-        final SimpleAdapter adapter = new SimpleAdapter(getActivity(), listMap, R.layout.service_dialog_item, from, to);
+//        List<Map<String, String>> listMap=new ArrayList<Map<String, String>>();
+//        // key值数组，适配器通过key值取value，与列表项组件一一对应
+//        String[] from = { "name"};
+//        for(int i=0;i<list.size();i++){
+//            Map<String, String> map=new HashMap<>();
+//            map.put("name",list.get(i).getName());
+//            listMap.add(map);
+//        }
+//        // 列表项组件Id 数组
+//        int[] to = { R.id.button_name };
+//        final SimpleAdapter adapter = new SimpleAdapter(getActivity(), listMap, R.layout.service_dialog_item, from, to);
+        CustometServiceAdapter adapter=new CustometServiceAdapter(list);
+
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

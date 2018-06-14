@@ -24,14 +24,14 @@ import butterknife.ButterKnife;
  */
 
 public class HistoryCodeMmcAdapter extends BaseAdapter {
-    //ÑÇÖÞÃîÃî²Ê
+    //äºšæ´²å¦™å¦™å½©
     private final int  SSC_MMC=1;
-    //11Ñ¡5ÃëÃë²Ê
+    //11é€‰5ç§’ç§’å½©
     private final int  ELEVEN_SDELECT_FIVE_MMC=2;
-    //¿ìÈýÃëÃë²Ê
+    //å¿«ä¸‰ç§’ç§’å½©
     private final int  KUAI_SAN_MMC=3;
 
-    //ÃëÃë²ÊÀàÐÍ
+    //ç§’ç§’å½©ç±»åž‹
     private  int mLoteryType=SSC_MMC;
 
     public void setmLoteryType(int mLoteryType) {
@@ -81,21 +81,21 @@ public class HistoryCodeMmcAdapter extends BaseAdapter {
         }
 
         switch (mLoteryType){
-            case SSC_MMC://ÑÇÖÞÃîÃî²Ê
+            case SSC_MMC://äºšæ´²å¦™å¦™å½©
                 MmcWinHistory historyCode = (MmcWinHistory) codeList.get(position);
                 holder.count.setText(historyCode.getCount());
                 holder.code.setText(historyCode.getNumber());
                 holder.betMoney.setText(historyCode.getBetMoney());
                 holder.winMoney.setText(historyCode.getWinMoney());
                 break;
-            case ELEVEN_SDELECT_FIVE_MMC://11Ñ¡5ÃëÃë²Ê
+            case ELEVEN_SDELECT_FIVE_MMC://11é€‰5ç§’ç§’å½©
                 MmcElevenSelectFiveWinHistory MmcElenenSelectFiveWinHistory = (MmcElevenSelectFiveWinHistory) codeList.get(position);
                 holder.count.setText(MmcElenenSelectFiveWinHistory.getCount());
                 holder.code.setText(MmcElenenSelectFiveWinHistory.getNumber());
                 holder.betMoney.setText(MmcElenenSelectFiveWinHistory.getBetMoney());
                 holder.winMoney.setText(MmcElenenSelectFiveWinHistory.getWinMoney());
                 break;
-            case KUAI_SAN_MMC://¿ìÈýÃëÃë²Ê
+            case KUAI_SAN_MMC://å¿«ä¸‰ç§’ç§’å½©
                 MmcKuaiSanWinHistory mmcKuaiSanWinHistory = (MmcKuaiSanWinHistory) codeList.get(position);
                 holder.count.setText(mmcKuaiSanWinHistory.getCount());
                 holder.code.setText(mmcKuaiSanWinHistory.getNumber());

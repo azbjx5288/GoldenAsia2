@@ -81,6 +81,20 @@ public class ConstantInformation
             }
         };
     }
+    
+    public static class Kl8
+    {
+        public static int UP = 1;
+        public static int DOWN = 2;
+        public static int ODD = 3;
+        public static int EVEN = 4;
+        public static int CLEAR = 5;
+        public static int UP_ODD = 6;
+        public static int UP_EVEN = 7;
+        public static int DOWN_ODD = 8;
+        public static int DOWN_EVEN = 9;
+    }
+    
 
     private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
@@ -242,6 +256,10 @@ public class ConstantInformation
         sLotteryLogo.put(45, new int[]{R.drawable.id_lottery_ksmmc, R.drawable.id_lottery_ksmmc});
         //PK10二分彩
         sLotteryLogo.put(47, new int[]{R.drawable.id_lottery_pk10efc, R.drawable.id_lottery_pk10efc});
+        //北京快乐8
+        sLotteryLogo.put(48, new int[]{R.drawable.id_lottery_bjkl8, R.drawable.id_lottery_bjkl8});
+        //腾讯分分彩
+        sLotteryLogo.put(49, new int[]{R.drawable.id_lottery_txffc, R.drawable.id_lottery_txffc});
 
         //百家乐
         sLotteryLogo.put(101, new int[]{R.drawable.id_lottery_mybjl, R.drawable.id_lottery_mybjl_rest});
@@ -289,6 +307,10 @@ public class ConstantInformation
         sLotteryLogo.put(122, new int[]{R.drawable.icon_dfw, R.drawable.icon_dfw});
         //石头剪刀布
         sLotteryLogo.put(123, new int[]{R.drawable.icon_stjdb, R.drawable.icon_stjdb});
+        //超级龙虎斗 （GA ID124）
+        sLotteryLogo.put(124, new int[]{R.drawable.cjlhd, R.drawable.cjlhd});
+        //百人三公（GA ID126 ）
+        sLotteryLogo.put(126, new int[]{R.drawable.br3g, R.drawable.br3g});
         //支付logo
         rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});//支付宝转账
         rechargeLogo.put(1, new int[]{2, 0, R.drawable.unionpay});
@@ -301,6 +323,8 @@ public class ConstantInformation
         rechargeLogo.put(8, new int[]{5, 0, R.drawable.jd_icon});//京东支付 id=5 tradeType=5,
         rechargeLogo.put(9, new int[]{10, 120, R.drawable.unionpay});//银联扫码
         rechargeLogo.put(10, new int[]{1, 102, R.drawable.pay_weixin_icon});
+       rechargeLogo.put(11, new int[]{51, 0, R.drawable.pay_weixin_icon});//  51=微信转账
+        rechargeLogo.put(12, new int[]{52, 0, R.drawable.zfb_icon});// 52=支付宝转账
 
         transferList.add(new Platform(0, "主钱包", "JYZ"));
         /*transferArray.put(1, new String[]{"pt", "PT游戏"});

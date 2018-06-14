@@ -175,6 +175,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             ||lottery.getLotteryId()==19//19:亚洲5分彩
             ||lottery.getLotteryId()==35//35:台湾五分彩
             ||lottery.getLotteryId()==37//37:亚洲2分彩)
+            ||lottery.getLotteryId()== 49//腾讯分分差
             /* 11选5系列*/
             ||lottery.getLotteryId()==2//山东11选5
             ||lottery.getLotteryId()==6//江西11选5
@@ -192,7 +193,6 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             ||lottery.getLotteryId()== 38//PK10分分彩
             ||lottery.getLotteryId()== 47//PK10二分彩
          ) {
-            ConstantInformation.HISTORY_CODE_LIST.clear();
 
             LotteriesHistoryCommand command = new LotteriesHistoryCommand();
             command.setLotteryID(lottery.getLotteryId());
@@ -653,6 +653,8 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 }
                 updateMenu(methodList);
             }else if(request.getId() == 2){
+                ConstantInformation.HISTORY_CODE_LIST.clear();
+
                 List<IssueEntity> items =((LotteryHistoryCode) response.getData()).getIssue();
 
                 for (IssueEntity issueEntity:items){

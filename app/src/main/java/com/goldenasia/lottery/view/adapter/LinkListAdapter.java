@@ -93,7 +93,7 @@ public class LinkListAdapter extends RecyclerView.Adapter<LinkListAdapter.ViewHo
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setTag(this);
-            
+
             detail.setOnClickListener(LinkListAdapter.this::onClick);
             delete.setOnClickListener(LinkListAdapter.this::onClick);
         }

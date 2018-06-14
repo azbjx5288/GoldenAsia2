@@ -63,7 +63,7 @@ public class ResultsFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         applyArguments();
-        adapter = new HistoryCodeAdapter(items);
+        adapter = new HistoryCodeAdapter(items,lottery.getLotteryId(),getActivity());
         refreshLayout.setColorSchemeColors(Color.parseColor("#ff0000"), Color.parseColor("#00ff00"), Color.parseColor("#0000ff"), Color.parseColor("#f234ab"));
         refreshLayout.setOnRefreshListener(() -> loadCodeList(false, FIRST_PAGE));
 

@@ -44,8 +44,8 @@ public class ChaseMmcWinView {
         private LinearLayout winnersLayout;
         private Button positiveButton;
         private Button negativeButton;
-        private Button doubleButton;
 
+        private Button doubleButton;
         private String winners;
         private boolean singleTip = false;
         private boolean playDouble = false;

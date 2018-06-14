@@ -41,6 +41,11 @@ public class TextMultipleGame extends Game
     private static String[] daXiaoText = new String[]{"大", "小"};
     private static String[] danShuangText = new String[]{"单", "双"};
     private static String[] yanSeText = new String[]{"全红", "全黑", "1红2黑", "2红1黑"};
+    private static String[] dsText = new String[]{"单", "双"};
+    private static String[] heZhi810Text = new String[]{"大", "810", "小"};
+    private static String[] heZhiFiveText = new String[]{"金", "木", "水", "火", "土"};
+    private static String[] oddEvenSumText = new String[]{"奇", "偶", "和"};
+    private static String[] szxText = new String[]{"上", "中", "下"};
     
     private static int TYPE;
     private static final int TYPE_DIGIT = 1;
@@ -52,12 +57,17 @@ public class TextMultipleGame extends Game
     private static final int TYPE_JSPK = 7;
     private static final int TYPE_LMMC = 8;
     private static final int TYPE_LMLH = 9;
-    private static final int TYPE_JSDX=10; //大小
-    private static final int TYPE_JSDS=11;//单双
-    private static final int TYPE_JSYS=12;//颜色
-    private static final int TYPE_JSETFX =13;//二同号复选 JSETFX
-    private  static   SscCommonGameUtils mScCommonGameUtils=new SscCommonGameUtils();
-
+    private static final int TYPE_JSDX = 10; //大小
+    private static final int TYPE_JSDS = 11;//单双
+    private static final int TYPE_JSYS = 12;//颜色
+    private static final int TYPE_JSETFX = 13;//二同号复选 JSETFX
+    private static final int TYPE_HZDS = 14;
+    private static final int TYPE_810 = 15;
+    private static final int TYPE_FIVE = 16;
+    private static final int TYPE_ODD_EVEN_SUM = 17;
+    private static final int TYPE_SZX = 18;//上中下
+    private static SscCommonGameUtils mScCommonGameUtils = new SscCommonGameUtils();
+    
     public TextMultipleGame(Method method)
     {
         super(method);
@@ -85,7 +95,7 @@ public class TextMultipleGame extends Game
         } catch (Exception e)
         {
             e.printStackTrace();
-            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
+            Toast.makeText(topLayout.getContext(), "不支持的文字类型", Toast.LENGTH_LONG).show();
         }
     }
     
@@ -258,6 +268,66 @@ public class TextMultipleGame extends Game
                     }
                 }
                 break;
+            case TYPE_HZDS:
+                //transCommon(builder, dsText, true, false);
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(), dsText,
+                            false, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
+            case TYPE_810:
+                //transCommon(builder, heZhi810Text, true, false);
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(), heZhi810Text,
+                            false, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
+            case TYPE_FIVE:
+                //transCommon(builder, heZhiFiveText, true, false);
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(), heZhiFiveText,
+                            false, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
+            case TYPE_ODD_EVEN_SUM:
+                //transCommon(builder, oddEvenSumText, true, false);
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(), oddEvenSumText,
+                            false, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
+            case TYPE_SZX://上中下 KNSZX
+                //transCommon(builder, szxText, true, false);
+                for (int i = 0, size = pickNumbers.size(); i < size; i++)
+                {
+                    builder.append(transformtextSpecial(pickNumbers.get(i).getCheckedNumber(), szxText,
+                            false, false));
+                    if (i != size - 1)
+                    {
+                        builder.append(",");
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -274,8 +344,9 @@ public class TextMultipleGame extends Game
         {
             e.printStackTrace();
             Log.i("TextMultipleGame", "onInflate: " + "//" + method.getCname() + "随机 " + method.getName() + " public " +
-                    "" + "" + "" + "" + "" + "static void " + method.getName() + "Random" + "(Game game) {}");
-            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
+                    "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "" + "static void " + method.getName() +
+                    "Random" + "" + "(Game " + "game) {}");
+            Toast.makeText(topLayout.getContext(), "不支持的文字类型", Toast.LENGTH_LONG).show();
         }
     }
     
@@ -326,7 +397,7 @@ public class TextMultipleGame extends Game
         if( ConstantInformation.HISTORY_CODE_LIST.size()==0
                 ||gameMethod==ConstantInformation.NO_YILOU_AND_LENGRE){//没有冷热和遗漏的情况
             ConstantInformation.YI_LOU_IS_SUPPORTED=false;
-
+            
             for (View view : views) {
                 topLayout.addView(view);
             }
@@ -338,26 +409,26 @@ public class TextMultipleGame extends Game
             addViewLayoutHasLengRe(topLayout,views,gameMethod);
         }
         //遗漏功能添加的start
-
+        
         game.setColumn(name.length);
     }
-
+    
     private static void addViewLayoutHasLengRe(ViewGroup topLayout,View[] views,String  gameMethod) {
         View sscLengreLayout=LayoutInflater.from(topLayout.getContext()).inflate(R.layout.ssc_lengre_layout, null, false);
         CheckBox yilou_tv=sscLengreLayout.findViewById(R.id.yilou);
         CheckBox yilou_Checkbox=sscLengreLayout.findViewById(R.id.yilou_checked);
-
+        
         CheckBox lengre_tv=sscLengreLayout.findViewById(R.id.lengre);
         CheckBox lengre_Checkbox=sscLengreLayout.findViewById(R.id.lengre_checked);
-
+        
         yilou_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ConstantInformation.YI_LOU_IS_SHOW =!ConstantInformation.YI_LOU_IS_SHOW;
-
+                
                 yilou_tv.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
                 yilou_Checkbox.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
-
+                
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
                     numberGroupView.refreshViewGroup();
@@ -368,17 +439,17 @@ public class TextMultipleGame extends Game
             @Override
             public void onClick(View v) {
                 ConstantInformation.YI_LOU_IS_SHOW =!ConstantInformation.YI_LOU_IS_SHOW;
-
+                
                 yilou_tv.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
                 yilou_Checkbox.setChecked(ConstantInformation.YI_LOU_IS_SHOW);
-
+                
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
                     numberGroupView.refreshViewGroup();
                 }
             }
         });
-
+        
         lengre_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -386,47 +457,47 @@ public class TextMultipleGame extends Game
                 initLengrePopupwindow(views,topLayout.getContext(),v,gameMethod);
             }
         });
-
+        
         lengre_Checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ConstantInformation.LENG_RE_IS_SHOW =!ConstantInformation.LENG_RE_IS_SHOW;
                 lengre_tv.setChecked( ConstantInformation.LENG_RE_IS_SHOW);
-
+                
                 //选中了冷热的复选框就会弹出冷热期数对话框
                 if(ConstantInformation.LENG_RE_IS_SHOW){
                     initLengrePopupwindow(views,topLayout.getContext(),lengre_tv,gameMethod);
                 }
-
+                
                 for (View view : views) {
                     NumberGroupView numberGroupView=view.findViewById(R.id.pick_column_NumberGroupView);
                     numberGroupView.refreshViewGroup();
                 }
             }
         });
-
+        
         topLayout.addView(sscLengreLayout);
-
+        
         for (int i=0;i<  views.length;i++) {
             NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
             numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
             numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
-
+            
             numberGroupView.refreshViewGroup();
             topLayout.addView(views[i]);
         }
     }
-
+    
     //弹出冷热期数选择框
     private static void initLengrePopupwindow(View[] views, Context context, View v, String  gameMethod) {
         View rootView = LayoutInflater.from(context).inflate(R.layout.lengre_diff_popupwindow, null);
-
+        
         BubbleLinearLayout bubbleLinearLayout = (BubbleLinearLayout) rootView.findViewById(R.id.popup_bubble);
         BubblePopupWindow bubblePopupWindow = new BubblePopupWindow(rootView, bubbleLinearLayout);
         RadioButton lengreOne = (RadioButton) rootView.findViewById(R.id.lengre_one);
         RadioButton lengreTwo = (RadioButton) rootView.findViewById(R.id.lengre_two);
         RadioButton lengreThree = (RadioButton) rootView.findViewById(R.id.lengre_three);
-
+        
         switch ( ConstantInformation.LENG_RE_COUNT){
             case 20:
                 lengreThree.setChecked(true);
@@ -438,11 +509,11 @@ public class TextMultipleGame extends Game
                 lengreOne.setChecked(true);
                 break;
         }
-
+        
         lengreOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                
                 ConstantInformation.LENG_RE_COUNT=100;
                 for (int i=0;i<  views.length;i++) {
                     NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
@@ -450,7 +521,7 @@ public class TextMultipleGame extends Game
                     numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
                     numberGroupView.refreshViewGroup();
                 }
-
+                
                 bubblePopupWindow.dismiss();
             }
         });
@@ -475,7 +546,7 @@ public class TextMultipleGame extends Game
                     NumberGroupView numberGroupView=views[i].findViewById(R.id.pick_column_NumberGroupView);
                     numberGroupView.setmYiLouList(mScCommonGameUtils.getYiLouList(gameMethod,i));
                     numberGroupView.setmLengReList(mScCommonGameUtils.getLengReList(gameMethod,i));
-
+                    
                     numberGroupView.refreshViewGroup();
                 }
                 bubblePopupWindow.dismiss();
@@ -483,7 +554,7 @@ public class TextMultipleGame extends Game
         });
         bubblePopupWindow.showArrowTo(v, BubbleStyle.ArrowDirection.Down);
     }
-
+    
     private static void createPicklayout(Game game, String[] name, ArrayList<String[]> disText, boolean chooseMode)
     {
         View[] views = new View[name.length];
@@ -618,6 +689,37 @@ public class TextMultipleGame extends Game
     {
         TYPE = TYPE_DIGIT;
         createPicklayout(game, new String[]{"千位","百位", "十位"}, digitText, false,"ZSDXDS");
+    }
+    
+    public static void HZDS(Game game)
+    {
+        TYPE = TYPE_HZDS;
+        createPicklayout(game, new String[]{"和值单双"}, dsText, false, "HZDS");
+    }
+    
+    public static void HZ810(Game game)
+    {
+        TYPE = TYPE_810;
+        createPicklayout(game, new String[]{"和值810"}, heZhi810Text, false, "HZ810");
+    }
+    
+    public static void HZWX(Game game)
+    {
+        TYPE = TYPE_FIVE;
+        createPicklayout(game, new String[]{"和值五行"}, heZhiFiveText, false, "HZWX");
+    }
+    
+    public static void KNJOH(Game game)
+    {
+        TYPE = TYPE_ODD_EVEN_SUM;
+        createPicklayout(game, new String[]{"奇偶和"}, oddEvenSumText, false, "KNJOH");
+    }
+    
+    //上中下 KNSZX
+    public static void KNSZX(Game game)
+    {
+        TYPE = TYPE_SZX;
+        createPicklayout(game, new String[]{"上中下"}, szxText, false, "KNSZX");
     }
     
     //清空

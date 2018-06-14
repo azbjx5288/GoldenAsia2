@@ -36,6 +36,11 @@ public class GameConfig
             case "ZSDXDS":
             case "JSDX": //大小
             case "JSDS": //单双
+            case "HZDS":
+            case "HZ810":
+            case "HZWX":
+            case "KNJOH":
+            case "KNSZX": //上中下
                 return new TextMultipleGame(method);
             case "JSYS": //颜色
                 return new KuaiSanYS(method);
@@ -54,6 +59,9 @@ public class GameConfig
             case "QSZXHZ":
             case "JSHZ":
             case "WXHZ":
+            case "ZSZXHZ":
+            case "EXZXHZ":
+            case "QEZXHZ":
                 return new SpecialGame(method);
             
             case "JSSTTX":
@@ -97,6 +105,7 @@ public class GameConfig
             case 4://新疆时时彩
             case 8://天津时时彩
             case 11://亚洲分分彩
+            case 49://腾讯分分差
             case 19://亚洲5分彩
             case 35://台湾五分彩
             case 37://亚洲2分彩
@@ -123,6 +132,8 @@ public class GameConfig
                 return new Pk10CommonGame(method);
             case 14://山东快乐扑克
                 return new ShanDongKuaiLePuKeGame(method);
+            case 48://北京快乐8:
+                return new Kl8CommonGame(method);
             default:
                 break;
         }

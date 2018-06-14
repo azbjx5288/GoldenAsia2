@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/background"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:orientation="horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/background"
+              android:orientation="horizontal"
+              android:paddingLeft="20dp"
+              android:paddingRight="20dp">
 
     <TextView
         style="@style/lowerMemberStyle"
@@ -26,9 +26,16 @@
         style="@style/lowerMemberStyle"
         android:layout_weight="2"
         android:gravity="center"
-        android:text="余额(元)" />
+        android:text="余额(元)"/>
 
-    <!--<TextView
-        style="@style/lowerMemberStyle"
-        android:layout_width="20dp"/>-->
+    <ImageButton
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:src="@drawable/modify"
+        android:visibility="invisible"/>
 </LinearLayout>

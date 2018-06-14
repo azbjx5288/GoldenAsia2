@@ -25,6 +25,7 @@ import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.data.EditChildRebateCommand;
 import com.goldenasia.lottery.data.JcRebateOptions;
 import com.goldenasia.lottery.data.LhcRebateOptions;
 import com.goldenasia.lottery.data.NormalRebateOptions;
@@ -57,7 +58,9 @@ public class LowerRebateSetting extends BaseFragment
     private static final String TAG = LowerRebateSetting.class.getSimpleName();
     private static final int RECBATE_TRACE_ID = 1;
     private static final int REG_TRACE_ID = 2;
-    private static final int REG_LINK = 3;
+    private static final int REG_LINK_ID = 3;
+    private static final int SHOW_ID = 4;
+    private static final int EDIT_ID = 5;
     
     @BindView(R.id.rebates_layout)
     LinearLayout rebateList;
@@ -67,6 +70,7 @@ public class LowerRebateSetting extends BaseFragment
     
     private Register register;
     private String openType;
+    private int userID;
     private HashMap<String, JsonString> rangeMap = new HashMap<>();
     private ArrayList<RebateView> normalListView = new ArrayList<>();
     private ArrayList<RebateView> lhcListView = new ArrayList<>();
@@ -91,11 +95,13 @@ public class LowerRebateSetting extends BaseFragment
         openType = getArguments().getString("openType");
         if ("link".equals(openType))
             submitBtn.setText("生成链接");
+        else if ("edit".equals(openType))
+            userID = getArguments().getInt("userID");
         rebateLoad();
     }
     
     @OnClick(R.id.submitbut)
-    public void registerBut()
+    public void registerBtn()
     {
         StringBuilder optNormal = new StringBuilder();
         for (Map.Entry<String, Double> entry : optNormalRebate.entrySet())
@@ -113,27 +119,37 @@ public class LowerRebateSetting extends BaseFragment
             jcNormal.append(entry.getKey()).append(":").append(String.format("%.6f", entry.getValue())).append(",");
         }
         
-        RegChildCommand command = new RegChildCommand();
-        command.setNormal_rebate(optNormal.substring(0, optNormal.length() - 1));
-        command.setLhc_rebate(lhcNormal.substring(0, lhcNormal.length() - 1));
-        command.setJc_rebate(jcNormal.substring(0, jcNormal.length() - 1));
-        if ("manual".equals(openType))
+        if ("edit".equals(openType))
         {
-            command.setOp("Register");
-            command.setType(register.getType());
-            command.setUsername(register.getUsername());
-            command.setNick_name(register.getNickname());
-            command.setPassword(register.getPassword());
-            command.setPassword2(register.getPassword2());
-            executeCommand(command, restCallback, REG_TRACE_ID);
+            EditChildRebateCommand editChildRebateCommand = new EditChildRebateCommand();
+            editChildRebateCommand.setNormal_rebate(optNormal.substring(0, optNormal.length() - 1));
+            editChildRebateCommand.setLhc_rebate(lhcNormal.substring(0, lhcNormal.length() - 1));
+            editChildRebateCommand.setJc_rebate(jcNormal.substring(0, jcNormal.length() - 1));
+            editChildRebateCommand.setUser_id(userID);
+            executeCommand(editChildRebateCommand, restCallback, EDIT_ID);
         } else
         {
-            command.setOp("createCode");
-            command.setType(register.getType());
-            command.setChannel(register.getChannel());
-            executeCommand(command, restCallback, REG_LINK);
+            RegChildCommand regChildCommand = new RegChildCommand();
+            regChildCommand.setNormal_rebate(optNormal.substring(0, optNormal.length() - 1));
+            regChildCommand.setLhc_rebate(lhcNormal.substring(0, lhcNormal.length() - 1));
+            regChildCommand.setJc_rebate(jcNormal.substring(0, jcNormal.length() - 1));
+            if ("manual".equals(openType))
+            {
+                regChildCommand.setOp("Register");
+                regChildCommand.setType(register.getType());
+                regChildCommand.setUsername(register.getUsername());
+                regChildCommand.setNick_name(register.getNickname());
+                regChildCommand.setPassword(register.getPassword());
+                regChildCommand.setPassword2(register.getPassword2());
+                executeCommand(regChildCommand, restCallback, REG_TRACE_ID);
+            } else
+            {
+                regChildCommand.setOp("createCode");
+                regChildCommand.setType(register.getType());
+                regChildCommand.setChannel(register.getChannel());
+                executeCommand(regChildCommand, restCallback, REG_LINK_ID);
+            }
         }
-        
         //clear();
     }
     
@@ -358,19 +374,38 @@ public class LowerRebateSetting extends BaseFragment
     
     private void rebateLoad()
     {
-        RegChildRebateCommand command = new RegChildRebateCommand();
-        command.setOp("getRebateData");
-        TypeToken typeToken = new TypeToken<RestResponse<HashMap<String, JsonString>>>()
-        {};
-        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback,
-                RECBATE_TRACE_ID, this);
-        RestResponse restResponse = restRequest.getCache();
-        if (restResponse != null && restResponse.getData() instanceof HashMap)
+        if ("edit".equals(openType))
         {
-            rangeMap = (HashMap<String, JsonString>) restResponse.getData();
-            rebateGridView(rangeMap);
-        } else
+            EditChildRebateCommand editChildRebateCommand = new EditChildRebateCommand();
+            editChildRebateCommand.setOp("getChildRebateData");
+            editChildRebateCommand.setUser_id(userID);
+            TypeToken typeToken = new TypeToken<RestResponse<HashMap<String, JsonString>>>()
+            {};
+            RestRequest restRequest = RestRequestManager.createRequest(getActivity(), editChildRebateCommand,
+                    typeToken, restCallback, RECBATE_TRACE_ID, this);
+            /*RestResponse restResponse = restRequest.getCache();
+            if (restResponse != null && restResponse.getData() instanceof HashMap)
+            {
+                rangeMap = (HashMap<String, JsonString>) restResponse.getData();
+                rebateGridView(rangeMap);
+            } else*/
             restRequest.execute();
+        } else
+        {
+            RegChildRebateCommand regChildRebateCommand = new RegChildRebateCommand();
+            regChildRebateCommand.setOp("getRebateData");
+            TypeToken typeToken = new TypeToken<RestResponse<HashMap<String, JsonString>>>()
+            {};
+            RestRequest restRequest = RestRequestManager.createRequest(getActivity(), regChildRebateCommand,
+                    typeToken, restCallback, RECBATE_TRACE_ID, this);
+            RestResponse restResponse = restRequest.getCache();
+            if (restResponse != null && restResponse.getData() instanceof HashMap)
+            {
+                rangeMap = (HashMap<String, JsonString>) restResponse.getData();
+                rebateGridView(rangeMap);
+            } else
+                restRequest.execute();
+        }
     }
     
     private RestCallback restCallback = new RestCallback()
@@ -387,13 +422,21 @@ public class LowerRebateSetting extends BaseFragment
                         rebateGridView(rangeMap);
                     }
                     break;
+                case SHOW_ID:
+                    if (response != null && response.getData() instanceof HashMap)
+                    {
+                        rangeMap = (HashMap<String, JsonString>) response.getData();
+                        rebateGridView(rangeMap);
+                    }
+                    break;
                 case REG_TRACE_ID:
+                case EDIT_ID:
                     clear();
-                    showToast(response.getErrStr());
+                    //showToast(response.getErrStr());
                     getActivity().setResult(ConstantInformation.REFRESH_RESULT);
                     getActivity().finish();
                     break;
-                case REG_LINK:
+                case REG_LINK_ID:
                     String url = response.getData().toString();
                     if (!TextUtils.isEmpty(url))
                     {
@@ -413,7 +456,7 @@ public class LowerRebateSetting extends BaseFragment
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i)
                             {
-                                ClipboardUtils.copy(getActivity(),url,"开户链接");
+                                ClipboardUtils.copy(getActivity(), url, "开户链接");
                                 /*ClipboardManager clipboardManager = (ClipboardManager) getActivity().getSystemService
                                         (Context.CLIPBOARD_SERVICE);
                                 ClipData clipData = ClipData.newPlainText("开户链接",url);

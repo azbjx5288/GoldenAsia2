@@ -10,7 +10,6 @@ import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.base.CrashHandler;
 import com.goldenasia.lottery.base.net.NetStateHelper;
 import com.goldenasia.lottery.base.thread.ThreadPool;
-import com.goldenasia.lottery.service.MyPushIntentService;
 import com.goldenasia.lottery.user.UserCentre;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -31,9 +30,9 @@ public class GoldenAsiaApp extends Application
 
     private static GoldenAsiaApp sApp;
 
-    //public static final String BASEURL = "http://ai.xym8.com";//正式服
-    //public static final String BASEURL = "http://ta.w956.com";//新测试服
-   public static final String BASEURL = "http://ta.jinyazhou88.org";//测试服
+    public static final String BASEURL = "http://ai.xym8.com";//正式服
+    // public static final String BASEURL = "http://ta.w956.com";//新测试服
+    //public static final String BASEURL = "http://ta.jinyazhou88.org";//测试服
 
     private ThreadPool threadPool;
     private NetStateHelper netStateHelper;

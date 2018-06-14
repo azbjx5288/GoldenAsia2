@@ -797,11 +797,21 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
                     ArrayList<String> codeArray = new ArrayList<>();
                     for (int i =0,size= chooseArray.size(); i<size; i++) {
                         StringBuilder codeBuilder = new StringBuilder();
+                        if(chooseArray.get(i)[0].length()>2){
+                            codeArray.clear();
+                            chooseArray.clear();
+                            break;
+                        }
                         int chooseInt=0;
                         try {
                             chooseInt=Integer.parseInt(chooseArray.get(i)[0]);
                         } catch (NumberFormatException e) {
                             return;
+                        }
+                        if(chooseInt>49){
+                            codeArray.clear();
+                            chooseArray.clear();
+                            break;
                         }
                         codeBuilder.append(chooseInt);
                         codeArray.add(codeBuilder.toString());

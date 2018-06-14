@@ -20,6 +20,7 @@ public class NormalRebateOptions {
     private String propertyName;
     @SerializedName("options")
     private List<Options> options;
+    private double selected=-1;
 
     public int getPropertyId() {
         return propertyId;
@@ -43,5 +44,15 @@ public class NormalRebateOptions {
 
     public void setOptions(List<Options> options) {
         this.options = options;
+    }
+    
+    public double getSelected()
+    {
+        return selected;
+    }
+    
+    public void setSelected(double selected)
+    {
+        this.selected = selected;
     }
 }

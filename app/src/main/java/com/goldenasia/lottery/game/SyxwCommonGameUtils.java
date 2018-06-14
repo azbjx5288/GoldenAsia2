@@ -20,6 +20,7 @@ public class SyxwCommonGameUtils {
             case "SDLX2"://乐选二: SDLX2
             case "SDLX3"://乐选三 SDLX3
             case "SDQSZX"://前三直选 SDQSZX
+            case "SDQEZX": //前二直选 SDQEZX
                 return yiLouSXDW( digit);
         }
         return yiLouSXDW( digit);
@@ -53,6 +54,7 @@ public class SyxwCommonGameUtils {
             case "SDLX2"://乐选二: SDLX2
             case "SDLX3"://乐选三 SDLX3
             case "SDQSZX"://前三直选 SDQSZX
+            case "SDQEZX": //前二直选 SDQEZX
                 return lengReSXDW( digit);
         }
         return lengReSXDW( digit);
