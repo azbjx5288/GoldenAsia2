@@ -117,6 +117,23 @@ public class RegisterSetting extends BaseFragment {
         }
     }
 
+    //判断字符串中是否含Emoji表情正则表达式
+    public boolean hasEmoji(String content){
+        //过滤Emoji表情
+//        Pattern p = Pattern.compile("[^\\u0000-\\uFFFF]");
+        //过滤Emoji表情和颜文字
+//        Pattern p = Pattern.compile("[\\ud83c\\udc00-\\ud83c\\udfff]|[\\ud83d\\udc00-\\ud83d\\udfff]|[\\u2600-\\u27ff]|[\\ud83e\\udd00-\\ud83e\\uddff]|[\\u2300-\\u23ff]|[\\u2500-\\u25ff]|[\\u2100-\\u21ff]|[\\u0000-\\u00ff]|[\\u2b00-\\u2bff]|[\\u2d06]|[\\u3030]");
+       //禁用emoji表情和颜文字
+        Pattern p = Pattern.compile("[^a-zA-Z0-9\\u4E00-\\u9FA5_,.?!:;…~_\\-\"\"/@*+'()<>{}/[/]()<>{}\\[\\]=%&$|\\/♀♂#¥£¢€\"^` ，。？！：；……～“”、“（）”、（——）‘’＠‘·’＆＊＃《》￥《〈〉》〈＄〉［］￡［］｛｝｛｝￠【】【】％〖〗〖〗／〔〕〔〕＼『』『』＾「」「」｜﹁﹂｀．]");
+        //判断字符串中是否含Emoji表情正则表达式
+//        Pattern p = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]");
+        Matcher matcher = p.matcher(content);
+        if(matcher .find()){
+            return true;
+        }
+        return false;
+    }
+
     private boolean verification() {
         if (TextUtils.isEmpty(regEdituser.getText().toString())) {
             Toast.makeText(getContext(), "请输入用户名", Toast.LENGTH_LONG).show();
@@ -145,6 +162,11 @@ public class RegisterSetting extends BaseFragment {
 
         if (TextUtils.isEmpty(nickname.getText().toString())) {
             Toast.makeText(getContext(), "请输入昵称", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (hasEmoji(nickname.getText().toString())) {
+            showToast("昵称不能包含Emoji表情", Toast.LENGTH_SHORT);
             return false;
         }
 
