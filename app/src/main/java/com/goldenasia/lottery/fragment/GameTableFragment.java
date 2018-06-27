@@ -35,9 +35,19 @@ import com.goldenasia.lottery.data.LotteryHistoryCode;
 import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.data.MethodList;
 import com.goldenasia.lottery.data.MethodListCommand;
+import com.goldenasia.lottery.game.Fc3dCommonGame;
 import com.goldenasia.lottery.game.GameConfig;
+import com.goldenasia.lottery.game.Kl8CommonGame;
+import com.goldenasia.lottery.game.KsCommonGame;
 import com.goldenasia.lottery.game.MenuController;
+import com.goldenasia.lottery.game.MmcCommonGame;
+import com.goldenasia.lottery.game.P3p5CommonGame;
+import com.goldenasia.lottery.game.Pk10CommonGame;
 import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.game.SdddsGame;
+import com.goldenasia.lottery.game.ShanDongKuaiLePuKeGame;
+import com.goldenasia.lottery.game.SscCommonGame;
+import com.goldenasia.lottery.game.SyxwCommonGame;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.MethodQueue;
 import com.goldenasia.lottery.pattern.CustomViewPager;
@@ -76,6 +86,9 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     RadioButton trendRadioButton;
     @BindView(R.id.methodRadioButton)
     RadioButton methodRadioButton;
+    @BindView(R.id.dantiaoRadioButton)
+    RadioButton dantiaoRadioButton;
+
     @BindView(R.id.viewpager)
     CustomViewPager viewPager;
     @BindView(R.id.trend)
@@ -94,7 +107,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         bundle.putString("url", lottery.getChartUrl());
         launchFragment(TrendFragment.class, bundle);
     }
-    
+
     public static void launch(BaseFragment fragment, Lottery lottery)
     {
         ArrayList gameList = new ArrayList();
@@ -103,7 +116,12 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         gameList.add(GameMethodInfoFragment.class);
         Bundle bundle = new Bundle();
         bundle.putString("title", "");
-        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
+        if(isShowDanTiao(lottery.getLotteryId())){
+            gameList.add(GameDantiaoInfoFragment.class);
+            bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明", "单挑说明"});
+        }else{
+            bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
+        }
         bundle.putParcelableArrayList("fragmentlist", gameList);
         bundle.putSerializable("lottery", lottery);
         bundle.putSerializable("hasTab", true);
@@ -120,7 +138,12 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         gameList.add(GameMethodInfoFragment.class);
         Bundle bundle = new Bundle();
         bundle.putString("title", "");
-        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
+        if(isShowDanTiao(lottery.getLotteryId())){
+            gameList.add(GameDantiaoInfoFragment.class);
+            bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明", "单挑说明"});
+        }else{
+            bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
+        }
         bundle.putParcelableArrayList("fragmentlist", gameList);
         bundle.putSerializable("lottery", lottery);
         bundle.putSerializable("hasTab", true);
@@ -135,7 +158,12 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         gameList.add(GameMethodInfoFragment.class);
         Bundle bundle = new Bundle();
         bundle.putString("title", "");
-        bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
+        if(isShowDanTiao(lottery.getLotteryId())){
+            gameList.add(GameDantiaoInfoFragment.class);
+            bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明", "单挑说明"});
+        }else{
+            bundle.putStringArray("radiotitle", new String[]{"彩种", "开奖", "玩法说明"});
+        }
         bundle.putParcelableArrayList("fragmentlist", gameList);
         bundle.putSerializable("lottery", lottery);
         bundle.putSerializable("hasTab", true);
@@ -227,8 +255,13 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                     lotteryRadioButton.setId(i);
                 else if (i == 1)
                     trendRadioButton.setId(i);
-                else
+                else  if (i == 2)
                     methodRadioButton.setId(i);
+                else  if (i == 3){
+                    dantiaoRadioButton.setVisibility(View.VISIBLE);
+                    dantiaoRadioButton.setId(i);
+                }
+
             ArrayList fragmentList = bundle.getParcelableArrayList("fragmentlist");
             for (int i = 0; i < fragmentList.size(); i++)
             {
@@ -610,6 +643,48 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         } else
         {
             viewPager.setScanScroll(true);
+        }
+    }
+
+    //是否显示单挑说明界面
+    private static boolean isShowDanTiao(int lotteryId){
+        switch (lotteryId)
+        {
+            case 2://山东11选5
+            case 6://江西11选5
+            case 7://广东11选5
+            case 16://11选5分分彩
+            case 20://北京11选5
+            case 21://上海11选5
+            case 32://江苏11选5
+            case 33://浙江11选5
+            case 34://福建11选5
+            case 36://山西11选5
+            case 40://黑龙江11选5
+            case 44://11选5秒秒彩
+                return true;
+            case 1://重庆时时彩
+            case 3://黑龙江时时彩
+            case 4://新疆时时彩
+            case 8://天津时时彩
+            case 11://亚洲分分彩
+            case 49://腾讯分分差
+            case 19://亚洲5分彩
+            case 35://台湾五分彩
+            case 37://亚洲2分彩
+                return true;
+            case 9://福彩3D
+            case 24://超快3D
+                return true;
+            case 27://北京赛车PK10
+            case 38://PK10分分彩
+            case 47://PK10二分彩
+                return true;
+            case 17:
+            case 26://六合彩
+                return true;
+            default:
+                return false;
         }
     }
     

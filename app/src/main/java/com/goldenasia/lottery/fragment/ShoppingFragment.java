@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -41,6 +42,7 @@ import com.goldenasia.lottery.pattern.ChooseTips;
 import com.goldenasia.lottery.pattern.ShroudView;
 import com.goldenasia.lottery.pattern.TitleTimingSalesView;
 import com.goldenasia.lottery.user.UserCentre;
+import com.goldenasia.lottery.util.DanTiaoUtils;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.view.adapter.ShoppingAdapter;
 import com.umeng.analytics.MobclickAgent;
@@ -76,6 +78,7 @@ public class ShoppingFragment extends BaseFragment
     private static final int TRACK_TURNED_PAGE_LOGIN = 1;
     private static final int TRACK_TURNED_PAGE_RECHARGE = 2;
     private static final int TRACK_TURNED_PAGE_PICK = 3;
+    private static final int TRACK_TURNED_PAGE_DANTIAO= 4;//单挑
     
     @BindView(R.id.load_more_list_view_ptr_frame)
     PtrClassicFrameLayout ptrFrameLayout;
@@ -519,7 +522,16 @@ public class ShoppingFragment extends BaseFragment
                 if (cart.getPlanAmount() <= userCentre.getUserInfo().getBalance())
                 {
                     // ④界面跳转：跳转到追期和倍投的设置界面
-                    verificationData();
+
+                    DanTiaoUtils danTiaoUtils=new DanTiaoUtils();
+                    String danTiaoString=danTiaoUtils.isShowDialog(lottery.getLotteryId(),ticketList);
+
+                    if(TextUtils.isEmpty(danTiaoString)){
+                        verificationData();
+                    }else{
+                        tipDialog("提示",danTiaoString,  TRACK_TURNED_PAGE_DANTIAO);
+                        return;
+                    }
                 } else
                 {
                     // 提示用户：充值去；界面跳转：用户充值界面
@@ -536,7 +548,7 @@ public class ShoppingFragment extends BaseFragment
             tipDialog("温馨提示", "您需要选择一注", TRACK_TURNED_PAGE_PICK);
         }
     }
-    
+
     /**
      * 数据验证
      */
@@ -672,6 +684,22 @@ public class ShoppingFragment extends BaseFragment
                 {
                     dialog.dismiss();
                     launchFragment(RechargeApply.class);
+                });
+                break;
+            case TRACK_TURNED_PAGE_DANTIAO:
+                builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+                builder.setNegativeButton("取消", (dialog, which) ->
+                {
+                    dialog.dismiss();
+                    if (track == TRACK_TURNED_PAGE_PICK)
+                    {
+                        getActivity().finish();
+                    }
+                });
+                builder.setPositiveButton("确认", (dialog, which) ->
+                {
+                    dialog.dismiss();
+                    verificationData();
                 });
                 break;
             default:

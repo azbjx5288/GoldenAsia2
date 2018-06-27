@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -319,7 +320,7 @@ public class CustomDialog extends Dialog
             // set the content message
             if (message != null)
             {
-                ((TextView) layout.findViewById(R.id.message)).setText(message);
+                ((TextView) layout.findViewById(R.id.message)).setText(Html.fromHtml(message));
             } else if (contentView != null)
             {
                 // if no message set
@@ -406,7 +407,7 @@ public class CustomDialog extends Dialog
             // set the content message
             if (message != null && contentView == null)
             {
-                ((TextView) layout.findViewById(R.id.message)).setText(message);
+                ((TextView) layout.findViewById(R.id.message)).setText(Html.fromHtml(message));
             } else if (contentView != null)
             {
                 // if no message set
@@ -479,7 +480,7 @@ public class CustomDialog extends Dialog
             // set the content message
             if (message != null)
             {
-                ((TextView) layout.findViewById(R.id.message)).setText(message);
+                ((TextView) layout.findViewById(R.id.message)).setText(Html.fromHtml(message));
             } else if (colorfulMsg != null)
             {
                 ((TextView) layout.findViewById(R.id.message)).setText(colorfulMsg);
