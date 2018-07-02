@@ -43,12 +43,13 @@ public class DanTiaoUtils {
             case 16://11选5分分彩
             case 20://北京11选5
             case 21://上海11选5
-            case 32:
-            case 33:
-            case 34:
+            case 32://江苏11选5
+            case 33://浙江11选5
+            case 34://福建11选5
             case 36://山西11选5
+            case 40://黑龙江11选5
             case 44://11选5秒秒彩
-                return  isShowDialog11Select5(tickets);  //11选5 玩法说明
+                return  isShowDialog11Select5(tickets);
             case 24://超快3D
             case 9://福彩3D
                 return  isShowDialog3D(tickets);
@@ -220,9 +221,78 @@ public class DanTiaoUtils {
             Ticket ticket = tickets.get(i);
 
             switch (ticket.getChooseMethod().getCname()) {
-                case "五星直选":
-                    if(ticket.getChooseNotes()<1000){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\"五星直选\"</font> ");
+                case "后三直选":
+                case "前三直选":
+                    if(ticket.getChooseNotes()<9){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "后三组选":
+                case "前三组选":
+                case "后三组选胆拖":
+                case "前三组选胆拖":
+                    if(ticket.getChooseNotes()<=1){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "后二直选":
+                case "前二直选":
+                    if(ticket.getChooseNotes()<=1){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "后二组选":
+                case "前二组选":
+                case "后二组选胆拖":
+                case "前二组选胆拖":
+                    if(ticket.getChooseNotes()<=1){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选七中五":
+                    if(ticket.getChooseNotes()<5){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选三中三胆拖":
+                    if(ticket.getChooseNotes()<=1){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选四中四胆拖":
+                    if(ticket.getChooseNotes()<3){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选五中五胆拖":
+                    if(ticket.getChooseNotes()<4){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选六中五胆拖":
+                    if(ticket.getChooseNotes()<=2){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选七中五胆拖":
+                    if(ticket.getChooseNotes()<=1){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选八中五胆拖":
+                    if(ticket.getChooseNotes()<=1){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "乐选三":
+                case "乐选五":
+                    if(ticket.getChooseNotes()<9){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "乐选二":
+                    if(ticket.getChooseNotes()<=2){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
             }
