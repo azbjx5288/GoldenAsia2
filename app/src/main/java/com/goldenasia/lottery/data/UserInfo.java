@@ -49,6 +49,16 @@ public class UserInfo {
     private boolean isTest;
     @SerializedName("status")
     private int status;
+    @SerializedName("is_new")
+    private boolean isNew;
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
 
     public int getUserId() {
         return userId;

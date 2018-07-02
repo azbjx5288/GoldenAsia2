@@ -23,7 +23,7 @@ public class LoginRequest extends RestRequest {
             userCentre.saveSession(null);
             return;
         }
-        userCentre.saveLoginInfo(((LoginCommand)command).getUsername(),((LoginCommand)command).getEncpassword());
+        userCentre.saveLoginInfo(((LoginCommand)command).getUsername(),((LoginCommand)command).getEncpassword(),((UserInfo) response.getData()).isNew());
         userCentre.setUserInfo((UserInfo) response.getData());
 
         String cookie = networkResponse.headers.get("Set-Cookie");

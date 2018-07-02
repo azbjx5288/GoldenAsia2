@@ -57,4 +57,15 @@ public class Preferences {
     public static void delete(Context context, String key) {
         context.getSharedPreferences(SANDBOX, Context.MODE_PRIVATE).edit().remove(key).commit();
     }
+
+    public static void saveBoolean(Context context, String key, Boolean value) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(SANDBOX, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    public static Boolean getBoolean(Context context, String key) {
+        SharedPreferences pref = context.getSharedPreferences(SANDBOX, Context.MODE_PRIVATE);
+        return pref.getBoolean(key, false);
+    }
 }

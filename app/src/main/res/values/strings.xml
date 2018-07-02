@@ -260,4 +260,63 @@
         四等奖：同花：中奖金额为27.0455元；\n
         五等奖：对子：中奖金额为8.2639元。
     </string>
+    <string name="dantiao_3d_item1"><![CDATA[<10注]]></string>
+    <string name="dantiao_3d_item2"><![CDATA[<3注]]></string>
+    <string name="dantiao_3d_item3"><![CDATA[<=2注]]></string>
+    <string name="dantiao_3d_item4"><![CDATA[<=1注]]></string>
+    <string name="dantiao_liuhecai_item1"><![CDATA[<46注]]></string>
+    <string name="dantiao_liuhecai_item2"><![CDATA[<70注]]></string>
+    <string name="dantiao_liuhecai_item3"><![CDATA[<140注]]></string>
+    <string name="dantiao_liuhecai_item4"><![CDATA[<9注]]></string>
+    <string name="dantiao_liuhecai_item5"><![CDATA[<4注]]></string>
+    <string name="dantiao_pk10_item1"><![CDATA[<300注]]></string>
+    <string name="dantiao_pk10_item2"><![CDATA[<=2注]]></string>
+    <string name="dantiao_pk10_item3">50注</string>
+    <string name="dantiao_pk10_item4"><![CDATA[<=2注]]></string>
+    <string name="dantiao_pk10_item5"><![CDATA[<7注]]></string>
+    <string name="dantiao_11select5_item1"><![CDATA[<9注]]></string>
+    <string name="dantiao_11select5_item2"><![CDATA[<5注]]></string>
+    <string name="dantiao_11select5_item3"><![CDATA[<=1注]]></string>
+    <string name="dantiao_11select5_item4"><![CDATA[<4注]]></string>
+    <string name="dantiao_ssc_item1" ><![CDATA[<1000注]]></string>
+    <string name="dantiao_ssc_item2" ><![CDATA[<6注]]></string>
+    <string name="dantiao_ssc_item3" ><![CDATA[<12注]]></string>
+    <string name="dantiao_ssc_item4" ><![CDATA[<30注]]></string>
+    <string name="dantiao_ssc_item5" ><![CDATA[<48注]]></string>
+    <string name="dantiao_ssc_item6" ><![CDATA[<45注]]></string>
+    <string name="dantiao_ssc_item7" ><![CDATA[<100注]]></string>
+    <string name="dantiao_ssc_item8" ><![CDATA[<5注]]></string>
+    <string name="dantiao_ssc_item9" ><![CDATA[<9注]]></string>
+    <string name="dantiao_ssc_item10" ><![CDATA[<24注]]></string>
+    <string name="dantiao_ssc_item11" ><![CDATA[<10注]]></string>
+    <string name="dantiao_ssc_item12" ><![CDATA[<3注]]></string>
+    <string name="dantiao_ssc_item13" ><![CDATA[<1注]]></string>
+    <string name="dantiao_ssc_item14" ><![CDATA[
+            二个位置<=1注\n		三个位置<3注	\n	四个位置<6注
+        ]]></string>
+    <string name="dantiao_ssc_item15" ><![CDATA[
+        三个位置<10注	\n	三个位置<40注	\n	五个位置<100注
+     ]]></string>
+    <string name="dantiao_ssc_item16" ><![CDATA[
+        三个位置<2注	\n	四个位置<8注	\n	五个位置<20注
+     ]]></string>
+    <string name="dantiao_ssc_item17" ><![CDATA[
+        三个位置<3注 \n 四个位置<8注		\n	五个位置<20注
+     ]]></string>
+    <string name="dantiao_ssc_item18" ><![CDATA[
+        四个位置<100注	\n	五个位置<500注	\n	四季发财<20注
+     ]]></string>
+
+    <string name="dantiao_ssc_item19" ><![CDATA[
+       四个位置<5注	\n	五个位置<25注
+     ]]></string>
+    <string name="dantiao_ssc_item20" ><![CDATA[
+       四个位置<9注	\n	五个位置<45注
+     ]]></string>
+    <string name="dantiao_ssc_item21" ><![CDATA[
+        四个位置<24注	\n	五个位置<120注
+     ]]></string>
+
+
+
 </resources>

@@ -114,6 +114,11 @@
             android:id="@+id/methodRadioButton"
             style="@style/mainRadioButton"
             android:text="玩法说明"/>
+        <RadioButton
+            android:id="@+id/dantiaoRadioButton"
+            style="@style/mainRadioButton"
+            android:visibility="gone"
+            android:text="单挑说明"/>
     </RadioGroup>
 
     <com.goldenasia.lottery.pattern.CustomViewPager

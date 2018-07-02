@@ -3,6 +3,7 @@ package com.goldenasia.lottery.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ import com.goldenasia.lottery.pattern.ChooseTips;
 import com.goldenasia.lottery.pattern.GetPrizePopupWindow;
 import com.goldenasia.lottery.pattern.ShroudViewNoChase;
 import com.goldenasia.lottery.user.UserCentre;
+import com.goldenasia.lottery.util.DanTiaoUtils;
 import com.goldenasia.lottery.util.NumbericUtils;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.util.ToastUtils;
@@ -73,8 +75,9 @@ public class ShoppingMmcFragment extends BaseFragment
     private static final int TRACK_TURNED_PAGE_LOGIN = 1;
     private static final int TRACK_TURNED_PAGE_RECHARGE = 2;
     private static final int TRACK_TURNED_PAGE_PICK = 3;
+    private static final int TRACK_TURNED_PAGE_DANTIAO= 4;//单挑
     private static final int CUSTOMER_OPEN = 1;
-    
+
     @BindView(R.id.shopping_list)
     ListView shoppingList;
     @BindView(R.id.lottery_shopping_buy)
@@ -352,8 +355,18 @@ public class ShoppingMmcFragment extends BaseFragment
                 if (cart.getPlanAmount() <= userCentre.getUserInfo().getBalance())
                 {
                     // ④界面跳转：跳转到追期和倍投的设置界面
-                    verifyData();
-                    ToastUtils.showShortToast(getActivity(), "开奖中……");
+
+                    DanTiaoUtils danTiaoUtils=new DanTiaoUtils();
+                    String danTiaoString=danTiaoUtils.isShowDialog(lottery.getLotteryId(),ShoppingCart.getInstance().getCodesMap());
+
+                    if(TextUtils.isEmpty(danTiaoString)){
+                        verifyData();
+                        ToastUtils.showShortToast(getActivity(), "开奖中……");
+                    }else{
+                        tipDialog("提示",danTiaoString,  TRACK_TURNED_PAGE_DANTIAO,false);
+                        return;
+                    }
+
                 } else
                 {
                     // 提示用户：充值去；界面跳转：用户充值界面
@@ -422,6 +435,23 @@ public class ShoppingMmcFragment extends BaseFragment
                 {
                     dialog.dismiss();
                     launchFragment(RechargeApply.class);
+                });
+                break;
+            case TRACK_TURNED_PAGE_DANTIAO:
+                builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+                builder.setNegativeButton("取消", (dialog, which) ->
+                {
+                    dialog.dismiss();
+                    if (track == TRACK_TURNED_PAGE_PICK)
+                    {
+                        getActivity().finish();
+                    }
+                });
+                builder.setPositiveButton("确认", (dialog, which) ->
+                {
+                    dialog.dismiss();
+                    verifyData();
+                    ToastUtils.showShortToast(getActivity(), "开奖中……");
                 });
                 break;
             default:

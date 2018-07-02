@@ -35,22 +35,13 @@ import com.goldenasia.lottery.data.LotteryHistoryCode;
 import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.data.MethodList;
 import com.goldenasia.lottery.data.MethodListCommand;
-import com.goldenasia.lottery.game.Fc3dCommonGame;
 import com.goldenasia.lottery.game.GameConfig;
-import com.goldenasia.lottery.game.Kl8CommonGame;
-import com.goldenasia.lottery.game.KsCommonGame;
 import com.goldenasia.lottery.game.MenuController;
-import com.goldenasia.lottery.game.MmcCommonGame;
-import com.goldenasia.lottery.game.P3p5CommonGame;
-import com.goldenasia.lottery.game.Pk10CommonGame;
 import com.goldenasia.lottery.game.PromptManager;
-import com.goldenasia.lottery.game.SdddsGame;
-import com.goldenasia.lottery.game.ShanDongKuaiLePuKeGame;
-import com.goldenasia.lottery.game.SscCommonGame;
-import com.goldenasia.lottery.game.SyxwCommonGame;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.MethodQueue;
 import com.goldenasia.lottery.pattern.CustomViewPager;
+import com.goldenasia.lottery.user.UserCentre;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.view.TableMenu;
 import com.google.gson.reflect.TypeToken;
@@ -648,6 +639,10 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
 
     //是否显示单挑说明界面
     private static boolean isShowDanTiao(int lotteryId){
+        UserCentre userCentre = GoldenAsiaApp.getUserCentre();
+        if(!userCentre.getUserIsNew()){
+            return false;
+        }
         switch (lotteryId)
         {
             case 2://山东11选5
@@ -672,6 +667,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             case 19://亚洲5分彩
             case 35://台湾五分彩
             case 37://亚洲2分彩
+            case 15://亚洲妙妙彩
                 return true;
             case 9://福彩3D
             case 24://超快3D

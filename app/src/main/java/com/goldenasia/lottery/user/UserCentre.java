@@ -31,6 +31,7 @@ public class UserCentre {
     private static final String KEY_LOTTERY_LUCREMODE = "user_lottery_lucremode_";
     private static final String KEY_LOTTERY_BONUSMODE = "user_lottery_bonusmode_new";
     private static final String KEY_LOTTERY_RECHARGE_MODE="user_lottery_recharge_info_mode";
+    private static final String IS_NEW="is_new";
 
     private Context context;
     private String session;
@@ -47,6 +48,7 @@ public class UserCentre {
         userID = userInfo == null ? "unknown" : String.valueOf(userInfo.getUserId());
         loadLotteryList();
     }
+
 
     public LoginCommand createLoginCommand() {
         String name = Preferences.getString(context, KEY_LOGIN_NAME, null);
@@ -82,6 +84,18 @@ public class UserCentre {
         } else {
             Preferences.saveString(context, KEY_LOGIN_NAME, name);
             Preferences.saveString(context, KEY_LOGIN_PASSWORD, password);
+        }
+    }
+
+    public void saveLoginInfo(String name, String password,boolean isNew) {
+        if (name == null || password == null) {
+            Preferences.delete(context, KEY_LOGIN_NAME);
+            Preferences.delete(context, KEY_LOGIN_PASSWORD);
+            Preferences.delete(context, IS_NEW);
+        } else {
+            Preferences.saveString(context, KEY_LOGIN_NAME, name);
+            Preferences.saveString(context, KEY_LOGIN_PASSWORD, password);
+            Preferences.saveBoolean(context, IS_NEW, isNew);
         }
     }
 
@@ -194,5 +208,9 @@ public class UserCentre {
 
     public void setBonusMode(int propertyId, int mode) {
         Preferences.saveInt(context, KEY_LOTTERY_BONUSMODE + propertyId, mode);
+    }
+    public boolean getUserIsNew() {
+//        return true;
+        return Preferences.getBoolean(context, IS_NEW);
     }
 }
