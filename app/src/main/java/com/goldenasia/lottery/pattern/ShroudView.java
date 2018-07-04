@@ -20,7 +20,13 @@ import com.goldenasia.lottery.component.QuantityView;
 import com.goldenasia.lottery.component.QuantityView.OnQuantityChangeListener;
 import com.goldenasia.lottery.data.Lottery;
 import com.goldenasia.lottery.fragment.ChaseFragment;
+import com.goldenasia.lottery.fragment.ShoppingFragment;
+import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.ShoppingCart;
+import com.goldenasia.lottery.material.Ticket;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 购物车多倍操作
@@ -110,6 +116,8 @@ public class ShroudView implements View.OnClickListener,RadioGroup.OnCheckedChan
                     tipDialog("温馨提示", "您需要选择一注");
                     return;
                 }
+                ShoppingFragment shoppingFragment=(ShoppingFragment)fragment;
+                ConstantInformation.ticketList=shoppingFragment.getTicketList();
                 ChaseFragment.launch(fragment, lottery, timing);
                 break;
             case R.id.setting_mode:

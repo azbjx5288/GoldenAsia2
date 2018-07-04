@@ -128,6 +128,9 @@ public class ConstantInformation
     public  static boolean LENG_RE_IS_SHOW =false;//冷热是否显示
     public static int LENG_RE_COUNT =100;//冷热的期数
 
+    //购物车中的数据
+    public static List<Ticket> ticketList = new ArrayList<>();
+
     public static final ArrayList<Integer> CURRENT_LOTTERY_ID_LIST = new ArrayList<Integer>()
     {
         {

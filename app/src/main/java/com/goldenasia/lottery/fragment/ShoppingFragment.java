@@ -786,4 +786,8 @@ public class ShoppingFragment extends BaseFragment
         {
         }
     };
+
+    public List<Ticket> getTicketList() {
+        return ticketList;
+    }
 }

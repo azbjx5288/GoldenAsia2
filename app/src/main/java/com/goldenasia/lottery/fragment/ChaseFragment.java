@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -38,10 +39,12 @@ import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ChaseRuleData;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.ShoppingCart;
+import com.goldenasia.lottery.material.Ticket;
 import com.goldenasia.lottery.pattern.ChaseRowView;
 import com.goldenasia.lottery.pattern.TaskPlanView;
 import com.goldenasia.lottery.pattern.TitleTimingSalesView;
 import com.goldenasia.lottery.user.UserCentre;
+import com.goldenasia.lottery.util.DanTiaoUtils;
 import com.google.gson.reflect.TypeToken;
 import com.umeng.analytics.MobclickAgent;
 
@@ -146,7 +149,15 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
                 // ③判断：用户的余额是否满足投注需求
                 if (cart.getPlanAmount() <= userCentre.getUserInfo().getBalance()) {
                     // ④界面跳转：跳转到追期和倍投的设置界面
-                    verificationData();
+                    DanTiaoUtils danTiaoUtils=new DanTiaoUtils();
+                    String danTiaoString=danTiaoUtils.isShowDialog(lottery.getLotteryId(), ConstantInformation.ticketList);
+
+                    if(TextUtils.isEmpty(danTiaoString)){
+                        verificationData();
+                    }else{
+                        tipDialog2("提示",danTiaoString);
+                        return;
+                    }
                 } else {
                     // 提示用户：充值去；界面跳转：用户充值界面
                     tipDialog("温馨提示", "请充值", TRACK_TURNED_PAGE_RECHARGE);
@@ -507,6 +518,23 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
         CustomDialog dialog = builder.create();
         dialog.setOnDismissListener((d) -> getActivity().finish());
         dialog.show();
+    }
+
+    private void tipDialog2(String title, String msg) {
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+        builder.setMessage(msg);
+        builder.setTitle(title);
+        builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+        builder.setNegativeButton("取消", (dialog, which) ->
+        {
+            dialog.dismiss();
+        });
+        builder.setPositiveButton("确认", (dialog, which) ->
+        {
+            dialog.dismiss();
+            verificationData();
+        });
+        builder.create().show();
     }
 
     private void tipDialog(String title, String msg, final int track) {
