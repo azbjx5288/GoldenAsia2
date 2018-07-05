@@ -2,6 +2,12 @@ apply plugin: 'com.android.application'
 //apply plugin: 'me.tatarka.retrolambda'
 //apply plugin: 'android-apt'
 
+def buildTime() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddhhmmss')
+    return formattedDate
+}
+
 android {
 
     compileSdkVersion 27
@@ -20,8 +26,8 @@ android {
         applicationId "com.goldenasia.lottery"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 33
-        versionName "33.0.0"
+        versionCode 34
+        versionName "34.0.0"
     }
 
     compileOptions {
@@ -41,6 +47,24 @@ android {
             minifyEnabled false
         }
     }
+
+    //自动生成指定名称的release发布版的 apk文件
+    android.applicationVariants.all { variant ->
+        def appName
+        def time = "-${buildTime()}.apk"
+
+        if (project.hasProperty("applicationName")) {
+            appName = applicationName
+        } else {
+            appName = parent.name
+        }
+
+        variant.outputs.all { output ->
+            outputFileName = appName + "-" +"${variant.name}-V${variant.versionName}"+ time
+        }
+        //打包后出来的名字    GoldenAsia2-release-V34.0.0-20180705091013.apk
+    }
+
 }
 
 /*support 强制使用相同版本的库*/
