@@ -221,7 +221,7 @@ public class DanTiaoUtils {
                     break;
                 case "后五名组选":
                 case "前五名组选":
-                    if(ticket.getChooseNotes()<=2){
+                    if(ticket.getChooseNotes()<3){
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
@@ -233,7 +233,7 @@ public class DanTiaoUtils {
                     break;
                 case "后四名组选":
                 case "前四名组选":
-                    if(ticket.getChooseNotes()<=2){
+                    if(ticket.getChooseNotes()<3){
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
@@ -243,24 +243,24 @@ public class DanTiaoUtils {
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
-                case "前三名组六":
-                case "后三名组六":
-                    if(ticket.getChooseNotes()==1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
-                case "后二名直选":
-                case "前二名直选":
-                    if(ticket.getChooseNotes()==1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
-                case "后二名组选":
-                case "前二名组选":
-                    if(ticket.getChooseNotes()==1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
+//                case "前三名组六":
+//                case "后三名组六":
+//                    if(ticket.getChooseNotes()==1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
+//                case "后二名直选":
+//                case "前二名直选":
+//                    if(ticket.getChooseNotes()==1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
+//                case "后二名组选":
+//                case "前二名组选":
+//                    if(ticket.getChooseNotes()==1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
             }
         }
         if(!TextUtils.isEmpty(hasDanTiaoMethods)){
@@ -291,18 +291,18 @@ public class DanTiaoUtils {
                     }
                     break;
                 case "组六":
-                    if(ticket.getChooseNotes()<=2){
+                    if(ticket.getChooseNotes()<3){
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
-                case "后二直选":
-                case "前二直选":
-                case "后二组选":
-                case "前二组选":
-                    if(ticket.getChooseNotes()<=1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
+//                case "后二直选":
+//                case "前二直选":
+//                case "后二组选":
+//                case "前二组选":
+//                    if(ticket.getChooseNotes()<=1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
             }
         }
         if(!TextUtils.isEmpty(hasDanTiaoMethods)){
@@ -326,35 +326,40 @@ public class DanTiaoUtils {
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
-                case "后三组选":
-                case "前三组选":
-                case "后三组选胆拖":
-                case "前三组选胆拖":
-                    if(ticket.getChooseNotes()<=1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
-                case "后二直选":
-                case "前二直选":
-                    if(ticket.getChooseNotes()<=1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
-                case "后二组选":
-                case "前二组选":
-                case "后二组选胆拖":
-                case "前二组选胆拖":
-                    if(ticket.getChooseNotes()<=1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
-                case "任选七中五":
+//                case "后三组选":
+//                case "前三组选":
+//                case "后三组选胆拖":
+//                case "前三组选胆拖":
+//                    if(ticket.getChooseNotes()<=1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
+//                case "后二直选":
+//                case "前二直选":
+//                    if(ticket.getChooseNotes()<=1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
+//                case "后二组选":
+//                case "前二组选":
+//                case "后二组选胆拖":
+//                case "前二组选胆拖":
+//                    if(ticket.getChooseNotes()<=1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
+//                case "任选七中五":
+//                    if(ticket.getChooseNotes()<5){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
+//                case "任选三中三胆拖":
+//                    if(ticket.getChooseNotes()<=1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
+                case "任选五中五":
                     if(ticket.getChooseNotes()<5){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
-                case "任选三中三胆拖":
-                    if(ticket.getChooseNotes()<=1){
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
@@ -369,20 +374,20 @@ public class DanTiaoUtils {
                     }
                     break;
                 case "任选六中五胆拖":
-                    if(ticket.getChooseNotes()<=2){
+                    if(ticket.getChooseNotes()<3){
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
-                case "任选七中五胆拖":
-                    if(ticket.getChooseNotes()<=1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
-                case "任选八中五胆拖":
-                    if(ticket.getChooseNotes()<=1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
+//                case "任选七中五胆拖":
+//                    if(ticket.getChooseNotes()<=1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
+//                case "任选八中五胆拖":
+//                    if(ticket.getChooseNotes()<=1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
                 case "乐选三":
                 case "乐选五":
                     if(ticket.getChooseNotes()<9){
@@ -390,7 +395,7 @@ public class DanTiaoUtils {
                     }
                     break;
                 case "乐选二":
-                    if(ticket.getChooseNotes()<=2){
+                    if(ticket.getChooseNotes()<3){
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
@@ -612,19 +617,19 @@ public class DanTiaoUtils {
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
-                case "任二直选":
-                case "任二组选":
-                    if(ticket.getChooseNotes()<=1){
-                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
-                    }
-                    break;
+//                case "任二直选":
+//                case "任二组选":
+//                    if(ticket.getChooseNotes()<=1){
+//                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+//                    }
+//                    break;
                 case "任三直选":
                     if(ticket.getChooseNotes()<10){
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
                 case "任三组三":
-                    if(ticket.getChooseNotes()<2){
+                    if(ticket.getChooseNotes()<3){
                         hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
                     }
                     break;
