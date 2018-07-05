@@ -679,6 +679,10 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             case 17:
             case 26://六合彩
                 return true;
+            case 10://P3p5
+                return true;
+            case 48://北京快乐8:
+                return true;
             default:
                 return false;
         }

@@ -5,9 +5,11 @@ import android.text.TextUtils;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.material.Ticket;
 import com.goldenasia.lottery.user.UserCentre;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +27,32 @@ public class DanTiaoUtils {
             return null;
         }
 
+        //对相同玩法(ticket.getChooseMethod().getCname())的注数进行相加start
+        List<Ticket> newTicketList = new ArrayList<>();
+        List<String> hasMethods = new ArrayList<>();
+        for(int i=0;i<tickets.size();i++){
+            Ticket ticket=tickets.get(i);
+            if(hasMethods.contains(ticket.getChooseMethod().getCname())){
+                continue;
+            }
+            hasMethods.add(ticket.getChooseMethod().getCname());
+            int  sumChooseNotes=ticket.getChooseNotes();
+            for(int j=i+1;j<tickets.size();j++){
+                Ticket ticket2=tickets.get(j);
+                if(ticket.getChooseMethod().getCname().equals(ticket2.getChooseMethod().getCname())){
+                    sumChooseNotes+=ticket2.getChooseNotes();
+                }
+            }
+            //为了防止改变原有的list集合
+            Ticket newTicket=new Ticket();
+            Method method=new Method();
+            method.setCname(ticket.getChooseMethod().getCname());
+            newTicket.setChooseMethod(method);
+            newTicket.setChooseNotes(sumChooseNotes);
+            newTicketList.add(newTicket);
+        }
+        //对相同玩法(ticket.getChooseMethod().getCname())的注数进行相加end
+
         switch (lotteryId){
             case 1://重庆时时彩
             case 3://黑龙江时时彩
@@ -36,7 +64,7 @@ public class DanTiaoUtils {
             case 35://台湾五分彩
             case 37://亚洲2分彩
             case 15://亚洲妙妙彩
-                return  sscIsShowDialog(tickets);
+                return  sscIsShowDialog(newTicketList);
             case 2://山东11选5
             case 6://江西11选5
             case 7://广东11选5
@@ -49,18 +77,89 @@ public class DanTiaoUtils {
             case 36://山西11选5
             case 40://黑龙江11选5
             case 44://11选5秒秒彩
-                return  isShowDialog11Select5(tickets);
+                return  isShowDialog11Select5(newTicketList);
             case 24://超快3D
             case 9://福彩3D
-                return  isShowDialog3D(tickets);
+                return  isShowDialog3D(newTicketList);
             case 27://北京PK10
             case 38://PK10分分彩
             case 47://PK10二分彩
-                return  isShowDialogPk10(tickets);
+                return  isShowDialogPk10(newTicketList);
             case 17://六合彩
             case 26://六合彩分分彩
-                return  isShowDialogLiuHeCai(tickets);
+                return  isShowDialogLiuHeCai(newTicketList);
+            case 10://P3p5
+                return  isShowDialogP3p5(newTicketList);
+            case 48://北京快乐8:
+                return  isShowDialogbeijingkuaile8(newTicketList);
 
+        }
+        return null;
+    }
+
+    private String isShowDialogbeijingkuaile8(List<Ticket> tickets) {
+            /*有单挑的玩法名称*/
+        StringBuilder hasDanTiaoMethods=new StringBuilder();
+
+        for(int i=0;i<tickets.size();i++) {
+            Ticket ticket = tickets.get(i);
+
+            switch (ticket.getChooseMethod().getCname()) {
+                case "任选五":
+                    if(ticket.getChooseNotes()<4){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选六":
+                    if(ticket.getChooseNotes()<5){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "任选七":
+                    if(ticket.getChooseNotes()<55){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+            }
+        }
+        if(!TextUtils.isEmpty(hasDanTiaoMethods)){
+            return hasDanTiaoMethods.append("投注含单挑注单，单挑注单盈利上限为3万元，是否继续投注？").toString();
+        }
+        return null;
+    }
+
+    private String isShowDialogP3p5(List<Ticket> tickets) {
+    /*有单挑的玩法名称*/
+        StringBuilder hasDanTiaoMethods=new StringBuilder();
+
+        for(int i=0;i<tickets.size();i++) {
+            Ticket ticket = tickets.get(i);
+
+            switch (ticket.getChooseMethod().getCname()) {
+                case "直选":
+                case "直选和值":
+                    if(ticket.getChooseNotes()<10){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "组三":
+                case "混合组选":
+                case "组选和值":
+                    if(ticket.getChooseNotes()<3){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+                case "五星直选":
+                case "五星连选":
+                case "五星和值":
+                    if(ticket.getChooseNotes()<1000){
+                        hasDanTiaoMethods.append("<font color=\'#8F0000\'>\""+ticket.getChooseMethod().getCname()+"\"</font> ");
+                    }
+                    break;
+            }
+        }
+        if(!TextUtils.isEmpty(hasDanTiaoMethods)){
+            return hasDanTiaoMethods.append("投注含单挑注单，单挑注单盈利上限为3万元，是否继续投注？").toString();
         }
         return null;
     }
