@@ -473,6 +473,8 @@ public class ChaseFragment extends BaseFragment implements RadioGroup.OnCheckedC
 
     private void receiptOrderDialog(final String orderTip) {
         cart.clear();
+        //防止内存泄露--静态集合对象注意释放
+        ConstantInformation.ticketList.clear();
         cleanData();
         cleanViews();
         CustomDialog.Builder builder = new CustomDialog.Builder(getActivity());
