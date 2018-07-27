@@ -1,0 +1,89 @@
+apply plugin: 'com.android.application'
+//apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'android-apt'
+
+android {
+
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
+    defaultConfig {
+        applicationId "com.goldenasia.lottery"
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 34
+        versionName "34.0.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        encoding = 'UTF-8'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+        }
+    }
+}
+
+/*support 强制使用相同版本的库*/
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '26.0.2'
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation 'com.android.support:appcompat-v7:+'
+    implementation 'com.android.support:design:+'
+    implementation 'com.android.support:cardview-v7:+'
+    implementation 'com.android.support:support-v4:+'
+    implementation 'com.android.support:palette-v7:+'
+    implementation 'com.android.support:recyclerview-v7:+'
+    implementation 'com.google.code.gson:gson:+'
+    implementation 'com.mcxiaoke.volley:library:1.0.19'
+    implementation 'com.kogitune:pre-lollipop-activity-transition:1.0.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'org.jsoup:jsoup:1.10.1'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.google.zxing:android-core:3.3.0'
+    implementation 'in.srain.cube:clog:1.0.2'
+    implementation 'in.srain.cube:cube-sdk:1.0.44@aar'
+    implementation 'in.srain.cube:ultra-ptr:1.0.11'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.github.hotchemi:permissionsdispatcher:2.3.1'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.1'
+    implementation 'com.google.android.gms:play-services-appindexing:8.4.0'
+    implementation 'com.githang:com-phillipcalvin-iconbutton:2.0.2'
+    implementation 'com.github.cpiz:BubbleView:1.0.2'
+    implementation 'com.j256.ormlite:ormlite-core:5.0+'
+    implementation 'com.j256.ormlite:ormlite-android:5.0+'
+    implementation 'q.rorbin:badgeview:1.1.3'
+    implementation project(':PushSDK')
+    implementation "me.leolin:ShortcutBadger:1.1.19@aar"
+}

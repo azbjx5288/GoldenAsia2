@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:focusableInTouchMode="true"
+              android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/fragment_cycle_viewpager_content"
+        android:name="com.goldenasia.lottery.component.CycleViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"/>
+
+    <View style="@style/big_divideLine"/>
+
+    <LinearLayout style="@style/small_layout"
+                  android:visibility="gone">
+        <TextView android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:text="我的收藏"
+                  android:textColor="@color/text_dark"
+                  android:textSize="15sp"/>
+        <ImageView
+            android:id="@+id/edit_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/customize"/>
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/my_favourite"
+        style="@style/big_layout"
+        android:visibility="gone">
+    </HorizontalScrollView>
+
+    <TextView
+        style="@style/small_layout"
+        android:text="购彩专区"
+        android:textColor="@color/text_dark"
+        android:textSize="15sp"/>
+
+    <View style="@style/horizontal_divide_line"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <include android:id="@+id/ssc" layout="@layout/item_fragment_home_gridview"/>
+                <include android:id="@+id/syxw" layout="@layout/item_fragment_home_gridview"/>
+            </LinearLayout>
+
+            <com.goldenasia.lottery.component.ScrollGridView
+                android:id="@+id/ssc_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_dark_border"
+                android:gravity="center"
+                android:numColumns="2"
+                android:visibility="gone"/>
+            <com.goldenasia.lottery.component.ScrollGridView
+                android:id="@+id/syxw_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_dark_border"
+                android:gravity="center"
+                android:numColumns="2"
+                android:visibility="gone"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <include android:id="@+id/ks" layout="@layout/item_fragment_home_gridview"/>
+                <include android:id="@+id/low" layout="@layout/item_fragment_home_gridview"/>
+            </LinearLayout>
+            <com.goldenasia.lottery.component.ScrollGridView
+                android:id="@+id/ks_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_dark_border"
+                android:gravity="center"
+                android:numColumns="2"
+                android:visibility="gone"/>
+            <com.goldenasia.lottery.component.ScrollGridView
+                android:id="@+id/low_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_dark_border"
+                android:gravity="center"
+                android:numColumns="2"
+                android:visibility="gone"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <include android:id="@+id/qwc" layout="@layout/item_fragment_home_gridview"/>
+                <include android:id="@+id/pk10" layout="@layout/item_fragment_home_gridview"/>
+            </LinearLayout>
+            <com.goldenasia.lottery.component.ScrollGridView
+                android:id="@+id/qwc_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_dark_border"
+                android:gravity="center"
+                android:numColumns="2"
+                android:visibility="gone"/>
+            <com.goldenasia.lottery.component.ScrollGridView
+                android:id="@+id/pk10_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_dark_border"
+                android:gravity="center"
+                android:numColumns="2"
+                android:visibility="gone"/>
+            <com.goldenasia.lottery.component.ScrollGridView
+                android:id="@+id/others_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:numColumns="2"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

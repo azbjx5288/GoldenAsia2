@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="transparent">#00000000</color>
+    <color name="white">#ffffff</color><!--白色 -->
+    <color name="darkkhaki">#bdb76b</color><!--暗黄褐色 -->
+    <color name="darkgray">#a9a9a9</color><!--暗灰色 -->
+    <color name="gray">#808080</color><!--灰色 -->
+    <color name="cadetblue">#5f9ea0</color><!--军兰色 -->
+    <color name="darkblue">#00008b</color><!--暗蓝色 -->
+    <color name="black">#000000</color><!--黑色 -->
+
+    <!--改版色-->
+    <color name="app_main">#129FB4</color>
+    <color name="app_menu_background">#34495e</color>
+    <color name="app_main_support">#ee7e45</color>
+    <color name="app_main_background">#f1f2f6</color>
+    <color name="app_item_background">#f0f0f4</color>
+    <color name="app_main_ash">#e6e9ed</color>
+    <color name="app_main_rim">#e2e2e2</color>
+    <color name="app_font_color">#333333</color>
+    <color name="app_font_ash_color">#666666</color>
+    <color name="app_font_dark_color">#999999</color>
+    <color name="app_chart_baiball_color">#6ed25b</color>
+    <color name="app_chart_shiball_color">#1ab1ff</color>
+    <color name="app_chart_geball_color">#9678ff</color>
+    <color name="app_rowchange_color">#F8F9FB</color>
+    <color name="app_rowdefault_color">#F1F2F6</color>
+    <color name="text_shallow">#dedfe0</color>
+    <color name="login_in_background">#238399</color>
+
+    <!-- 彩球的颜色 -->
+    <color name="ball_text_color">#0d6755</color>
+    <color name="app_main_dark">#16A085</color><!--#008b8c-->
+    <color name="text_dark">#333333</color>
+    <color name="text_middle">#666666</color>
+    <color name="background">#e2e2e2</color>
+    <color name="gameCheck">#F5F5F5</color>
+    <color name="gameUncheck">#e2e2e2</color>
+    <color name="gameListItemWin">#b31045</color>
+    <color name="gameListItemFail">#39a78a</color>
+    <color name="gameListItemDoing">#39a78a</color>
+    <color name="gameListItemDone">#505050</color>
+    <color name="black_semi_transparent">#B2000000</color>
+    <!--秒秒彩-->
+    <color name="mmc_main">#ce314f</color>
+    <color name="mmc_botton_background">#ff8503</color>
+    <color name="mmc_title_background">#F2ECDA</color>
+    <color name="mmc_text">#454443</color>
+    <color name="mmc_bottom">#75716f</color>
+    <color name="mmc_number">#cecece</color>
+
+    <!--六合彩-->
+    <color name="lhc_red">#ff4850</color>
+    <color name="lhc_blue">#18caf6</color>
+    <color name="lhc_green">#0cd68c</color>
+
+    <!--刮刮彩彩-->
+    <color name="random_label">#4b4b4b</color>
+    <color name="label_selected">#333333</color>
+    <color name="label_unselected">#aeaeae</color>
+    <color name="ggc_card_sale_list">#ffcc99</color>
+    <color name="ggc_bg">#dfdfdf</color>
+
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="possible_result_points">#c0ffbd21</color>
+    <!-- Android standard ICS color -->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color>
+    <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#60000000</color>
+
+    <color name="orders_color">#4e4e4e</color>
+    <color name="font_color_red">#e84f4f</color>
+
+    <color name="divide">#DFDFDF</color>
+    <color name="yellow_bg">#f4b939</color><!-- 标签背景 -->
+    <color name="transparency">#00000000</color><!-- 透明色 -->
+</resources>

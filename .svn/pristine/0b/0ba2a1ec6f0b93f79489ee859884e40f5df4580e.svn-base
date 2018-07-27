@@ -1,0 +1,836 @@
+package com.goldenasia.lottery.game;
+
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.data.Method;
+import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.material.LhcQuickStart;
+import com.goldenasia.lottery.pattern.LhcPickNumber;
+import com.goldenasia.lottery.pattern.ManualInputView;
+import com.goldenasia.lottery.pattern.OnAddListner;
+import com.goldenasia.lottery.view.LhcNumberGroupView;
+
+import java.util.ArrayList;
+import java.util.Optional;
+
+/**
+ * 六合彩直选玩法
+ * Created by Sakura on 2016/9/15.
+ */
+
+public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
+{
+    private static boolean SHOW_QUICK_START;
+    private LhcQuickStart lhcQuickStart;
+    private int selectedID;
+    private CustomDialog.Builder builder;
+    private LhcNumberGroupView numberGroupView;
+    
+    public LhcZxGame(Method method)
+    {
+        super(method);
+        SHOW_QUICK_START = "TMZX".equals(method.getName());
+    }
+    
+    @Override
+    public void onInflate()
+    {
+        /*try
+        {
+            java.lang.reflect.Method function = getClass().getMethod(method.getName(), LhcGame.class);
+            function.invoke(null, this);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
+        }*/
+        createPicklayout(this, new String[]{""});
+    }
+    
+    public void onClearPick(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onClearPick();
+        game.notifyListener();
+        if (manualInputView != null)
+        {
+            manualInputView.getInputEditText().setText("");
+            setSingleNum(0);
+            if (onManualEntryListener != null)
+            {
+                onManualEntryListener.onManualEntry(0);
+            }
+        }
+    }
+    
+    
+    private void addPickNumber2Game(LhcGame game, View topView, String title)
+    {
+        LhcPickNumber pickNumber2 = new LhcPickNumber(topView, title);
+        pickNumber2.setPickColumnArea(false);
+        game.addPickNumber(pickNumber2);
+    }
+    
+    
+    public View createDefaultPickLayout(ViewGroup container)
+    {
+        return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column_lhc_num, null, false);
+    }
+    
+    private void createPicklayout(LhcGame game, String[] name)
+    {
+        View[] views = new View[name.length];
+        for (int i = 0; i < name.length; i++)
+        {
+            View view = createDefaultPickLayout(game.getTopLayout());
+            addPickNumber2Game(game, view, name[i]);
+            views[i] = view;
+        }
+        
+        ViewGroup topLayout = game.getTopLayout();
+        for (View view : views)
+        {
+            topLayout.addView(view);
+        }
+        
+        numberGroupView = (LhcNumberGroupView) getTopLayout().findViewById(R.id.pick_column_NumberGroupView);
+        
+        if (SHOW_QUICK_START)
+        {
+            views[0].findViewById(R.id.quick_start).setVisibility(View.VISIBLE);
+            views[0].findViewById(R.id.quick_start).setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    initQuickStart();
+                }
+            });
+        }
+        if("ZTYM".equals(method.getName())){//正特一码
+            game.setSupportInput(false);
+        }else{
+            game.setSupportInput(true);
+        }
+    }
+    
+    private void initQuickStart()
+    {
+        View view = LayoutInflater.from(getTopLayout().getContext()).inflate(R.layout.popup_lhc_quick_start, null);
+        lhcQuickStart = new LhcQuickStart(getTopLayout().getContext(), view.findViewById(R.id.main_panel));
+        lhcQuickStart.setOnQuickListner(this);
+        
+        builder = new CustomDialog.Builder(getTopLayout().getContext());
+        builder.setContentView(view);
+        builder.setTitle("快捷投注");
+        builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                setSelected(selectedID);
+                selectedID = 0;
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("返回", new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+    
+    @Override
+    public void onQuickStart(int id)
+    {
+        selectedID = id;
+    }
+
+    private void setSelected(int id)
+    {
+        int max = numberGroupView.getMaxNumber();
+        int min = numberGroupView.getMinNumber();
+        ArrayList<Integer> list = new ArrayList<>();
+        switch (id)
+        {
+            case 0:
+                onClearPick(this);
+                break;
+            case R.id.single_num:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 2 != 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.small_single:
+                for (int i = min; i <= max / 2; i++)
+                {
+                    if (i % 2 != 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.combine_single:
+                for (int i = min; i <= max; i++)
+                {
+                    int combine = i % 10 + i / 10;
+                    if (combine % 2 != 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.poultry:
+                for (int i = min; i <= max; i++)
+                {
+                    for (ArrayList<Integer> animal : ConstantInformation.POULTRY_NUM)
+                    {
+                        if (animal.contains(i))
+                        {
+                            list.add(i);
+                            break;
+                        }
+                    }
+                }
+                break;
+            case R.id.beast:
+                for (int i = min; i <= max; i++)
+                {
+                    for (ArrayList<Integer> animal : ConstantInformation.BEAST_NUM)
+                    {
+                        if (animal.contains(i))
+                        {
+                            list.add(i);
+                            break;
+                        }
+                    }
+                }
+                break;
+            case R.id.double_num:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.small_double:
+                for (int i = min; i <= max / 2; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.combine_double:
+                for (int i = min; i <= max; i++)
+                {
+                    int combine = i % 10 + i / 10;
+                    if (combine % 2 == 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.mouse:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.MOUSE_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.dragon:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.DRAGON_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.monkey:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.MONKEY_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.big_num:
+                for (int i = min + (max - min + 1) / 2; i <= max; i++)
+                {
+                    list.add(i);
+                }
+                break;
+            case R.id.big_single:
+                for (int i = min + (max - min + 1) / 2; i <= max; i++)
+                {
+                    if (i % 2 != 0)
+                        list.add(i);
+                }
+                break;
+            case R.id.combine_big:
+                for (int i = min; i <= max; i++)
+                {
+                    int combine = i % 10 + i / 10;
+                    if (combine >= 7)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.cow:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.COW_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.snake:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.SNAKE_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.chicken:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.CHIKEN_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.small_num:
+                for (int i = min, end = min + (max - min + 1) / 2; i < end; i++)
+                {
+                    list.add(i);
+                }
+                break;
+            case R.id.big_double:
+                for (int i = min + (max - min + 1) / 2; i <= max; i++)
+                {
+                    if (i % 2 == 0)
+                        list.add(i);
+                }
+                break;
+            case R.id.combine_small:
+                for (int i = min; i <= max; i++)
+                {
+                    int combine = i % 10 + i / 10;
+                    if (combine < 7)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tiger:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.TIGER_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.horse:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.HORSE_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.dog:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.DOG_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.head_0:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i > 0 && i < 10)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_0:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_5:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 5)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.rabbit:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.RABBIT_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.sheep:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.SHEEP_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.pig:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.PIG_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.head_1:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i >= 10 && i < 20)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_1:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 1)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_6:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 6)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.red:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.RED_WAVE_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.blue:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.BLUE_WAVE_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.green:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.GREEN_WAVE_NUM.contains(i))
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.head_2:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i >= 20 && i < 30)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_2:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 2)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_7:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 7)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.red_single:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.RED_WAVE_NUM.contains(i) && i % 2 != 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.blue_single:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.BLUE_WAVE_NUM.contains(i) && i % 2 != 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.green_single:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.GREEN_WAVE_NUM.contains(i) && i % 2 != 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.head_3:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i >= 30 && i < 40)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_3:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 3)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_8:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 8)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.red_double:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.RED_WAVE_NUM.contains(i) && i % 2 == 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.blue_double:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.BLUE_WAVE_NUM.contains(i) && i % 2 == 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.green_double:
+                for (int i = min; i <= max; i++)
+                {
+                    if (ConstantInformation.GREEN_WAVE_NUM.contains(i) && i % 2 == 0)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.head_4:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i >= 40 && i < 50)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_4:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 4)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.tail_9:
+                for (int i = min; i <= max; i++)
+                {
+                    if (i % 10 == 9)
+                    {
+                        list.add(i);
+                    }
+                }
+                break;
+            case R.id.red_big:
+                for (int i = min + (max - min + 1) / 2; i <= max; i++)
+                {
+                    if (ConstantInformation.RED_WAVE_NUM.contains(i))
+                        list.add(i);
+                }
+                break;
+            case R.id.blue_big:
+                for (int i = min + (max - min + 1) / 2; i <= max; i++)
+                {
+                    if (ConstantInformation.BLUE_WAVE_NUM.contains(i))
+                        list.add(i);
+                }
+                break;
+            case R.id.green_big:
+                for (int i = min + (max - min + 1) / 2; i <= max; i++)
+                {
+                    if (ConstantInformation.GREEN_WAVE_NUM.contains(i))
+                        list.add(i);
+                }
+                break;
+            case R.id.clear:
+                selectedID = 0;
+                list.clear();
+                break;
+            case R.id.red_small:
+                for (int i = min, end = min + (max - min + 1) / 2; i < end; i++)
+                {
+                    if (ConstantInformation.RED_WAVE_NUM.contains(i))
+                        list.add(i);
+                }
+                break;
+            case R.id.blue_small:
+                for (int i = min, end = min + (max - min + 1) / 2; i < end; i++)
+                {
+                    if (ConstantInformation.BLUE_WAVE_NUM.contains(i))
+                        list.add(i);
+                }
+                break;
+            case R.id.green_small:
+                for (int i = min, end = min + (max - min + 1) / 2; i < end; i++)
+                {
+                    if (ConstantInformation.GREEN_WAVE_NUM.contains(i))
+                        list.add(i);
+                }
+                break;
+        }
+        numberGroupView.setCheckNumber(list);
+        notifyListener();
+    }
+
+    /*//特码直选 TMZX
+    public static void TMZX(LhcGame game)
+    {
+        createPicklayout(game, new String[]{""});
+    }
+    
+    //正特一码 ZTYM
+    public static void ZTYM(LhcGame game)
+    {
+        createPicklayout(game, new String[]{""});
+    }
+    
+    //正码一直选 ZMZX1
+    public static void ZMZX1(LhcGame game)
+    {
+        createPicklayout(game, new String[]{""});
+    }
+    
+    //正码二直选 ZMZX2
+    public static void ZMZX2(LhcGame game)
+    {
+        createPicklayout(game, new String[]{""});
+    }
+    
+    //正码三直选 ZMZX3
+    public static void ZMZX3(LhcGame game)
+    {
+        createPicklayout(game, new String[]{""});
+    }
+    
+    //正码四直选 ZMZX4
+    public static void ZMZX4(LhcGame game)
+    {
+        createPicklayout(game, new String[]{""});
+    }
+    
+    //正码五直选 ZMZX5
+    public static void ZMZX5(LhcGame game)
+    {
+        createPicklayout(game, new String[]{""});
+    }
+    
+    //正码六直选 ZMZX6
+    public static void ZMZX6(LhcGame game)
+    {
+        createPicklayout(game, new String[]{""});
+    }
+    
+    *//*机选*//*
+    //特码直选随机 TMZXRandom
+    public static void TMZXRandom(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
+        game.notifyListener();
+    }
+    
+    //正特一码随机 ZTYMRandom
+    public static void ZTYMRandom(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
+        game.notifyListener();
+    }
+    
+    //正码一直选随机 ZMZX1Random
+    public static void ZMZX1Random(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
+        game.notifyListener();
+    }
+    
+    //正码二直选随机 ZMZX2Random
+    public static void ZMZX2Random(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
+        game.notifyListener();
+    }
+    
+    //正码三直选随机 ZMZX3Random
+    public static void ZMZX3Random(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
+        game.notifyListener();
+    }
+    
+    //正码四直选随机 ZMZX4Random
+    public static void ZMZX4Random(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
+        game.notifyListener();
+    }
+    
+    //正码五直选随机 ZMZX5Random
+    public static void ZMZX5Random(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
+        game.notifyListener();
+    }
+    
+    //正码六直选随机 ZMZX6Random
+    public static void ZMZX6Random(LhcGame game)
+    {
+        for (LhcPickNumber pickNumber : game.pickNumbers)
+            pickNumber.onRandom(randomCommon(1, 49, 1, new ArrayList<>()));
+        game.notifyListener();
+    }*/
+
+    //2018.05.22 六合彩单式投注涉及玩法 特码直选、正码一直选、正码二直选、正码三直选、正码四直选、正码五直选、正码六直选  start
+    public void onInputInflate() {
+        addInputLayout( this, this.getColumn());
+    }
+
+    public void displayInputView() {
+        if (onManualEntryListener != null || manualInputView != null) {
+            manualInputView.setOnAddListner(new OnAddListner() {
+
+                @Override
+                public void onAdd(ArrayList<String[]> chooseArray) {
+                    ArrayList<String> codeArray = new ArrayList<>();
+                    for (int i =0,size= chooseArray.size(); i<size; i++) {
+                        StringBuilder codeBuilder = new StringBuilder();
+                        if(chooseArray.get(i)[0].length()>2){
+                            codeArray.clear();
+                            chooseArray.clear();
+                            break;
+                        }
+                        int chooseInt=0;
+                        try {
+                            chooseInt=Integer.parseInt(chooseArray.get(i)[0]);
+                        } catch (NumberFormatException e) {
+                            return;
+                        }
+                        if(chooseInt>49){
+                            codeArray.clear();
+                            chooseArray.clear();
+                            break;
+                        }
+                        codeBuilder.append(chooseInt);
+                        codeArray.add(codeBuilder.toString());
+                    }
+                    int notes =chooseArray.size();
+                    setSubmitArray(codeArray);
+                    setSingleNum(1);
+                    onManualEntryListener.onManualEntry(notes);
+                }
+            });
+        }
+    }
+
+    public static void addInputLayout(LhcGame game, int column) {
+        ViewGroup manualInput = game.getManualInput();
+        View view =LayoutInflater.from(manualInput.getContext()).inflate(R.layout.popup_write_comment, null, false);
+        ManualInputView manualInputView = new ManualInputView(view, game.lottery, 1);
+        game.addManualInputView(manualInputView);
+        manualInput.addView(view);
+    }
+    //2018.05.22 六合彩单式投注涉及玩法 特码直选、正码一直选、正码二直选、正码三直选、正码四直选、正码五直选、正码六直选  end
+}

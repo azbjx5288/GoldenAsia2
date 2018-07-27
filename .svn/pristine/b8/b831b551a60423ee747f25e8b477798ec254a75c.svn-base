@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+    </android.support.v4.view.ViewPager>
+
+    <View
+        style="@style/horizontal_divide_line"/>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_home"
+                style="@style/tab_radio_button"
+                android:drawableTop="@drawable/selector_tab_home"
+                android:text="主页"/>
+
+            <!--<RadioButton
+                android:id="@+id/btn_classify"
+                style="@style/tab_radio_button"
+                android:drawableTop="@drawable/selector_tab_trend"
+                android:text="开奖走势"
+                android:visibility="gone"/>-->
+
+            <RadioButton
+                android:id="@+id/btn_discover"
+                style="@style/tab_radio_button"
+                android:drawableTop="@drawable/selector_tab_history"
+                android:text="游戏记录"/>
+
+            <RadioButton
+                android:id="@+id/btn_me"
+                style="@style/tab_radio_button"
+                android:drawableTop="@drawable/selector_tab_mine"
+                android:text="我的"/>
+        </RadioGroup>
+        <TextView
+            android:id="@+id/badge_view"
+            android:layout_alignParentRight="true"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,185 @@
+package com.goldenasia.lottery.pattern;
+
+import android.support.annotation.IdRes;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import com.cpiz.android.bubbleview.BubbleLinearLayout;
+import com.cpiz.android.bubbleview.BubblePopupWindow;
+import com.cpiz.android.bubbleview.BubbleStyle;
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.component.QuantityView;
+import com.goldenasia.lottery.component.QuantityView.OnQuantityChangeListener;
+import com.goldenasia.lottery.data.Lottery;
+import com.goldenasia.lottery.fragment.ChaseFragment;
+import com.goldenasia.lottery.fragment.ShoppingFragment;
+import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.material.ShoppingCart;
+import com.goldenasia.lottery.material.Ticket;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 购物车多倍操作
+ * Created by ACE-PC on 2016/2/5.
+ */
+public class ShroudView implements View.OnClickListener,RadioGroup.OnCheckedChangeListener {
+    private static final String TAG = ShroudView.class.getSimpleName();
+
+    private View view;
+    private BaseFragment fragment;
+    private Lottery lottery;
+    private QuantityView doubleText; //倍数
+    private TextView settingMode;      //设置
+    private ImageView selectMode;
+    private Button chaseButton;
+    private RadioGroup lucremode;
+
+    private OnModeItemClickListener modeItemListener;
+    private BubblePopupWindow mBubblePopupWindow;
+    private String timing = "";
+
+    public ShroudView(BaseFragment fragment, View view, Lottery lottery) {
+        this.view = view;
+        this.fragment = fragment;
+        this.lottery = lottery;
+        doubleText = (QuantityView) view.findViewById(R.id.double_number_view);
+        settingMode = (TextView) view.findViewById(R.id.setting_mode);
+        selectMode = (ImageView) view.findViewById(R.id.select_mode);
+        chaseButton = (Button) view.findViewById(R.id.chase_button);
+
+        View rootView = LayoutInflater.from(view.getContext()).inflate(R.layout.custom_tooltip, null);
+        BubbleLinearLayout bubbleView = (BubbleLinearLayout) rootView.findViewById(R.id.popup_bubble);
+        mBubblePopupWindow = new BubblePopupWindow(rootView, bubbleView);
+
+        lucremode=(RadioGroup)rootView.findViewById(R.id.lucremode_sett);
+        lucremode.setOnCheckedChangeListener(this);
+        selectLucremode(GoldenAsiaApp.getUserCentre().getLucreMode());
+
+        doubleText.setMinQuantity(1);
+        doubleText.setMaxQuantity(50000);
+        doubleText.setQuantity(ShoppingCart.getInstance().getMultiple());
+        doubleText.setLimitMax(true);//添加 限制最大值
+
+        doubleText.setOnQuantityChangeListener(new OnQuantityChangeListener() {
+            @Override
+            public void onQuantityChanged(int newQuantity, boolean programmatically) {
+                if(modeItemListener!=null){
+                    modeItemListener.onModeItemClick(newQuantity);
+                }
+            }
+
+            @Override
+            public void onLimitReached() {
+
+            }
+        });
+        settingMode.setOnClickListener(this);
+        selectMode.setOnClickListener(this);
+        chaseButton.setOnClickListener(this);
+    }
+
+    public void setData(String timing) {
+        this.timing = timing;
+    }
+
+    public void setModeItemListener(OnModeItemClickListener modeItemListener) {
+        this.modeItemListener = modeItemListener;
+    }
+
+    public void setChaseShowAndHide(Lottery lottery){
+        if(lottery.getLotteryId()==17||lottery.getLotteryId()==26){//六合彩 六合彩分分彩
+            chaseButton.setVisibility(View.GONE);
+        }else{
+            chaseButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.chase_button:
+                if (timing.isEmpty() || timing.length() <= 0) {
+                    tipDialog("温馨提示", "请稍等，正在加载销售奖期…");
+                    return;
+                }
+                if (ShoppingCart.getInstance().getPlanNotes() == 0) {
+                    tipDialog("温馨提示", "您需要选择一注");
+                    return;
+                }
+                ShoppingFragment shoppingFragment=(ShoppingFragment)fragment;
+                ConstantInformation.ticketList=ShoppingCart.getInstance().getCodesMap();
+                ChaseFragment.launch(fragment, lottery, timing);
+                break;
+            case R.id.setting_mode:
+            case R.id.select_mode:
+                mBubblePopupWindow.showArrowTo(v, BubbleStyle.ArrowDirection.Down);
+                break;
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        switch(checkedId){
+            case R.id.lucremode_yuan:
+                selectLucremode(0);
+                settingMode.setText("元");
+                break;
+            case R.id.lucremode_jiao:
+                selectLucremode(1);
+                settingMode.setText("角");
+                break;
+            case R.id.lucremode_fen:
+                selectLucremode(2);
+                settingMode.setText("分");
+                break;
+            case R.id.lucremode_li:
+                selectLucremode(3);
+                settingMode.setText("厘");
+                break;
+        }
+        if(modeItemListener!=null){
+            modeItemListener.onModeItemClick(doubleText.getQuantity());
+        }
+    }
+
+    private void selectLucremode(int position) {
+        GoldenAsiaApp.getUserCentre().setLucreMode(position);
+        lucremode.check(lucremode.getChildAt(position).getId());
+        mBubblePopupWindow.dismiss();
+    }
+
+    /**
+     * 选中监听器
+     */
+    public interface OnModeItemClickListener {
+        void onModeItemClick(int multiple);
+    }
+
+    private void tipDialog(String title, String msg) {
+        CustomDialog.Builder builder = new CustomDialog.Builder(view.getContext());
+        builder.setMessage(msg);
+        builder.setTitle(title);
+        builder.setLayoutSet(DialogLayout.SINGLE);
+        builder.setPositiveButton("知道了", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.create().show();
+    }
+
+    public void onDestroy() {
+        if (mBubblePopupWindow != null) {
+            mBubblePopupWindow.dismiss();
+        }
+    }
+
+}
