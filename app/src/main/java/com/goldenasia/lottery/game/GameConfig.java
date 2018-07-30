@@ -109,6 +109,7 @@ public class GameConfig
             case 19://亚洲5分彩
             case 35://台湾五分彩
             case 37://亚洲2分彩
+            case 50://北京5分彩
                 return new SscCommonGame(method);
             case 12://江苏快三
             case 13:

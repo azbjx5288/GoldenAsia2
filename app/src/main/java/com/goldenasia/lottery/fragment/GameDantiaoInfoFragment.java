@@ -46,6 +46,7 @@ public class GameDantiaoInfoFragment extends BaseFragment {
             case 19://亚洲5分彩
             case 35://台湾五分彩
             case 37:
+            case 50://北京5分彩
                 return inflater.inflate(R.layout.fragment_game_dantiao_info_shishicai, container, false);//时时彩 玩法说明
             case 24://超快3D
             case 9://福彩3D

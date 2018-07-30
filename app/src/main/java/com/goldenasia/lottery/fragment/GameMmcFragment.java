@@ -47,7 +47,6 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -364,6 +363,7 @@ public class GameMmcFragment extends BaseFragment implements OnSelectedListener,
             case 11://亚洲分分彩
             case 15://亚洲秒秒彩
             case 19://亚洲5分彩
+            case 50://北京5分彩
                 name = "SXZX";
                 break;
             case 12:

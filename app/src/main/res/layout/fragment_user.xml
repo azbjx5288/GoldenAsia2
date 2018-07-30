@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:orientation="vertical">
+                android:orientation="vertical" android:id="@+id/linearLayout3">
 
                 <com.goldenasia.lottery.view.CircleImageView
                     android:id="@+id/user_logo"
@@ -68,10 +68,11 @@
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:text="UserName223"
-                    android:textColor="@color/white"
+                    android:layout_alignEnd="@+id/linearLayout3"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignRight="@+id/linearLayout3" android:layout_gravity="center_horizontal" android:layout_marginBottom="21dp"
+                    android:layout_marginEnd="20dp" android:layout_marginRight="20dp"
+                    android:text="UserName223" android:textColor="@color/white"
                     android:textSize="18sp"/>
 
                 <TextView
@@ -114,7 +115,13 @@
                     android:textSize="14sp"/>
 
             </LinearLayout>
-
+            <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" android:layout_toEndOf="@+id/linearLayout3"
+                android:layout_toRightOf="@+id/linearLayout3" android:minHeight="70dp" android:minWidth="70dp"
+                android:scaleType="fitEnd" app:srcCompat="@drawable/refresh"/>
         </RelativeLayout>
 
         <View style="@style/horizontal_divide_line"/>

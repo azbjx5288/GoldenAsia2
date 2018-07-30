@@ -56,8 +56,10 @@ public class FragmentHome extends BaseFragment implements RadioGroup.OnCheckedCh
         Fragment gaFragment = FragmentDelayer.newInstance(2, GaFragment.class.getName(), null);*/
         Fragment lotteryFragment = new LotteryFragment();
         Fragment gaFragment = new GaFragment();
+        Fragment sbFragment = new SbFragment();
         fragments.add(lotteryFragment);
         fragments.add(gaFragment);
+        fragments.add(sbFragment);
     }
 
     private void initView() {
@@ -86,6 +88,9 @@ public class FragmentHome extends BaseFragment implements RadioGroup.OnCheckedCh
                 break;
             case R.id.gaRadioButton:
                 selectPage(1);
+                break;
+            case R.id.sbRadioButton:
+                selectPage(2);
                 break;
         }
     }

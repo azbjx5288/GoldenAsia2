@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +29,6 @@ import com.goldenasia.lottery.base.net.RestRequest;
 import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.base.net.RestResponse;
 import com.goldenasia.lottery.component.CustomDialog;
-import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.LogoutCommand;
 import com.goldenasia.lottery.data.LowerMemberCommand;
 import com.goldenasia.lottery.data.LowerMemberList;
@@ -50,9 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -98,7 +94,6 @@ public class FragmentUser extends BaseFragment
     TextView station_letter_badge;
     @BindView(R.id.order_layout)
     LinearLayout orderLayout;
-    
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -264,7 +259,7 @@ public class FragmentUser extends BaseFragment
 
     @OnClick({R.id.service_center, R.id.settings, R.id.withdraw_deposit, R.id.transfer, R.id.notice, R.id.recharge, R
             .id.feedback, R.id.station_letter, R.id.lower_member_manager, R.id.add_member_ll, R.id.add_member_link, R
-            .id.member_report,R.id.member_order, R.id.logout, R.id.version,})
+            .id.member_report,R.id.member_order, R.id.logout, R.id.version,R.id.refresh})
     public void onClick(View v)
     {
         switch (v.getId())
@@ -338,7 +333,11 @@ public class FragmentUser extends BaseFragment
                         .setPositiveButton("退出", (dialog, which) -> executeCommand(new LogoutCommand(), restCallback,
                                 ID_LOGOUT)).create().show();
                 break;
-            
+            case R.id.refresh:
+                showToast("正在刷新");
+                executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
+                break;
+                
             default:
                 break;
         }

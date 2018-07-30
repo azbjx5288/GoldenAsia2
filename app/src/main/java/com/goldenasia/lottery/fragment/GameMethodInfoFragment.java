@@ -58,6 +58,7 @@ public class GameMethodInfoFragment extends BaseFragment {
             case 19://亚洲5分彩
             case 35://台湾五分彩
             case 37:
+            case 50://北京5分彩
                 view=inflater.inflate(R.layout.fragment_game_method_info_shishicai, container, false);//时时彩 玩法说明
                 break;
             case 24://超快3D

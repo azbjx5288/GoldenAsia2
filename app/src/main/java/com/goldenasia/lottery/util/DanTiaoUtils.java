@@ -1,9 +1,7 @@
 package com.goldenasia.lottery.util;
 
-import android.text.Html;
 import android.text.TextUtils;
 
-import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.material.ShoppingCart;
@@ -69,6 +67,7 @@ public class DanTiaoUtils {
             case 35://台湾五分彩
             case 37://亚洲2分彩
             case 15://亚洲妙妙彩
+            case 50://北京5分彩
                 return  sscIsShowDialog(newTicketList);
             case 2://山东11选5
             case 6://江西11选5

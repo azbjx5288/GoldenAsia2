@@ -21,6 +21,12 @@
             style="@style/drawableRadioButton"
             android:drawableLeft="@drawable/selector_radio_ga"
             android:text="GA游戏" />
+
+        <com.goldenasia.lottery.component.DrawableLeftRadioButton
+            android:id="@+id/sbRadioButton"
+            style="@style/drawableRadioButton"
+            android:drawableLeft="@drawable/selector_radio_sb"
+            android:text="沙巴体育" />
     </RadioGroup>
 
     <android.support.v4.view.ViewPager

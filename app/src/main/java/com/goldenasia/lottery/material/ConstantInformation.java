@@ -263,6 +263,8 @@ public class ConstantInformation
         sLotteryLogo.put(48, new int[]{R.drawable.id_lottery_bjkl8, R.drawable.id_lottery_bjkl8});
         //腾讯分分彩
         sLotteryLogo.put(49, new int[]{R.drawable.id_lottery_txffc, R.drawable.id_lottery_txffc});
+        //北京5分彩
+        sLotteryLogo.put(50, new int[]{R.drawable.bj5fc, R.drawable.bj5fc});
 
         //百家乐
         sLotteryLogo.put(101, new int[]{R.drawable.id_lottery_mybjl, R.drawable.id_lottery_mybjl_rest});
