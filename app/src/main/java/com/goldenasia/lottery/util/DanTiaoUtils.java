@@ -68,6 +68,7 @@ public class DanTiaoUtils {
             case 37://亚洲2分彩
             case 15://亚洲妙妙彩
             case 50://北京5分彩
+            case 51://泰国30秒彩
                 return  sscIsShowDialog(newTicketList);
             case 2://山东11选5
             case 6://江西11选5

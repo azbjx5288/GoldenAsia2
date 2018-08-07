@@ -31,6 +31,9 @@ public class GameMethodInfoFragment extends BaseFragment {
 
         if(lottery.getLotteryId()==35) {//台湾五分彩
             tv_taiwan.setVisibility(View.VISIBLE);
+        }else if(lottery.getLotteryId()==51){ //泰国30秒彩
+            TextView   tv_taiguo= (TextView) view.findViewById(R.id.tv_taiguo);
+            tv_taiguo.setVisibility(View.VISIBLE);
         }
         return view;
     }

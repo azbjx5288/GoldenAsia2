@@ -324,6 +324,13 @@ public class ConstantInformation
         sLotteryLogo.put(128, new int[]{R.drawable.sidameinv, R.drawable.sidameinv});
         //129 二八杠
         sLotteryLogo.put(129, new int[]{R.drawable.erbagang, R.drawable.erbagang});
+        //130：森林舞会
+        sLotteryLogo.put(130, new int[]{R.drawable.shenglingwuhui, R.drawable.shenglingwuhui});
+        //131：明星水果机
+        sLotteryLogo.put(128, new int[]{R.drawable.mingxingshuiguoji, R.drawable.mingxingshuiguoji});
+        //132:球星水果机
+        sLotteryLogo.put(129, new int[]{R.drawable.qiuxingshuiguoji, R.drawable.qiuxingshuiguoji});
+
         //支付logo
         rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});//支付宝转账
         rechargeLogo.put(1, new int[]{2, 0, R.drawable.unionpay});

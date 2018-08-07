@@ -444,6 +444,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 case 35:
                 case 37:
                 case 50://北京5分彩
+                case 51://泰国30秒彩
                     name = "SXZX";
                     break;
                 case 12://江苏快三
@@ -670,6 +671,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             case 37://亚洲2分彩
             case 15://亚洲妙妙彩
             case 50://北京5分彩
+            case 51://泰国30秒彩
                 return true;
             case 9://福彩3D
             case 24://超快3D
