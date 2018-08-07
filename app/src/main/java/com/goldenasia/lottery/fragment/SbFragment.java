@@ -12,6 +12,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.goldenasia.lottery.BuildConfig;
@@ -21,36 +22,43 @@ import com.goldenasia.lottery.app.GoldenAsiaApp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created By Sakura
  */
-public class SbFragment extends BaseFragment
-{
+public class SbFragment extends BaseFragment {
     @BindView(R.id.webView)
     WebView webView;
     private String url;
     @BindView(R.id.loading_layout)
     RelativeLayout loadingLayout;
+    @BindView(R.id.loading_layout_ll)
+    LinearLayout loading_layout_ll;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState)
-    {
-        View view = inflater.inflate(R.layout.fragment_sb_web_view, container,false);
+            savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_sb_web_view, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
-        super.onViewCreated(view, savedInstanceState);
-        init();
+    @OnClick({R.id.sb_button})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sb_button:
+                init();
+
+                break;
+
+        }
     }
 
     protected void init()
     {
+        loading_layout_ll.setVisibility(View.VISIBLE);
+        loadingLayout.setVisibility(View.GONE);
         url = GoldenAsiaApp.BASEURL + "/index.jsp?c=game&a=sbgame";
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
         {
@@ -95,8 +103,9 @@ public class SbFragment extends BaseFragment
             public void onPageFinished(WebView view, String url)
             {
                 super.onPageFinished(view, url);
-                loadingLayout.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
+                loading_layout_ll.setVisibility(View.GONE);
+                loadingLayout.setVisibility(View.GONE);
             }
         });
 
