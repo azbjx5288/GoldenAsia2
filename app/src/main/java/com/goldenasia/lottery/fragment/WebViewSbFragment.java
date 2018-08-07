@@ -4,6 +4,7 @@ package com.goldenasia.lottery.fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.goldenasia.lottery.BuildConfig;
 import com.goldenasia.lottery.R;
@@ -21,47 +21,46 @@ import com.goldenasia.lottery.app.BaseFragment;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created By Sakura
  */
-public class SbFragment extends BaseFragment {
+public class WebViewSbFragment extends BaseFragment
+{
+    protected String url;
+    
     @BindView(R.id.webView)
     WebView webView;
-    private String url;
     @BindView(R.id.loading_layout)
-    RelativeLayout loadingLayout;
-    @BindView(R.id.loading_layout_ll)
-    LinearLayout loading_layout_ll;
-
+    LinearLayout loadingLayout;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+    }
+    
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sb_web_view, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+            savedInstanceState)
+    {
+        // Inflate the layout for this fragment
+        return inflateView(inflater, container, true, "金亚洲", R.layout.fragment_web_view);
     }
-
-    @OnClick({R.id.sb_button})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sb_button:
-//                init();
-                Bundle bundle = new Bundle();
-                bundle.putString("url", GoldenAsiaApp.BASEURL + "/index.jsp?c=game&a=sbgame");
-                launchFragment(WebViewFragment.class, bundle);
-                break;
-
-        }
+    
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        init();
     }
-
+    
     protected void init()
     {
-        loading_layout_ll.setVisibility(View.VISIBLE);
-        loadingLayout.setVisibility(View.GONE);
-        url = GoldenAsiaApp.BASEURL + "/index.jsp?c=game&a=sbgame";
+        Bundle bundle;
+        bundle = getActivity().getIntent().getExtras();
+        if (TextUtils.isEmpty(url))
+            url = (String) bundle.get("url");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
         {
             WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG);
@@ -81,7 +80,7 @@ public class SbFragment extends BaseFragment {
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JsInterface(), "androidJs");
-
+        
         //if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
         //CookieSyncManager.createInstance(getActivity());
         CookieManager cookieManager = CookieManager.getInstance();
@@ -89,8 +88,7 @@ public class SbFragment extends BaseFragment {
         cookieManager.setAcceptCookie(true);
         cookieManager.setCookie(url, GoldenAsiaApp.getUserCentre().getSession());
         //CookieSyncManager.getInstance().sync();
-
-
+        
         webView.loadUrl(url);
         webView.setWebViewClient(new WebViewClient()
         {
@@ -100,27 +98,24 @@ public class SbFragment extends BaseFragment {
                 view.loadUrl(url);
                 return true;
             }
-
+            
             @Override
             public void onPageFinished(WebView view, String url)
             {
                 super.onPageFinished(view, url);
-                webView.setVisibility(View.VISIBLE);
-                loading_layout_ll.setVisibility(View.GONE);
                 loadingLayout.setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
             }
         });
-
     }
-
-
+    
     @Override
     public void onDestroyView()
     {
         webView.destroy();
         super.onDestroyView();
     }
-
+    
     private class JsInterface
     {
         /**
@@ -132,5 +127,4 @@ public class SbFragment extends BaseFragment {
             getActivity().finish();
         }
     }
-
 }
