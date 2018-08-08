@@ -58,7 +58,8 @@ public class RebateView
         for (int i = 0, thinSize = normalRebate.getOptions().size(); i < thinSize; i++)
         {
             double rebate = normalRebate.getOptions().get(i).getRebate() * 100;
-            datalist.add(String.format("%.1f%%", rebate));
+            String tempValue=normalRebate.getOptions().get(i).getPrize()+"("+String.format("%.1f%%", rebate)+")";//奖金组／返点
+            datalist.add(tempValue);
             if (normalRebate.getOptions().get(i).getRebate() == normalRebate.getSelected())
                 selected = i;
         }
@@ -96,7 +97,8 @@ public class RebateView
         for (int i = 0, thinSize = jcRebate.getOptions().size(); i < thinSize; i++)
         {
             double rebate = jcRebate.getOptions().get(i).getRebate() * 100;
-            datalist.add(String.format("%.1f%%", rebate));
+            String tempValue=jcRebate.getOptions().get(i).getPrize()+"("+String.format("%.1f%%", rebate)+")";//奖金组／返点
+            datalist.add(tempValue);
             if (jcRebate.getOptions().get(i).getRebate() == jcRebate.getSelected())
                 selected = i;
         }
@@ -135,7 +137,8 @@ public class RebateView
         for (int i = 0, thinSize = lhcRebate.getOptions().size(); i < thinSize; i++)
         {
             double rebate = lhcRebate.getOptions().get(i).getRebate() * 100;
-            datalist.add(String.format("%.1f%%", rebate));
+            String tempValue=lhcRebate.getOptions().get(i).getPrize()+"("+String.format("%.1f%%", rebate)+")";//奖金组／返点
+            datalist.add(tempValue);
             if (lhcRebate.getOptions().get(i).getRebate() == lhcRebate.getSelected())
                 selected = i;
         }

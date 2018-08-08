@@ -251,7 +251,7 @@ public class LowerRebateSetting extends BaseFragment
                             normalListView.get(i).setNormalRebate(normalRebate, entry.getKey());
                             normalListView.get(i).setOnItemSelectedListener((String selected, String id, String key) ->
                             {
-                                double optRebate = Double.parseDouble(selected.substring(0, selected.length() - 1));
+                                double optRebate = Double.parseDouble(selected.substring(0, selected.indexOf("(")));
                                 optNormalRebate.put(id, (optRebate / 100));
                             });
                         }
@@ -303,7 +303,7 @@ public class LowerRebateSetting extends BaseFragment
                             lhcListView.get(i).setLHCRebate(lhcRebate, entry.getKey());
                             lhcListView.get(i).setOnItemSelectedListener((String selected, String id, String key) ->
                             {
-                                double optRebate = Double.parseDouble(selected.substring(0, selected.length() - 1));
+                                double optRebate = Double.parseDouble(selected.substring(0, selected.indexOf("(")));
                                 lhcNormalRebate.put(id, (optRebate / 100));
                             });
                         }
@@ -355,7 +355,7 @@ public class LowerRebateSetting extends BaseFragment
                             jcListView.get(i).setJCRebate(jcRebate, entry.getKey());
                             jcListView.get(i).setOnItemSelectedListener((String selected, String id, String key) ->
                             {
-                                double optRebate = Double.parseDouble(selected.substring(0, selected.length() - 1));
+                                double optRebate = Double.parseDouble(selected.substring(0, selected.indexOf("(")));
                                 jcNormalRebate.put(id, (optRebate / 100));
                             });
                         }
