@@ -195,6 +195,8 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             ||lottery.getLotteryId()==35//35:台湾五分彩
             ||lottery.getLotteryId()==37//37:亚洲2分彩)
             ||lottery.getLotteryId()== 49//腾讯分分差
+            ||lottery.getLotteryId()== 50//北京5分彩
+            ||lottery.getLotteryId()==  51//泰国30秒彩
             /* 11选5系列*/
             ||lottery.getLotteryId()==2//山东11选5
             ||lottery.getLotteryId()==6//江西11选5
