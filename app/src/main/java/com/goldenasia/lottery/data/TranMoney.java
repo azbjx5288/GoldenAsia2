@@ -22,6 +22,26 @@ public class TranMoney {
     private String jcBalance;
     @SerializedName("ga_balance")
     private String gaBalance;
+    @SerializedName("sb_balance")
+    private String sbBalance;
+    @SerializedName("ag_balance")
+    private String agBalance;
+
+    public String getAgBalance() {
+        return agBalance;
+    }
+
+    public void setAgBalance(String agBalance) {
+        this.agBalance = agBalance;
+    }
+
+    public String getSbBalance() {
+        return sbBalance;
+    }
+
+    public void setSbBalance(String sbBalance) {
+        this.sbBalance = sbBalance;
+    }
 
     public String getJyzBalance() {
         return jyzBalance;

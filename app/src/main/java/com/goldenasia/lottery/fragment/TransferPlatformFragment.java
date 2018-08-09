@@ -165,6 +165,9 @@ public class TransferPlatformFragment extends BaseFragment {
                 case 3:
                     text.setText(tranMoney.getGaBalance());
                     break;
+                case 4:
+                    text.setText(tranMoney.getSbBalance());
+                    break;
             }
         }
     }
@@ -185,6 +188,9 @@ public class TransferPlatformFragment extends BaseFragment {
                 case 3:
                     platMoney=tranMoney.getGaBalance();
                     break;
+                case 4:
+                    platMoney=tranMoney.getSbBalance();
+                    break;
             }
         }
         return platMoney;
@@ -200,6 +206,8 @@ public class TransferPlatformFragment extends BaseFragment {
             tranMoney = (TranMoney) restResponse.getData();
         }
         restRequest.execute();
+
+//        executeCommand(routeCommand, restCallback, TRACE_TRANSFER_ROUTE);
     }
 
     @OnClick(R.id.btn_submit)
@@ -232,10 +240,17 @@ public class TransferPlatformFragment extends BaseFragment {
         pFundsPassword= DigestUtils.md5Hex(pFundsPassword);
         pFundsPassword=DigestUtils.md5Hex(pFundsPassword);
 
+        if ((positionFrom == 3&&positionTo==4)
+                ||(positionFrom == 4&&positionTo==3)) {
+            showToast("您所选择的项目不可以互转");
+            return;
+        }
+
         if (positionFrom == positionTo) {
             showToast("资金转移平台不能相同");
             return;
         }
+
 
         double drawMoney = Double.parseDouble(transferAmount.getText().toString());
         if (drawMoney < 10) {
@@ -303,6 +318,16 @@ public class TransferPlatformFragment extends BaseFragment {
                     } else {
                         return false;
                     }
+                case 4:
+                    if (NumbericUtils.isNumeric(tranMoney.getSbBalance())) {
+                        if (drawMoney > Double.parseDouble(tranMoney.getSbBalance())) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
             }
         }
         return false;
@@ -319,6 +344,8 @@ public class TransferPlatformFragment extends BaseFragment {
                     return tranMoney.getJcBalance();
                 case 3:
                     return tranMoney.getGaBalance();
+                case 4:
+                    return tranMoney.getSbBalance();
             }
         }
         return "";
