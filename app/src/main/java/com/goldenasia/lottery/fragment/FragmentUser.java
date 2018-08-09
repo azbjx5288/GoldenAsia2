@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -73,6 +74,8 @@ public class FragmentUser extends BaseFragment
 
     private static final int SERVICE_SYSTEM = 4;
 
+    private static final int ID_USER_INFO_REFRESH = 5;
+
     private  final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 6;
     
     @BindView(R.id.user_name)
@@ -94,6 +97,7 @@ public class FragmentUser extends BaseFragment
     TextView station_letter_badge;
     @BindView(R.id.order_layout)
     LinearLayout orderLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -122,7 +126,17 @@ public class FragmentUser extends BaseFragment
             }
             
         }
-        
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshableView);
+        //设置刷新时动画的颜色，可以设置4个
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showToast("正在刷新");
+                executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO_REFRESH);
+            }
+        });
+
     }
     
     @Override
@@ -412,7 +426,18 @@ public class FragmentUser extends BaseFragment
                     userName.setText(userInfo.getNickName());
                     userBalance.setText(String.format("账号余额：%.4f", userInfo.getBalance()));
                 }
-            } else if (request.getId() == ID_LOWER_MEMBER)
+            }else if (request.getId() == ID_USER_INFO_REFRESH){
+                UserInfo userInfo = ((UserInfo) response.getData());
+                GoldenAsiaApp.getUserCentre().setUserInfo(userInfo);
+                if (userInfo != null)
+                {
+                    userName.setText(userInfo.getNickName());
+                    userBalance.setText(String.format("账号余额：%.4f", userInfo.getBalance()));
+                }
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+            else if (request.getId() == ID_LOWER_MEMBER)
             {
                 int totalCount = ((LowerMemberList) response.getData()).getUsersCount();
                 lowerMemberCount.setText(String.valueOf(totalCount >= 1 ? totalCount - 1 : 0));

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#DFDFDF"
-            android:fitsSystemWindows="true">
+            android:id="@+id/refreshableView">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
 
@@ -68,11 +75,10 @@
                     android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/linearLayout3"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignRight="@+id/linearLayout3" android:layout_gravity="center_horizontal" android:layout_marginBottom="21dp"
-                    android:layout_marginEnd="20dp" android:layout_marginRight="20dp"
-                    android:text="UserName223" android:textColor="@color/white"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:text="UserName223"
+                    android:textColor="@color/white"
                     android:textSize="18sp"/>
 
                 <TextView
@@ -119,8 +125,11 @@
                 android:id="@+id/refresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true" android:layout_toEndOf="@+id/linearLayout3"
-                android:layout_toRightOf="@+id/linearLayout3" android:minHeight="70dp" android:minWidth="70dp"
+                android:layout_toEndOf="@+id/linearLayout3"
+                android:layout_toRightOf="@+id/linearLayout3"
+                android:visibility="gone"
+                android:layout_alignBottom="@+id/linearLayout3"
+                android:layout_marginBottom="2dp"
                 android:scaleType="fitEnd" app:srcCompat="@drawable/refresh"/>
         </RelativeLayout>
 
@@ -510,7 +519,7 @@
         <View style="@style/horizontal_divide_line" android:visibility="gone"/>
 
     </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
 
 
