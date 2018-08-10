@@ -132,20 +132,25 @@ public class ShroudView implements View.OnClickListener,RadioGroup.OnCheckedChan
         switch(checkedId){
             case R.id.lucremode_yuan:
                 selectLucremode(0);
-                settingMode.setText("元");
+                settingMode.setText("2元");
+                break;
+            case R.id.lucremode_oneyuan:
+                selectLucremode(1);
+                settingMode.setText("1元");
                 break;
             case R.id.lucremode_jiao:
-                selectLucremode(1);
+                selectLucremode(2);
                 settingMode.setText("角");
                 break;
             case R.id.lucremode_fen:
-                selectLucremode(2);
+                selectLucremode(3);
                 settingMode.setText("分");
                 break;
             case R.id.lucremode_li:
-                selectLucremode(3);
+                selectLucremode(4);
                 settingMode.setText("厘");
                 break;
+
         }
         if(modeItemListener!=null){
             modeItemListener.onModeItemClick(doubleText.getQuantity());

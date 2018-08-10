@@ -20,7 +20,7 @@ public class ShroudViewNoChase {
 
     private QuantityView doubleText;    //倍数
     private RadioGroup viewGroup;     //无角分操作
-    private RadioButton radioYuan, radioJiao, radioFen, radioLi;
+    private RadioButton radioYuan,radioOneYuan, radioJiao, radioFen, radioLi;
     private OnModeItemClickListener modeItemListener;
 
     public ShroudViewNoChase(View view) {
@@ -32,6 +32,7 @@ public class ShroudViewNoChase {
         doubleText.setQuantity(ShoppingCart.getInstance().getMultiple());
         doubleText.setLimitMax(true);//添加 限制最大值
         radioYuan = (RadioButton) view.findViewById(R.id.lucremode_yuan);
+        radioOneYuan = (RadioButton) view.findViewById(R.id.lucremode_oneyuan);
         radioJiao = (RadioButton) view.findViewById(R.id.lucremode_jiao);
         radioFen = (RadioButton) view.findViewById(R.id.lucremode_fen);
         radioLi = (RadioButton) view.findViewById(R.id.lucremode_li);
@@ -65,15 +66,19 @@ public class ShroudViewNoChase {
             case R.id.lucremode_yuan:
                 check = 0;
                 break;
-            case R.id.lucremode_jiao:
+            case R.id.lucremode_oneyuan:
                 check = 1;
                 break;
-            case R.id.lucremode_fen:
+            case R.id.lucremode_jiao:
                 check = 2;
                 break;
-            case R.id.lucremode_li:
+            case R.id.lucremode_fen:
                 check = 3;
                 break;
+            case R.id.lucremode_li:
+                check = 4;
+                break;
+
             default:
                 check = 0;
         }
@@ -91,12 +96,15 @@ public class ShroudViewNoChase {
                 radioYuan.setChecked(true);
                 break;
             case 1:
-                radioJiao.setChecked(true);
+                radioOneYuan.setChecked(true);
                 break;
             case 2:
-                radioFen.setChecked(true);
+                radioJiao.setChecked(true);
                 break;
             case 3:
+                radioFen.setChecked(true);
+                break;
+            case 4:
                 radioLi.setChecked(true);
                 break;
         }

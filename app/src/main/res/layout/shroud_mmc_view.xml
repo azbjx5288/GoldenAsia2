@@ -62,9 +62,19 @@
                 android:gravity="center"
                 android:layout_marginRight="4dp"
                 android:checked="true"
-                android:text="元"
+                android:text="2元"
                 android:textColor="@drawable/mmc_currency_selector" />
 
+            <RadioButton
+                android:id="@+id/lucremode_oneyuan"
+                android:layout_width="32.5dp"
+                android:layout_height="30dp"
+                android:background="@drawable/background_mmc_round_button_select"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_marginRight="4dp"
+                android:text="1元"
+                android:textColor="@drawable/mmc_currency_selector" />
             <RadioButton
                 android:id="@+id/lucremode_jiao"
                 android:layout_width="32.5dp"

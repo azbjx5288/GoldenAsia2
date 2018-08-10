@@ -5,22 +5,28 @@ package com.goldenasia.lottery.material;
  * Created by Alashi on 2016/4/7.
  */
 public enum LucreMode {
+
     /**
-     * "元"模式
+     * "2元"模式
      */
-    YUAN(0, "元", "1", 1),
+    YUAN(0, "2元", "1", 1),
+    /**
+     * "1元"模式
+     */
+    ONEYUAN(1, "1元", "0.5", 0.50),
     /**
      * "角"模式
      */
-    JIAO(1, "角", "0.1", 0.10),
+    JIAO(2, "角", "0.1", 0.10),
     /**
      * "分"模式
      */
-    FEN(2, "分", "0.01", 0.01),
+    FEN(3, "分", "0.01", 0.01),
     /**
      * "厘"模式
      */
-    LI(3, "厘", "0.001", 0.001);
+    LI(4, "厘", "0.001", 0.001);
+
 
     private int index;
     private String name;
