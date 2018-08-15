@@ -93,6 +93,7 @@ public class GameConfig
             case 36://山西11选5
             case 40://黑龙江11选5
             case 44://11选5秒秒彩
+            case 52://湖北11选5
                 if (name.equals("SDDDS"))
                 {
                     return new SdddsGame(method);//无手工录入

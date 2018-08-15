@@ -265,6 +265,10 @@ public class ConstantInformation
         sLotteryLogo.put(49, new int[]{R.drawable.id_lottery_txffc, R.drawable.id_lottery_txffc});
         //北京5分彩
         sLotteryLogo.put(50, new int[]{R.drawable.bj5fc, R.drawable.bj5fc});
+        //泰国30秒彩的logo
+        sLotteryLogo.put(51, new int[]{R.drawable.tg30mc, R.drawable.tg30mc});
+        //湖北11选5
+        sLotteryLogo.put(52, new int[]{R.drawable.hb11x5, R.drawable.hb11x5});
 
         //百家乐
         sLotteryLogo.put(101, new int[]{R.drawable.id_lottery_mybjl, R.drawable.id_lottery_mybjl_rest});
@@ -327,9 +331,9 @@ public class ConstantInformation
         //130：森林舞会
         sLotteryLogo.put(130, new int[]{R.drawable.shenglingwuhui, R.drawable.shenglingwuhui});
         //131：明星水果机
-        sLotteryLogo.put(128, new int[]{R.drawable.mingxingshuiguoji, R.drawable.mingxingshuiguoji});
+        sLotteryLogo.put(131, new int[]{R.drawable.mingxingshuiguoji, R.drawable.mingxingshuiguoji});
         //132:球星水果机
-        sLotteryLogo.put(129, new int[]{R.drawable.qiuxingshuiguoji, R.drawable.qiuxingshuiguoji});
+        sLotteryLogo.put(132, new int[]{R.drawable.qiuxingshuiguoji, R.drawable.qiuxingshuiguoji});
 
         //支付logo
         rechargeLogo.put(0, new int[]{1, 101, R.drawable.zfb_icon});//支付宝转账
@@ -354,6 +358,7 @@ public class ConstantInformation
         /*transferArray.put(1, new String[]{"pt", "PT游戏"});
         transferArray.put(2, new String[]{"jc", "竞彩游戏"});*/
         transferList.add(new Platform(3, "GA游戏", "GA"));
+        transferList.add(new Platform(4, "沙巴体育", "SB"));
         
         cityMap.put("深圳", new String[]{"罗湖区", "福田区", "盐田区", "南山区", "龙岗区", "宝安区", "光明新区", "市内"});
         cityMap.put("安徽", new String[]{"安庆", "蚌埠", "巢湖", "池州", "滁州", "阜阳", "合肥", "淮北", "淮南", "黄山", "六安", "马鞍山", "宿州",

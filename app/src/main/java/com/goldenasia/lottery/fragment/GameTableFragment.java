@@ -209,6 +209,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             || lottery.getLotteryId()== 34//福建11选5
             ||lottery.getLotteryId()== 36//山西11选5
             || lottery.getLotteryId()== 40//黑龙江11选5
+            || lottery.getLotteryId()== 52//湖北11选5 52
 //            /* PK10系列*/
             ||lottery.getLotteryId()== 27//北京PK10
             ||lottery.getLotteryId()== 38//PK10分分彩
@@ -434,6 +435,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 case 33:
                 case 34:
                 case 36://山西11选5
+                case 52://湖北11选5
                     name = "SDRX5";
                     break;
                 case 1://重庆时时彩
@@ -661,6 +663,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             case 36://山西11选5
             case 40://黑龙江11选5
             case 44://11选5秒秒彩
+            case 52://湖北11选5
                 return true;
             case 1://重庆时时彩
             case 3://黑龙江时时彩

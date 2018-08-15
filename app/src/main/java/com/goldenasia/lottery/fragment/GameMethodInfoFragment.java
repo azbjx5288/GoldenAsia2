@@ -34,6 +34,9 @@ public class GameMethodInfoFragment extends BaseFragment {
         }else if(lottery.getLotteryId()==51){ //泰国30秒彩
             TextView   tv_taiguo= (TextView) view.findViewById(R.id.tv_taiguo);
             tv_taiguo.setVisibility(View.VISIBLE);
+        }else if(lottery.getLotteryId()==50){ //北京5分彩
+            TextView   tv_wufencai= (TextView) view.findViewById(R.id.tv_wufencai);
+            tv_wufencai.setVisibility(View.VISIBLE);
         }
         return view;
     }
@@ -51,6 +54,7 @@ public class GameMethodInfoFragment extends BaseFragment {
             case 34:
             case 36://山西11选5
             case 44://11选5秒秒彩
+            case 52://湖北11选5
                 view=inflater.inflate(R.layout.fragment_game_method_info_11select5, container, false);  //11选5 玩法说明
                 break;
             case 1://重庆时时彩
