@@ -273,7 +273,7 @@ public class FragmentUser extends BaseFragment
 
     @OnClick({R.id.service_center, R.id.settings, R.id.withdraw_deposit, R.id.transfer, R.id.notice, R.id.recharge, R
             .id.feedback, R.id.station_letter, R.id.lower_member_manager, R.id.add_member_ll, R.id.add_member_link, R
-            .id.member_report,R.id.member_order, R.id.logout, R.id.version,R.id.refresh})
+            .id.member_report,R.id.member_order, R.id.logout, R.id.version})
     public void onClick(View v)
     {
         switch (v.getId())
@@ -347,11 +347,7 @@ public class FragmentUser extends BaseFragment
                         .setPositiveButton("退出", (dialog, which) -> executeCommand(new LogoutCommand(), restCallback,
                                 ID_LOGOUT)).create().show();
                 break;
-            case R.id.refresh:
-                showToast("正在刷新");
-                executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
-                break;
-                
+
             default:
                 break;
         }
@@ -460,7 +456,17 @@ public class FragmentUser extends BaseFragment
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                showServiceDialog(list);
+
+                if(list.size()>1){
+                    showServiceDialog(list);
+                }else if(list.size()==1){
+                    ServiceSystemBean  ServiceSystemBean=list.get(0);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("url", ServiceSystemBean.getUrl());
+                    launchFragment(ServiceCenterFragment2.class, bundle);
+                }else{
+
+                }
             }
             return true;
         }

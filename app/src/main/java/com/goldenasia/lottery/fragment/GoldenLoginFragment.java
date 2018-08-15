@@ -316,7 +316,16 @@ public class GoldenLoginFragment extends BaseFragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                showServiceDialog(list);
+                if(list.size()>1){
+                     showServiceDialog(list);
+                }else if(list.size()==1){
+                    ServiceSystemBean  ServiceSystemBean=list.get(0);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("url", ServiceSystemBean.getUrl());
+                    launchFragment(ServiceCenterFragment2.class, bundle);
+                }else{
+
+                }
             }
             return true;
         }
