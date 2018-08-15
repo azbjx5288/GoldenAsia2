@@ -140,15 +140,15 @@ public class ShroudView implements View.OnClickListener,RadioGroup.OnCheckedChan
                 break;
             case R.id.lucremode_jiao:
                 selectLucremode(2);
-                settingMode.setText("角");
+                settingMode.setText("2角");
                 break;
             case R.id.lucremode_fen:
                 selectLucremode(3);
-                settingMode.setText("分");
+                settingMode.setText("2分");
                 break;
             case R.id.lucremode_li:
                 selectLucremode(4);
-                settingMode.setText("厘");
+                settingMode.setText("2厘");
                 break;
 
         }
