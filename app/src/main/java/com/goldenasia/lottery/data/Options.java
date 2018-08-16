@@ -12,15 +12,15 @@ public class Options {
      */
 
     @SerializedName("rebate")
-    private double rebate;
+    private double rebate;//·µµã
     @SerializedName("prize")
-    private int prize;
+    private double prize;//½±½ð×é
 
     public void setRebate(double rebate) {
         this.rebate = rebate;
     }
 
-    public void setPrize(int prize) {
+    public void setPrize(double prize) {
         this.prize = prize;
     }
 
@@ -28,7 +28,7 @@ public class Options {
         return rebate;
     }
 
-    public int getPrize() {
+    public double getPrize() {
         return prize;
     }
 }
