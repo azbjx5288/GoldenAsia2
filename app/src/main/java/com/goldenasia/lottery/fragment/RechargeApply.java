@@ -1,8 +1,13 @@
 package com.goldenasia.lottery.fragment;
 
 import android.Manifest;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +16,8 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +35,7 @@ import com.android.volley.VolleyError;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
 import com.goldenasia.lottery.app.GoldenAsiaApp;
+import com.goldenasia.lottery.base.net.GsonHelper;
 import com.goldenasia.lottery.base.net.JsonValidator;
 import com.goldenasia.lottery.base.net.RestCallback;
 import com.goldenasia.lottery.base.net.RestRequest;
@@ -40,8 +48,10 @@ import com.goldenasia.lottery.component.AdaptHighListView;
 import com.goldenasia.lottery.component.CustomDialog;
 import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.data.AlipayTransferBean;
+import com.goldenasia.lottery.data.PayInfo;
 import com.goldenasia.lottery.data.RechargeConfig;
 import com.goldenasia.lottery.data.RechargeConfigCommand;
+import com.goldenasia.lottery.data.UserInfo;
 import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.Recharge;
@@ -201,11 +211,47 @@ public class RechargeApply extends BaseFragment
             {
                 if (cardRecharge.isHref())
                 {
-                    Intent mIntent = new Intent(getActivity(), PayHtml.class);
-                    Bundle mBundle = new Bundle();
-                    mBundle.putSerializable("rconfig", cardRecharge);
-                    mIntent.putExtras(mBundle);
-                    startActivity(mIntent);
+
+                    switch(cardRecharge.getTradeType()){
+                        case 25:// 25 京东H5
+                        case 27://27 QQH5
+                        case 28://28 微信H5
+                        case 29://29 支付宝H5
+                        case 30:// 30 银联H5
+                            UserInfo userInfo = GoldenAsiaApp.getUserCentre().getUserInfo();
+                            PayInfo payInfo = new PayInfo(userInfo.getUserName(), userInfo.getUserId());
+                            String url = GoldenAsiaApp.BASEURL + "/?c=fin&a=recharge&id=" + cardRecharge.getDtId() +
+                                    "&encry=" + Base64.encodeToString(GsonHelper.toJson(payInfo).getBytes(),
+                                    Base64.DEFAULT) + "&trade_type=" + cardRecharge.getTradeType() + "&frm=4";
+
+                            Uri CONTENT_URI_BROWSERS=Uri.parse(url);
+
+
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.setData(CONTENT_URI_BROWSERS);//Url 就是你要打开的网址x
+                            // 注意此处的判断intent.resolveActivity()可以返回显示该Intent的Activity对应的组件名
+                           // 官方解释 : Name of the component implementing an activity that can display the intent
+                            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                final ComponentName componentName = intent.resolveActivity(getActivity().getPackageManager());
+                                // 打印Log   ComponentName到底是什么
+                                Log.e(TAG, "componentName = " + componentName.getClassName());
+                                startActivity(Intent.createChooser(intent, "请选择浏览器"));
+                            } else {
+                                Toast.makeText(getActivity().getApplicationContext(), "没有匹配的程序", Toast.LENGTH_SHORT).show();
+                            }
+
+                            break;
+                        default:
+                            Intent mIntent = new Intent(getActivity(), PayHtml.class);
+                            Bundle mBundle = new Bundle();
+                            mBundle.putSerializable("rconfig", cardRecharge);
+                            mIntent.putExtras(mBundle);
+                            startActivity(mIntent);
+                            break;
+                    }
+
+
                     return;
                 } else
                 {
@@ -253,7 +299,7 @@ public class RechargeApply extends BaseFragment
             
         });
     }
-    
+
     //智付申请权限
     @NeedsPermission(Manifest.permission.READ_PHONE_STATE)
     void callPhone()
