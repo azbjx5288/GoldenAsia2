@@ -222,7 +222,10 @@ public class RechargeApply extends BaseFragment
                             PayInfo payInfo = new PayInfo(userInfo.getUserName(), userInfo.getUserId());
                             String url = GoldenAsiaApp.BASEURL + "/?c=fin&a=recharge&id=" + cardRecharge.getDtId() +
                                     "&encry=" + Base64.encodeToString(GsonHelper.toJson(payInfo).getBytes(),
-                                    Base64.DEFAULT) + "&trade_type=" + cardRecharge.getTradeType() + "&frm=4";
+                                    Base64.NO_WRAP  ) +"&trade_type=" + cardRecharge.getTradeType() + "&frm=4";
+                            //http://ta.w956.com/?c=fin&a=recharge&id=157&encry=eyJ1c2VybmFtZSI6ImdhbjA5MTMiLCJ1c2VyX2lkIjo1NzE5MH0=&trade_type=29&frm=4   NO_WRAP
+                            //http://ta.w956.com/?c=fin&a=recharge&id=157&encry=eyJ1c2VybmFtZSI6ImdhbjA5MTMiLCJ1c2VyX2lkIjo1NzE5MH0=\n&trade_type=29&frm=4   DEFAULT
+
 
                             Uri CONTENT_URI_BROWSERS=Uri.parse(url);
 
