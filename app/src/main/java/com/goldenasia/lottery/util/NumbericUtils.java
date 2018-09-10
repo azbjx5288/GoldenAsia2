@@ -3,6 +3,7 @@ package com.goldenasia.lottery.util;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -91,36 +92,81 @@ public class NumbericUtils
         //Collections.reverse(newList);
         return newList;
     }
-
+    
     //判断字符是否为数字的方法
-    public static boolean isNumericChar(String str){
+    public static boolean isNumericChar(String str)
+    {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
-        if( !isNum.matches() ){
+        if (!isNum.matches())
+        {
             return false;
         }
         return true;
     }
-
+    
     //用于判断是否有重复值的标记
-    public static boolean hasEqualsArr(String[] arry) {
+    public static boolean hasEqualsArr(String[] arry)
+    {
         boolean flag = false;
-
-        for (int i = 0; i < arry.length; i++) {
+        
+        for (int i = 0; i < arry.length; i++)
+        {
             String temp = arry[i];
             int count = 0;
-            for (int j = 0; j < arry.length; j++) {
+            for (int j = 0; j < arry.length; j++)
+            {
                 String temp2 = arry[j];
                 //有重复值就count+1
-                if (temp.equals(temp2) ) {
+                if (temp.equals(temp2))
+                {
                     count++;
                 }
             }
             //由于中间又一次会跟自己本身比较所有这里要判断count>=2
-            if (count >= 2) {
+            if (count >= 2)
+            {
                 flag = true;
             }
         }
         return flag;
+    }
+    
+    public static int factorial(int n)
+    {
+        int re = 1;
+        for (int i = n; i > 1; i--)
+        {
+            re *= i;
+        }
+        return re;
+    }
+    
+    public static int arrange(int m, int n)
+    {
+        return m >= n ? factorial(m) / factorial(m - n) : 0;
+    }
+    
+    public static int combine(int m, int n)
+    {
+        return m >= n ? factorial(m) / (factorial(n) * factorial(m - n)) : 0;
+    }
+    
+    public static int getApperTimes(int num, ArrayList<Integer> list)
+    {
+        int matchs = 0;
+        for (int n : list)
+            if (num == n)
+                matchs++;
+        return matchs;
+    }
+    
+    public static boolean isConsecutiveNumbers(ArrayList<Integer> list)
+    {
+        Collections.sort(list);
+        for (int i = 0, size = list.size(); i < size - 1; i++)
+            if (list.get(i + 1) - list.get(i) != 1)
+                return false;
+        return true;
     }
 }

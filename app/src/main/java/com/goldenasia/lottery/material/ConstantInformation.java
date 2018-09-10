@@ -777,7 +777,7 @@ public class ConstantInformation
             add(39);
         }
     };
-    public static ArrayList<Integer> CHIKEN_NUM = new ArrayList<Integer>()
+    public static ArrayList<Integer> CHICKEN_NUM = new ArrayList<Integer>()
     {
         {
             add(2);
@@ -812,7 +812,7 @@ public class ConstantInformation
             add(COW_NUM);
             add(HORSE_NUM);
             add(SHEEP_NUM);
-            add(CHIKEN_NUM);
+            add(CHICKEN_NUM);
             add(DOG_NUM);
             add(PIG_NUM);
         }

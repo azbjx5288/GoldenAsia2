@@ -28,6 +28,7 @@
     <color name="app_rowdefault_color">#F1F2F6</color>
     <color name="text_shallow">#dedfe0</color>
     <color name="login_in_background">#238399</color>
+    <color name="result_divide_line">#aa000000</color>
 
     <!-- 彩球的颜色 -->
     <color name="ball_text_color">#0d6755</color>

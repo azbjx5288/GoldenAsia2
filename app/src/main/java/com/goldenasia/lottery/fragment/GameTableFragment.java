@@ -364,6 +364,8 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         titleView.setText(method.getCname());
         gameFragment.setGame(GameConfig.createGame(getActivity(), method, lottery));
         gameFragment.changeGameMethod(method);
+        ResultsFragment resultsFragment = (ResultsFragment) fragments.get(1);
+        resultsFragment.setMethodName(method.getName());
         manualInputBotton.setVisibility(gameFragment.getGame().isSupportInput() ? View.VISIBLE : View.GONE);
         switch (lottery.getLotteryId()) {
             case 15://亚洲妙妙彩

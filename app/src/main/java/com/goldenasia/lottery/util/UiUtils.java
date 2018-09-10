@@ -1,10 +1,12 @@
 package com.goldenasia.lottery.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 public class UiUtils
@@ -40,6 +42,12 @@ public class UiUtils
 	public static int px2dip(Context context, int pxValue) {
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (pxValue / scale + 0.5f);
+	}
+	
+	public static int getPixelsFromDp(Activity activity, int size) {
+		DisplayMetrics metrics = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		return (size * metrics.densityDpi) / DisplayMetrics.DENSITY_DEFAULT;
 	}
 
     /**

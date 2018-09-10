@@ -17,7 +17,6 @@ import com.goldenasia.lottery.pattern.OnAddListner;
 import com.goldenasia.lottery.view.LhcNumberGroupView;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * 六合彩直选玩法
@@ -320,7 +319,7 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner
             case R.id.chicken:
                 for (int i = min; i <= max; i++)
                 {
-                    if (ConstantInformation.CHIKEN_NUM.contains(i))
+                    if (ConstantInformation.CHICKEN_NUM.contains(i))
                     {
                         list.add(i);
                     }

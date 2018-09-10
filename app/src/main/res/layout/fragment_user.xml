@@ -4,6 +4,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#DFDFDF"
+            android:scrollbars="vertical"
             android:id="@+id/refreshableView">
 
     <ScrollView
@@ -89,9 +90,9 @@
                     android:layout_marginTop="8dp"
                     android:drawableLeft="@drawable/ic_tap_balance"
                     android:drawablePadding="3dp"
-                    android:text=" 账号余额：8000.00"
+                    android:text=" 账号余额：8000000.00"
                     android:textColor="@color/white"
-                    android:textSize="12sp"/>
+                    android:textSize="18sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -121,16 +122,6 @@
                     android:textSize="14sp"/>
 
             </LinearLayout>
-            <ImageView
-                android:id="@+id/refresh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/linearLayout3"
-                android:layout_toRightOf="@+id/linearLayout3"
-                android:visibility="gone"
-                android:layout_alignBottom="@+id/linearLayout3"
-                android:layout_marginBottom="2dp"
-                android:scaleType="fitEnd" app:srcCompat="@drawable/refresh"/>
         </RelativeLayout>
 
         <View style="@style/horizontal_divide_line"/>

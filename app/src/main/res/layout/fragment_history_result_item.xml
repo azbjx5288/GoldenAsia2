@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-                android:minHeight="40dp">
+              android:minHeight="40dp">
 
     <TextView
         android:id="@+id/historycode_issue"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center"
         android:paddingLeft="@dimen/pad_lr"
         android:textColor="@color/gray"/>
 
@@ -17,7 +17,25 @@
         android:id="@+id/historycode_code"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingLeft="@dimen/pad_lr"
+        android:textColor="@color/gray"/>
+
+    <TextView
+        android:id="@+id/historycode_big_small"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/pad_lr"
+        android:textColor="@color/gray"/>
+
+    <TextView
+        android:id="@+id/historycode_odd_even"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/pad_lr"
         android:textColor="@color/gray"/>

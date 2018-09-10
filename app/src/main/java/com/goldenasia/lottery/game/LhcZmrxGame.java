@@ -2,7 +2,6 @@ package com.goldenasia.lottery.game;
 
 import android.content.DialogInterface;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.material.LhcQuickStart;
 import com.goldenasia.lottery.pattern.LhcPickNumber;
-import com.goldenasia.lottery.pattern.PickNumber;
 import com.goldenasia.lottery.view.LhcNumberGroupView;
 import com.google.gson.JsonArray;
 
@@ -268,7 +266,7 @@ public class LhcZmrxGame extends LhcGame implements LhcQuickStart.OnQuickListner
                 break;
             case R.id.chicken:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.CHIKEN_NUM.contains(i)) {
+                    if (ConstantInformation.CHICKEN_NUM.contains(i)) {
                         list.add(i);
                     }
                 }

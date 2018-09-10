@@ -559,4 +559,10 @@
         <item name="android:textColor">@drawable/selector_text_color_green</item>
         <item name="android:textSize">@dimen/text_size_small</item>
     </style>
+
+    <style name="result_divide_line">
+        <item name="android:layout_width">0.1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/divide</item>
+    </style>
 </resources>
