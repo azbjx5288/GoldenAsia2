@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item android:state_enabled="true" android:color="@color/app_font_ash_color"/>
+<item android:state_enabled="false" android:color="@color/app_font_dark_color"/>
+<!-- 默认样式 -->
+<item android:drawable="@color/app_font_dark_color"/>
+
+</selector>
+
+
+

@@ -3,6 +3,7 @@ package com.goldenasia.lottery.fragment;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -71,6 +72,8 @@ public class LotteryFragment extends BaseFragment {
     ScrollGridView qwcGridview;
     @BindView(R.id.pk10_gridview)
     ScrollGridView pk10Gridview;
+    @BindView(R.id.markSix_gridview)
+    ScrollGridView markSixGridview;
     @BindView(R.id.others_gridview)
     ScrollGridView othersGridview;
     @BindView(R.id.edit_favourite)
@@ -86,6 +89,7 @@ public class LotteryFragment extends BaseFragment {
     private TextView lowDesc;
     private TextView qwcDesc;
     private TextView pk10Desc;
+    private TextView markSixDesc;
 
     private ImageAdapter sscAdapter;
     private ImageAdapter syxwAdapter;
@@ -93,6 +97,7 @@ public class LotteryFragment extends BaseFragment {
     private ImageAdapter lowAdapter;
     private ImageAdapter qwcAdapter;
     private ImageAdapter pk10Adapter;
+    private ImageAdapter markSixAdapter;
     private ImageAdapter othersAdapter;
     private CycleViewPager cycleViewPager;
     private ArrayList<Lottery> lotteryList = new ArrayList<>();
@@ -102,15 +107,16 @@ public class LotteryFragment extends BaseFragment {
     private ArrayList<Lottery> lowLotteryList = new ArrayList<>();
     private ArrayList<Lottery> qwcLotteryList = new ArrayList<>();
     private ArrayList<Lottery> pk10LotteryList = new ArrayList<>();
+    private ArrayList<Lottery> markSixLotteryList = new ArrayList<>();
     private ArrayList<Lottery> othersLotteryList = new ArrayList<>();
     private ArrayList<Lottery> favouriteLotteryList = new ArrayList<>();
     private ArrayList<Notice> notices;
 
+    private Handler handler=new Handler();
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_lottery, container,
-                false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_lottery, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -119,8 +125,7 @@ public class LotteryFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //new VersionChecker(this).startCheck();
-        cycleViewPager = (CycleViewPager) getActivity().getFragmentManager()
-                .findFragmentById(R.id.fragment_cycle_viewpager_content);
+        cycleViewPager = (CycleViewPager) getActivity().getFragmentManager().findFragmentById(R.id.fragment_cycle_viewpager_content);
         initView();
         loadBanner();
         initGridView();
@@ -128,64 +133,61 @@ public class LotteryFragment extends BaseFragment {
 
     private void initView() {
         View sscLayout = findViewById(R.id.ssc);
-        ImageView sscImage = (ImageView) sscLayout.findViewById(R.id.icon);
+        ImageView sscImage = sscLayout.findViewById(R.id.icon);
         sscImage.setImageResource(R.drawable.ic_group_ssc);
-        TextView sscName = (TextView) sscLayout.findViewById(R.id.name);
+        TextView sscName = sscLayout.findViewById(R.id.name);
         sscName.setText("时时彩");
-        sscDesc = (TextView) sscLayout.findViewById(R.id.desc);
-        sscDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
-                .app_main_support));
+        sscDesc = sscLayout.findViewById(R.id.desc);
+        sscDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_main_support));
 
         View syxwLayout = findViewById(R.id.syxw);
-        ImageView syxwImage = (ImageView) syxwLayout.findViewById(R.id.syxw)
-                .findViewById(R.id.icon);
+        ImageView syxwImage = syxwLayout.findViewById(R.id.syxw).findViewById(R.id.icon);
         syxwImage.setImageResource(R.drawable.ic_group_11x5);
-        TextView syxwName = (TextView) syxwLayout.findViewById(R.id.name);
+        TextView syxwName = syxwLayout.findViewById(R.id.name);
         syxwName.setText("11选5");
-        syxwDesc = (TextView) syxwLayout.findViewById(R.id.desc);
-        syxwDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
-                .app_main_support));
+        syxwDesc = syxwLayout.findViewById(R.id.desc);
+        syxwDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_main_support));
 
         View ksLayout = findViewById(R.id.ks);
-        ImageView ksImage = (ImageView) ksLayout.findViewById(R.id.ks)
-                .findViewById(R.id.icon);
+        ImageView ksImage = ksLayout.findViewById(R.id.ks).findViewById(R.id.icon);
         ksImage.setImageResource(R.drawable.ico_group_k3);
-        TextView ksName = (TextView) ksLayout.findViewById(R.id.name);
+        TextView ksName = ksLayout.findViewById(R.id.name);
         ksName.setText("快三");
-        ksDesc = (TextView) ksLayout.findViewById(R.id.desc);
-        ksDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
-                .app_main_support));
+        ksDesc = ksLayout.findViewById(R.id.desc);
+        ksDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_main_support));
 
         View lowLayout = findViewById(R.id.low);
-        ImageView lowImage = (ImageView) lowLayout.findViewById(R.id.low)
-                .findViewById(R.id.icon);
+        ImageView lowImage = lowLayout.findViewById(R.id.low).findViewById(R.id.icon);
         lowImage.setImageResource(R.drawable.ico_group_fctc);
-        TextView lowName = (TextView) lowLayout.findViewById(R.id.name);
+        TextView lowName = lowLayout.findViewById(R.id.name);
         lowName.setText("低频彩");
-        lowDesc = (TextView) lowLayout.findViewById(R.id.desc);
-        lowDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
-                .app_main_support));
-    
+        lowDesc = lowLayout.findViewById(R.id.desc);
+        lowDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_main_support));
+
         View qwcLayout = findViewById(R.id.qwc);
-        ImageView qwcImage = (ImageView) qwcLayout.findViewById(R.id.qwc)
-                .findViewById(R.id.icon);
+        ImageView qwcImage = qwcLayout.findViewById(R.id.qwc).findViewById(R.id.icon);
         qwcImage.setImageResource(R.drawable.ico_group_qwc);
-        TextView qwcName = (TextView) qwcLayout.findViewById(R.id.name);
+        TextView qwcName = qwcLayout.findViewById(R.id.name);
         qwcName.setText("趣味彩");
-        qwcDesc = (TextView) qwcLayout.findViewById(R.id.desc);
-        qwcDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color
-                .app_main_support));
-    
+        qwcDesc = qwcLayout.findViewById(R.id.desc);
+        qwcDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_main_support));
+
         View pk10Layout = findViewById(R.id.pk10);
-        ImageView pk10Image = (ImageView) pk10Layout.findViewById(R.id.pk10)
-                .findViewById(R.id.icon);
+        ImageView pk10Image = pk10Layout.findViewById(R.id.pk10).findViewById(R.id.icon);
         pk10Image.setImageResource(R.drawable.ico_group_qwc);
-        TextView pk10Name = (TextView) pk10Layout.findViewById(R.id.name);
+        TextView pk10Name = pk10Layout.findViewById(R.id.name);
         pk10Name.setText("PK10");
-        pk10Desc = (TextView) pk10Layout.findViewById(R.id.desc);
-        pk10Desc.setTextColor(ContextCompat.getColor(getActivity(), R.color
-                .app_main_support));
-        
+        pk10Desc = pk10Layout.findViewById(R.id.desc);
+        pk10Desc.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_main_support));
+
+
+        View markSixLayout = findViewById(R.id.markSix);
+        ImageView markSixImage = markSixLayout.findViewById(R.id.markSix).findViewById(R.id.icon);
+        markSixImage.setImageResource(R.drawable.ico_group_lhc);
+        TextView markSixName = markSixLayout.findViewById(R.id.name);
+        markSixName.setText("六合彩");
+        markSixDesc = markSixLayout.findViewById(R.id.desc);
+        markSixDesc.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_main_support));
         /*scrollView.setFocusable(false);
         scrollView.smoothScrollTo(0, 20);*/
     }
@@ -195,9 +197,7 @@ public class LotteryFragment extends BaseFragment {
         command.setPageName("index");
         TypeToken typeToken = new TypeToken<RestResponse<ArrayList<Notice>>>() {
         };
-        RestRequest restRequest = RestRequestManager.createRequest
-                (getActivity(), command, typeToken, restCallback,
-                        BANNER_LIST_ID, this);
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback, BANNER_LIST_ID, this);
         RestResponse restResponse = restRequest.getCache();
         if (restResponse != null && restResponse.getData() instanceof ArrayList) {
             updateBanner((ArrayList<Notice>) restResponse.getData());
@@ -221,18 +221,12 @@ public class LotteryFragment extends BaseFragment {
         UserCentre userCentre = GoldenAsiaApp.getUserCentre();
         List<View> views = new ArrayList<>();
         // 将最后一个view添加进来
-        views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl
-                (notices.get(notices.size() - 1).getContent()), /*notices.get
-                (notices.size() - 1).getTitle()*/""));
+        views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl(notices.get(notices.size() - 1).getContent()), /*notices.get(notices.size() - 1).getTitle()*/""));
         for (int i = 0, size = notices.size(); i < size; i++) {
-            views.add(ViewFactory.getImageView(getActivity(), userCentre
-                    .getUrl(notices.get(i).getContent()), /*notices
-                    .get(i).getTitle()*/""));
+            views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl(notices.get(i).getContent()), /*notices.get(i).getTitle()*/""));
         }
         // 将第一个view添加进来
-        views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl
-                (notices.get(0).getContent()), /*notices.get
-                (0).getTitle()*/""));
+        views.add(ViewFactory.getImageView(getActivity(), userCentre.getUrl(notices.get(0).getContent()), /*notices.get(0).getTitle()*/""));
 
         cycleViewPager.setCycle(true);
         cycleViewPager.setData(views, mAdCycleViewListener);
@@ -256,6 +250,8 @@ public class LotteryFragment extends BaseFragment {
         qwcAdapter.setExpandable(true);
         pk10Adapter = new ImageAdapter();
         pk10Adapter.setExpandable(true);
+        markSixAdapter = new ImageAdapter();
+        markSixAdapter.setExpandable(true);
         othersAdapter = new ImageAdapter();
         othersAdapter.setExpandable(false);
         lotteryListLoad();
@@ -285,10 +281,8 @@ public class LotteryFragment extends BaseFragment {
     }
 
     private View popupFavourite() {
-        View convertView = LayoutInflater.from(getActivity()).inflate(R
-                .layout.popup_favourite, null);
-        GridView gridView = (GridView) convertView.findViewById(R.id
-                .favourite_grid_view);
+        View convertView = LayoutInflater.from(getActivity()).inflate(R.layout.popup_favourite, null);
+        GridView gridView = (GridView) convertView.findViewById(R.id.favourite_grid_view);
         FavouriteAdapter adapter = new FavouriteAdapter();
         adapter.setData(lotteryList);
         gridView.setAdapter(adapter);
@@ -310,7 +304,7 @@ public class LotteryFragment extends BaseFragment {
         }*/
     }
 
-    @OnClick({R.id.ssc, R.id.syxw, R.id.ks, R.id.low,R.id.qwc,R.id.pk10})
+    @OnClick({R.id.ssc, R.id.syxw, R.id.ks, R.id.low, R.id.qwc, R.id.pk10,R.id.markSix})
     public void onExpand(View view) {
         switch (view.getId()) {
             case R.id.ssc:
@@ -319,6 +313,7 @@ public class LotteryFragment extends BaseFragment {
                     //boxBottomLayout.setVisibility(View.GONE);
                 } else {
                     sscGridview.setVisibility(View.VISIBLE);
+                    markSixGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     syxwGridview.setVisibility(View.GONE);
                     ksGridview.setVisibility(View.GONE);
@@ -334,6 +329,7 @@ public class LotteryFragment extends BaseFragment {
                 } else {
                     syxwGridview.setVisibility(View.VISIBLE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
+                    markSixGridview.setVisibility(View.GONE);
                     sscGridview.setVisibility(View.GONE);
                     ksGridview.setVisibility(View.GONE);
                     lowGridview.setVisibility(View.GONE);
@@ -347,6 +343,7 @@ public class LotteryFragment extends BaseFragment {
                     //boxBottomLayout.setVisibility(View.GONE);
                 } else {
                     ksGridview.setVisibility(View.VISIBLE);
+                    markSixGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     sscGridview.setVisibility(View.GONE);
                     syxwGridview.setVisibility(View.GONE);
@@ -362,6 +359,7 @@ public class LotteryFragment extends BaseFragment {
                 } else {
                     lowGridview.setVisibility(View.VISIBLE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
+                    markSixGridview.setVisibility(View.GONE);
                     sscGridview.setVisibility(View.GONE);
                     syxwGridview.setVisibility(View.GONE);
                     ksGridview.setVisibility(View.GONE);
@@ -375,6 +373,7 @@ public class LotteryFragment extends BaseFragment {
                     //boxBottomLayout.setVisibility(View.GONE);
                 } else {
                     qwcGridview.setVisibility(View.VISIBLE);
+                    markSixGridview.setVisibility(View.GONE);
                     lowGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     sscGridview.setVisibility(View.GONE);
@@ -389,12 +388,35 @@ public class LotteryFragment extends BaseFragment {
                     //boxBottomLayout.setVisibility(View.GONE);
                 } else {
                     pk10Gridview.setVisibility(View.VISIBLE);
+                    markSixGridview.setVisibility(View.GONE);
                     qwcGridview.setVisibility(View.GONE);
                     lowGridview.setVisibility(View.GONE);
                     //boxBottomLayout.setVisibility(View.VISIBLE);
                     sscGridview.setVisibility(View.GONE);
                     syxwGridview.setVisibility(View.GONE);
                     ksGridview.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.markSix:
+                if (markSixGridview.getVisibility() == View.VISIBLE) {
+                    markSixGridview.setVisibility(View.GONE);
+                    //boxBottomLayout.setVisibility(View.GONE);
+                } else {
+                    markSixGridview.setVisibility(View.VISIBLE);
+                    pk10Gridview.setVisibility(View.GONE);
+                    qwcGridview.setVisibility(View.GONE);
+                    lowGridview.setVisibility(View.GONE);
+                    //boxBottomLayout.setVisibility(View.VISIBLE);
+                    sscGridview.setVisibility(View.GONE);
+                    syxwGridview.setVisibility(View.GONE);
+                    ksGridview.setVisibility(View.GONE);
+//                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                        }
+                    });
                 }
                 break;
         }
@@ -419,17 +441,22 @@ public class LotteryFragment extends BaseFragment {
     public void onLowClick(int position) {
         launchLottery(lowLotteryList, position);
     }
-    
+
     @OnItemClick(R.id.qwc_gridview)
     public void onQwcClick(int position) {
         launchLottery(qwcLotteryList, position);
     }
-    
+
     @OnItemClick(R.id.pk10_gridview)
     public void onPk10Click(int position) {
         launchLottery(pk10LotteryList, position);
     }
-    
+
+    @OnItemClick(R.id.markSix_gridview)
+    public void onMarkSix(int position) {
+        launchLottery(markSixLotteryList, position);
+    }
+
     @OnItemClick(R.id.others_gridview)
     public void onItemClick(int position) {
         launchLottery(othersLotteryList, position);
@@ -447,13 +474,11 @@ public class LotteryFragment extends BaseFragment {
                     case 15://亚洲妙妙彩
                     case 44://11选5秒秒彩
                     case 45://快三秒秒彩
-                        GameTableFragment.launchMmc(LotteryFragment.this,
-                                lottery);
+                        GameTableFragment.launchMmc(LotteryFragment.this, lottery);
                         break;
                     case 17://香港六合彩
                     case 26://六合分分彩
-                        GameTableFragment.launchLhc(LotteryFragment.this,
-                                lottery);
+                        GameTableFragment.launchLhc(LotteryFragment.this, lottery);
                         break;
                     case 28://刮刮彩
                         GameGgcFragment.launch(LotteryFragment.this, lottery);
@@ -462,7 +487,7 @@ public class LotteryFragment extends BaseFragment {
                         GameTableFragment.launch(LotteryFragment.this, lottery);
                         break;
                 }
-            }else {
+            } else {
                 tipDialog(lottery.getStopReason());
             }
         } else {
@@ -470,18 +495,17 @@ public class LotteryFragment extends BaseFragment {
         }
     }
 
-    private CycleViewPager.ImageCycleViewListener mAdCycleViewListener = new
-            CycleViewPager.ImageCycleViewListener() {
-                @Override
-                public void onImageClick(int position, View imageView) {
-                    if (TextUtils.isEmpty(notices.get(position).getLink())) {
-                    } else {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("url", notices.get(position).getLink());
-                        launchFragment(WebViewFragment.class, bundle);
-                    }
-                }
-            };
+    private CycleViewPager.ImageCycleViewListener mAdCycleViewListener = new CycleViewPager.ImageCycleViewListener() {
+        @Override
+        public void onImageClick(int position, View imageView) {
+            if (TextUtils.isEmpty(notices.get(position).getLink())) {
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putString("url", notices.get(position).getLink());
+                launchFragment(WebViewFragment.class, bundle);
+            }
+        }
+    };
 
     @Override
     public void onResume() {
@@ -549,11 +573,9 @@ public class LotteryFragment extends BaseFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             GirdHolder holder;
             if (convertView == null) {
-                convertView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_fragment_home_gridview, null);
+                convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_fragment_home_gridview, null);
                 if (isExpandable)
-                    convertView.setBackgroundResource(R.drawable
-                            .background_dark_border);
+                    convertView.setBackgroundResource(R.drawable.background_dark_border);
                 holder = new GirdHolder();
                 holder.logo = (ImageView) convertView.findViewById(R.id.icon);
                 holder.name = (TextView) convertView.findViewById(R.id.name);
@@ -566,9 +588,7 @@ public class LotteryFragment extends BaseFragment {
 
             if (data != null && data.size() > 0) {
                 Lottery lottery = data.get(position);
-                holder.logo.setImageResource(ConstantInformation
-                        .getLotteryLogo(lottery.getLotteryId(), lottery
-                                .isAvailable()));
+                holder.logo.setImageResource(ConstantInformation.getLotteryLogo(lottery.getLotteryId(), lottery.isAvailable()));
                 holder.name.setText(lottery.getCname());
                 if (lottery.isHot()) {
                     holder.hot_lab.setVisibility(View.VISIBLE);
@@ -595,12 +615,9 @@ public class LotteryFragment extends BaseFragment {
         lotteryListCommand.setLotteryID(0);
         TypeToken typeToken = new TypeToken<RestResponse<LotteryMenu>>() {
         };
-        RestRequest restRequest = RestRequestManager.createRequest
-                (getActivity(), lotteryListCommand, typeToken, restCallback,
-                        LOTTERY_TRACE_ID, this);
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), lotteryListCommand, typeToken, restCallback, LOTTERY_TRACE_ID, this);
         RestResponse restResponse = restRequest.getCache();
-        if (restResponse != null && restResponse.getData() instanceof
-                LotteryMenu) {
+        if (restResponse != null && restResponse.getData() instanceof LotteryMenu) {
             LotteryMenu lotteryMenu = (LotteryMenu) restResponse.getData();
             if (lotteryMenu.getSsc() != null)
                 sscLotteryList = lotteryMenu.getSsc();
@@ -614,6 +631,8 @@ public class LotteryFragment extends BaseFragment {
                 qwcLotteryList = lotteryMenu.getQw();
             if (lotteryMenu.getPk10() != null)
                 pk10LotteryList = lotteryMenu.getPk10();
+            if (lotteryMenu.getMarkSix() != null)
+                markSixLotteryList = lotteryMenu.getMarkSix();
             if (lotteryMenu.getOthers() != null)
                 othersLotteryList = lotteryMenu.getOthers();
             lotteryList.addAll(sscLotteryList);
@@ -622,6 +641,7 @@ public class LotteryFragment extends BaseFragment {
             lotteryList.addAll(lowLotteryList);
             lotteryList.addAll(qwcLotteryList);
             lotteryList.addAll(pk10LotteryList);
+            lotteryList.addAll(markSixLotteryList);
             lotteryList.addAll(othersLotteryList);
             GoldenAsiaApp.getUserCentre().setLotteryList(lotteryList);
             //othersAdapter.notifyDataSetChanged();
@@ -636,22 +656,26 @@ public class LotteryFragment extends BaseFragment {
 
             lowAdapter.setData(lowLotteryList);
             lowGridview.setAdapter(lowAdapter);
-    
+
             qwcAdapter.setData(qwcLotteryList);
             qwcGridview.setAdapter(qwcAdapter);
-    
+
             pk10Adapter.setData(pk10LotteryList);
             pk10Gridview.setAdapter(pk10Adapter);
 
+            markSixAdapter.setData(markSixLotteryList);
+            markSixGridview.setAdapter(markSixAdapter);
+
             othersAdapter.setData(othersLotteryList);
             othersGridview.setAdapter(othersAdapter);
-    
+
             sscDesc.setText("畅销组合/" + sscLotteryList.size() + "个");
             syxwDesc.setText("热门组合/" + syxwLotteryList.size() + "个");
             ksDesc.setText("好玩易中/" + ksLotteryList.size() + "个");
             lowDesc.setText("人品爆发/" + lowLotteryList.size() + "个");
             qwcDesc.setText("趣夺大奖/" + qwcLotteryList.size() + "个");
             pk10Desc.setText("人气旺旺/" + pk10LotteryList.size() + "个");
+            markSixDesc.setText("喜从天降/" + pk10LotteryList.size() + "个");
         }
         restRequest.execute();
     }
@@ -675,6 +699,8 @@ public class LotteryFragment extends BaseFragment {
                         qwcLotteryList = lotteryMenu.getQw();
                     if (lotteryMenu.getPk10() != null)
                         pk10LotteryList = lotteryMenu.getPk10();
+                    if (lotteryMenu.getMarkSix() != null)
+                        markSixLotteryList = lotteryMenu.getMarkSix();
                     if (lotteryMenu.getOthers() != null)
                         othersLotteryList = lotteryMenu.getOthers();
                     lotteryList.addAll(sscLotteryList);
@@ -682,6 +708,7 @@ public class LotteryFragment extends BaseFragment {
                     lotteryList.addAll(ksLotteryList);
                     lotteryList.addAll(lowLotteryList);
                     lotteryList.addAll(pk10LotteryList);
+                    lotteryList.addAll(markSixLotteryList);
                     lotteryList.addAll(othersLotteryList);
                     GoldenAsiaApp.getUserCentre().setLotteryList(lotteryList);
                     //othersAdapter.notifyDataSetChanged();
@@ -696,12 +723,15 @@ public class LotteryFragment extends BaseFragment {
 
                     lowAdapter.setData(lowLotteryList);
                     lowGridview.setAdapter(lowAdapter);
-    
+
                     qwcAdapter.setData(qwcLotteryList);
                     qwcGridview.setAdapter(qwcAdapter);
-    
+
                     pk10Adapter.setData(pk10LotteryList);
                     pk10Gridview.setAdapter(pk10Adapter);
+
+                    markSixAdapter.setData(markSixLotteryList);
+                    markSixGridview.setAdapter(markSixAdapter);
 
                     othersAdapter.setData(othersLotteryList);
                     othersGridview.setAdapter(othersAdapter);
@@ -712,6 +742,7 @@ public class LotteryFragment extends BaseFragment {
                     lowDesc.setText("人品爆发/" + lowLotteryList.size() + "个");
                     qwcDesc.setText("趣夺大奖/" + qwcLotteryList.size() + "个");
                     pk10Desc.setText("人气旺旺/" + pk10LotteryList.size() + "个");
+                    markSixDesc.setText("喜从天降/" + markSixLotteryList.size() + "个");
                     break;
                 case BANNER_LIST_ID:
                     updateBanner((ArrayList<Notice>) response.getData());
@@ -721,15 +752,12 @@ public class LotteryFragment extends BaseFragment {
         }
 
         @Override
-        public boolean onRestError(RestRequest request, int errCode, String
-                errDesc) {
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
             if (errCode == 7003) {
-                Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast
-                        .LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
                 return true;
             } else if (errCode == 7006) {
-                CustomDialog dialog = PromptManager.showCustomDialog
-                        (getActivity(), "重新登录", errDesc, "重新登录", errCode);
+                CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
                 dialog.setCancelable(false);
                 dialog.show();
                 return true;
@@ -738,8 +766,7 @@ public class LotteryFragment extends BaseFragment {
         }
 
         @Override
-        public void onRestStateChanged(RestRequest request, @RestRequest
-                .RestState int state) {
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
 
         }
     };

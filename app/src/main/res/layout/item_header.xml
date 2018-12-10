@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_item_background"
+    android:gravity="center_vertical"
+    android:minHeight="35dp"
+    android:orientation="horizontal"
+    android:padding="11dp">
+
+    <CheckBox
+        android:id="@+id/tag_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@null"
+        android:drawableLeft="@drawable/selector_checkbox_2"
+        android:drawablePadding="10dp" />
+
+    <TextView
+        android:id="@+id/tag_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="xxxx"
+        android:textColor="@color/kaijiang_diff_textcolor"
+        android:textSize="12dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right">
+
+        <Button
+            android:id="@+id/header_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_oval_gray_type"
+            android:minHeight="35dp"
+            android:text="删除"
+            android:textColor="@drawable/selector_but_text_color"
+            android:textSize="@dimen/text_size_small" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/header_betting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_oval_blue_type"
+            android:minHeight="35dp"
+            android:text="投注"
+            android:textColor="@drawable/selector_but_text_bright_color"
+            android:textSize="@dimen/text_size_small" />
+
+    </LinearLayout>
+</LinearLayout>

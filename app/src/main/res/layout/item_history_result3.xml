@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+    android:id="@+id/ll_main"
+              android:minHeight="40dp">
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/historycode_issue"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:textColor="@color/gray"/>
+    <View style="@style/vertical_divide_line"/>
+    <TextView
+        android:gravity="center_vertical"
+        android:id="@+id/historycode_code"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:textColor="@color/gray"/>
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/gray"/>
+
+        <TextView
+            android:id="@+id/tv_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/gray"
+            android:textSize="12sp" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/gray"/>
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/gray"/>
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/gray"/>
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:textColor="@color/gray"/>
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            android:text="12"
+            android:background="@drawable/bg_special_complete_circle_choose_ball2"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+    <View style="@style/vertical_divide_line"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textColor="@color/gray"
+        android:visibility="gone"/>
+    <View style="@style/vertical_divide_line"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/tv_2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textColor="@color/gray"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_10"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        
+        android:textColor="@color/gray"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/tv_11"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+
+        android:textColor="@color/gray"
+        android:visibility="gone"/>
+</LinearLayout>

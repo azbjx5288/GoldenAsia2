@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="投" />
+
+        <com.goldenasia.lottery.component.QuantityView
+            android:id="@+id/double_number_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            app:qv_buttonWidth="60"
+            app:qv_addButtonBackground="@drawable/quantityview_mmc_add_selector"
+            app:qv_addButtonTextColor="@color/background"
+            app:qv_removeButtonBackground="@drawable/quantityview_mmc_remove_selector"
+            app:qv_removeButtonTextColor="@color/background"
+            app:qv_quantity="1"
+            app:qv_quantityBackground="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="倍" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <RadioGroup
+            android:id="@+id/lucremode_sett"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/lucremode_yuan"
+                android:layout_width="32.5dp"
+                android:layout_height="30dp"
+                android:background="@drawable/background_mmc_round_button_select"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_marginRight="4dp"
+                android:checked="true"
+                android:text="2元"
+                android:textColor="@drawable/mmc_currency_selector" />
+
+            <RadioButton
+                android:id="@+id/lucremode_oneyuan"
+                android:layout_width="32.5dp"
+                android:layout_height="30dp"
+                android:background="@drawable/background_mmc_round_button_select"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_marginRight="4dp"
+                android:text="1元"
+                android:textColor="@drawable/mmc_currency_selector" />
+            <RadioButton
+                android:id="@+id/lucremode_jiao"
+                android:layout_width="32.5dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/background_mmc_round_button_select"
+                android:button="@null"
+                android:gravity="center"
+                android:text="2角"
+                android:textColor="@drawable/mmc_currency_selector" />
+
+            <RadioButton
+                android:id="@+id/lucremode_fen"
+                android:layout_width="32.5dp"
+                android:layout_height="30dp"
+                android:background="@drawable/background_mmc_round_button_select"
+                android:button="@null"
+                android:layout_marginRight="4dp"
+                android:gravity="center"
+                android:text="2分"
+                android:textColor="@drawable/mmc_currency_selector" />
+
+            <RadioButton
+                android:id="@+id/lucremode_li"
+                android:layout_width="32.5dp"
+                android:layout_height="30dp"
+                android:background="@drawable/background_mmc_round_button_select"
+                android:button="@null"
+                android:gravity="center"
+                android:text="2厘"
+                android:textColor="@drawable/mmc_currency_selector"/>
+
+        </RadioGroup>
+    </LinearLayout>
+</LinearLayout>
