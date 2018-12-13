@@ -59,7 +59,8 @@ public class GaFragment extends BaseFragment implements GaAdapter.OnPlayListner 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ga, container, false);
+//        View view = inflater.inflate(R.layout.fragment_ga, container, false);
+        View view = inflateView(inflater, container, "GA游戏", R.layout.fragment_ga);
         ButterKnife.bind(this, view);
         return view;
     }

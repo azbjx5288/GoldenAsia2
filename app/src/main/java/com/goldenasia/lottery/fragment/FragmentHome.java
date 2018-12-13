@@ -54,7 +54,7 @@ public class FragmentHome extends BaseFragment implements RadioGroup.OnCheckedCh
         /*Fragment lotteryFragment = FragmentDelayer.newInstance(1, LotteryFragment.class.getName(), null);
         Fragment gaFragment = FragmentDelayer.newInstance(2, GaFragment.class.getName(), null);*/
         Fragment lotteryFragment = new LotteryFragment();
-        Fragment gaFragment = new GaFragment();
+        Fragment gaFragment = new GaMainFragment();
         Fragment agFragment = new AGFragment();
         Fragment sbFragment = new SbFragment();
         fragments.add(lotteryFragment);

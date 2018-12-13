@@ -38,6 +38,8 @@ public class GameDantiaoInfoFragment extends BaseFragment {
             case 36://山西11选5
             case 44://11选5秒秒彩
             case 52://湖北11选5
+            case 56://56//河北11选5
+            case 57://57//内蒙古11选5
                 return inflater.inflate(R.layout.fragment_game_dantiao_info_11select5, container, false);  //11选5 玩法说明
             case 1://重庆时时彩
             case 4://新疆时时彩

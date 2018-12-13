@@ -675,7 +675,7 @@ public class LotteryFragment extends BaseFragment {
             lowDesc.setText("人品爆发/" + lowLotteryList.size() + "个");
             qwcDesc.setText("趣夺大奖/" + qwcLotteryList.size() + "个");
             pk10Desc.setText("人气旺旺/" + pk10LotteryList.size() + "个");
-            markSixDesc.setText("喜从天降/" + pk10LotteryList.size() + "个");
+            markSixDesc.setText("喜从天降/" + markSixLotteryList.size() + "个");
         }
         restRequest.execute();
     }
