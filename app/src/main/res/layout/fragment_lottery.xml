@@ -161,6 +161,9 @@
 
                 <include
                     android:id="@+id/markSix"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     layout="@layout/item_fragment_home_gridview" />
 
                 <com.goldenasia.lottery.component.ScrollGridView

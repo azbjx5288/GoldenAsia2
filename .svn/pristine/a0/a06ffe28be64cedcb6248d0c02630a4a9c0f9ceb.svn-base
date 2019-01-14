@@ -1,0 +1,413 @@
+package com.goldenasia.lottery.view.adapter;
+
+import android.content.Context;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.util.SparseIntArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.goldenasia.lottery.component.AutoFitTextView;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.component.StickyHeaderAdapter;
+import com.goldenasia.lottery.data.CollectScheme;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.data.Lottery;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+/**
+ * Created by ACE-PC on 2018/10/1.
+ */
+
+public class SectionAdapter extends StickyHeaderAdapter {
+
+    private OnDeleteChangeListener onDeleteChangeListener;
+    private OnManyDeleteChangeListener onManyDeleteChangeListener;
+    private OnBettingPlanListener onBettingPlanListener;
+
+    private Lottery lottery;
+    private SparseBooleanArray keyChoose = new SparseBooleanArray();//统计父类选中
+    private SparseIntArray countArry = new SparseIntArray();  //统计子类选中
+    private LinkedHashMap<String, SparseBooleanArray> singleChoose = new LinkedHashMap<>();
+    private LinkedHashMap<String, List<CollectScheme>> map = new LinkedHashMap<>();
+
+
+    public SectionAdapter(Lottery lottery) {
+        this.lottery = lottery;
+    }
+
+    /**
+     * 添加数据，并进行分类
+     *
+     * @param list
+     */
+    public void addData(List<CollectScheme> list) {
+        if (list == null) {
+            return;
+        }
+        map.clear();
+        keyChoose.clear();
+        singleChoose.clear();
+        int i = 0;
+        for (CollectScheme row : list) {
+            String prizeMode = "" + row.getPrizeMode();
+            if (map.get(prizeMode) == null) {
+                i = 0;
+                List<CollectScheme> newRows = new ArrayList<>();
+                SparseBooleanArray childArray = new SparseBooleanArray();
+                newRows.add(row);
+                childArray.put(i, row.isChecked);
+                map.put(prizeMode, newRows);
+                keyChoose.put(row.getPrizeMode(), false); //初使化头部CheckBox
+                singleChoose.put(prizeMode, childArray);
+            } else { //初使化子数据
+                List<CollectScheme> newRows = map.get(prizeMode);
+                newRows.add(row);
+                singleChoose.get(prizeMode).put(i, row.isChecked);
+                i += i + 1;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 设置头部CheckBox全选择
+     *
+     * @param checkAll
+     * @param currentKey
+     */
+    public void setCheckAll(boolean checkAll, String currentKey) {
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, List<CollectScheme>> entry = (Map.Entry<String, List<CollectScheme>>) iter.next();
+            String key = entry.getKey();
+            List<CollectScheme> val = entry.getValue();
+            if (key.equals(currentKey)) {
+                for (CollectScheme row : val) {
+                    row.isChecked = checkAll;
+                }
+            } /*else {
+                for (CollectScheme row : val) {
+                    row.isChecked = false;
+                }
+            }*/
+        }
+        updateValue(currentKey);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 设置列表中单选项
+     */
+    public void setCheckSingle(String currentKey) {
+        updateValue(currentKey);
+        notifyDataSetChanged();
+    }
+
+    private void updateValue(String keyNow) {
+        Iterator iter = map.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, List<CollectScheme>> entry = (Map.Entry<String, List<CollectScheme>>) iter.next();
+            String key = entry.getKey();
+            if (keyNow.equals(key)) {
+                List<CollectScheme> val = entry.getValue();
+                SparseBooleanArray childArray = singleChoose.get(keyNow);
+                for (int i = 0; i < val.size(); i++) {
+                    childArray.put(i, val.get(i).isChecked);
+                    singleChoose.put(key, childArray);
+                }
+            }
+        }
+    }
+
+    /**
+     * 检查已选中数据
+     *
+     * @param currentKey
+     */
+    public List<CollectScheme> checkSelected(String currentKey) {
+        Iterator iter = map.entrySet().iterator();
+        List<CollectScheme> collects = new ArrayList<>();
+        while (iter.hasNext()) {
+            Map.Entry<String, List<CollectScheme>> entry = (Map.Entry<String, List<CollectScheme>>) iter.next();
+            String key = entry.getKey();
+            List<CollectScheme> val = entry.getValue();
+            if (key.equals(currentKey)) {
+                for (CollectScheme row : val) {
+                    if (row.isChecked) {
+                        collects.add(row);
+                    }
+                }
+            }
+        }
+        return collects;
+    }
+
+    public void setOnDeleteChangeListener(OnDeleteChangeListener onDeleteChangeListener) {
+        this.onDeleteChangeListener = onDeleteChangeListener;
+    }
+
+    public void setOnManyDeleteChangeListener(OnManyDeleteChangeListener onManyDeleteChangeListener) {
+        this.onManyDeleteChangeListener = onManyDeleteChangeListener;
+    }
+
+    public void setOnBettingPlanListener(OnBettingPlanListener onBettingPlanListener) {
+        this.onBettingPlanListener = onBettingPlanListener;
+    }
+
+    @Override
+    public int sectionCounts() {
+        return map.keySet().toArray().length;
+    }
+
+    @Override
+    public int rowCounts(int section) {
+        if (section < 0)
+            return 0;
+
+        Object[] key = map.keySet().toArray();
+        return map.get(key[section]).size();
+    }
+
+    @Override
+    public View getRowView(int section, int row, View convertView, ViewGroup parent) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row, null);
+
+        Object[] keys = map.keySet().toArray();
+        String key = (String) keys[section];
+        final CollectScheme item = map.get(key).get(row);
+
+        ((TextView) view.findViewById(R.id.item_method)).setText(item.getCname());
+        ((TextView) view.findViewById(R.id.item_code)).setText(item.getCode());
+        ((TextView) view.findViewById(R.id.item_notenum)).setText(item.getSingleNum() + " 注");
+        final CheckBox checkBox = view.findViewById(R.id.row_cb);
+        checkBox.setChecked(item.isChecked);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                item.isChecked = isChecked;
+                setCheckSingle(key);
+            }
+        });
+
+        (view.findViewById(R.id.item_delete)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomDialog.Builder builder = new CustomDialog.Builder(parent.getContext());
+                builder.setMessage("确定要删除收藏吗？");
+                builder.setTitle("温馨提示");
+                builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+                builder.setNegativeButton("取消", (dialog, which) -> {
+                    dialog.dismiss();
+                });
+                builder.setPositiveButton("确认", (dialog, which) -> {
+                    if (onDeleteChangeListener != null) {
+                        onDeleteChangeListener.onDeleteChange(item);
+                    }
+                    dialog.dismiss();
+                });
+                builder.create().show();
+            }
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBox.setChecked(!checkBox.isChecked());
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public Object getRowItem(int section, int row) {
+        if (section < 0)
+            return null;
+        Object[] key = map.keySet().toArray();
+        return map.get(key[section]).get(row);
+    }
+
+
+    @Override
+    public View getSectionHeaderView(int section, View convertView, ViewGroup parent) {
+        ViewHeaderHolder headerHolder;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_header, parent, false);
+            headerHolder = new ViewHeaderHolder(convertView);
+        } else {
+            headerHolder = (ViewHeaderHolder) convertView.getTag();
+        }
+
+        Object[] keys = map.keySet().toArray();
+        int key = Integer.parseInt((String) keys[section]);
+
+        //检查初化始进来
+        if (countArry.size() == 0) {
+            for (Map.Entry<String, List<CollectScheme>> entry : map.entrySet()) {
+                setCheckAll(true, "" + entry.getKey());
+            }
+        }
+
+        SparseBooleanArray annal = singleChoose.get("" + key);
+        int count = 0;
+        for (int i = 0; i < annal.size(); i++) {
+            if (annal.get(i)) {
+                count = count + 1;
+            }
+        }
+
+        countArry.put(key, count);
+
+        headerHolder.typeNameCB.setChecked(keyChoose.get(key));
+        headerHolder.typeNameCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                keyChoose.put(key, isChecked);
+                headerHolder.headerDelete.setEnabled(isChecked);
+                headerHolder.headerBetting.setEnabled(isChecked);
+                setCheckAll(isChecked, "" + key);
+            }
+        });
+        headerHolder.cname.setText(lottery.getCname());
+        headerHolder.cname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                headerHolder.typeNameCB.setChecked(!headerHolder.typeNameCB.isChecked());
+                keyChoose.put(key, headerHolder.typeNameCB.isChecked());
+                headerHolder.headerDelete.setEnabled(headerHolder.typeNameCB.isChecked());
+                headerHolder.headerBetting.setEnabled(headerHolder.typeNameCB.isChecked());
+                setCheckAll(headerHolder.typeNameCB.isChecked(), "" + key);
+            }
+        });
+        headerHolder.tagPrompt.setText(key > 0 ? "(高奖金组模式)" : "(低奖金组模式)");
+        headerHolder.tagPrompt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                headerHolder.typeNameCB.setChecked(!headerHolder.typeNameCB.isChecked());
+                keyChoose.put(key, headerHolder.typeNameCB.isChecked());
+                headerHolder.headerDelete.setEnabled(headerHolder.typeNameCB.isChecked());
+                headerHolder.headerBetting.setEnabled(headerHolder.typeNameCB.isChecked());
+                setCheckAll(headerHolder.typeNameCB.isChecked(), "" + key);
+            }
+        });
+
+        headerHolder.headerDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<CollectScheme> collectSchemes;
+                if (keyChoose.get(key)) {
+                    collectSchemes = map.get(keys[section]);
+                } else {
+                    collectSchemes = checkSelected("" + key);
+                }
+                tipDialog(parent.getContext(), "温馨提示", "确定要删除收藏吗？", collectSchemes, 0);
+            }
+        });
+
+        headerHolder.headerBetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<CollectScheme> collectSchemes;
+                if (keyChoose.get(key)) {
+                    collectSchemes = map.get(keys[section]);
+                } else {
+                    collectSchemes = checkSelected("" + key);
+                }
+                if (onBettingPlanListener != null) {
+                    onBettingPlanListener.onBetting(collectSchemes);
+                }
+            }
+        });
+        if (countArry.get(key) == map.get("" + key).size()) {
+            headerHolder.typeNameCB.setChecked(true);
+        } else if (countArry.get(key) == 0) {
+            headerHolder.typeNameCB.setChecked(false);
+        }
+
+        if (keyChoose.get(key)) {
+            headerHolder.headerDelete.setEnabled(true);
+            headerHolder.headerBetting.setEnabled(true);
+        } else {
+            if (singleChoose.get("" + key).indexOfValue(true) != -1) {
+                headerHolder.headerDelete.setEnabled(true);
+                headerHolder.headerBetting.setEnabled(true);
+            } else {
+                headerHolder.headerDelete.setEnabled(false);
+                headerHolder.headerBetting.setEnabled(false);
+            }
+        }
+        return convertView;
+    }
+
+    @Override
+    public boolean hasSectionHeaderView(int section) {
+        return true;
+    }
+
+    static class ViewHeaderHolder {
+        @BindView(R.id.tag_title)
+        CheckBox typeNameCB;
+        @BindView(R.id.cname)
+        AutoFitTextView cname;
+        @BindView(R.id.tag_prompt)
+        TextView tagPrompt;
+        @BindView(R.id.header_delete)
+        Button headerDelete;
+        @BindView(R.id.header_betting)
+        Button headerBetting;
+
+        public ViewHeaderHolder(View convertView) {
+            ButterKnife.bind(this, convertView);
+            convertView.setTag(this);
+        }
+    }
+
+    private void tipDialog(Context context, String title, String msg, List<CollectScheme> collectSchemes, int track) {
+        CustomDialog.Builder builder = new CustomDialog.Builder(context);
+        builder.setMessage(msg);
+        builder.setTitle(title);
+        builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+        builder.setNegativeButton("取消", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.setPositiveButton("确认", (dialog, which) -> {
+            if (onManyDeleteChangeListener != null) {
+                onManyDeleteChangeListener.onManyDeleteChange(collectSchemes);
+            }
+            dialog.dismiss();
+        });
+        builder.create().show();
+    }
+
+
+    public interface OnDeleteChangeListener {
+        void onDeleteChange(CollectScheme item);
+    }
+
+    public interface OnManyDeleteChangeListener {
+        void onManyDeleteChange(List<CollectScheme> items);
+    }
+
+    public interface OnBettingPlanListener {
+        void onBetting(List<CollectScheme> items);
+    }
+}

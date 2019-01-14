@@ -22,7 +22,7 @@
             style="@style/drawableRadioButton"
             android:layout_weight="1.1"
             android:drawableLeft="@drawable/selector_radio_ga"
-            android:text="GA游戏" />
+            android:text="电子游戏" />
 
         <com.goldenasia.lottery.component.DrawableLeftRadioButton
             android:id="@+id/agRadioButton"
