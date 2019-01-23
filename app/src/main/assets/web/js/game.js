@@ -909,8 +909,12 @@ function isLegalCode(codes) {
                    isDup = singleNum > 1 ? 1 : 0;
                    break;
                case 'RELHH':
-                   singleNum=C(codes[0].length,2)*codes[1].length;
-                   isDup = singleNum > 1 ? 1 : 0;
+                 /*  singleNum=C(codes[0].length,2)*codes[1].length;
+                   isDup = singleNum > 1 ? 1 : 0;*/
+                   if(codes[0].length>0){
+                        singleNum = 1;
+                        isDup = 1;
+                   }
                    break;
                case 'RSIZX':
                    singleNum=C(codes[0].length,2)*codes[1].length;

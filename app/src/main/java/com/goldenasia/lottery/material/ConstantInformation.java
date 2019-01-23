@@ -128,6 +128,10 @@ public class ConstantInformation {
 
     public static String  sigle_pick="";
 
+
+    public static   List< List<String>>   luDanDataList=new ArrayList<>();
+
+
     //购物车中的数据
 //    public static List<Ticket> ticketList = new ArrayList<>();
 

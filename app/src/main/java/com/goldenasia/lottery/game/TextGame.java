@@ -8,7 +8,11 @@ import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Method;
+import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.PickNumber;
+import com.goldenasia.lottery.util.SscLHHLuDan;
+import com.goldenasia.lottery.view.LuDanContentView;
+import com.goldenasia.lottery.view.MultiLineRadioGroup;
 import com.google.gson.JsonArray;
 
 /**
@@ -20,6 +24,10 @@ public class TextGame extends Game {
     private static final int TYPE_DIGIT = 0;
     private static final int TYPE_DRAGON_TIGER_SUM = 1;
     private static int TYPE;
+
+    private static  LuDanContentView lu_dan_contentview;
+
+    private static  String checkedLudan="[万千]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
 
     public TextGame(Method method) {
         super(method);
@@ -48,7 +56,7 @@ public class TextGame extends Game {
     public String getWebViewCode() {
         JsonArray jsonArray = new JsonArray();
         if (isDigital)
-            jsonArray.add(transformDigitJsonArray(digits));
+//            jsonArray.add(transformDigitJsonArray(digits));
         for (PickNumber pickNumber : pickNumbers) {
             jsonArray.add(transform(pickNumber.getCheckedNumber(), true, true));
         }
@@ -67,7 +75,15 @@ public class TextGame extends Game {
                 }
                 break;
             case TYPE_DRAGON_TIGER_SUM:
-                builder.append(transformDigit(digits));
+             /*   builder.append(transformDigit(digits));
+                for (int i = 0, size = pickNumbers.size(); i < size; i++) {
+                    builder.append(transformtext(pickNumbers.get(i).getCheckedNumber(), dragonTigerSumText, false));
+                    if (i != size - 1) {
+                        builder.append(",");
+                    }
+                }*/
+
+                builder.append(checkedLudan);
                 for (int i = 0, size = pickNumbers.size(); i < size; i++) {
                     builder.append(transformtext(pickNumbers.get(i).getCheckedNumber(), dragonTigerSumText, false));
                     if (i != size - 1) {
@@ -114,16 +130,103 @@ public class TextGame extends Game {
         View[] views = new View[name.length];
         for (int i = 0; i < name.length; i++) {
             View view = createDigitPickLayout(game.getTopLayout());
-            game.initDigitPanel(view, digit);
+            view.findViewById(R.id.digit).setVisibility(View.GONE);//去掉
+//            game.initDigitPanel(view, digit);
             addPickTextGame(game, view, name[i], disText);
             views[i] = view;
         }
 
         ViewGroup topLayout = game.getTopLayout();
+
+        View digits_panel_ludan = getLuDan(game.getTopLayout());
+
+        topLayout.addView(digits_panel_ludan);
+
+
         for (View view : views) {
             topLayout.addView(view);
         }
+
+        View  ludan_content = getLuDanContent(game.getTopLayout());
+        topLayout.addView(ludan_content);
+
         game.setColumn(name.length);
+    }
+
+    private static View getLuDan(ViewGroup container){
+        View  digits_panel_ludan= LayoutInflater.from(container.getContext()).inflate(R.layout.digits_panel_ludan, null, false);
+        MultiLineRadioGroup ludan_01= digits_panel_ludan.findViewById(R.id.radioGroup_sex_id);
+        ludan_01.setOnCheckedChangeListener(new MultiLineRadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(MultiLineRadioGroup group, int checkedId) {
+
+                switch (checkedId){
+                    case   R.id.ludan_01:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,1);
+                        lu_dan_contentview.setTitle("万千路单");//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        checkedLudan="[万千]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_02:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,2);
+                        lu_dan_contentview.setTitle("万百路单");
+                        checkedLudan="[万百]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_03:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,3);
+                        lu_dan_contentview.setTitle("万十路单");
+                        checkedLudan="[万十]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_04:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,4);
+                        lu_dan_contentview.setTitle("万个路单");
+                        checkedLudan="[万个]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_05:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(1,2);
+                        lu_dan_contentview.setTitle("千百路单");
+                        checkedLudan="[千百]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_06:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(1,3);
+                        lu_dan_contentview.setTitle("千十路单");
+                        checkedLudan="[千十]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_07:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(1,4);
+                        lu_dan_contentview.setTitle("千个路单");
+                        checkedLudan="[千个]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_08:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(2,3);
+                        lu_dan_contentview.setTitle("百十路单");
+                        checkedLudan="[百十]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_09:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(2,4);
+                        lu_dan_contentview.setTitle("百个路单");
+                        checkedLudan="[百个]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+                    case   R.id.ludan_10:
+                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(3,4);
+                        lu_dan_contentview.setTitle("十个路单");
+                        checkedLudan="[十个]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                        break;
+
+                }
+                lu_dan_contentview.refreshViewGroup();
+            }
+        });
+
+        return digits_panel_ludan;
+    }
+
+
+    private static View getLuDanContent(ViewGroup container){
+        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,1);
+        View  digits_panel_ludan= LayoutInflater.from(container.getContext()).inflate(R.layout.digits_panel_ludan_content, null, false);
+        lu_dan_contentview = digits_panel_ludan.findViewById(R.id.lu_dan_contentview);
+        return digits_panel_ludan;
     }
 
     private static void createPicklayout(Game game, String[] name, String[] disText) {

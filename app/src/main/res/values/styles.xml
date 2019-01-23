@@ -515,6 +515,15 @@
         <item name="android:textColor">@drawable/selector_checkbox_textcolor</item>
         <item name="android:layout_weight">1</item>
     </style>
+    <style name="checkbox_digits_ludan">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/ssc_lhh_ludan_radiobutton_selector</item>
+        <item name="android:textColor">@drawable/selector_checkbox_ssc_lhh_ludan</item>
+    </style>
 
     <style name="item_lhc_quick_start">
         <item name="android:layout_width">0dp</item>
