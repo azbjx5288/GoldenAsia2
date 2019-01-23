@@ -32,8 +32,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="tab_radio_button">
         <item name="android:gravity">center</item>
@@ -71,11 +72,13 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/white</item>
     </style>
+
     <style name="verticalLine">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">#DFDFDF</item>
     </style>
+
     <style name="tabUserItemText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">52dp</item>
@@ -86,6 +89,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="tabMyUserItemText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">52dp</item>
@@ -96,12 +100,14 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="tabUserItemLinearLayout">
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">52dp</item>
         <item name="android:descendantFocusability">blocksDescendants</item>
     </style>
+
     <style name="tabUserItemImgArrow">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -133,6 +139,7 @@
         <item name="android:paddingLeft">4dp</item>
         <item name="android:paddingRight">10dp</item>
     </style>
+
     <style name="pick_column_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -173,7 +180,8 @@
         <item name="android:gravity">center</item>
         <item name="android:button">@null</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:drawableRight">@drawable/history_radiobutton_right_drawable_selector</item>
+        <item name="android:drawableRight">@drawable/history_radiobutton_right_drawable_selector
+        </item>
         <item name="android:background">@drawable/history_bet_tab_bg_selector</item>
         <item name="android:textColor">@drawable/game_radio_button_text_color</item>
         <item name="android:paddingLeft">15dp</item>
@@ -209,20 +217,24 @@
         <item name="android:windowBackground">@drawable/noticedialog_bg</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
     <style name="text_18_ffffff">
         <item name="android:textSize">18.0dip</item>
         <item name="android:textColor">#ffffffff</item>
     </style>
+
     <style name="text_16_666666">
         <item name="android:textSize">16.0dip</item>
         <item name="android:textColor">#ff666666</item>
     </style>
+
     <style name="sdw_white">
         <item name="android:shadowColor">#7fffffff</item>
         <item name="android:shadowDx">0.0</item>
         <item name="android:shadowDy">0.65</item>
         <item name="android:shadowRadius">1.0</item>
     </style>
+
     <style name="sdw_79351b">
         <item name="android:shadowColor">#ff79351b</item>
         <item name="android:shadowDx">0.0</item>
@@ -241,10 +253,12 @@
         <item name="android:textSize">15.0dip</item>
         <item name="android:textColor">#ffffffff</item>
     </style>
+
     <style name="text_15_666666_sdw" parent="@style/sdw_white">
         <item name="android:textSize">15.0dip</item>
         <item name="android:textColor">#ffffffff</item>
     </style>
+
     <style name="text_15_8d8d_sdw" parent="@style/sdw_1abc9c">
         <item name="android:textSize">16.0sp</item>
         <!--<item name="android:textColor">#d28c8b8b</item>-->
@@ -324,17 +338,20 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/shadow_top</item>
     </style>
+
     <style name="bottomDivideLine">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/shadow_bottom</item>
     </style>
+
     <style name="boxDivideLine">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/box_shadow</item>
     </style>
+
     <style name="horizontal_divide_line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
@@ -426,17 +443,22 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingLeft">@dimen/vertical_gap</item>
         <item name="android:layout_marginTop">@dimen/vertical_gap</item>
-        <item name="android:background">@drawable/selector_lhc_sx_bg_color</item>
+        <item name="android:background">@drawable/selector_lhc_wave_bg_color</item>
         <item name="android:clickable">true</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:padding">6dp</item>
     </style>
 
     <style name="lhc_sx_layout">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:padding">6dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
         <item name="android:background">@drawable/selector_lhc_sx_bg_color</item>
         <item name="android:clickable">true</item>
         <item name="android:orientation">horizontal</item>

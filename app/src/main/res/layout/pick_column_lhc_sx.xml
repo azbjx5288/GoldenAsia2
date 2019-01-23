@@ -8,10 +8,10 @@
         android:id="@+id/animal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/pad_ud"
         android:layout_marginLeft="@dimen/pad_lr"
-        android:layout_marginRight="@dimen/pad_lr"
         android:layout_marginTop="18.5dp"
+        android:layout_marginRight="@dimen/pad_lr"
+        android:layout_marginBottom="@dimen/pad_ud"
         android:orientation="horizontal">
 
         <RadioButton
@@ -40,9 +40,21 @@
             android:textSize="@dimen/text_size_small" />
     </RadioGroup>
 
-    <include
-        layout="@layout/lhc_sx"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/lhc_sx_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>

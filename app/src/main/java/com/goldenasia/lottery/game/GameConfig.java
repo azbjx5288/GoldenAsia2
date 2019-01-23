@@ -12,10 +12,10 @@ import com.goldenasia.lottery.data.Method;
 public class GameConfig {
     public static Game createGame(Activity activity, Method method, Lottery lottery) {
         //Log.d("Config", "createGame: " + GsonHelper.toJson(method));
-        String name = method.getName();
+        String name = method.getName ( );
         switch (name) {
             case "RELHH":
-                return new TextGame(method);
+                return new TextGame (method);
 
             case "LMGYH":
             case "LMMC":
@@ -38,9 +38,9 @@ public class GameConfig {
             case "HZWX":
             case "KNJOH":
             case "KNSZX": //上中下
-                return new TextMultipleGame(method);
+                return new TextMultipleGame (method);
             case "JSYS": //颜色
-                return new KuaiSanYS(method);
+                return new KuaiSanYS (method);
             case "EXBD":
             case "EXHZ":
             case "QEBD":
@@ -58,25 +58,25 @@ public class GameConfig {
             case "ZSZXHZ":
             case "EXZXHZ":
             case "QEZXHZ":
-                return new SpecialGame(method);
-
+                return new SpecialGame (method);
             case "JSSTTX":
             case "JSSLTX":
-                return new TxGame(method);
+                return new TxGame (method);
             case "QSHHZX":
             case "SXHHZX":
             case "ZSHHZX":
-                return new DsGame(activity, method, lottery);
+                return new DsGame (activity, method, lottery);
             case "RSHHZX":
-                return new DsRSHHZXGame(activity, method, lottery);
+                return new DsRSHHZXGame (activity, method, lottery);
 
             case "NIUNIU":
-                return new CowCowGame(method);
+                return new CowCowGame (method);
         }
 
         //山东11选5，除“定单双, SDDDS”
-        switch (method.getLotteryId()) {
-            case 2://山东11选5
+        switch (lottery.getLotteryType ( )) {
+            case 2: //11选5类型
+            /*case 2://山东11选5
             case 6://江西11选5
             case 7://广东11选5
             case 16://11选5分分彩
@@ -90,13 +90,14 @@ public class GameConfig {
             case 44://11选5秒秒彩
             case 52://湖北11选5
             case 56://56//河北11选5
-            case 57://57//内蒙古11选5
-                if (name.equals("SDDDS")) {
-                    return new SdddsGame(method);//无手工录入
+            case 57://57//内蒙古11选5*/
+                if (name.equals ("SDDDS")) {
+                    return new SdddsGame (method);//无手工录入
                 } else {
-                    return new SyxwCommonGame(method);
+                    return new SyxwCommonGame (method);
                 }
-            case 1://重庆时时彩
+            case 1:
+            /*case 1://重庆时时彩
             case 3://黑龙江时时彩
             case 4://新疆时时彩
             case 8://天津时时彩
@@ -106,40 +107,60 @@ public class GameConfig {
             case 35://台湾五分彩
             case 37://亚洲2分彩
             case 50://北京5分彩
-            case 51://泰国30秒彩
-                return new SscCommonGame(method);
-            case 12://江苏快三
+            case 51://泰国30秒彩*/
+                if (lottery.getLotteryId ( ) == 10) { //P3p5
+                    return new P3p5CommonGame (method);
+                } else if (lottery.getLotteryId ( ) == 15) { //亚洲秒秒彩
+                    return new MmcCommonGame (method);
+                } else {
+                    return new SscCommonGame (method);
+                }
+            case 6:
+            /*case 12://江苏快三
             case 13:
             case 22:
             case 23:
             case 41://河北快三
             case 42://河南快三
             case 43://福建快三
-            case 45://快三秒秒彩
-                return new KsCommonGame(method);
-            case 9://福彩3D
-            case 24://超快3D
-                return new Fc3dCommonGame(method);
-            case 10://P3p5
-                return new P3p5CommonGame(method);
+            case 45://快三秒秒彩*/
+                return new KsCommonGame (method);
+            case 4:
+            /*case 9://福彩3D
+            case 24://超快3D*/
+                return new Fc3dCommonGame (method);
+            /*case 10://P3p5
+                return new P3p5CommonGame (method);
             case 15://亚洲秒秒彩
-                return new MmcCommonGame(method);
-            case 27://北京赛车PK10
+                return new MmcCommonGame (method);*/
+            case 8: //PK10
+            /*case 27://北京赛车PK10
             case 38://PK10分分彩
-            case 47://PK10二分彩
-                return new Pk10CommonGame(method);
-            case 14://山东快乐扑克
-                return new ShanDongKuaiLePuKeGame(method);
-            case 48://北京快乐8:
-                return new Kl8CommonGame(method);
+            case 47://PK10二分彩*/
+                return new Pk10CommonGame (method);
+            case 7:
+                /*case 14://山东快乐扑克*/
+                return new ShanDongKuaiLePuKeGame (method);
+            case 9: //快乐12
+                return new Kl12CommonGame (method);
+            case 10: //快乐10分彩
+                return new Kl10fCommonGame (method);
+            case 5:
+            /*case 48://北京快乐8:*/
+                return new Kl8CommonGame (method);
             default:
                 break;
         }
-        return new NonsupportGame(method);
+        return new NonsupportGame (method);
     }
 
+    /**
+     * 六合彩
+     * @param method
+     * @return
+     */
     public static LhcGame createLhcGame(Method method) {
-        String name = method.getName();
+        String name = method.getName ( );
         switch (name) {
             //六合彩直选玩法
             case "TMZX":
@@ -150,10 +171,10 @@ public class GameConfig {
             case "ZMZX4":
             case "ZMZX5":
             case "ZMZX6":
-                return new LhcZxGame(method);
+                return new LhcZxGame (method);
             case "TMDXDS":
             case "ZTHZDXDS":
-                return new LhcTextGame(method);
+                return new LhcTextGame (method);
             //六合彩任选玩法
             case "SSLM":
             case "EELM":
@@ -167,29 +188,29 @@ public class GameConfig {
             case "ZTBZ8":
             case "ZTBZ9":
             case "ZTBZ10":
-                return new LhcRxGame(method);
+                return new LhcRxGame (method);
             //六合彩生肖玩法
             case "TMSX"://特码生肖
             case "ZTYX"://正特一肖
             case "ERLX"://二连肖
             case "SNLX"://三连肖
             case "SILX"://四连肖
-                return new LhcSxGame(method);
+                return new LhcSxGame (method);
             //六合彩尾数玩法
             case "TMWS":
             case "ZTWS":
-                return new LhcTailGame(method);
+                return new LhcTailGame (method);
             //六合彩色波玩法
             case "TMSB":
-                return new LhcColorGame(method);
+                return new LhcColorGame (method);
             //正码任选
             case "ZMRX":
-                return new LhcZmrxGame(method);
+                return new LhcZmrxGame (method);
             //总肖
             case "ZONGX":
-                return new LhcZongXGame(method);
+                return new LhcZongXGame (method);
         }
-        return new NonsupportLhcGame(method);
+        return new NonsupportLhcGame (method);
     }
 
     public static final int DS_TYPE_SSC = 1;
@@ -199,7 +220,7 @@ public class GameConfig {
      * 特定彩种，单选玩法的数字类型
      */
     public static int getDsType(Lottery lottery) {
-        switch (lottery.getLotteryType()) {
+        switch (lottery.getLotteryType ( )) {
             case 2://11选5
                 return DS_TYPE_SYXW;
             case 1://时时彩

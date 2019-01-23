@@ -276,7 +276,20 @@ public class ConstantInformation {
         sLotteryLogo.put(56, new int[]{R.drawable.heb11x5, R.drawable.heb11x5});
         //内蒙古11选5
         sLotteryLogo.put(57, new int[]{R.drawable.nmg11x5, R.drawable.nmg11x5});
-  ;
+        //天津11选5
+        sLotteryLogo.put(60, new int[]{R.drawable.id_tj11x5, R.drawable.id_tj11x5});
+        //辽宁11选5
+        sLotteryLogo.put(61, new int[]{R.drawable.id_ln11x5, R.drawable.id_ln11x5});
+        //安徽11选5
+        sLotteryLogo.put(62, new int[]{R.drawable.id_ah11x5, R.drawable.id_ah11x5});
+        //贵州11选5
+        sLotteryLogo.put(63, new int[]{R.drawable.id_gz11x5, R.drawable.id_gz11x5});
+        //甘肃快三
+        sLotteryLogo.put(64, new int[]{R.drawable.id_gsk3, R.drawable.id_gsk3});
+        //四川快乐12
+        sLotteryLogo.put(58, new int[]{R.drawable.id_sckl12, R.drawable.id_sckl12});
+        //广东快东10分
+        sLotteryLogo.put(59, new int[]{R.drawable.id_gdkl10f, R.drawable.id_gdkl10f});
 
         //百家乐
         sLotteryLogo.put(101, new int[]{R.drawable.id_lottery_mybjl, R.drawable.id_lottery_mybjl_rest});

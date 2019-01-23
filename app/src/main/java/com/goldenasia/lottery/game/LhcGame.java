@@ -13,6 +13,8 @@ import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.ManualInputView;
 import com.goldenasia.lottery.pattern.LhcPickNumber;
 import com.goldenasia.lottery.view.LhcNumberGroupView;
+import com.goldenasia.lottery.view.LhcNumberGroupView.OnChooseItemClickListener;
+import com.goldenasia.lottery.view.LhcNumberGroupView.OnChooseLineClickListener;
 import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ import java.util.Random;
  * 六合彩玩法：提供选号界面中间的选号区布局配置，计算注数，格式化输出选号Code的String
  * Created by Alashi on 2016/2/16.
  */
-public abstract class LhcGame implements LhcNumberGroupView.OnChooseItemClickListener, DigitCheckBoxLhcPanel.OnChooseDigitClickListener {
+public abstract class LhcGame implements OnChooseItemClickListener, OnChooseLineClickListener, DigitCheckBoxLhcPanel.OnChooseDigitClickListener {
     protected ViewGroup topLayout;
     protected OnSelectedListener onSelectedListener;
     protected Method method;
@@ -83,6 +85,12 @@ public abstract class LhcGame implements LhcNumberGroupView.OnChooseItemClickLis
     public final void addPickNumber(LhcPickNumber pickNumber) {
         pickNumbers.add(pickNumber);
         pickNumber.setChooseItemClickListener(this);
+    }
+
+    public final void addPickNumber(LhcPickNumber pickNumber,int lineID) {
+        pickNumbers.add(pickNumber);
+        pickNumber.setChooseItemClickListener(this);
+        pickNumber.setChooseLineClickListener(this,lineID);
     }
 
     public String getWebViewCode() {
@@ -163,6 +171,11 @@ public abstract class LhcGame implements LhcNumberGroupView.OnChooseItemClickLis
 
     @Override
     public void onChooseItemClick() {
+        notifyListener();
+    }
+
+    @Override
+    public void onChooseLineClick(int lineID) {
         notifyListener();
     }
 

@@ -705,5 +705,7 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
         game.addManualInputView(manualInputView);
         manualInput.addView(view);
     }
+
+
     //2018.05.22 六合彩单式投注涉及玩法 特码直选、正码一直选、正码二直选、正码三直选、正码四直选、正码五直选、正码六直选  end
 }

@@ -11,64 +11,53 @@ import com.goldenasia.lottery.R;
  * Created by Sakura on 2016/9/21.
  */
 
-public class LhcLayout extends LinearLayout
-{
+public class LhcLayout extends LinearLayout {
     private String sx;
     private String tail;
     private String colorWave;
 
-    public LhcLayout(Context context)
-    {
-        super(context);
+    public LhcLayout(Context context) {
+        super (context);
     }
 
-    public LhcLayout(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-        init(context, attrs);
+    public LhcLayout(Context context, AttributeSet attrs) {
+        super (context, attrs);
+        init (context, attrs);
     }
 
-    public LhcLayout(Context context, AttributeSet attrs, int defStyleAttr)
-    {
-        super(context, attrs, defStyleAttr);
-        init(context, attrs);
+    public LhcLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super (context, attrs, defStyleAttr);
+        init (context, attrs);
     }
 
-    private void init(Context context, AttributeSet attributeSet)
-    {
-        TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.LhcLayout);
-        setSx(typedArray.getString(R.styleable.LhcLayout_sx));
-        setTail(typedArray.getString(R.styleable.LhcLayout_tail));
-        setColor(typedArray.getString(R.styleable.LhcLayout_color_wave));
+    private void init(Context context, AttributeSet attributeSet) {
+        TypedArray typedArray = context.obtainStyledAttributes (attributeSet, R.styleable.LhcLayout);
+        setSx (typedArray.getString (R.styleable.LhcLayout_sx));
+        setTail (typedArray.getString (R.styleable.LhcLayout_tail));
+        setColor (typedArray.getString (R.styleable.LhcLayout_color_wave));
     }
 
-    public String getSx()
-    {
+    public String getSx() {
         return sx;
     }
 
-    public void setSx(String sx)
-    {
+    public void setSx(String sx) {
         this.sx = sx;
     }
 
-    public String getTail()
-    {
+    public String getTail() {
         return tail;
     }
 
-    public void setTail(String tail)
-    {
+    public void setTail(String tail) {
         this.tail = tail;
     }
 
-    public String getColor()
-    {
+    public String getColor() {
         return colorWave;
     }
 
-    public void setColor(String colorWave)
-    {
+    public void setColor(String colorWave) {
         this.colorWave = colorWave;
     }
 }

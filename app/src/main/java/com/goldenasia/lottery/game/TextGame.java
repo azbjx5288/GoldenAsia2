@@ -138,17 +138,14 @@ public class TextGame extends Game {
 
         ViewGroup topLayout = game.getTopLayout();
 
-        View digits_panel_ludan = getLuDan(game.getTopLayout());
-
-        topLayout.addView(digits_panel_ludan);
+        topLayout.addView(getLuDan(game.getTopLayout()));
 
 
         for (View view : views) {
             topLayout.addView(view);
         }
 
-        View  ludan_content = getLuDanContent(game.getTopLayout());
-        topLayout.addView(ludan_content);
+        topLayout.addView(getLuDanContent(game.getTopLayout()));
 
         game.setColumn(name.length);
     }
@@ -224,8 +221,15 @@ public class TextGame extends Game {
 
     private static View getLuDanContent(ViewGroup container){
         ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,1);
+
+
         View  digits_panel_ludan= LayoutInflater.from(container.getContext()).inflate(R.layout.digits_panel_ludan_content, null, false);
         lu_dan_contentview = digits_panel_ludan.findViewById(R.id.lu_dan_contentview);
+
+        lu_dan_contentview.setTitle("万千路单");//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+        checkedLudan="[万千]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+
+        lu_dan_contentview.refreshViewGroup();
         return digits_panel_ludan;
     }
 

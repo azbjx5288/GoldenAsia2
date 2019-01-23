@@ -68,6 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
+        android:layout_marginTop="30dp"
         app:checkedDrawable="@drawable/bg_special_complete_circle_choose_ball"
         app:chooseMode="false"
         app:column="5"

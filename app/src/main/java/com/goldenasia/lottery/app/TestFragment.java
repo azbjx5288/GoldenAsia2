@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.internal.util.Predicate;
+//import com.android.internal.util.Predicate;
 import com.goldenasia.lottery.R;
 
 import java.io.File;
@@ -47,9 +47,9 @@ public class TestFragment extends BaseFragment{
         Log.i(TAG, "onViewCreated: " + dirs.length);
 
         List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
-        Log.i(TAG, "onViewCreated:sumAll1  " + sumAll(numbers, n -> true));
+        /*Log.i(TAG, "onViewCreated:sumAll1  " + sumAll(numbers, n -> true));
         Log.i(TAG, "onViewCreated:sumAll2  " + sumAll(numbers, n -> n % 2 == 0));
-        Log.i(TAG, "onViewCreated:sumAll3  " + sumAll(numbers, n -> n > 3));
+        Log.i(TAG, "onViewCreated:sumAll3  " + sumAll(numbers, n -> n > 3));*/
 
         String[] stringArray = {"IntelliJ IDEA", "AppCode", "CLion", "0xDBE", "Upsource"};
         Arrays.sort(stringArray, String::compareToIgnoreCase);
@@ -60,7 +60,7 @@ public class TestFragment extends BaseFragment{
         Toast.makeText(getActivity(), "xx 调用button xx", Toast.LENGTH_SHORT).show();
     }
 
-    public int sumAll(List<Integer> numbers, Predicate<Integer> p) {
+    /*public int sumAll(List<Integer> numbers, Predicate<Integer> p) {
         int total = 0;
         for (int number : numbers) {
             if (p.apply(number)) {
@@ -68,7 +68,7 @@ public class TestFragment extends BaseFragment{
             }
         }
         return total;
-    }
+    }*/
 
     public interface XX {
         //接口默认函数
