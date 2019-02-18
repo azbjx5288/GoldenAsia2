@@ -1,10 +1,18 @@
 package com.goldenasia.lottery.app;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,11 +32,13 @@ import com.goldenasia.lottery.fragment.FragmentHistory;
 import com.goldenasia.lottery.fragment.FragmentHome;
 import com.goldenasia.lottery.fragment.FragmentUser;
 import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.pattern.VersionChecker;
 import com.goldenasia.lottery.service.BadgeIntentService;
 import com.google.gson.reflect.TypeToken;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +69,7 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
         super.onCreate(savedInstanceState);
         Log.i(TAG,"onCreate");
         setContentView(R.layout.activity_container);
+        new VersionChecker(this).startCheck();
         init();
         initView();
         selectPage(0); // 默认选中首页
@@ -73,7 +84,6 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG,"onResume");
         MobclickAgent.onResume(this);
         initMessageCount();
     }
@@ -124,7 +134,6 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
         if(count<=0){
             count=0;
         }
-
         refreshBadge(count);
     }
 
@@ -154,9 +163,9 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
     }
 
     private void initView() {
-        btn_meRadioButton = (TextView) findViewById(R.id.badge_view);
-        mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        btn_meRadioButton = findViewById(R.id.badge_view);
+        mRadioGroup = findViewById(R.id.radioGroup);
+        mViewPager = findViewById(R.id.viewPager);
         mRadioGroup.setOnCheckedChangeListener(this);
         TabPageAdapter tabPageAdapter = new TabPageAdapter(getSupportFragmentManager(), fragments);
         mViewPager.setAdapter(tabPageAdapter);
@@ -250,5 +259,7 @@ public class ContainerActivity extends AppCompatActivity implements RadioGroup.O
         public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
         }
     };
+
+
 
 }

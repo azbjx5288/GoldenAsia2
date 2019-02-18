@@ -1,6 +1,7 @@
 package com.goldenasia.lottery.game;
 
 import android.content.DialogInterface;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.goldenasia.lottery.pattern.OnAddListner;
 import com.goldenasia.lottery.view.LhcNumberGroupView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 六合彩直选玩法
@@ -29,6 +31,8 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
     private int selectedID;
     private CustomDialog.Builder builder;
     private LhcNumberGroupView numberGroupView;
+
+    private ZodiacSigns animalZodiacSet;
 
     public LhcZxGame(Method method) {
         super(method);
@@ -110,6 +114,8 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
         lhcQuickStart = new LhcQuickStart(getTopLayout().getContext(), view.findViewById(R.id.main_panel));
         lhcQuickStart.setOnQuickListner(this);
 
+        animalZodiacSet = ZodiacSigns.from();
+
         builder = new CustomDialog.Builder(getTopLayout().getContext());
         builder.setContentView(view);
         builder.setTitle("快捷投注");
@@ -168,7 +174,7 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
                 break;
             case R.id.poultry:
                 for (int i = min; i <= max; i++) {
-                    for (ArrayList<Integer> animal : ConstantInformation.POULTRY_NUM) {
+                    for (ArrayList<Integer> animal : animalZodiacSet.getAnimalPoultryList()) {
                         if (animal.contains(i)) {
                             list.add(i);
                             break;
@@ -178,7 +184,7 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
                 break;
             case R.id.beast:
                 for (int i = min; i <= max; i++) {
-                    for (ArrayList<Integer> animal : ConstantInformation.BEAST_NUM) {
+                    for (ArrayList<Integer> animal : animalZodiacSet.getAnimalBeastList()) {
                         if (animal.contains(i)) {
                             list.add(i);
                             break;
@@ -210,21 +216,21 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
                 break;
             case R.id.mouse:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.MOUSE_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(0).contains(i)) {
                         list.add(i);
                     }
                 }
                 break;
             case R.id.dragon:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.DRAGON_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(4).contains(i)) {
                         list.add(i);
                     }
                 }
                 break;
             case R.id.monkey:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.MONKEY_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(8).contains(i)) {
                         list.add(i);
                     }
                 }
@@ -250,21 +256,21 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
                 break;
             case R.id.cow:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.COW_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(1).contains(i)) {
                         list.add(i);
                     }
                 }
                 break;
             case R.id.snake:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.SNAKE_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(5).contains(i)) {
                         list.add(i);
                     }
                 }
                 break;
             case R.id.chicken:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.CHICKEN_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(9).contains(i)) {
                         list.add(i);
                     }
                 }
@@ -290,21 +296,21 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
                 break;
             case R.id.tiger:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.TIGER_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(2).contains(i)) {
                         list.add(i);
                     }
                 }
                 break;
             case R.id.horse:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.HORSE_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(6).contains(i)) {
                         list.add(i);
                     }
                 }
                 break;
             case R.id.dog:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.DOG_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(10).contains(i)) {
                         list.add(i);
                     }
                 }
@@ -332,21 +338,21 @@ public class LhcZxGame extends LhcGame implements LhcQuickStart.OnQuickListner {
                 break;
             case R.id.rabbit:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.RABBIT_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(3).contains(i)) {
                         list.add(i);
                     }
                 }
                 break;
             case R.id.sheep:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.SHEEP_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(7).contains(i)) {
                         list.add(i);
                     }
                 }
                 break;
             case R.id.pig:
                 for (int i = min; i <= max; i++) {
-                    if (ConstantInformation.PIG_NUM.contains(i)) {
+                    if (animalZodiacSet.getAnimalZodiacSet().get(11).contains(i)) {
                         list.add(i);
                     }
                 }

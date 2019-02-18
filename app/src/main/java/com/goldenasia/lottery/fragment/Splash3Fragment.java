@@ -17,6 +17,7 @@ import com.goldenasia.lottery.app.GoldenAsiaApp;
 import com.goldenasia.lottery.base.Preferences;
 import com.goldenasia.lottery.base.net.RestRequestManager;
 import com.goldenasia.lottery.material.ConstantInformation;
+import com.gyf.barlibrary.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,11 +49,8 @@ public class Splash3Fragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_splash3, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return LayoutInflater.from(getActivity()).inflate(R.layout.fragment_splash3, container, false);
     }
 
     @Override
@@ -104,5 +102,10 @@ public class Splash3Fragment extends BaseFragment {
     @OnClick(R.id.enter)
     public void onViewClicked() {
         skip();
+    }
+
+    @Override
+    public void initImmersionBar() {
+        super.initImmersionBar();
     }
 }

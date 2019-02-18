@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-                android:id="@+id/ll_main"
-              android:minHeight="40dp">
+    android:id="@+id/ll_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="40dp">
 
     <TextView
         android:id="@+id/historycode_issue"
@@ -11,37 +11,43 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
-        android:textColor="@color/gray"/>
-    <View style="@style/vertical_divide_line"/>
+
+        android:textColor="@color/gray" />
+
+    <View style="@style/vertical_divide_line" />
+
     <TextView
         android:id="@+id/historycode_code"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
-        android:textColor="@color/gray"/>
-    <View style="@style/vertical_divide_line"/>
+
+        android:textColor="@color/gray" />
+
+    <View style="@style/vertical_divide_line" />
+
     <TextView
         android:id="@+id/tv_1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
-    <View style="@style/vertical_divide_line"/>
+        android:visibility="gone" />
+
+    <View style="@style/vertical_divide_line" />
+
     <TextView
         android:id="@+id/tv_2"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_3"
@@ -49,9 +55,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_4"
@@ -59,9 +65,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_5"
@@ -69,9 +75,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_6"
@@ -79,9 +85,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_7"
@@ -89,9 +95,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_8"
@@ -99,9 +105,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_9"
@@ -109,9 +115,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_10"
@@ -119,9 +125,10 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        
+
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/tv_11"
         android:layout_width="0dp"
@@ -130,5 +137,5 @@
         android:gravity="center"
 
         android:textColor="@color/gray"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </LinearLayout>

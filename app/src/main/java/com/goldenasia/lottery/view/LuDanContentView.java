@@ -1,6 +1,7 @@
 package com.goldenasia.lottery.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -8,11 +9,12 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.goldenasia.lottery.R;
-import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.util.DisplayUtil;
 
 import java.util.List;
@@ -21,130 +23,160 @@ import java.util.List;
 public class LuDanContentView extends View {
     private static final String TAG = LuDanContentView.class.getSimpleName();
 
-    private TextPaint paint01 = new TextPaint();
-    private TextPaint paint02 = new TextPaint();
-    private TextPaint paint03 = new TextPaint();
-    private TextPaint normalPaint = new TextPaint();
-    private int itemHeight ;
-    private int itemWidth ;
-    private int horizontalGap ;
+    private TextPaint paint;
+    private float itemHeight;
+    private float itemWidth;
+    private int textSize;
+    private int horizontalGap;
     private int verticalGap;
 
     private Drawable drawable01;
     private Drawable drawable02;
     private Drawable drawable03;
 
+    private List<List<String>> dataList;
 
-    private int column = 20;
+    private String title = "万十路单";
+    private int column = 0;
+    private int width;
 
-    private String title ="万十路单";
+    private int lineWidth = 0;
+    private int lineWidthInit = 0;
+
+    private int showCount = 0;
 
     public LuDanContentView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(attrs);
     }
 
     public LuDanContentView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
-
+        init(attrs);
     }
 
-    private void init(Context context) {
-        drawable01= ContextCompat.getDrawable(context, R.drawable.ssc_lhh_ld_ball01);
-        drawable02= ContextCompat.getDrawable(context, R.drawable.ssc_lhh_ld_ball02);
-        drawable03= ContextCompat.getDrawable(context, R.drawable.ssc_lhh_ld_ball03);
-        paint01.setAntiAlias(true);
-        paint01.setStyle(Paint.Style.FILL);
-        paint01.setTextAlign(Paint.Align.CENTER);
-        paint01.setFlags(Paint.ANTI_ALIAS_FLAG);
+    private void init(AttributeSet attrs) {
+        TypedArray attribute = getContext().obtainStyledAttributes(attrs, R.styleable.LuDanView);
+        itemWidth = attribute.getDimension(R.styleable.LuDanView_ludan_ballWidth, 30);
+        itemHeight = attribute.getDimension(R.styleable.LuDanView_ludan_ballHeight, 30);
 
-        itemHeight = DisplayUtil.dip2px(context,40);
-        itemWidth= DisplayUtil.dip2px(context,40);
-        verticalGap= DisplayUtil.dip2px(context,7);
-        horizontalGap= DisplayUtil.dip2px(context,7);
+        verticalGap = attribute.getDimensionPixelSize(R.styleable.LuDanView_ludan_verticalgap, 6);
+        horizontalGap = attribute.getDimensionPixelSize(R.styleable.LuDanView_ludan_horizontalgap, 10);
+        textSize = attribute.getDimensionPixelSize(R.styleable.LuDanView_ludan_textSize, 12);
 
-        paint02.set(paint01);
-        paint03.set(paint01);
-        normalPaint.set(paint01);
-        paint01.setColor(getResources().getColor(R.color.white));
-        paint02.setColor(getResources().getColor(R.color.white));
-        paint03.setColor(getResources().getColor(R.color.lhc_red));
-        normalPaint.setColor(getResources().getColor(R.color.black));
-        paint01.setTextSize(DisplayUtil.sp2px(getContext(),13));
-        paint02.setTextSize(DisplayUtil.sp2px(getContext(),13));
-        paint03.setTextSize(DisplayUtil.sp2px(getContext(),13));
-        normalPaint.setTextSize(DisplayUtil.sp2px(getContext(),18));
+        drawable01 = ContextCompat.getDrawable(getContext(), R.drawable.ssc_lhh_ld_ball01);
+        drawable02 = ContextCompat.getDrawable(getContext(), R.drawable.ssc_lhh_ld_ball02);
+        drawable03 = ContextCompat.getDrawable(getContext(), R.drawable.ssc_lhh_ld_ball03);
+        attribute.recycle();
+
+        paint = new TextPaint();
+        paint.setTextSize(textSize);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        width = dm.widthPixels;         // 屏幕宽度（像素）
+
+        lineWidthInit = DisplayUtil.dip2px(getContext(), (24 + 2));//左边距  2是左右边距误差
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
+    }
+
+    public void setDataList(List<List<String>> dataList) {
+        this.dataList = dataList;
+        invalidate();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Log.i(TAG, "onMeasure(int widthMeasureSpec, int heightMeasureSpec) ....  ");
+        // 父控件传进来的宽度以及对应的测量模式
         int specSize = MeasureSpec.getSize(widthMeasureSpec);
-        int  line = column+1;
-
-        int specHeight = line * itemHeight + (line - 1) * verticalGap;
-
+        int line = 0;//最大的行数
+        // 取宽度、计算可以显示个数
+        column = (int) (specSize / (itemWidth + horizontalGap));
+        // Log.e("取宽度、计算可以显示个数", "------------------->" + column);
+        if (dataList.size() >= column - 1)
+            for (int i = column - 1; i >= 0; i--) {
+                List<String> dataArr = dataList.get(i);
+                if (line < dataArr.size()) {
+                    line = dataArr.size();
+                }
+            }
+        else {
+            line = 1;
+        }
+        int specHeight = (int) (line * itemHeight + (line - 1) * verticalGap);
         setMeasuredDimension(specSize, specHeight);
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-
         float x, y;
-        Paint.FontMetricsInt fontMetrics = paint01.getFontMetricsInt();
+        Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
+
         float offTextY = (itemHeight - fontMetrics.bottom - fontMetrics.top) / 2;
-        int offTextX = itemWidth / 2;
+        int offTextX = (int) itemWidth / 2;
 
-        canvas.drawText(title, offTextX*2, offTextY, normalPaint);
-        canvas.translate(0, itemHeight);
-
-
-        for (int i = 0; i < ConstantInformation.luDanDataList.size(); i++) {
-            y = i * (itemHeight + verticalGap);
-
+      /*  canvas.drawText(title, offTextX*2, offTextY, normalPaint);
+        canvas.translate(0, itemHeight);*/
+        for (int i = 0; i < dataList.size(); i++) {
+            showCount = i + 1;
+            if (i == 0) {
+                lineWidth = lineWidthInit;
+            }
+            lineWidth += itemWidth;
+            if (lineWidth > width) {
+                showCount = i + 1 - 1;
+                break;
+            }
+            lineWidth += horizontalGap;
+        }
+        int count = 0;
+        for (int i = showCount - 1; i >= 0; i--) {
+            x = count * (itemWidth + horizontalGap);
             String text;
-
-            List<String> dataArr= ConstantInformation.luDanDataList.get(column-1-i);
-
-
-            for(int j=0;j<dataArr.size();j++){
-                x = j  * (itemWidth + horizontalGap);
-
-                text=dataArr.get(j);
-
-                Rect drawableRect = new Rect(0, 0, itemWidth, itemHeight);
+            List<String> dataArr = dataList.get(i);
+            count++;
+            for (int j = 0; j < dataArr.size(); j++) {
+                y = j * (itemHeight + verticalGap);
+                text = dataArr.get(j);
+                Rect drawableRect = new Rect(0, 0, (int) itemWidth, (int) itemHeight);
                 drawable01.setBounds(drawableRect);
                 drawable02.setBounds(drawableRect);
                 drawable03.setBounds(drawableRect);
-
                 canvas.save();
                 canvas.translate(x, y);
-
-                if(text.equals("龙")){
+                if (text.equals("龙")) {
                     drawable01.draw(canvas);
-                }else  if(text.equals("虎")){
+                } else if (text.equals("虎")) {
                     drawable02.draw(canvas);
-                }else{
+                } else {
                     drawable03.draw(canvas);
                 }
 
-                if(text.equals("龙")){
-                    canvas.drawText(text, offTextX, offTextY, paint01);
-                }else  if(text.equals("虎")){
-                    canvas.drawText(text, offTextX, offTextY, paint02);
-                }else{
-                    canvas.drawText(text, offTextX, offTextY, paint03);
+                if (text.equals("龙")) {
+                    paint.setColor(getResources().getColor(R.color.white));
+                    canvas.drawText(text, offTextX, offTextY, paint);
+                } else if (text.equals("虎")) {
+                    paint.setColor(getResources().getColor(R.color.white));
+                    canvas.drawText(text, offTextX, offTextY, paint);
+                } else {
+                    paint.setColor(getResources().getColor(R.color.ludan_red));
+                    canvas.drawText(text, offTextX, offTextY, paint);
                 }
-
                 canvas.restore();
             }
-
         }
-
-
     }
 
     public void setTitle(String title) {
@@ -155,5 +187,4 @@ public class LuDanContentView extends View {
     public void refreshViewGroup() {
         requestLayout();
     }
-
 }

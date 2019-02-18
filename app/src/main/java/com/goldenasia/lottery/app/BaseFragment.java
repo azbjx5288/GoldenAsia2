@@ -45,15 +45,18 @@ import com.goldenasia.lottery.component.DialogLayout;
 import com.goldenasia.lottery.fragment.LoadingDialog;
 import com.goldenasia.lottery.util.ToastUtils;
 import com.goldenasia.lottery.util.WindowUtils;
+import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.analytics.MobclickAgent;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
  * Created by Alashi on 2015/12/18.
  */
-public class BaseFragment extends Fragment implements NetStateHelper.NetStateListener, FragmentLauncher.FragmentKeyListener{
+public class BaseFragment extends BaseImmersionFragment implements NetStateHelper.NetStateListener, FragmentLauncher.FragmentKeyListener {
+
     private static final String TAG = "BaseFragment";
 
     private TextView titleBarTitle;
@@ -63,7 +66,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     private boolean fitSystem = true;
     private Unbinder unbinder;
     /*拦截BACK返回键 Home键盘,默认不拦截*/
-    private boolean mKeyIsIntercept=false;
+    private boolean mKeyIsIntercept = false;
 
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 6;
 
@@ -71,7 +74,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     public void onAttach(Context context) {
         super.onAttach(context);
         //注册监听
-        if( getActivity() instanceof  FragmentLauncher) {
+        if (getActivity() instanceof FragmentLauncher) {
             ((FragmentLauncher) getActivity()).setKeyListener(this);
         }
     }
@@ -80,7 +83,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     public void onDetach() {
         super.onDetach();
         //取消监听
-        if( getActivity() instanceof  FragmentLauncher) {
+        if (getActivity() instanceof FragmentLauncher) {
             ((FragmentLauncher) getActivity()).setKeyListener(null);
         }
     }
@@ -92,8 +95,8 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         //ActionBar.NAVIGATION_MODE_LIST时，即使跑了onCreateOptionsMenu，列表和菜单可能没法显示
         setHasOptionsMenu(true);
         //将5.0系统以上的状态栏设置为沉浸式
-        if (fitSystem)
-            WindowUtils.makeWindowTranslucent(getActivity());
+        /*if (fitSystem)
+            WindowUtils.makeWindowTranslucent(getActivity());*/
     }
 
     @Override
@@ -101,6 +104,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
+//        ImmersionBar.setTitleBar(getActivity(), titlebar);
     }
 
     protected View inflateView(LayoutInflater inflater, @Nullable ViewGroup container, String title, @LayoutRes int resource) {
@@ -109,11 +113,11 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
 
     protected View inflateView(LayoutInflater inflater, @Nullable ViewGroup container, boolean homeButton, String title, @LayoutRes int resource) {
         View top = inflater.inflate(R.layout.title_bar_fragment, container, false);
-        inflater.inflate(resource, (LinearLayout) top.findViewById(R.id.title_bar_fragment_content), true);
-        homeBtn = (ImageButton) top.findViewById(android.R.id.home);
-        globalNetState = (TextView) top.findViewById(R.id.global_net_state);
-        titleBarTitle = (TextView) top.findViewById(android.R.id.title);
-        actionBarMenuLayout = (LinearLayout) top.findViewById(R.id.action_bar_menu_layout);
+        inflater.inflate(resource, top.findViewById(R.id.title_bar_fragment_content), true);
+        homeBtn = top.findViewById(android.R.id.home);
+        globalNetState = top.findViewById(R.id.global_net_state);
+        titleBarTitle = top.findViewById(android.R.id.title);
+        actionBarMenuLayout = top.findViewById(R.id.action_bar_menu_layout);
         titleBarTitle.setText(title);
         if (homeButton) {
             top.findViewById(android.R.id.home).setOnClickListener(new View.OnClickListener() {
@@ -148,11 +152,11 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     protected View inflateMmcView(LayoutInflater inflater, @Nullable ViewGroup container, boolean homeButton, String
             title, @LayoutRes int resource) {
         View top = inflater.inflate(R.layout.title_bar_mmc_fragment, container, false);
-        inflater.inflate(resource, (LinearLayout) top.findViewById(R.id.title_bar_fragment_content), true);
-        globalNetState = (TextView) top.findViewById(R.id.global_net_state);
-        titleBarTitle = (TextView) top.findViewById(android.R.id.title);
-        actionBarMenuLayout = (LinearLayout) top.findViewById(R.id.action_bar_menu_layout);
-        homeBtn = (ImageButton) top.findViewById(R.id.home_btn);
+        inflater.inflate(resource, top.findViewById(R.id.title_bar_fragment_content), true);
+        globalNetState = top.findViewById(R.id.global_net_state);
+        titleBarTitle = top.findViewById(android.R.id.title);
+        actionBarMenuLayout = top.findViewById(R.id.action_bar_menu_layout);
+        homeBtn = top.findViewById(R.id.home_btn);
         titleBarTitle.setText(title);
         if (homeButton) {
             homeBtn.setOnClickListener(new View.OnClickListener() {
@@ -187,11 +191,11 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     protected View inflateGgcView(LayoutInflater inflater, @Nullable ViewGroup container, boolean homeButton, String
             title, @LayoutRes int resource) {
         View top = inflater.inflate(R.layout.title_bar_mmc_fragment, container, false);
-        inflater.inflate(resource, (LinearLayout) top.findViewById(R.id.title_bar_fragment_content), true);
-        globalNetState = (TextView) top.findViewById(R.id.global_net_state);
-        titleBarTitle = (TextView) top.findViewById(android.R.id.title);
-        actionBarMenuLayout = (LinearLayout) top.findViewById(R.id.action_bar_menu_layout);
-        homeBtn = (ImageButton) top.findViewById(R.id.home_btn);
+        inflater.inflate(resource, top.findViewById(R.id.title_bar_fragment_content), true);
+        globalNetState = top.findViewById(R.id.global_net_state);
+        titleBarTitle = top.findViewById(android.R.id.title);
+        actionBarMenuLayout = top.findViewById(R.id.action_bar_menu_layout);
+        homeBtn = top.findViewById(R.id.home_btn);
         titleBarTitle.setText(title);
         if (homeButton) {
             homeBtn.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +224,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
 //        } else {
 //            homeBtn.setVisibility(View.GONE);
 //        }
-        mKeyIsIntercept=!homeButton;
+        mKeyIsIntercept = !homeButton;
         homeBtn.setEnabled(homeButton);
     }
 
@@ -229,7 +233,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
      */
     protected View addMenuItem(@DrawableRes int resID, View.OnClickListener listener) {
         if (actionBarMenuLayout == null) {
-            actionBarMenuLayout = (LinearLayout) getActivity().findViewById(R.id.action_bar_menu_layout);
+            actionBarMenuLayout = getActivity().findViewById(R.id.action_bar_menu_layout);
             if (actionBarMenuLayout == null) {
                 Log.e(TAG, "addMenuItem: can not add menu, actionBarMenuLayout is null", new Throwable());
                 return null;
@@ -250,7 +254,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
      */
     protected View addMenuItem(String text, View.OnClickListener listener) {
         if (actionBarMenuLayout == null) {
-            actionBarMenuLayout = (LinearLayout) getActivity().findViewById(R.id.action_bar_menu_layout);
+            actionBarMenuLayout = getActivity().findViewById(R.id.action_bar_menu_layout);
             if (actionBarMenuLayout == null) {
                 Log.e(TAG, "addMenuItem: can not add menu item, actionBarMenuLayout is null", new Throwable());
                 return null;
@@ -265,29 +269,29 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         actionBarMenuLayout.addView(view);
         return view;
     }
-    
+
     /**
      * 在ActionBar添加图标菜单
      */
     protected void addMenuItemAtRight(@DrawableRes int resID, View.OnClickListener listener) {
         if (actionBarMenuLayout == null) {
-            actionBarMenuLayout = (LinearLayout) getActivity().findViewById(R.id.action_bar_menu_layout);
+            actionBarMenuLayout = getActivity().findViewById(R.id.action_bar_menu_layout);
             if (actionBarMenuLayout == null) {
                 Log.e(TAG, "addMenuItem: can not add menu, actionBarMenuLayout is null", new Throwable());
                 //return null;
             }
         }
-        
-        ImageView view = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.actionbar_menu_image,actionBarMenuLayout, false);
+
+        ImageView view = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.actionbar_menu_image, actionBarMenuLayout, false);
         view.setOnClickListener(listener);
         view.setImageResource(resID);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         view.setPadding(0, 0, 40, 0);
         lp.addRule(RelativeLayout.CENTER_VERTICAL);
         actionBarMenuLayout.addView(view, lp);
         //return view;
     }
-    
+
     protected void addMenuItemAtLeft(@DrawableRes int resID, View.OnClickListener listener) {
         homeBtn.setVisibility(View.VISIBLE);
         homeBtn.setImageResource(resID);
@@ -540,7 +544,7 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
     }
 
     //===================6.0运行时权限需要添加的 start==========================================================//
-    protected void showDialog01(){
+    protected void showDialog01() {
         CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
         builder.setMessage("为了您能正常使用，需要以下权限<br/>" +
                 "1.sd卡存储权限。<br/>" +
@@ -555,18 +559,19 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         {
             dialog.dismiss();
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
                     MY_PERMISSIONS_REQUEST_CALL_PHONE);
         });
         builder.create().show();
     }
 
-    protected void showDialog02(){
+    protected void showDialog02() {
         CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
-        builder.setMessage("为了您能正常使用，需要以下权限<br/>" +
+        /* builder.setMessage("为了您能正常使用，需要以下权限<br/>" +
                 "1.sd卡存储权限。<br/>" +
-                "2.拍照相机权限。");
-        builder.setTitle("权限申请");
+                "2.拍照相机权限。");*/
+        builder.setMessage("您的手机系统版本要求，需启用存储权限和相机权限，才能正常使用“联系客服”功能。");
+        builder.setTitle("提醒");
         builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
         builder.setNegativeButton("取消", (dialog, which) ->
         {
@@ -575,18 +580,22 @@ public class BaseFragment extends Fragment implements NetStateHelper.NetStateLis
         builder.setPositiveButton("确定", (dialog, which) ->
         {
             dialog.dismiss();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 //大于等于23 请求权限
-                if ( !Settings.System.canWrite(getActivity().getApplicationContext()))
-                {
+                if (!Settings.System.canWrite(getActivity().getApplicationContext())) {
                     Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                     intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
-                    startActivityForResult(intent, 1 );
+                    startActivityForResult(intent, 1);
                 }
             }
         });
         builder.create().show();
     }
+
     //===================6.0运行时权限需要添加的 end==========================================================//
+
+    @Override
+    public void initImmersionBar() {
+        ImmersionBar.with(getActivity()).keyboardEnable(true).statusBarColor(R.color.app_main).init();
+    }
 }

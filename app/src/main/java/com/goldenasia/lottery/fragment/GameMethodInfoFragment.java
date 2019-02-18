@@ -18,31 +18,66 @@ import com.goldenasia.lottery.data.Lottery;
 
 public class GameMethodInfoFragment extends BaseFragment {
 
-    TextView  tv_taiwan;
+    TextView tv_taiwan;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Lottery lottery = (Lottery) getArguments().getSerializable("lottery");
-        View view=inflater.inflate(R.layout.fragment_game_method_info_shishicai, container, false);
+        View view = inflater.inflate(R.layout.fragment_game_method_info_shishicai, container, false);
 
         view = selectLayoutInflator(inflater, container, lottery, view);
 
-        tv_taiwan= (TextView) view.findViewById(R.id.tv_taiwan);
+        tv_taiwan = (TextView) view.findViewById(R.id.tv_taiwan);
 
-        if(lottery.getLotteryId()==35) {//台湾五分彩
+        if (lottery.getLotteryId() == 35) {//台湾五分彩
             tv_taiwan.setVisibility(View.VISIBLE);
-        }else if(lottery.getLotteryId()==51){ //泰国30秒彩
-            TextView   tv_taiguo= (TextView) view.findViewById(R.id.tv_taiguo);
+        } else if (lottery.getLotteryId() == 51) { //泰国30秒彩
+            TextView tv_taiguo = (TextView) view.findViewById(R.id.tv_taiguo);
             tv_taiguo.setVisibility(View.VISIBLE);
-        }else if(lottery.getLotteryId()==50){ //北京5分彩
-            TextView   tv_wufencai= (TextView) view.findViewById(R.id.tv_wufencai);
+        } else if (lottery.getLotteryId() == 50) { //北京5分彩
+            TextView tv_wufencai = (TextView) view.findViewById(R.id.tv_wufencai);
             tv_wufencai.setVisibility(View.VISIBLE);
         }
         return view;
     }
 
     private View selectLayoutInflator(LayoutInflater inflater, @Nullable ViewGroup container, Lottery lottery, View view) {
-        switch (lottery.getLotteryId()) {
+        switch (lottery.getLotteryType()) {
+            case 2: //11选5类型
+                view = inflater.inflate(R.layout.fragment_game_method_info_11select5, container, false);  //11选5 玩法说明
+                break;
+            case 1: //时时彩
+                view = inflater.inflate(R.layout.fragment_game_method_info_shishicai, container, false);//时时彩 玩法说明
+                break;
+            case 6: //快三
+                view = inflater.inflate(R.layout.fragment_game_method_info_kuaisan, container, false);//快三 玩法说明
+                break;
+            case 4: //福彩3D
+                view = inflater.inflate(R.layout.fragment_game_method_info_chaokuai3d, container, false);
+                break;
+            case 8: //PK10
+                view = inflater.inflate(R.layout.fragment_game_method_info_pk10, container, false);//北京PK10 玩法说明
+                break;
+            case 7: //快乐扑克
+                view = inflater.inflate(R.layout.fragment_game_method_info_kuailepuke, container, false);//山东快乐扑克 玩法说明
+                break;
+            case 9: //快乐12
+                view = inflater.inflate(R.layout.fragment_game_method_info_kl12, container, false);//快乐12 玩法说明;
+                break;
+            case 10: //快乐10分彩
+                view = inflater.inflate(R.layout.fragment_game_method_info_kl10f, container, false);//快乐10分彩 玩法说明;
+                break;
+            case 3://六合彩
+                view=inflater.inflate(R.layout.fragment_game_method_info_lhc, container, false);//六合彩 玩法说明
+                break;
+            case 5: //北京快乐8:
+                view = inflater.inflate(R.layout.fragment_game_method_info_kl8, container, false);
+                break;
+            default:
+                break;
+        }
+
+        /*switch (lottery.getLotteryId()) {
             case 2://山东11选5
             case 6://江西11选5
             case 7://广东11选5
@@ -109,7 +144,7 @@ public class GameMethodInfoFragment extends BaseFragment {
                 break;
             default:
                 break;
-        }
+        }*/
         return view;
     }
 

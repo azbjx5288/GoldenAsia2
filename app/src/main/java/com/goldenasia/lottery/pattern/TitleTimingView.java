@@ -79,6 +79,8 @@ public class TitleTimingView {
     private PeriodInfo periodInfo;
     private DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
+    private OnUpdateListener onUpdateListener;
+
     private Handler getLastHandler;
     private Handler getCurHandler;
     private Runnable getLastRunnable;
@@ -142,22 +144,26 @@ public class TitleTimingView {
         this.issue = issue;
     }
 
+    public void setOnUpdateListener(OnUpdateListener onUpdateListener) {
+        this.onUpdateListener = onUpdateListener;
+    }
+
     private void init() {
 
-        agoIssueTextView = (TextView) view.findViewById(R.id.timing_title_agoissue);
-        openCodeTextView = (TextView) view.findViewById(R.id.timing_title_opennumber);
-        salesIssueView = (TextView) view.findViewById(R.id.timing_title_salesissue);
-        salesTimeView = (CountdownView) view.findViewById(R.id.timing_title_salestime);
-        mLlAwardSdlklpu = (LinearLayout) view.findViewById(R.id.ll_award_sdlklpu);
-        mImageSdlklpu01 = (ImageView) view.findViewById(R.id.image_sdlklpu01);
-        mTextSdlklpu01 = (TextView) view.findViewById(R.id.text_sdlklpu01);
-        mImageSdlklpu02 = (ImageView) view.findViewById(R.id.image_sdlklpu02);
-        mTextSdlklpu02 = (TextView) view.findViewById(R.id.text_sdlklpu02);
-        mImageSdlklpu03 = (ImageView) view.findViewById(R.id.image_sdlklpu03);
-        mTextSdlklpu03 = (TextView) view.findViewById(R.id.text_sdlklpu03);
-        ll_award_bjkl8 = (LinearLayout) view.findViewById(R.id.ll_award_bjkl8);
-        timing_title_opennumber01 = (TextView) view.findViewById(R.id.timing_title_opennumber01);
-        timing_title_opennumber02 = (TextView) view.findViewById(R.id.timing_title_opennumber02);
+        agoIssueTextView = view.findViewById(R.id.timing_title_agoissue);
+        openCodeTextView = view.findViewById(R.id.timing_title_opennumber);
+        salesIssueView = view.findViewById(R.id.timing_title_salesissue);
+        salesTimeView = view.findViewById(R.id.timing_title_salestime);
+        mLlAwardSdlklpu = view.findViewById(R.id.ll_award_sdlklpu);
+        mImageSdlklpu01 = view.findViewById(R.id.image_sdlklpu01);
+        mTextSdlklpu01 = view.findViewById(R.id.text_sdlklpu01);
+        mImageSdlklpu02 = view.findViewById(R.id.image_sdlklpu02);
+        mTextSdlklpu02 = view.findViewById(R.id.text_sdlklpu02);
+        mImageSdlklpu03 = view.findViewById(R.id.image_sdlklpu03);
+        mTextSdlklpu03 = view.findViewById(R.id.text_sdlklpu03);
+        ll_award_bjkl8 = view.findViewById(R.id.ll_award_bjkl8);
+        timing_title_opennumber01 = view.findViewById(R.id.timing_title_opennumber01);
+        timing_title_opennumber02 = view.findViewById(R.id.timing_title_opennumber02);
 
         isSelling = true;
         issue = "";
@@ -245,8 +251,7 @@ public class TitleTimingView {
     private void setUpdateSalesLottery(String salesIssue, long time) {
         Date curDate = new Date(System.currentTimeMillis());
         salesTimeView.start(time);
-        salesIssueView.setText(salesIssue != null && salesIssue.length() > 0 ? salesIssue : df.format(curDate) + "-"
-                + "****期");
+        salesIssueView.setText(salesIssue != null && salesIssue.length() > 0 ? salesIssue : df.format(curDate) + "-" + "****期");
     }
 
     /**
@@ -254,8 +259,8 @@ public class TitleTimingView {
      */
     private void updateSalesLottery(String openIssue, String codeOpen) {
         Date curDate = new Date(System.currentTimeMillis());
-        agoIssueTextView.setText(openIssue != null && openIssue.length() > 0 ? openIssue : df.format(curDate) + "-" +
-                "****期");
+
+        agoIssueTextView.setText(openIssue != null && openIssue.length() > 0 ? openIssue : df.format(curDate) + "-" + "****期");
         if (lottery != null && lottery.getLotteryId() == 14) {//14://山东快乐扑克
             openCodeTextView.setVisibility(View.GONE);
             mLlAwardSdlklpu.setVisibility(View.VISIBLE);
@@ -276,9 +281,16 @@ public class TitleTimingView {
         } else {
 //            openCodeTextView.setVisibility(View.VISIBLE);
 //            mLlAwardSdlklpu.setVisibility(View.GONE);
+            if (codeOpen != null && codeOpen.length() > 0) {
+                ConstantInformation.HISTORY_CODE_MAP.put(openIssue,codeOpen);
+            }
             showSingleLine(codeOpen != null && codeOpen.length() > 0 ? codeOpen : "-\t-\t-\t-\t-");
         }
         getIntervalTimer(getInterval());
+        //用于更新 开奖后 需要更新的数据
+        if (onUpdateListener != null && codeOpen != null && codeOpen.length() > 0) {
+            onUpdateListener.onUpdate();
+        }
     }
 
     //显示一行的
@@ -423,8 +435,7 @@ public class TitleTimingView {
         command.setOp("getCurIssue");
         TypeToken typeToken = new TypeToken<RestResponse<IssueInfo>>() {
         };
-        RestRequest restRequest = RestRequestManager.createRequest(activity, command, typeToken, restCallback,
-                ISSUE_TRACE_ID, this);
+        RestRequest restRequest = RestRequestManager.createRequest(activity, command, typeToken, restCallback, ISSUE_TRACE_ID, this);
         /*RestResponse restResponse = restRequest.getCache();
         if (restResponse != null && restResponse.getData() instanceof IssueInfo)
         {
@@ -444,7 +455,7 @@ public class TitleTimingView {
         command.setIssue(getIssueLast());
         TypeToken typeToken = new TypeToken<RestResponse<LastIssueInfo>>() {
         };
-        RestRequest restRequest = RestRequestManager.createRequest(activity, command, typeToken, restCallback,OPEN_ISSUE_TRACE_ID, this);
+        RestRequest restRequest = RestRequestManager.createRequest(activity, command, typeToken, restCallback, OPEN_ISSUE_TRACE_ID, this);
         /*RestResponse restResponse = restRequest.getCache();
         if (restResponse != null && restResponse.getData() instanceof LastIssueInfo)
         {
@@ -514,6 +525,13 @@ public class TitleTimingView {
         public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
         }
     };
+
+    /**
+     * 选中监听器
+     */
+    public interface OnUpdateListener {
+        void onUpdate();
+    }
 
     private void closeRequest() {
         RestRequestManager.cancelAll(this);

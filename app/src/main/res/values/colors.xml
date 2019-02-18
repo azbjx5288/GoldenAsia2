@@ -89,4 +89,5 @@
     <color name="transparency">#00000000</color><!-- 透明色 -->
     <color name="kaijiang_diff_textcolor">#ee7e45</color>
     <color name="kaijiang_diff_gb">#e6e9ed</color>
+    <color name="ludan_red">#f83030</color>
 </resources>

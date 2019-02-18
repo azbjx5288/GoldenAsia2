@@ -221,10 +221,13 @@ public abstract class Game implements NumberGroupView.OnChooseItemClickListener,
     }
 
     public void onInputInflate() {
-
     }
 
     public void displayInputView() {
+    }
+
+    public void updataOtherViews(){
+
     }
 
     public ViewGroup getTopLayout() {

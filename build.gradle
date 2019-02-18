@@ -6,18 +6,18 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:3.3.1'
 	//使用lambda必须的
 //        classpath 'me.tatarka:gradle-retrolambda:3.2.0'
 //        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.jakewharton:butterknife-gradle-plugin:8.8.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' //maven
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:9.0.0-rc2'
     }
 }
 
 allprojects {
+    tasks.withType(Javadoc).all { enabled = false }
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }

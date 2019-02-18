@@ -40,8 +40,11 @@ import com.goldenasia.lottery.data.Lottery;
 import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.game.Game;
 import com.goldenasia.lottery.game.LhcGame;
+import com.goldenasia.lottery.game.MmcCommonGame;
 import com.goldenasia.lottery.game.OnSelectedListener;
+import com.goldenasia.lottery.game.P3p5CommonGame;
 import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.game.SscCommonGame;
 import com.goldenasia.lottery.material.ShoppingCart;
 import com.goldenasia.lottery.material.Ticket;
 import com.goldenasia.lottery.pattern.TitleTimingView;
@@ -132,6 +135,17 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
             titleTimeView.setVisibility(View.GONE);
         } else {
             timingView = new TitleTimingView(getActivity(), findViewById(R.id.pick_title_view), lottery);
+            timingView.setOnUpdateListener(() -> {
+                if (game != null) {
+                    switch (lottery.getLotteryType()) {
+                        case 1://时时彩
+                            if (lottery.getLotteryId() != 10 && lottery.getLotteryId() != 15) {
+                                game.updataOtherViews();
+                            }
+                            break;
+                    }
+                }
+            });
         }
     }
 
@@ -262,7 +276,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
         if (game == null) {
             return;
         }
-        if(UiUtils.isFastClick()) {
+        if (UiUtils.isFastClick()) {
             if (game.getSingleNum() > 0 && game.isExchange() == true) {//选号 投注
                 switch (game.getMethod().getName()) {
                     case "QSHHZX":
@@ -297,7 +311,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
      */
     @OnClick(R.id.my_plan)
     public void launchScheme() {
-        if(UiUtils.isFastClick()) {
+        if (UiUtils.isFastClick()) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("lottery", lottery);
             launchFragment(SchemeFragment.class, bundle);
@@ -562,7 +576,7 @@ public class GameFragment extends BaseFragment implements OnSelectedListener {
     private RestCallback restCallback = new RestCallback() {
         @Override
         public boolean onRestComplete(RestRequest request, RestResponse response) {
-            switch (request.getId()){
+            switch (request.getId()) {
                 case COLLECT_TRACE_ID:
                     showToast(request.getErrDesc());
                     break;

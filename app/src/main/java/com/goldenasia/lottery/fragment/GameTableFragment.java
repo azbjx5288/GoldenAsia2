@@ -56,8 +56,7 @@ import butterknife.OnClick;
  * Created by ACE-PC on 2017/3/13.
  */
 
-public class GameTableFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, ViewPager
-        .OnPageChangeListener, TableMenu.OnClickMethodListener {
+public class GameTableFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, ViewPager.OnPageChangeListener, TableMenu.OnClickMethodListener {
     private static final String TAG = GameTableFragment.class.getSimpleName();
     private static final int ID_METHOD_LIST = 1;
 
@@ -158,8 +157,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_game_table, container, false);
     }
 
@@ -178,8 +176,30 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
      */
     private void LoadWinHistory() {
         //TODO：设置后台返回开奖id列表
-        if (
-            /*时时彩系列*/
+        switch (lottery.getLotteryType()){
+            case 1:
+            case 2:
+            case 4:
+            case 8:
+            case 9:
+            case 10:
+                LotteriesHistoryCommand command = new LotteriesHistoryCommand();
+                command.setLotteryID(lottery.getLotteryId());
+                command.setCurPage(1);
+                command.setPerPage(200);
+                TypeToken typeToken = new TypeToken<RestResponse<LotteryHistoryCode>>() {
+                };
+                RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback, 2, this);
+                restRequest.execute();
+                break;
+            default:
+                ConstantInformation.HISTORY_CODE_LIST.clear();
+                ConstantInformation.YI_LOU_IS_SUPPORTED = false;
+                ConstantInformation.YI_LOU_IS_SHOW = false;
+                ConstantInformation.LENG_RE_IS_SHOW = false;
+        }
+        /*if (
+            // 时时彩系列
                 lottery.getLotteryId() == 1//1: 重庆时时彩
                         || lottery.getLotteryId() == 3//3:黑龙江时时彩
                         || lottery.getLotteryId() == 4//4:新疆时时彩
@@ -191,7 +211,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                         || lottery.getLotteryId() == 49//腾讯分分差
                         || lottery.getLotteryId() == 50//北京5分彩
                         || lottery.getLotteryId() == 51//泰国30秒彩
-                        /* 11选5系列*/
+                        // 11选5系列
                         || lottery.getLotteryId() == 2//山东11选5
                         || lottery.getLotteryId() == 6//江西11选5
                         || lottery.getLotteryId() == 7//广东11选5
@@ -206,7 +226,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                         || lottery.getLotteryId() == 52//湖北11选5 52
                         || lottery.getLotteryId() == 56//河北11选5
                         || lottery.getLotteryId() == 57//内蒙古11选5
-//            /* PK10系列*/
+             //PK10系列
                         || lottery.getLotteryId() == 27//北京PK10
                         || lottery.getLotteryId() == 38//PK10分分彩
                         || lottery.getLotteryId() == 47//PK10二分彩
@@ -225,7 +245,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             ConstantInformation.YI_LOU_IS_SUPPORTED = false;
             ConstantInformation.YI_LOU_IS_SHOW = false;
             ConstantInformation.LENG_RE_IS_SHOW = false;
-        }
+        }*/
     }
 
     /**
@@ -288,14 +308,12 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
         methodListCommand.setMethodGroupID(0);
         TypeToken typeToken = new TypeToken<RestResponse<ArrayList<MethodList>>>() {
         };
-        RestRequestManager.executeCommand(getActivity(), methodListCommand, typeToken, restCallback, ID_METHOD_LIST,
-                this);
+        RestRequestManager.executeCommand(getActivity(), methodListCommand, typeToken, restCallback, ID_METHOD_LIST,this);
     }
 
     private void loadMethods() {
         try {
-            regularMethods = (MethodQueue) SharedPreferencesUtils.getObject(getActivity(),
-                    ConstantInformation.REGULAR_METHODS, GoldenAsiaApp.getUserCentre().getUserID() + "_" + lottery.getLotteryId());
+            regularMethods = (MethodQueue) SharedPreferencesUtils.getObject(getActivity(),ConstantInformation.REGULAR_METHODS, GoldenAsiaApp.getUserCentre().getUserID() + "_" + lottery.getLotteryId());
         } catch (Exception e) {
             Log.d(TAG, "loadMethods: fail to load methods.");
         }
@@ -425,6 +443,9 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 case 52://湖北11选5
                 case 56://56//河北11选5
                 case 57://57//内蒙古11选5
+                case 67://十一选五2分彩  ID67
+                case 68://十一选五5分彩  ID68
+                case 69://十一选五10分彩  ID69
                     name = "SDRX5";
                     break;
                 case 1://重庆时时彩
@@ -438,6 +459,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 case 37:
                 case 50://北京5分彩
                 case 51://泰国30秒彩
+                case 66://亚洲10分彩  ID66
                     name = "SXZX";
                     break;
                 case 12://江苏快三
@@ -447,6 +469,9 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 case 41://河北快三
                 case 42://河南快三
                 case 43://福建快三
+                case 70://快三2分彩  ID70
+                case 71://快三5分彩   ID71
+                case 72://快三10分彩   ID72
                     name = "JSHZ";
                     break;
                 case 9://福彩3D
@@ -460,6 +485,8 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                     name = "TMZX";
                     break;
                 case 27://北京PK10
+                case 73://PK10 五分彩  ID73
+                case 74://PK10 十分彩  ID74
                     name = "LMGYH";
                     break;
                 case 14://山东快乐扑克
@@ -502,8 +529,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
     @Override
     public void onDestroyView() {
         try {
-            SharedPreferencesUtils.putObject(getActivity(), ConstantInformation.REGULAR_METHODS, GoldenAsiaApp
-                    .getUserCentre().getUserID() + "_" + lottery.getLotteryId(), regularMethods);
+            SharedPreferencesUtils.putObject(getActivity(), ConstantInformation.REGULAR_METHODS, GoldenAsiaApp.getUserCentre().getUserID() + "_" + lottery.getLotteryId(), regularMethods);
         } catch (Exception e) {
             Log.d(TAG, "onDestroyView: fail to save methods.");
         }
@@ -625,6 +651,9 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             case 52://湖北11选5
             case 56://56//河北11选5
             case 57://57//内蒙古11选5
+            case 67://十一选五2分彩  ID67
+            case 68://十一选五5分彩  ID68
+            case 69://十一选五10分彩  ID69
                 return true;
             case 1://重庆时时彩
             case 3://黑龙江时时彩
@@ -638,6 +667,7 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             case 15://亚洲妙妙彩
             case 50://北京5分彩
             case 51://泰国30秒彩
+            case 66://亚洲10分彩  ID66
                 return true;
             case 9://福彩3D
             case 24://超快3D
@@ -645,6 +675,8 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
             case 27://北京赛车PK10
             case 38://PK10分分彩
             case 47://PK10二分彩
+            case 73://PK10 五分彩  ID73
+            case 74://PK10 十分彩  ID74
                 return true;
             case 17:
             case 26://六合彩
@@ -693,11 +725,10 @@ public class GameTableFragment extends BaseFragment implements RadioGroup.OnChec
                 updateMenu(methodList);
             } else if (request.getId() == 2) {
                 ConstantInformation.HISTORY_CODE_LIST.clear();
-
                 List<IssueEntity> items = ((LotteryHistoryCode) response.getData()).getIssue();
-
                 for (IssueEntity issueEntity : items) {
                     ConstantInformation.HISTORY_CODE_LIST.add(issueEntity.getCode());
+                    ConstantInformation.HISTORY_CODE_MAP.put(issueEntity.getIssue(),issueEntity.getCode());
                 }
             }
             return true;

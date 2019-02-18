@@ -4,16 +4,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.data.Method;
 import com.goldenasia.lottery.material.ConstantInformation;
+import com.goldenasia.lottery.pattern.LuDanView;
 import com.goldenasia.lottery.pattern.PickNumber;
+import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.util.SscLHHLuDan;
 import com.goldenasia.lottery.view.LuDanContentView;
 import com.goldenasia.lottery.view.MultiLineRadioGroup;
 import com.google.gson.JsonArray;
+
+import java.util.List;
 
 /**
  * Created by ACE-PC on 2016/2/18.
@@ -25,9 +30,9 @@ public class TextGame extends Game {
     private static final int TYPE_DRAGON_TIGER_SUM = 1;
     private static int TYPE;
 
-    private static  LuDanContentView lu_dan_contentview;
+    private static LuDanView luDanView;
 
-    private static  String checkedLudan="[万千]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+    private static String checkedLudan = "[万千]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
 
     public TextGame(Method method) {
         super(method);
@@ -49,6 +54,7 @@ public class TextGame extends Game {
             function.invoke(null, this);
         } catch (Exception e) {
             e.printStackTrace();
+
             Toast.makeText(topLayout.getContext(), "不支持的类型", Toast.LENGTH_LONG).show();
         }
     }
@@ -57,9 +63,9 @@ public class TextGame extends Game {
         JsonArray jsonArray = new JsonArray();
         if (isDigital)
 //            jsonArray.add(transformDigitJsonArray(digits));
-        for (PickNumber pickNumber : pickNumbers) {
-            jsonArray.add(transform(pickNumber.getCheckedNumber(), true, true));
-        }
+            for (PickNumber pickNumber : pickNumbers) {
+                jsonArray.add(transform(pickNumber.getCheckedNumber(), true, true));
+            }
         return jsonArray.toString();
     }
 
@@ -108,6 +114,12 @@ public class TextGame extends Game {
         }
     }
 
+    public void updataOtherViews() {
+        if (luDanView != null) {
+            luDanView.refreshView();
+        }
+    }
+
     public static View createDefaultPickLayout(ViewGroup container) {
         return LayoutInflater.from(container.getContext()).inflate(R.layout.pick_column, null, false);
     }
@@ -136,100 +148,119 @@ public class TextGame extends Game {
             views[i] = view;
         }
 
-        ViewGroup topLayout = game.getTopLayout();
-
-        topLayout.addView(getLuDan(game.getTopLayout()));
-
+        game.getTopLayout().addView(getLuDan(game.getTopLayout()));
 
         for (View view : views) {
-            topLayout.addView(view);
+            game.getTopLayout().addView(view);
         }
 
-        topLayout.addView(getLuDanContent(game.getTopLayout()));
-
+        luDanView = LuDanView.from(game.getTopLayout());
+        game.getTopLayout().addView(luDanView.getLudanPanel());
         game.setColumn(name.length);
     }
 
-    private static View getLuDan(ViewGroup container){
-        View  digits_panel_ludan= LayoutInflater.from(container.getContext()).inflate(R.layout.digits_panel_ludan, null, false);
-        MultiLineRadioGroup ludan_01= digits_panel_ludan.findViewById(R.id.radioGroup_sex_id);
-        ludan_01.setOnCheckedChangeListener(new MultiLineRadioGroup.OnCheckedChangeListener()
-        {
+
+    private static View getLuDan(ViewGroup container) {
+        View digits_panel_ludan = container.inflate(container.getContext(),R.layout.digits_panel_ludan, null);
+        MultiLineRadioGroup ludan_01 = digits_panel_ludan.findViewById(R.id.radioGroup_sex_id);
+
+        ludan_01.setOnCheckedChangeListener(new MultiLineRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(MultiLineRadioGroup group, int checkedId) {
-
-                switch (checkedId){
-                    case   R.id.ludan_01:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,1);
-                        lu_dan_contentview.setTitle("万千路单");//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
-                        checkedLudan="[万千]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                List<List<String>> luDanDataList;
+                switch (checkedId) {
+                    case R.id.ludan_01:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(0, 1);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 1);
+                        checkedLudan = "[万千]";
                         break;
-                    case   R.id.ludan_02:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,2);
-                        lu_dan_contentview.setTitle("万百路单");
-                        checkedLudan="[万百]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_02:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(0, 2);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 2);
+                        checkedLudan = "[万百]";
                         break;
-                    case   R.id.ludan_03:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,3);
-                        lu_dan_contentview.setTitle("万十路单");
-                        checkedLudan="[万十]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_03:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(0, 3);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 3);
+                        checkedLudan = "[万十]";
                         break;
-                    case   R.id.ludan_04:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,4);
-                        lu_dan_contentview.setTitle("万个路单");
-                        checkedLudan="[万个]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_04:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(0, 4);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 4);
+                        checkedLudan = "[万个]";
                         break;
-                    case   R.id.ludan_05:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(1,2);
-                        lu_dan_contentview.setTitle("千百路单");
-                        checkedLudan="[千百]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_05:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(1, 2);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 5);
+                        checkedLudan = "[千百]";
                         break;
-                    case   R.id.ludan_06:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(1,3);
-                        lu_dan_contentview.setTitle("千十路单");
-                        checkedLudan="[千十]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_06:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(1, 3);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 6);
+                        checkedLudan = "[千十]";
                         break;
-                    case   R.id.ludan_07:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(1,4);
-                        lu_dan_contentview.setTitle("千个路单");
-                        checkedLudan="[千个]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_07:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(1, 4);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 7);
+                        checkedLudan = "[千个]";
                         break;
-                    case   R.id.ludan_08:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(2,3);
-                        lu_dan_contentview.setTitle("百十路单");
-                        checkedLudan="[百十]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_08:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(2, 3);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 8);
+                        checkedLudan = "[百十]";
                         break;
-                    case   R.id.ludan_09:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(2,4);
-                        lu_dan_contentview.setTitle("百个路单");
-                        checkedLudan="[百个]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_09:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(2, 4);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 9);
+                        checkedLudan = "[百个]";
                         break;
-                    case   R.id.ludan_10:
-                        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(3,4);
-                        lu_dan_contentview.setTitle("十个路单");
-                        checkedLudan="[十个]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
+                    case R.id.ludan_10:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(3, 4);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 10);
+                        checkedLudan = "[十个]";
                         break;
-
+                    default:
+                        luDanDataList = SscLHHLuDan.getLongHuHeList(0, 1);
+                        SharedPreferencesUtils.putInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 1);
+                        checkedLudan = "[万千]";
+                        break;
                 }
-                lu_dan_contentview.refreshViewGroup();
+                luDanView.setLuDanList(luDanDataList);
             }
         });
 
-        return digits_panel_ludan;
-    }
-
-
-    private static View getLuDanContent(ViewGroup container){
-        ConstantInformation.luDanDataList= SscLHHLuDan.getLongHuHeList(0,1);
-
-
-        View  digits_panel_ludan= LayoutInflater.from(container.getContext()).inflate(R.layout.digits_panel_ludan_content, null, false);
-        lu_dan_contentview = digits_panel_ludan.findViewById(R.id.lu_dan_contentview);
-
-        lu_dan_contentview.setTitle("万千路单");//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
-        checkedLudan="[万千]";//万千 万百 万十 万个 千百 千十 千个 百十 百个 十个
-
-        lu_dan_contentview.refreshViewGroup();
+        switch (SharedPreferencesUtils.getInt(container.getContext(), ConstantInformation.APP_INFO, ConstantInformation.luDanLastCheck, 1)) {
+            case 1:
+                ludan_01.check(R.id.ludan_01);
+                break;
+            case 2:
+                ludan_01.check(R.id.ludan_02);
+                break;
+            case 3:
+                ludan_01.check(R.id.ludan_03);
+                break;
+            case 4:
+                ludan_01.check(R.id.ludan_04);
+                break;
+            case 5:
+                ludan_01.check(R.id.ludan_05);
+                break;
+            case 6:
+                ludan_01.check(R.id.ludan_06);
+                break;
+            case 7:
+                ludan_01.check(R.id.ludan_07);
+                break;
+            case 8:
+                ludan_01.check(R.id.ludan_08);
+                break;
+            case 9:
+                ludan_01.check(R.id.ludan_09);
+                break;
+            case 10:
+                ludan_01.check(R.id.ludan_10);
+                break;
+        }
         return digits_panel_ludan;
     }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_main">#129FB4</color>
+    <color name="app_font_ash_color">#666666</color>
+    <color name="app_main_dark">#16A085</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="text_blue">#0076FF</color>
+    <color name="text_black">#333333</color>
+</resources>

@@ -25,7 +25,6 @@ public class AGFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new VersionChecker(this).startCheck();
     }
 
     @OnClick({R.id.ga_layout,R.id.enterView})

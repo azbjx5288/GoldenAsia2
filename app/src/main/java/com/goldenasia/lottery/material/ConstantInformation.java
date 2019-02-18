@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
 /**
  * Created on 2016/01/14.
@@ -120,48 +121,19 @@ public class ConstantInformation {
     public static String KUAISAN_MMC_COUNT = "kuaisan_mmc_count";//快三秒秒彩
 
     public static List<String> HISTORY_CODE_LIST = new ArrayList();//从网络上加载的最近200条开奖结果数据
+    public static Map<String,String> HISTORY_CODE_MAP = new TreeMap();
     public static String NO_YILOU_AND_LENGRE = "noyilouandlengre";//没有遗漏冷热的玩法和彩种
     public static boolean YI_LOU_IS_SUPPORTED = false;//该玩法中遗漏冷热是否被支持  只针对
     public static boolean YI_LOU_IS_SHOW = false;//遗漏是否显示
     public static boolean LENG_RE_IS_SHOW = false;//冷热是否显示
     public static int LENG_RE_COUNT = 100;//冷热的期数
 
-    public static String  sigle_pick="";
+    public static String sigle_pick = "";
 
-
-    public static   List< List<String>>   luDanDataList=new ArrayList<>();
-
+    public static String luDanLastCheck = "ludanlastcheck";
 
     //购物车中的数据
 //    public static List<Ticket> ticketList = new ArrayList<>();
-
-    public static final ArrayList<Integer> CURRENT_LOTTERY_ID_LIST = new ArrayList<Integer>() {
-        {
-            add(1);
-            add(2);
-            add(4);
-            add(7);
-            add(8);
-            add(9);
-            add(10);
-            add(11);
-            add(15);
-            add(16);
-            add(17);
-            add(19);
-            add(20);
-            add(21);
-            add(24);
-            add(26);
-            add(27);
-            add(28);
-            add(35);
-            add(101);
-            add(103);
-            add(104);
-            add(108);
-        }
-    };
 
     private static SparseArray<int[]> sLotteryLogo = new SparseArray<>();
     private static SparseArray<int[]> rechargeLogo = new SparseArray<>();
@@ -284,12 +256,32 @@ public class ConstantInformation {
         sLotteryLogo.put(62, new int[]{R.drawable.id_ah11x5, R.drawable.id_ah11x5});
         //贵州11选5
         sLotteryLogo.put(63, new int[]{R.drawable.id_gz11x5, R.drawable.id_gz11x5});
+        //亚洲10分彩  ID66
+        sLotteryLogo.put(66, new int[]{R.drawable.id_lottery_yzsfc_m, R.drawable.id_lottery_yzsfc_m});
+        //十一选五2分彩  ID67
+        sLotteryLogo.put(67, new int[]{R.drawable.id_lottery_11x5rfc_m, R.drawable.id_lottery_11x5rfc_m});
+        //十一选五5分彩  ID68
+        sLotteryLogo.put(68, new int[]{R.drawable.id_lottery_11x5wfc_m, R.drawable.id_lottery_11x5wfc_m});
+        //十一选五10分彩  ID69
+        sLotteryLogo.put(69, new int[]{R.drawable.id_lottery_11x5sfc_m, R.drawable.id_lottery_11x5sfc_m});
+        // 快三2分彩  ID70
+        sLotteryLogo.put(70, new int[]{R.drawable.id_lottery_k3rfc_m, R.drawable.id_lottery_k3rfc_m});
+        // 快三5分彩   ID71
+        sLotteryLogo.put(71, new int[]{R.drawable.id_lottery_k3wfc_m, R.drawable.id_lottery_k3wfc_m});
+        //快三10分彩   ID72
+        sLotteryLogo.put(72, new int[]{R.drawable.id_lottery_k3sfc_m, R.drawable.id_lottery_k3sfc_m});
+        // PK10 五分彩  ID73
+        sLotteryLogo.put(73, new int[]{R.drawable.id_lottery_pk10wfc, R.drawable.id_lottery_pk10wfc});
+        //PK10 十分彩  ID74
+        sLotteryLogo.put(74, new int[]{R.drawable.id_lottery_pk10sfc, R.drawable.id_lottery_pk10sfc});
         //甘肃快三
         sLotteryLogo.put(64, new int[]{R.drawable.id_gsk3, R.drawable.id_gsk3});
         //四川快乐12
         sLotteryLogo.put(58, new int[]{R.drawable.id_sckl12, R.drawable.id_sckl12});
         //广东快东10分
         sLotteryLogo.put(59, new int[]{R.drawable.id_gdkl10f, R.drawable.id_gdkl10f});
+        //腾讯时时彩
+        sLotteryLogo.put(75, new int[]{R.drawable.id_lottery_txssc, R.drawable.id_lottery_txssc});
 
         //百家乐
         sLotteryLogo.put(101, new int[]{R.drawable.id_lottery_mybjl, R.drawable.id_lottery_mybjl_rest});
@@ -565,6 +557,7 @@ public class ConstantInformation {
         sb.append((ipInt >> 24) & 0xFF);
         return sb.toString();
     }
+
     @SuppressLint("MissingPermission")
     @TargetApi(Build.VERSION_CODES.M)
     public static String gatherInfo(Activity activity, PayMoneyCommand command) {
@@ -595,7 +588,7 @@ public class ConstantInformation {
         String iesi = null;
         try {
             //获取IMEI号
-             imei = mTm.getDeviceId();
+            imei = mTm.getDeviceId();
             iesi = mTm.getSubscriberId();
         } catch (Exception e) {
             Log.e("VersionInfo", "Exception", e);

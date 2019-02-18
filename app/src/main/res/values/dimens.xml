@@ -46,5 +46,5 @@
 
     <dimen name="small_height">30dp</dimen>
     <dimen name="game_method_info_padding">0.1dp</dimen>
-
+    <dimen name="ludan_left">24dp</dimen>
 </resources>

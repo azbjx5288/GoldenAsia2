@@ -126,6 +126,10 @@
    public static final int *;
 }
 
+#更新
+-dontwarn util.**
+-keep class util.**{*;}
+
 #（可选）避免Log打印输出
 -assumenosideeffects class android.util.Log {
    public static *** v(...);

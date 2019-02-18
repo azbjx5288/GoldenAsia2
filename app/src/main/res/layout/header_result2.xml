@@ -14,7 +14,8 @@
         android:gravity="center"
         android:text="期号"
         android:textColor="@color/app_font_ash_color" />
-    <View style="@style/vertical_divide_line"/>
+
+    <View style="@style/vertical_divide_line" />
 
     <TextView
         android:layout_width="0dp"
@@ -23,7 +24,8 @@
         android:gravity="center"
         android:text="开奖号码"
         android:textColor="@color/app_font_ash_color" />
-    <View style="@style/vertical_divide_line"/>
+
+    <View style="@style/vertical_divide_line" />
 
     <TextView
         android:layout_width="0dp"

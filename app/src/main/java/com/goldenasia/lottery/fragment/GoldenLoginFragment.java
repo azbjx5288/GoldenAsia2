@@ -47,6 +47,7 @@ import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.pattern.VersionChecker;
 import com.goldenasia.lottery.util.SharedPreferencesUtils;
 import com.goldenasia.lottery.view.adapter.CustometServiceAdapter;
+import com.gyf.barlibrary.ImmersionBar;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONArray;
@@ -81,10 +82,10 @@ public class GoldenLoginFragment extends BaseFragment {
     EditText userName;
     @BindView(R.id.login_edit_password)
     EditText password;
-   /* @BindView(R.id.login_account_edit_clear)
-    View userNameClear;
-    @BindView(R.id.login_password_edit_clear)
-    View passwordClear;*/
+    /* @BindView(R.id.login_account_edit_clear)
+     View userNameClear;
+     @BindView(R.id.login_password_edit_clear)
+     View passwordClear;*/
     @BindView(R.id.checkbox_save)
     CheckBox save;
     @BindView(R.id.login_login_btn)
@@ -92,21 +93,18 @@ public class GoldenLoginFragment extends BaseFragment {
 
     private static final int SERVICE_SYSTEM = 4;
 
-    private  final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 6;
+    private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 6;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_golden_login, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_golden_login, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new VersionChecker(this).startCheck();
+        new VersionChecker(getActivity()).startCheck();
         account = SharedPreferencesUtils.getString(getActivity(), ConstantInformation.ACCOUNT_INFO, "userName");
         pass = SharedPreferencesUtils.getString(getActivity(), ConstantInformation.ACCOUNT_INFO, "password");
         if ("".equals(account) && "".equals(pass)) {
@@ -172,13 +170,13 @@ public class GoldenLoginFragment extends BaseFragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferencesUtils.putBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave",isChecked);
+                SharedPreferencesUtils.putBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave", isChecked);
             }
         });
-        save.setChecked(SharedPreferencesUtils.getBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave",false));
+        save.setChecked(SharedPreferencesUtils.getBoolean(getActivity(), ConstantInformation.ACCOUNT_INFO, "checkboxSave", false));
     }
 
-    @OnClick({R.id.login_login_btn, R.id.login_account_edit_clear, R.id.login_password_edit_clear,R.id.forget_password,R.id.contact_customer_service})
+    @OnClick({R.id.login_login_btn, R.id.login_account_edit_clear, R.id.login_password_edit_clear, R.id.forget_password, R.id.contact_customer_service})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_account_edit_clear: //帐号清空 点帐号清空时默认清空密码
@@ -205,40 +203,35 @@ public class GoldenLoginFragment extends BaseFragment {
     }
 
     //===================6.0运行时权限需要添加的 start==========================================================//
-    private void contactCustomerService(){
+    private void contactCustomerService() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED
                 &&
                 ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.CAMERA)
-                        == PackageManager.PERMISSION_GRANTED)
-        {
+                        == PackageManager.PERMISSION_GRANTED) {
             executeCommand(new ServiceSystemCommand(), restCallback2,
                     SERVICE_SYSTEM);
-        }else {
+        } else {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                &&ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.CAMERA)
-                    ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    && ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)
+            ) {
                 showDialog01();
-            }else{
+            } else {
                 showDialog02();
             }
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
-        if (requestCode == MY_PERMISSIONS_REQUEST_CALL_PHONE)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED&&grantResults[1] == PackageManager.PERMISSION_GRANTED)
-            {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_CALL_PHONE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 executeCommand(new ServiceSystemCommand(), restCallback2,
                         SERVICE_SYSTEM);
-            } else
-            {
+            } else {
                 Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
@@ -247,9 +240,9 @@ public class GoldenLoginFragment extends BaseFragment {
     //===================6.0运行时权限需要添加的 end==========================================================//
 
     private void login() {
-        if(loginBtn.isEnabled()){
+        if (loginBtn.isEnabled()) {
             loginBtn.setEnabled(false);
-        }else{
+        } else {
             return;
         }
         Log.i(TAG, "login()");
@@ -257,13 +250,11 @@ public class GoldenLoginFragment extends BaseFragment {
         // 2016/9/14
         account = userName.getText().toString();
         pass = DigestUtils.md5Hex(password.getText().toString());
-        if (save.isChecked())
-        {
+        if (save.isChecked()) {
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.ACCOUNT_INFO, "userName", account);
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.ACCOUNT_INFO, "password", password
                     .getText().toString());
-        } else
-        {
+        } else {
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.ACCOUNT_INFO, "userName", "");
             SharedPreferencesUtils.putString(getActivity(), ConstantInformation.ACCOUNT_INFO, "password", "");
         }
@@ -302,13 +293,11 @@ public class GoldenLoginFragment extends BaseFragment {
         }
     };
 
-    private RestCallback restCallback2 = new RestCallback()
-    {
+    private RestCallback restCallback2 = new RestCallback() {
         @Override
-        public boolean onRestComplete(RestRequest request, RestResponse response)
-        {
-            if(request.getId() ==SERVICE_SYSTEM){
-                String jsonString= ((JsonString) response.getData()).getJson();
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            if (request.getId() == SERVICE_SYSTEM) {
+                String jsonString = ((JsonString) response.getData()).getJson();
                 List<ServiceSystemBean> list = new ArrayList<ServiceSystemBean>();
                 try {
                     JSONArray jsonArray = new JSONArray(jsonString);
@@ -323,14 +312,14 @@ public class GoldenLoginFragment extends BaseFragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if(list.size()>1){
-                     showServiceDialog(list);
-                }else if(list.size()==1){
-                    ServiceSystemBean  ServiceSystemBean=list.get(0);
+                if (list.size() > 1) {
+                    showServiceDialog(list);
+                } else if (list.size() == 1) {
+                    ServiceSystemBean ServiceSystemBean = list.get(0);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("url", ServiceSystemBean.getUrl());
                     launchFragment(ServiceCenterFragment2.class, bundle);
-                }else{
+                } else {
 
                 }
             }
@@ -338,22 +327,20 @@ public class GoldenLoginFragment extends BaseFragment {
         }
 
         @Override
-        public boolean onRestError(RestRequest request, int errCode, String errDesc)
-        {
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
             return false;
         }
 
         @Override
-        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state)
-        {
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
 
         }
     };
 
-    private void showServiceDialog( List<ServiceSystemBean> list){
-        View view= LayoutInflater.from(getActivity()).inflate(R.layout.service_dialog, null);
-        ListView listView=view.findViewById(R.id.list_view);
-        ImageView exit_pressed=view.findViewById(R.id.exit_pressed);
+    private void showServiceDialog(List<ServiceSystemBean> list) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.service_dialog, null);
+        ListView listView = view.findViewById(R.id.list_view);
+        ImageView exit_pressed = view.findViewById(R.id.exit_pressed);
 //        List<Map<String, String>> listMap=new ArrayList<Map<String, String>>();
 //        // key值数组，适配器通过key值取value，与列表项组件一一对应
 //        String[] from = { "name"};
@@ -365,7 +352,7 @@ public class GoldenLoginFragment extends BaseFragment {
 //        // 列表项组件Id 数组
 //        int[] to = { R.id.button_name };
 //        final SimpleAdapter adapter = new SimpleAdapter(getActivity(), listMap, R.layout.service_dialog_item, from, to);
-        CustometServiceAdapter adapter=new CustometServiceAdapter(list);
+        CustometServiceAdapter adapter = new CustometServiceAdapter(list);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -410,15 +397,15 @@ public class GoldenLoginFragment extends BaseFragment {
             return false;
         }
 
-        String userNameReg="^[A-Za-z0-9_]+$";//英文和数字
-        Pattern pAll= Pattern.compile(userNameReg);
+        String userNameReg = "^[A-Za-z0-9_]+$";//英文和数字
+        Pattern pAll = Pattern.compile(userNameReg);
         Matcher mAll = pAll.matcher(userName.getText().toString());
 
         if (!mAll.matches()) {
             Toast.makeText(getContext(), "用户名只能是字母或者数字或者下划线", Toast.LENGTH_LONG).show();
             return false;
         }
-        if(userName.getText().toString().length()>16||userName.getText().toString().length()<5){
+        if (userName.getText().toString().length() > 16 || userName.getText().toString().length() < 5) {
             Toast.makeText(getContext(), "用户名只能是长度为5-16位", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -433,6 +420,18 @@ public class GoldenLoginFragment extends BaseFragment {
         }
 
         return true;
+    }
+
+    @Override
+    public void initImmersionBar() {
+        super.initImmersionBar();
+        ImmersionBar.with(this).statusBarColor(R.color.login_in_background).statusBarColorTransformEnable(false).keyboardEnable(true).init();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override

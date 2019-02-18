@@ -122,10 +122,8 @@ public class PushNotificationFragment extends BaseFragment {
                 launchFragment(BankCardSetting.class);
                 break;
             case R.id.push_notification:
-                new VersionChecker(this).startCheck(true);
+                new VersionChecker(getActivity()).startCheck(true);
                 break;
-
-
             default:
                 break;
         }
@@ -164,7 +162,6 @@ public class PushNotificationFragment extends BaseFragment {
 
                         }
                     });
-
                 }else {
                     SharedPreferencesUtils.putBoolean(getActivity(), ConstantInformation.APP_INFO, WIN, false);
                     //当关闭友盟+推送时
@@ -179,13 +176,10 @@ public class PushNotificationFragment extends BaseFragment {
 
                         }
                     });
-
                 }
                 break;
             default:
                 break;
         }
     }
-
-
 }

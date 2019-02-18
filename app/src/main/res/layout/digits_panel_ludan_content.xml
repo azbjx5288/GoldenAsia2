@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-   >
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/ludan_title"
+        style="@style/pick_column_style"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/digit_tab"
+        android:text="万十路单" />
 
     <com.goldenasia.lottery.view.LuDanContentView
         android:id="@+id/lu_dan_contentview"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="20dp"
-        />
-
+        android:layout_marginLeft="@dimen/ludan_left"
+        android:layout_marginTop="8dp"
+        app:ludan_ballHeight="30dp"
+        app:ludan_ballWidth="30dp"
+        app:ludan_textSize="13sp"
+        app:ludan_horizontalgap="10dp"
+        app:ludan_verticalgap="6dp" />
 
 </LinearLayout>

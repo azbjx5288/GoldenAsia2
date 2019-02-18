@@ -125,7 +125,7 @@ public class LotteryFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated (view, savedInstanceState);
-        //new VersionChecker(this).startCheck();
+
         cycleViewPager = (CycleViewPager) getActivity ( ).getFragmentManager ( ).findFragmentById (R.id.fragment_cycle_viewpager_content);
         initView ( );
         loadBanner ( );
@@ -205,7 +205,7 @@ public class LotteryFragment extends BaseFragment {
         if (restResponse != null && restResponse.getData ( ) instanceof ArrayList) {
             updateBanner ((ArrayList<Notice>) restResponse.getData ( ));
         }
-        restRequest.execute ( );
+        restRequest.execute();
     }
 
     private void updateBanner(ArrayList<Notice> notices) {

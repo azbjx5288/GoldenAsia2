@@ -34,24 +34,6 @@ public class LhcSxGame extends LhcGame {
     private ArrayList<String> pickSxList;
 
     /**
-     * 生肖数组
-     */
-    private static SparseArray<String> sxListStr = new SparseArray() {{
-        put(0, "鼠");
-        put(1, "牛");
-        put(2, "虎");
-        put(3, "兔");
-        put(4, "龙");
-        put(5, "蛇");
-        put(6, "马");
-        put(7, "羊");
-        put(8, "猴");
-        put(9, "鸡");
-        put(10, "狗");
-        put(11, "猪");
-    }};
-
-    /**
      * 全部生肖ID
      */
     private static SparseArray<Integer> sxListId = new SparseArray<Integer>() {{
@@ -88,50 +70,29 @@ public class LhcSxGame extends LhcGame {
     @Override
     public void onInflate() {
         LayoutInflater.from(topLayout.getContext()).inflate(R.layout.pick_column_lhc_sx, topLayout, true);
-        //取农历生肖
-        int index = sxListStr.indexOfValue(Lunar.getInstance().animalsYear());
-        if (index != -1) {
-            int nm = 1, n = index; //nm 号码 n 生肖下标、1-49个号码按当年的农历生肖位进行分配
-            SparseArray<List<String>> animalZodiacNo = new SparseArray<>();
-            do {//生肖
-                List<String> noList = animalZodiacNo.get(n);
-                if (noList == null) {
-                    List<String> zodiacNo = new ArrayList<>();
-                    zodiacNo.add(String.format("%02d", nm));
-                    animalZodiacNo.put(n, zodiacNo);
-                } else {
-                    animalZodiacNo.get(n).add(String.format("%02d", nm));
-                }
-                if (n == 0) {
-                    n = sxListStr.size() - 1;
-                } else {
-                    n--;
-                }
-                nm++;
-            } while (nm < 50);
-            //生成UI生肖与号码
-            LinearLayout layout = topLayout.findViewById(R.id.lhc_sx_layout);
-            for (int i = 0; i < animalZodiacNo.size(); i++) {
-                int key = animalZodiacNo.keyAt(i);
-                List<String> serial = animalZodiacNo.get(key);
-                LhcLayout view = createDefaultPickLayout(layout);
-                int id = sxListId.valueAt(key);
-                view.setId(id);
-                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(0, 10, 0, 0);
-                view.setLayoutParams(lp);
-                String sx = sxListStr.valueAt(key);
-                view.setSx(sx);
-                LhcPickNumber pickNumberText = new LhcPickNumber(view, sx);
-                pickNumberText.getNumberGroupView().setNumber(1, serial.size());
-                pickNumberText.setDisplayText(serial.toArray(new String[serial.size()]));
-                pickNumberText.setColorful(false);
-                pickNumberText.setNumberStyle(null);
-                pickNumberText.setEnabledLineClick(true);
-                pickNumberText.setColumnAreaHideOrShow(false);
-                this.addPickNumber(pickNumberText, id);
-                layout.addView(view);
-            }
+        ZodiacSigns zodiacSigns=ZodiacSigns.from();
+        //生成UI生肖与号码
+        LinearLayout layout = topLayout.findViewById(R.id.lhc_sx_layout);
+        for (int i = 0; i < zodiacSigns.getAnimalZodiacNo().size(); i++) {
+            int key = zodiacSigns.getAnimalZodiacNo().keyAt(i);
+            List<String> serial = zodiacSigns.getAnimalZodiacNo().get(key);
+            LhcLayout view = createDefaultPickLayout(layout);
+            int id = sxListId.valueAt(key);
+            view.setId(id);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 10, 0, 0);
+            view.setLayoutParams(lp);
+            String sx = zodiacSigns.zodiacName(key);
+            view.setSx(sx);
+            LhcPickNumber pickNumberText = new LhcPickNumber(view, sx);
+            pickNumberText.getNumberGroupView().setNumber(1, serial.size());
+            pickNumberText.setDisplayText(serial.toArray(new String[serial.size()]));
+            pickNumberText.setColorful(false);
+            pickNumberText.setNumberStyle(null);
+            pickNumberText.setEnabledLineClick(true);
+            pickNumberText.setColumnAreaHideOrShow(false);
+            this.addPickNumber(pickNumberText, id);
+            layout.addView(view);
         }
 
         ButterKnife.bind(this, topLayout);
@@ -146,8 +107,9 @@ public class LhcSxGame extends LhcGame {
     public void reset() {
         for (int i = 0; i < sxListId.size(); i++) {
             int id = sxListId.valueAt(i);
-            if (topLayout.findViewById(id) != null)
+            if (topLayout.findViewById(id) != null) {
                 topLayout.findViewById(id).setSelected(false);
+            }
         }
         pickSxList.clear();
         notifyListener();

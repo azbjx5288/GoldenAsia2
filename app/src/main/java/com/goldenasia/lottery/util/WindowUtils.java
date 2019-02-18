@@ -25,7 +25,7 @@ public class WindowUtils {
      */
     public static void makeWindowTranslucent(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            activity.setTheme(R.style.StatusBarTheme);
+//            activity.setTheme(R.style.StatusBarTheme);
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             SystemBarTintManager systemBarTintManager = new SystemBarTintManager(activity);
             systemBarTintManager.setStatusBarTintEnabled(true);

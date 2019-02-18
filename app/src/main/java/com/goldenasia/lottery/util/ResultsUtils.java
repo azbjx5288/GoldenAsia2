@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.game.ZodiacSigns;
 import com.goldenasia.lottery.material.ConstantInformation;
 
 import java.util.ArrayList;
@@ -18,6 +19,14 @@ import java.util.List;
  */
 
 public class ResultsUtils {
+    private static ZodiacSigns animalZodiacSet;
+    private ResultsUtils() {
+        animalZodiacSet =ZodiacSigns.from();
+    }
+
+    public static ResultsUtils from() {
+        return new ResultsUtils();
+    }
 
     //用
     public static String getLastStringFromString01(String code, String split) {
@@ -43,7 +52,6 @@ public class ResultsUtils {
         int[] newArr = new int[size];
 
         int count = 0;
-
         for (int i = 0; i < codeArr.length; i++) {
             if (TextUtils.isEmpty(codeArr[i])) {
                 continue;
@@ -51,11 +59,8 @@ public class ResultsUtils {
             try {
                 newArr[count++] = Integer.parseInt(codeArr[i]);
             } catch (Exception e) {
-
             }
-
         }
-
         return newArr;
     }
 
@@ -85,29 +90,30 @@ public class ResultsUtils {
     }
 
     public static String getShengXiaoFromCode(int code) {
-        if (ConstantInformation.MOUSE_NUM.contains(code)) {
+
+        if (animalZodiacSet.getAnimalZodiacSet().get(0).contains(code)) {
             return "鼠";
-        } else if (ConstantInformation.COW_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(1).contains(code)) {
             return "牛";
-        } else if (ConstantInformation.TIGER_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(2).contains(code)) {
             return "虎";
-        } else if (ConstantInformation.RABBIT_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(3).contains(code)) {
             return "兔";
-        } else if (ConstantInformation.DRAGON_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(4).contains(code)) {
             return "龙";
-        } else if (ConstantInformation.SNAKE_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(5).contains(code)) {
             return "蛇";
-        } else if (ConstantInformation.HORSE_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(6).contains(code)) {
             return "马";
-        } else if (ConstantInformation.SHEEP_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(7).contains(code)) {
             return "羊";
-        } else if (ConstantInformation.MONKEY_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(8).contains(code)) {
             return "猴";
-        } else if (ConstantInformation.CHICKEN_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(9).contains(code)) {
             return "鸡";
-        } else if (ConstantInformation.DOG_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(10).contains(code)) {
             return "狗";
-        } else if (ConstantInformation.PIG_NUM.contains(code)) {
+        } else if (animalZodiacSet.getAnimalZodiacSet().get(11).contains(code)) {
             return "猪";
         }
 

@@ -28,7 +28,7 @@ import java.util.List;
  * 用于显示彩票选择时的数字栏
  * Created by Alashi on 2016/1/13.
  */
-public class NumberGroupView extends View{
+public class NumberGroupView extends View {
     private static final String TAG = NumberGroupView.class.getSimpleName();
 
     private TextPaint paint;
@@ -57,19 +57,19 @@ public class NumberGroupView extends View{
     private SparseBooleanArray checkedArray;
     private GestureDetector gestureDetector;
     private float textSize;
-    private int textColor,textCheckedColor;
+    private int textColor, textCheckedColor;
 
 
     private OnChooseItemClickListener chooseItemListener;
 
     private ArrayList<Integer> pickList;
     private int lastPick;
-    private List<String>  mYiLouList=new ArrayList<>();
-    private List<String>  mLengReList=new ArrayList<>();
-    private int MAX_YILOU =0;///遗漏中最大的数
-    private int MAX_LENGRE =0;//冷热中最小的数
-    private int MIN_LENGRE =0;//冷热中最大的数
-    private int YILOU_HEIGHT=0;//遗漏冷热数字的高度
+    private List<String> mYiLouList = new ArrayList<>();
+    private List<String> mLengReList = new ArrayList<>();
+    private int MAX_YILOU = 0;///遗漏中最大的数
+    private int MAX_LENGRE = 0;//冷热中最小的数
+    private int MIN_LENGRE = 0;//冷热中最大的数
+    private int YILOU_HEIGHT = 0;//遗漏冷热数字的高度
 
     public NumberGroupView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -112,7 +112,7 @@ public class NumberGroupView extends View{
             }
 
         });
-        YILOU_HEIGHT=DisplayUtil.dip2px(getContext(),20);
+        YILOU_HEIGHT = DisplayUtil.dip2px(getContext(), 20);
     }
 
     /**
@@ -227,7 +227,9 @@ public class NumberGroupView extends View{
         this.textColor = textColor;
     }
 
-    public void setTextCheckedColor(int textCheckedColor) { this.textCheckedColor = textCheckedColor; }
+    public void setTextCheckedColor(int textCheckedColor) {
+        this.textCheckedColor = textCheckedColor;
+    }
 
     public void setDisplayMethod(DisplayMethod method) {
         this.method = method;
@@ -259,13 +261,13 @@ public class NumberGroupView extends View{
     private void calculateClick(int eventX, int eventY) {
         int x, y;
         Rect rect = new Rect();
-        int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?YILOU_HEIGHT:0;
-        int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?YILOU_HEIGHT:0;
+        int yiLouHeight = ConstantInformation.YI_LOU_IS_SHOW ? YILOU_HEIGHT : 0;
+        int lengReHeight = ConstantInformation.LENG_RE_IS_SHOW ? YILOU_HEIGHT : 0;
 
         for (int i = 0, count = maxNumber - minNumber + 1; i < count; i++) {
             x = i % column * (itemSize + horizontalGap);
             y = i / column * (itemSize + verticalGap);
-            rect.set(x, y, x + itemSize, y + itemSize+yiLouHeight+lengReHeight);
+            rect.set(x, y, x + itemSize, y + itemSize + yiLouHeight + lengReHeight);
 
             if (rect.contains(eventX, eventY)) {
                 if (isRadioStyle()) {
@@ -297,17 +299,17 @@ public class NumberGroupView extends View{
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i(TAG,"onMeasure(int widthMeasureSpec, int heightMeasureSpec) ....  ");
+        Log.i(TAG, "onMeasure(int widthMeasureSpec, int heightMeasureSpec) ....  ");
 
         int specSize = MeasureSpec.getSize(widthMeasureSpec);
         horizontalGap = (specSize - column * itemSize) / (column - 1);
         int itemCount = maxNumber - minNumber + 1;
         int line = (itemCount) / column + ((itemCount) % column != 0 ? 1 : 0);
 
-        int  yiLouHeight= ConstantInformation.YI_LOU_IS_SHOW ?YILOU_HEIGHT:0;
-        int  lengReHeight= ConstantInformation.LENG_RE_IS_SHOW ?YILOU_HEIGHT:0;
+        int yiLouHeight = ConstantInformation.YI_LOU_IS_SHOW ? YILOU_HEIGHT : 0;
+        int lengReHeight = ConstantInformation.LENG_RE_IS_SHOW ? YILOU_HEIGHT : 0;
 
-        int specHeight = line * (itemSize+yiLouHeight+lengReHeight) + (line - 1) * verticalGap;
+        int specHeight = line * (itemSize + yiLouHeight + lengReHeight) + (line - 1) * verticalGap;
 
         setMeasuredDimension(specSize, specHeight);
     }
@@ -325,9 +327,9 @@ public class NumberGroupView extends View{
         minPaint.setColor(getResources().getColor(R.color.app_chart_shiball_color));
         maxPaint.setColor(getResources().getColor(R.color.app_main_support));
         normalPaint.setColor(getResources().getColor(R.color.app_font_dark_color));
-        minPaint.setTextSize(DisplayUtil.sp2px(getContext(),13));
-        maxPaint.setTextSize(DisplayUtil.sp2px(getContext(),13));
-        normalPaint.setTextSize(DisplayUtil.sp2px(getContext(),13));
+        minPaint.setTextSize(DisplayUtil.sp2px(getContext(), 13));
+        maxPaint.setTextSize(DisplayUtil.sp2px(getContext(), 13));
+        normalPaint.setTextSize(DisplayUtil.sp2px(getContext(), 13));
 //        minPaint.setTextAlign(Paint.Align.RIGHT);
 //        maxPaint.setTextAlign(Paint.Align.CENTER);
 //        normalPaint.setTextAlign(Paint.Align.CENTER);
@@ -340,9 +342,9 @@ public class NumberGroupView extends View{
 
         for (int i = 0, count = maxNumber - minNumber + 1; i < count; i++) {
             x = i % column * (itemSize + horizontalGap);
-            int  yiLouHeight1= ConstantInformation.YI_LOU_IS_SHOW ?YILOU_HEIGHT:0;
-            int  lengReHeight1= ConstantInformation.LENG_RE_IS_SHOW ?YILOU_HEIGHT:0;
-            y = i / column * (itemSize + verticalGap+yiLouHeight1+lengReHeight1);
+            int yiLouHeight1 = ConstantInformation.YI_LOU_IS_SHOW ? YILOU_HEIGHT : 0;
+            int lengReHeight1 = ConstantInformation.LENG_RE_IS_SHOW ? YILOU_HEIGHT : 0;
+            y = i / column * (itemSize + verticalGap + yiLouHeight1 + lengReHeight1);
             canvas.save();
             canvas.translate(x, y);
 
@@ -368,29 +370,29 @@ public class NumberGroupView extends View{
             canvas.drawText(text, offTextX, offTextY, paint);
 
             /*添加遗漏和冷热具体数据start*/
-            int  yiLouHeight=YILOU_HEIGHT;
+            int yiLouHeight = YILOU_HEIGHT;
             Rect rect = new Rect();
-            if(ConstantInformation.YI_LOU_IS_SHOW&&mYiLouList.size()>0) {
+            if (ConstantInformation.YI_LOU_IS_SHOW && mYiLouList.size() > 0) {
                 float offTextYiLouX = (itemSize - minPaint.measureText(mYiLouList.get(i))) / 2;
                 minPaint.getTextBounds(mYiLouList.get(i), 0, mYiLouList.get(i).length(), rect);
                 int height = rect.height();//文字高
-                if(mYiLouList.get(i).equals(String.valueOf(MAX_YILOU))){
-                    canvas.drawText(mYiLouList.get(i), offTextYiLouX,  itemSize+YILOU_HEIGHT - height / 2, minPaint);
-                }else{
-                    canvas.drawText(mYiLouList.get(i), offTextYiLouX,  itemSize+YILOU_HEIGHT - height / 2, normalPaint);
+                if (mYiLouList.get(i).equals(String.valueOf(MAX_YILOU))) {
+                    canvas.drawText(mYiLouList.get(i), offTextYiLouX, itemSize + YILOU_HEIGHT - height / 2, minPaint);
+                } else {
+                    canvas.drawText(mYiLouList.get(i), offTextYiLouX, itemSize + YILOU_HEIGHT - height / 2, normalPaint);
                 }
-                yiLouHeight+=YILOU_HEIGHT; 
+                yiLouHeight += YILOU_HEIGHT;
             }
-            if(ConstantInformation.LENG_RE_IS_SHOW&&mLengReList.size()>0) {
+            if (ConstantInformation.LENG_RE_IS_SHOW && mLengReList.size() > 0) {
                 float offTextLengReX = (itemSize - minPaint.measureText(mLengReList.get(i))) / 2;
                 minPaint.getTextBounds(mLengReList.get(i), 0, mLengReList.get(i).length(), rect);
                 int height = rect.height();//文字高
-                if(mLengReList.get(i).equals(String.valueOf(MAX_LENGRE))){
-                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight - height / 2, maxPaint);
-                }else if(mLengReList.get(i).equals(String.valueOf(MIN_LENGRE))){
-                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight - height/ 2, minPaint);
-                }else{
-                    canvas.drawText(mLengReList.get(i), offTextLengReX,  itemSize+yiLouHeight - height / 2, normalPaint);
+                if (mLengReList.get(i).equals(String.valueOf(MAX_LENGRE))) {
+                    canvas.drawText(mLengReList.get(i), offTextLengReX, itemSize + yiLouHeight - height / 2, maxPaint);
+                } else if (mLengReList.get(i).equals(String.valueOf(MIN_LENGRE))) {
+                    canvas.drawText(mLengReList.get(i), offTextLengReX, itemSize + yiLouHeight - height / 2, minPaint);
+                } else {
+                    canvas.drawText(mLengReList.get(i), offTextLengReX, itemSize + yiLouHeight - height / 2, normalPaint);
                 }
             }
             /*添加遗漏和冷热具体数据end*/
@@ -475,13 +477,13 @@ public class NumberGroupView extends View{
     public void setmYiLouList(List<String> yiLouList) {
         this.mYiLouList = yiLouList;
         //取出遗漏中最大值
-        if(!TextUtils.isEmpty(yiLouList.get(0))) {
+        if (!TextUtils.isEmpty(yiLouList.get(0))) {
             MAX_YILOU = Integer.parseInt(yiLouList.get(0));
-        }else{
+        } else {
             MAX_YILOU = 0;
         }
-        for(int i=1;i<yiLouList.size();i++){
-            if(!TextUtils.isEmpty(yiLouList.get(i))) {
+        for (int i = 1; i < yiLouList.size(); i++) {
+            if (!TextUtils.isEmpty(yiLouList.get(i))) {
                 if (MAX_YILOU < Integer.parseInt(yiLouList.get(i))) {
                     MAX_YILOU = Integer.parseInt(yiLouList.get(i));
                 }
@@ -493,21 +495,21 @@ public class NumberGroupView extends View{
         this.mLengReList = lengReList;
 
         //取出冷热中最大值和最小值
-        MAX_LENGRE=Integer.parseInt(lengReList.get(0));
-        MIN_LENGRE=Integer.parseInt(lengReList.get(0));
-        for(int i=1;i<lengReList.size();i++){
-            if(MAX_LENGRE<Integer.parseInt(lengReList.get(i))){
-                MAX_LENGRE=Integer.parseInt(lengReList.get(i));
+        MAX_LENGRE = Integer.parseInt(lengReList.get(0));
+        MIN_LENGRE = Integer.parseInt(lengReList.get(0));
+        for (int i = 1; i < lengReList.size(); i++) {
+            if (MAX_LENGRE < Integer.parseInt(lengReList.get(i))) {
+                MAX_LENGRE = Integer.parseInt(lengReList.get(i));
             }
-            if(MIN_LENGRE>Integer.parseInt(lengReList.get(i))){
-                MIN_LENGRE=Integer.parseInt(lengReList.get(i));
+            if (MIN_LENGRE > Integer.parseInt(lengReList.get(i))) {
+                MIN_LENGRE = Integer.parseInt(lengReList.get(i));
             }
         }
 
     }
 
     //刷新界面
-    public void refreshViewGroup(){
+    public void refreshViewGroup() {
         requestLayout();
     }
 

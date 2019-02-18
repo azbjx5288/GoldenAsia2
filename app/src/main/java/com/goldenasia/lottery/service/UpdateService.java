@@ -29,13 +29,11 @@ import java.io.IOException;
  * Created by Sakura on 2017/1/11.
  */
 
-public class UpdateService extends Service
-{
+public class UpdateService extends Service {
     private long downloadId;
     private String url;
 
-    public UpdateService()
-    {
+    public UpdateService() {
     }
 
     /**
@@ -51,8 +49,7 @@ public class UpdateService extends Service
     /**
      * 初始化下载器
      **/
-    private void initDownManager()
-    {
+    private void initDownManager() {
         receiver = new DownloadCompleteReceiver();
 
         //设置下载地址
@@ -60,8 +57,7 @@ public class UpdateService extends Service
         // 设置允许使用的网络类型，这里是移动网络和wifi都可以
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         // 下载时，通知栏显示途中
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         }
         // 显示下载界面
@@ -79,11 +75,9 @@ public class UpdateService extends Service
         registerReceiver(receiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
 
-    private boolean canInstall()
-    {
+    private boolean canInstall() {
         downloadId = SharedPreferencesUtils.getLong(getApplicationContext(), "download", "downloadID");
-        if (downloadId != -1L)
-        {
+        if (downloadId != -1L) {
             installAPK(Uri.parse(""));
             UpdateService.this.stopSelf();
             return true;
@@ -92,15 +86,12 @@ public class UpdateService extends Service
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         //canInstall();
         url = intent.getExtras().getString("updateUrl");
-        if (url != null && !"".equals(url))
-        {
+        if (url != null && !"".equals(url)) {
             downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-            if (isNeedDownloadAgain())
-            {
+            if (isNeedDownloadAgain()) {
                 Toast.makeText(getApplicationContext(), "开始下载...", Toast.LENGTH_SHORT).show();
                 // 调用下载
                 initDownManager();
@@ -116,14 +107,12 @@ public class UpdateService extends Service
     }
 
     @Override
-    public IBinder onBind(Intent intent)
-    {
+    public IBinder onBind(Intent intent) {
         return null;
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         // 注销下载广播
         if (receiver != null)
             unregisterReceiver(receiver);
@@ -132,21 +121,17 @@ public class UpdateService extends Service
     }
 
     // 接受下载完成后的intent
-    class DownloadCompleteReceiver extends BroadcastReceiver
-    {
+    class DownloadCompleteReceiver extends BroadcastReceiver {
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
+        public void onReceive(Context context, Intent intent) {
             //判断是否下载完成的广播
-            if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-            {
+            if (intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                 //获取下载的文件id
                 long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
                 SharedPreferencesUtils.putLong(getApplicationContext(), "download", "downloadID", downloadId);
 
                 //自动安装apk
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     Uri uriForDownloadedFile = downloadManager.getUriForDownloadedFile(downloadId);
                     Log.d("下载路径", "uri=" + uriForDownloadedFile);
 
@@ -186,8 +171,7 @@ public class UpdateService extends Service
     /**
      * 安装apk文件
      */
-    private void installAPK(Uri apk)
-    {
+    private void installAPK(Uri apk) {
         //通过Intent安装APK文件
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_DEFAULT);
@@ -195,48 +179,40 @@ public class UpdateService extends Service
         File apkFile = queryDownloadedApk();
         //String path = getRealFilePath(getApplicationContext(), apk);
         //File apkFile = new File(path);
-        if (apkFile.exists())
-        {
-            String[] command = {"chmod", "777", apkFile.getPath() };
+        if (apkFile.exists()) {
+            String[] command = {"chmod", "777", apkFile.getPath()};
             ProcessBuilder builder = new ProcessBuilder(command);
             try {
                 builder.start();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
+
             intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-        } else
-        {
+        } else {
             Toast.makeText(getApplicationContext(), "安装文件不存在", Toast.LENGTH_SHORT).show();
         }
     }
 
     //解析uri,，获取下载文件真实路径
-    private String getRealFilePath(final Context context, final Uri uri)
-    {
+    private String getRealFilePath(final Context context, final Uri uri) {
         if (null == uri)
             return null;
         final String scheme = uri.getScheme();
         String data = null;
         if (scheme == null)
             data = uri.getPath();
-        else if (ContentResolver.SCHEME_FILE.equals(scheme))
-        {
+        else if (ContentResolver.SCHEME_FILE.equals(scheme)) {
             data = uri.getPath();
-        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme))
-        {
+        } else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
             Cursor cursor = context.getContentResolver().query(uri, new String[]{MediaStore.Images.ImageColumns
                     .DATA}, null, null, null);
-            if (null != cursor)
-            {
-                if (cursor.moveToFirst())
-                {
+            if (null != cursor) {
+                if (cursor.moveToFirst()) {
                     int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-                    if (index > -1)
-                    {
+                    if (index > -1) {
                         data = cursor.getString(index);
                     }
                 }
@@ -247,28 +223,23 @@ public class UpdateService extends Service
     }
 
     //下面代码是一个简单的防止重复下载判断：
-    private boolean isNeedDownloadAgain()
-    {
+    private boolean isNeedDownloadAgain() {
         boolean isNeedDownloadAgain = true;
         DownloadManager.Query query = new DownloadManager.Query();
         long id = SharedPreferencesUtils.getLong(getApplicationContext(), "download", "downloadID");
         //ServiceProviderApplication.getValueByKey("serviceProviderDownloadManagerId", -1L);
         // Toast.makeText(getApplicationContext(), "id..."+id, Toast.LENGTH_SHORT).show();
-        if (id != -1L)
-        {
+        if (id != -1L) {
             query.setFilterById(id);
             Cursor cursor = downloadManager.query(query);
-            if (cursor != null && cursor.moveToFirst())
-            {
+            if (cursor != null && cursor.moveToFirst()) {
                 int columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
                 int status = cursor.getInt(columnIndex);
                 int columnReason = cursor.getColumnIndex(DownloadManager.COLUMN_REASON);
                 int reason = cursor.getInt(columnReason);
-                switch (status)
-                {
+                switch (status) {
                     case DownloadManager.STATUS_FAILED:
-                        switch (reason)
-                        {
+                        switch (reason) {
                             case DownloadManager.ERROR_CANNOT_RESUME:
                                 //some possibly transient error occurred but we can't resume the download
                                 break;
@@ -302,8 +273,7 @@ public class UpdateService extends Service
                         isNeedDownloadAgain = true;
                         break;
                     case DownloadManager.STATUS_PAUSED:
-                        switch (reason)
-                        {
+                        switch (reason) {
                             case DownloadManager.PAUSED_QUEUED_FOR_WIFI:
                                 //the download exceeds a size limit for downloads over the mobile network and the
                                 // download downloadManager is waiting for a Wi-Fi connection to proceed
@@ -345,22 +315,17 @@ public class UpdateService extends Service
     }
 
     //获取下载文件
-    private File queryDownloadedApk()
-    {
+    private File queryDownloadedApk() {
         File targetApkFile = null;
-        if (downloadId != -1)
-        {
+        if (downloadId != -1) {
             DownloadManager.Query query = new DownloadManager.Query();
             query.setFilterById(downloadId);
             query.setFilterByStatus(DownloadManager.STATUS_SUCCESSFUL);
             Cursor cur = downloadManager.query(query);
-            if (cur != null)
-            {
-                if (cur.moveToFirst())
-                {
+            if (cur != null) {
+                if (cur.moveToFirst()) {
                     String uriString = cur.getString(cur.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-                    if (!TextUtils.isEmpty(uriString))
-                    {
+                    if (!TextUtils.isEmpty(uriString)) {
                         targetApkFile = new File(Uri.parse(uriString).getPath());
                     }
                 }

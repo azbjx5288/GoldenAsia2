@@ -26,22 +26,22 @@ public class PickNumber implements View.OnClickListener {
     private NumberGroupView.OnChooseItemClickListener onChooseItem;
 
     public PickNumber(View topView, String title) {
-        columnTitle = (TextView) topView.findViewById(R.id.pick_column_title);
+        columnTitle = topView.findViewById(R.id.pick_column_title);
         columnTitle.setText(title);
-        numberGroupView = (NumberGroupView) topView.findViewById(R.id.pick_column_NumberGroupView);
-        viewGroup = (LinearLayout) topView.findViewById(R.id.pick_column_control);
-        pickColumnArea = (RelativeLayout) topView.findViewById(R.id.pick_column_area);
+        numberGroupView = topView.findViewById(R.id.pick_column_NumberGroupView);
+        viewGroup = topView.findViewById(R.id.pick_column_control);
+        pickColumnArea = topView.findViewById(R.id.pick_column_area);
         for (int i = 0, count = viewGroup.getChildCount(); i < count; i++) {
             viewGroup.getChildAt(i).setOnClickListener(this);
         }
     }
 
     public PickNumber(View topView, String title, int maxSize) {
-        columnTitle = (TextView) topView.findViewById(R.id.pick_column_title);
+        columnTitle = topView.findViewById(R.id.pick_column_title);
         columnTitle.setText(title);
-        numberGroupView = (NumberGroupView) topView.findViewById(R.id.pick_column_NumberGroupView);
-        viewGroup = (LinearLayout) topView.findViewById(R.id.pick_column_control);
-        pickColumnArea = (RelativeLayout) topView.findViewById(R.id.pick_column_area);
+        numberGroupView = topView.findViewById(R.id.pick_column_NumberGroupView);
+        viewGroup = topView.findViewById(R.id.pick_column_control);
+        pickColumnArea = topView.findViewById(R.id.pick_column_area);
         for (int i = 0, count = viewGroup.getChildCount(); i < count; i++) {
             viewGroup.getChildAt(i).setOnClickListener(this);
         }

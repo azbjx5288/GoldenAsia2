@@ -42,8 +42,7 @@ public class LhcZongXGame extends LhcGame {
         notifyListener();
     }
 
-    @OnClick({R.id.textView01, R.id.textView02, R.id.textView03, R.id.textView04, R.id.textView05, R.id
-            .textView06})
+    @OnClick({R.id.textView01, R.id.textView02, R.id.textView03, R.id.textView04, R.id.textView05, R.id.textView06})
     public void onLayoutClick(TextView view) {
         if (view.isSelected()) {
             view.setSelected(false);
@@ -52,7 +51,6 @@ public class LhcZongXGame extends LhcGame {
             view.setSelected(true);
             pickTailList.add(view.getText());
         }
-
         notifyListener();
     }
 

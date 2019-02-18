@@ -138,10 +138,8 @@ public class FragmentUser extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
         //用户余额实时更新
         executeCommand(new UserInfoCommand(), restCallback, ID_USER_INFO);
-
         loadLowerMember();
         initMessageCount();
     }
@@ -348,7 +346,7 @@ public class FragmentUser extends BaseFragment {
                 launchFragment(FragmentMessageBox.class);
                 break;
             case R.id.version:
-                new VersionChecker(this).startCheck(true);
+                new VersionChecker(getActivity()).startCheck(true);
                 break;
             case R.id.logout:
                 new AlertDialog.Builder(getActivity()).setMessage("退出当前账号").setNegativeButton("取消", null)

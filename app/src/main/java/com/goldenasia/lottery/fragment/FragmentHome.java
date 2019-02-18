@@ -12,7 +12,6 @@ import android.widget.RadioGroup;
 import com.goldenasia.lottery.R;
 import com.goldenasia.lottery.app.BaseFragment;
 import com.goldenasia.lottery.component.TabPageAdapter;
-import com.goldenasia.lottery.pattern.VersionChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,6 @@ public class FragmentHome extends BaseFragment implements RadioGroup.OnCheckedCh
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new VersionChecker(this).startCheck();
         init();
         initView();
         selectPage(0);

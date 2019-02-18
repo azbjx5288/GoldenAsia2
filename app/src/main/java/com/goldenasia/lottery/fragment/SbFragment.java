@@ -50,7 +50,7 @@ public class SbFragment extends BaseFragment {
             case R.id.sb_button:
 //                init();
                 Bundle bundle = new Bundle();
-                bundle.putString("url", GoldenAsiaApp.BASEURL + "/index.jsp?c=game&a=sbgame");
+                bundle.putString("url", GoldenAsiaApp.BASEURL + "/index.jsp?c=game&a=ibcgame");
                 launchFragment(WebViewFragment.class, bundle);
                 break;
 
