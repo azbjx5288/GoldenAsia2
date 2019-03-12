@@ -30,8 +30,8 @@ public class GoldenAsiaApp extends Application {
     private static GoldenAsiaApp sApp;
 
 //    public static final String BASEURL = "http://ai.xym8.com";//正式服
-//    public static final String BASEURL = "http://ta.w956.com";//新测试服
-    public static final String BASEURL = "http://ta.jinyazhou88.org";//测试服
+    public static final String BASEURL = "http://ta.w956.com";//新测试服
+    //public static final String BASEURL = "http://ta.jinyazhou88.org";//测试服
 
     private ThreadPool threadPool;
     private NetStateHelper netStateHelper;

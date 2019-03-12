@@ -15,7 +15,8 @@ public class GameConfig {
         String name = method.getName ( );
         switch (name) {
             case "RELHH":
-                return new TextGame (method);
+
+                return new TextGame (method,lottery);
 
             case "LMGYH":
             case "LMMC":

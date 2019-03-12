@@ -1,0 +1,593 @@
+package com.goldenasia.lottery.app;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.CallSuper;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.base.net.NetStateHelper;
+import com.goldenasia.lottery.base.net.RestCallback;
+import com.goldenasia.lottery.base.net.RestRequest;
+import com.goldenasia.lottery.base.net.RestRequestManager;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.fragment.LoadingDialog;
+import com.goldenasia.lottery.util.ToastUtils;
+import com.goldenasia.lottery.util.WindowUtils;
+import com.umeng.analytics.MobclickAgent;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+/**
+ * Created by Alashi on 2015/12/18.
+ */
+public class BaseFragment extends Fragment implements NetStateHelper.NetStateListener, FragmentLauncher.FragmentKeyListener{
+    private static final String TAG = "BaseFragment";
+
+    private TextView titleBarTitle;
+    private TextView globalNetState;
+    private ImageButton homeBtn;
+    protected LinearLayout actionBarMenuLayout;
+    private boolean fitSystem = true;
+    private Unbinder unbinder;
+    /*拦截BACK返回键 Home键盘,默认不拦截*/
+    private boolean mKeyIsIntercept=false;
+
+    private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 6;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        //注册监听
+        if( getActivity() instanceof  FragmentLauncher) {
+            ((FragmentLauncher) getActivity()).setKeyListener(this);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        //取消监听
+        if( getActivity() instanceof  FragmentLauncher) {
+            ((FragmentLauncher) getActivity()).setKeyListener(null);
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //即使没有菜单，也要调用setHasOptionsMenu(true)，否则会触发actionbar的bug：
+        //ActionBar.NAVIGATION_MODE_LIST时，即使跑了onCreateOptionsMenu，列表和菜单可能没法显示
+        setHasOptionsMenu(true);
+        //将5.0系统以上的状态栏设置为沉浸式
+        if (fitSystem)
+            WindowUtils.makeWindowTranslucent(getActivity());
+    }
+
+    @Override
+    @CallSuper
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
+    }
+
+    protected View inflateView(LayoutInflater inflater, @Nullable ViewGroup container, String title, @LayoutRes int resource) {
+        return inflateView(inflater, container, true, title, resource);
+    }
+
+    protected View inflateView(LayoutInflater inflater, @Nullable ViewGroup container, boolean homeButton, String title, @LayoutRes int resource) {
+        View top = inflater.inflate(R.layout.title_bar_fragment, container, false);
+        inflater.inflate(resource, (LinearLayout) top.findViewById(R.id.title_bar_fragment_content), true);
+        homeBtn = (ImageButton) top.findViewById(android.R.id.home);
+        globalNetState = (TextView) top.findViewById(R.id.global_net_state);
+        titleBarTitle = (TextView) top.findViewById(android.R.id.title);
+        actionBarMenuLayout = (LinearLayout) top.findViewById(R.id.action_bar_menu_layout);
+        titleBarTitle.setText(title);
+        if (homeButton) {
+            top.findViewById(android.R.id.home).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputMethodManager imm = (InputMethodManager) top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(top, InputMethodManager.SHOW_FORCED);
+                    imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
+                    getActivity().finish();
+                }
+            });
+        } else {
+            top.findViewById(android.R.id.home).setVisibility(View.GONE);
+        }
+
+        NetStateHelper netStateHelper = GoldenAsiaApp.getNetStateHelper();
+        globalNetState.setVisibility(netStateHelper.isConnected() ? View.GONE : View.VISIBLE);
+        netStateHelper.addListener(this);
+        return top;
+    }
+
+    /**
+     * 秒秒彩
+     *
+     * @param inflater
+     * @param container
+     * @param homeButton
+     * @param title
+     * @param resource
+     * @return
+     */
+    protected View inflateMmcView(LayoutInflater inflater, @Nullable ViewGroup container, boolean homeButton, String
+            title, @LayoutRes int resource) {
+        View top = inflater.inflate(R.layout.title_bar_mmc_fragment, container, false);
+        inflater.inflate(resource, (LinearLayout) top.findViewById(R.id.title_bar_fragment_content), true);
+        globalNetState = (TextView) top.findViewById(R.id.global_net_state);
+        titleBarTitle = (TextView) top.findViewById(android.R.id.title);
+        actionBarMenuLayout = (LinearLayout) top.findViewById(R.id.action_bar_menu_layout);
+        homeBtn = (ImageButton) top.findViewById(R.id.home_btn);
+        titleBarTitle.setText(title);
+        if (homeButton) {
+            homeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputMethodManager imm = (InputMethodManager) top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(top, InputMethodManager.SHOW_FORCED);
+                    imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
+                    getActivity().finish();
+                }
+            });
+        } else {
+            homeBtn.setVisibility(View.GONE);
+        }
+
+        NetStateHelper netStateHelper = GoldenAsiaApp.getNetStateHelper();
+        globalNetState.setVisibility(netStateHelper.isConnected() ? View.GONE : View.VISIBLE);
+        netStateHelper.addListener(this);
+        return top;
+    }
+
+    /**
+     * 刮刮彩
+     *
+     * @param inflater
+     * @param container
+     * @param homeButton
+     * @param title
+     * @param resource
+     * @return
+     */
+    protected View inflateGgcView(LayoutInflater inflater, @Nullable ViewGroup container, boolean homeButton, String
+            title, @LayoutRes int resource) {
+        View top = inflater.inflate(R.layout.title_bar_mmc_fragment, container, false);
+        inflater.inflate(resource, (LinearLayout) top.findViewById(R.id.title_bar_fragment_content), true);
+        globalNetState = (TextView) top.findViewById(R.id.global_net_state);
+        titleBarTitle = (TextView) top.findViewById(android.R.id.title);
+        actionBarMenuLayout = (LinearLayout) top.findViewById(R.id.action_bar_menu_layout);
+        homeBtn = (ImageButton) top.findViewById(R.id.home_btn);
+        titleBarTitle.setText(title);
+        if (homeButton) {
+            homeBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    InputMethodManager imm = (InputMethodManager) top.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(top, InputMethodManager.SHOW_FORCED);
+                    imm.hideSoftInputFromWindow(top.getWindowToken(), 0);
+                    getActivity().finish();
+                }
+            });
+        } else {
+            homeBtn.setVisibility(View.GONE);
+        }
+
+        NetStateHelper netStateHelper = GoldenAsiaApp.getNetStateHelper();
+        globalNetState.setVisibility(netStateHelper.isConnected() ? View.GONE : View.VISIBLE);
+        netStateHelper.addListener(this);
+        return top;
+    }
+
+    /*home键可点击 true， 返回键拦截为false*/
+    protected void enableHomeButton(boolean homeButton) {
+//        if (homeButton) {
+//            homeBtn.setVisibility(View.VISIBLE);
+//        } else {
+//            homeBtn.setVisibility(View.GONE);
+//        }
+        mKeyIsIntercept=!homeButton;
+        homeBtn.setEnabled(homeButton);
+    }
+
+    /**
+     * 在ActionBar添加图标菜单
+     */
+    protected View addMenuItem(@DrawableRes int resID, View.OnClickListener listener) {
+        if (actionBarMenuLayout == null) {
+            actionBarMenuLayout = (LinearLayout) getActivity().findViewById(R.id.action_bar_menu_layout);
+            if (actionBarMenuLayout == null) {
+                Log.e(TAG, "addMenuItem: can not add menu, actionBarMenuLayout is null", new Throwable());
+                return null;
+            }
+        }
+
+        ImageView view = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.actionbar_menu_image, actionBarMenuLayout, false);
+        view.setOnClickListener(listener);
+        view.setImageResource(resID);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        lp.addRule(RelativeLayout.CENTER_VERTICAL);
+        actionBarMenuLayout.addView(view, lp);
+        return view;
+    }
+
+    /**
+     * 在ActionBar添加文字菜单
+     */
+    protected View addMenuItem(String text, View.OnClickListener listener) {
+        if (actionBarMenuLayout == null) {
+            actionBarMenuLayout = (LinearLayout) getActivity().findViewById(R.id.action_bar_menu_layout);
+            if (actionBarMenuLayout == null) {
+                Log.e(TAG, "addMenuItem: can not add menu item, actionBarMenuLayout is null", new Throwable());
+                return null;
+            }
+        }
+
+        TextView view = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.actionbar_menu_text,
+                actionBarMenuLayout, false);
+        view.setText(text);
+        view.setTextColor(getResources().getColor(R.color.white));
+        view.setOnClickListener(listener);
+        actionBarMenuLayout.addView(view);
+        return view;
+    }
+    
+    /**
+     * 在ActionBar添加图标菜单
+     */
+    protected void addMenuItemAtRight(@DrawableRes int resID, View.OnClickListener listener) {
+        if (actionBarMenuLayout == null) {
+            actionBarMenuLayout = (LinearLayout) getActivity().findViewById(R.id.action_bar_menu_layout);
+            if (actionBarMenuLayout == null) {
+                Log.e(TAG, "addMenuItem: can not add menu, actionBarMenuLayout is null", new Throwable());
+                //return null;
+            }
+        }
+        
+        ImageView view = (ImageView) LayoutInflater.from(getContext()).inflate(R.layout.actionbar_menu_image,actionBarMenuLayout, false);
+        view.setOnClickListener(listener);
+        view.setImageResource(resID);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
+        view.setPadding(0, 0, 40, 0);
+        lp.addRule(RelativeLayout.CENTER_VERTICAL);
+        actionBarMenuLayout.addView(view, lp);
+        //return view;
+    }
+    
+    protected void addMenuItemAtLeft(@DrawableRes int resID, View.OnClickListener listener) {
+        homeBtn.setVisibility(View.VISIBLE);
+        homeBtn.setImageResource(resID);
+        homeBtn.setOnClickListener(listener);
+    }
+
+    protected void removeAllMenu() {
+        if (actionBarMenuLayout != null) {
+            actionBarMenuLayout.removeAllViews();
+        }
+    }
+
+    protected void replaceFragment(Class<? extends Fragment> fClass, Bundle bundle) {
+        Fragment fragment = Fragment.instantiate(getContext(), fClass.getName());
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(android.R.id.content, fragment);
+        ft.commitAllowingStateLoss();
+    }
+
+    @CallSuper
+    @Override
+    public void onDestroyView() {
+        ToastUtils.cancelToast();
+        GoldenAsiaApp.getNetStateHelper().removeListener(this);
+        RestRequestManager.cancelAll(this);
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @CallSuper
+    @Override
+    public void onPause() {
+        ToastUtils.cancelToast();
+        super.onPause();
+        MobclickAgent.onPageEnd(this.getClass().getName());
+    }
+
+    public void setSupportBackButton(boolean showHomeAsUp) {
+        if (getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(showHomeAsUp);
+        }
+    }
+
+    public ActionBar getActionBar() {
+        return ((AppCompatActivity) getActivity()).getSupportActionBar();
+    }
+
+    @CallSuper
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(this.getClass().getName());
+    }
+
+    public Toolbar getToolbar() {
+        return (Toolbar) getActivity().findViewById(R.id.toolbar);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getActivity().finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public final void setTitle(int resId) {
+        if (titleBarTitle != null) {
+            titleBarTitle.setText(resId);
+        }
+        getActivity().setTitle(resId);
+    }
+
+    public final void setTitle(String string) {
+        if (titleBarTitle != null) {
+            titleBarTitle.setText(string);
+        }
+        getActivity().setTitle(string);
+    }
+
+    public boolean isFinishing() {
+        return getActivity() == null || getActivity().isFinishing();
+    }
+
+    protected SharedPreferences getSharedPreferences(String name, int mode) {
+        if (getActivity() != null) {
+            return getActivity().getSharedPreferences(name, mode);
+        }
+        return null;
+    }
+
+    protected final View findViewById(int id) {
+        if (id < 0 || null == getView()) {
+            return null;
+        }
+
+        return getView().findViewById(id);
+    }
+
+    public void showProgress(String msg) {
+        if (!isAdded()) {
+            return;
+        }
+        LoadingDialog.show(getActivity(), msg);
+    }
+
+    public void showTimeProgress(String msg, int time) {
+        if (!isAdded()) {
+            return;
+        }
+        LoadingDialog.show(getActivity(), msg);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                LoadingDialog.dismiss(getActivity());
+            }
+        });
+        t.start();
+    }
+
+    private void spandTimeMethod() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            LoadingDialog.dismiss(getActivity());
+        }
+    };
+
+    public void hideWaitProgress() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                spandTimeMethod();
+                handler.sendEmptyMessage(0);
+            }
+        }).start();
+    }
+
+    public void hideProgress() {
+        LoadingDialog.dismiss(getActivity());
+    }
+
+    protected RestRequest executeCommand(Object command, RestCallback callback, int id) {
+        return RestRequestManager.executeCommand(getActivity(), command, callback, id, this);
+    }
+
+    protected RestRequest executeCommand(Object command, RestCallback callback) {
+        return RestRequestManager.executeCommand(getActivity(), command, callback, 0, this);
+    }
+
+    protected void launchFragment(Class<? extends Fragment> fragment) {
+        FragmentLauncher.launch(getActivity(), fragment, null);
+    }
+
+    protected void launchFragment(Class<? extends Fragment> fragment, Bundle bundle) {
+        FragmentLauncher.launch(getActivity(), fragment, bundle);
+    }
+
+    protected void launchFragmentForResult(Class<? extends Fragment> fragment, Bundle bundle, int requestCode) {
+        FragmentLauncher.launchForResult(this, fragment, bundle, requestCode);
+    }
+
+    public void showToast(CharSequence text) {
+        showToast(text, Toast.LENGTH_SHORT);
+    }
+
+    public void showToast(CharSequence text, int duration) {
+        if (isAdded()) {
+            Toast.makeText(getActivity(), text, duration).show();
+        }
+    }
+
+    public void showToast(@StringRes int resId, int duration) {
+        if (isAdded()) {
+            Toast.makeText(getActivity(), resId, duration).show();
+        }
+    }
+
+    /**
+     * 错误参数与成功参数提示窗
+     *
+     * @param msg
+     */
+    public void tipDialog(String msg) {
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+        builder.setMessage(msg);
+        builder.setTitle("温馨提示");
+        builder.setLayoutSet(DialogLayout.SINGLE);
+        builder.setPositiveButton("知道了", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    public void tipDialog(String title, View view) {
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+        builder.setContentView(view);
+        builder.setTitle(title);
+        builder.setLayoutSet(DialogLayout.SINGLE);
+        builder.setPositiveButton("选好了", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    @Override
+    public void onStateChange(boolean isConnected) {
+        if (globalNetState != null) {
+            globalNetState.setVisibility(isConnected ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    public boolean isFitSystem() {
+        return fitSystem;
+    }
+
+    public void setFitSystem(boolean fitSystem) {
+        this.fitSystem = fitSystem;
+    }
+
+    //捕捉返回键点击动作
+    @Override
+    public boolean onKeyForward() {
+        if (mKeyIsIntercept) {
+            // 监听到按键点击事件
+            return true;
+        }
+        return false;
+    }
+
+    //===================6.0运行时权限需要添加的 start==========================================================//
+    protected void showDialog01(){
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+        builder.setMessage("为了您能正常使用，需要以下权限<br/>" +
+                "1.sd卡存储权限。<br/>" +
+                "2.拍照相机权限。");
+        builder.setTitle("权限申请");
+        builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+        builder.setNegativeButton("取消", (dialog, which) ->
+        {
+            dialog.dismiss();
+        });
+        builder.setPositiveButton("确定", (dialog, which) ->
+        {
+            dialog.dismiss();
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+        });
+        builder.create().show();
+    }
+
+    protected void showDialog02(){
+        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+    /*    builder.setMessage("为了您能正常使用，需要以下权限<br/>" +
+                "1.sd卡存储权限。<br/>" +
+                "2.拍照相机权限。");*/
+        builder.setMessage("您的手机系统版本要求，需启用存储权限和相机权限，才能正常使用“联系客服”功能。");
+        builder.setTitle("提醒");
+        builder.setLayoutSet(DialogLayout.LEFT_AND_RIGHT);
+        builder.setNegativeButton("取消", (dialog, which) ->
+        {
+            dialog.dismiss();
+        });
+        builder.setPositiveButton("确定", (dialog, which) ->
+        {
+            dialog.dismiss();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                //大于等于23 请求权限
+                if ( !Settings.System.canWrite(getActivity().getApplicationContext()))
+                {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                    intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
+                    startActivityForResult(intent, 1 );
+                }
+            }
+        });
+        builder.create().show();
+    }
+    //===================6.0运行时权限需要添加的 end==========================================================//
+}

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/digits_panel_ludan"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingLeft="@dimen/pad_lr"
+    android:paddingRight="@dimen/pad_lr">
+    <com.goldenasia.lottery.view.MultiLineRadioGroup
+        android:id="@+id/radioGroup_sex_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/ludan_01"
+                style="@style/checkbox_digits_ludan"
+                android:checked="true"
+                android:text="万千" />
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/ludan_02"
+                style="@style/checkbox_digits_ludan"
+                android:text="万百" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/ludan_03"
+                style="@style/checkbox_digits_ludan"
+                android:text="万十" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/ludan_04"
+                style="@style/checkbox_digits_ludan"
+                android:text="万个" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/ludan_05"
+                style="@style/checkbox_digits_ludan"
+                android:text="千百" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/ludan_06"
+                style="@style/checkbox_digits_ludan"
+                android:text="千十" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/ludan_07"
+                style="@style/checkbox_digits_ludan"
+                android:text="千个" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/ludan_08"
+                style="@style/checkbox_digits_ludan"
+                android:text="百十" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/ludan_09"
+                style="@style/checkbox_digits_ludan"
+                android:text="百个" />
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/ludan_10"
+                style="@style/checkbox_digits_ludan"
+                android:text="十个" />
+        </LinearLayout>
+
+    </com.goldenasia.lottery.view.MultiLineRadioGroup>
+
+</LinearLayout>

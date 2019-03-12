@@ -1,0 +1,886 @@
+package com.goldenasia.lottery.fragment;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.app.BaseFragment;
+import com.goldenasia.lottery.base.net.RestCallback;
+import com.goldenasia.lottery.base.net.RestRequest;
+import com.goldenasia.lottery.base.net.RestRequestManager;
+import com.goldenasia.lottery.base.net.RestResponse;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.data.LotteriesHistoryCommand;
+import com.goldenasia.lottery.data.Lottery;
+import com.goldenasia.lottery.data.LotteryHistoryCode;
+import com.goldenasia.lottery.data.UserInfoCommand;
+import com.goldenasia.lottery.game.PromptManager;
+import com.goldenasia.lottery.util.UiUtils;
+import com.goldenasia.lottery.view.adapter.HistoryCodeAdapter;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+
+/**
+ * Created by ACE-PC on 2016/3/7.
+ */
+public class ResultsFragment extends BaseFragment {
+    private static final String TAG = HistoryCodeFragment.class.getSimpleName();
+
+    private static final int LIST_HISTORY_CODE_ID = 1;
+
+    @BindView(R.id.refresh_history_listviewcode)
+    SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.history_lottery_listviewcode)
+    ListView listView;
+
+    private static final int FIRST_PAGE = 1;
+
+    private HistoryCodeAdapter adapter;
+    private Lottery lottery;
+    private String methodName = "";
+    private View headerView;
+
+    private List items = new ArrayList();
+    private int totalCount;
+    private int page = FIRST_PAGE;
+    private boolean isLoading;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_history_result, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        applyArguments();
+        refreshLayout.setColorSchemeColors(Color.parseColor("#ff0000"), Color.parseColor("#00ff00"), Color.parseColor
+                ("#0000ff"), Color.parseColor("#f234ab"));
+        refreshLayout.setOnRefreshListener(() -> loadCodeList(false, FIRST_PAGE));
+
+        final int endTrigger = 2; // load more content 2 items before the end
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView arg0, int arg1) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (listView.getCount() != 0 && items.size() < totalCount && listView.getLastVisiblePosition() >=
+                        (listView.getCount() - 1) - endTrigger) {
+                    loadCodeList(false, page + 1);
+                }
+            }
+        });
+        initAdapter(methodName);
+        refreshLayout.setRefreshing(false);
+        isLoading = false;
+        loadCodeList(true, FIRST_PAGE);
+    }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser ) {
+            loadCodeList(false, FIRST_PAGE);
+        }
+    }
+
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+        initAdapter(methodName);
+    }
+
+    private void initAdapter(String methodName) {
+        if (headerView != null && listView.getHeaderViewsCount() != 0) {
+            listView.removeHeaderView(headerView);
+        }
+        adapter = new HistoryCodeAdapter(items, lottery.getLotteryId(), lottery.getLotteryType(), methodName, getActivity());
+        ArrayList<String> titles = new ArrayList<>();
+
+        if (lottery.getLotteryType() == 1//时时彩
+                || lottery.getLotteryType() == 2//11选5
+                || lottery.getLotteryType() == 6//快三
+        ) {
+            addHead01(methodName, titles);
+            if (titles.size() > 0) {
+                headerView = getHeader(titles);
+                listView.addHeaderView(headerView);
+            }
+        } else if (lottery.getLotteryType() == 3) { //六合彩
+            switch (methodName) {
+                case "TMZX":
+                case "TMSX"://特码生肖
+                case "TMSB"://特码色波
+                case "TMWS"://特码尾数
+                case "TMDXDS"://特码大小单双
+                case "ZTHZDXDS"://正特和值大小单双
+                case "ZONGX"://总肖
+                    headerView = getHeader4(methodName);
+                    listView.addHeaderView(headerView);
+                    break;
+                default:
+                    addHead02(methodName, titles);
+                    if (titles.size() > 0) {
+                        headerView = getHeader(titles);
+                        listView.addHeaderView(headerView);
+                    }
+            }
+        } else if (lottery.getLotteryType() == 4) { //福彩3D
+            addHead03(methodName, titles);
+            if (titles.size() > 0) {
+                headerView = getHeader(titles);
+                listView.addHeaderView(headerView);
+            }
+        } else if (lottery.getLotteryType() == 8) { //PK10（PK10分分彩、PK10二分彩、北京PK10）
+            addHead04(methodName, titles);
+            if (titles.size() > 0) {
+                headerView = getHeader(titles);
+                listView.addHeaderView(headerView);
+            }
+        } else if (lottery.getLotteryType() == 5) { //(mLotteryId == 48){ //48://北京快乐8:
+            addHead05(methodName, titles);
+            headerView = getHeader1(titles);
+            listView.addHeaderView(headerView);
+        } else if (lottery.getLotteryType() == 7) {//14 山东快乐扑克{
+            headerView = getHeader2();
+            listView.addHeaderView(headerView);
+        } else if (lottery.getLotteryType() == 9) {  //快乐12
+            addHead06(titles);
+            headerView = getHeader(titles);
+            listView.addHeaderView(headerView);
+        } else if (lottery.getLotteryType() == 10) { //快乐10分彩
+            addHead07(methodName, titles);
+            headerView = getHeader(titles);
+            listView.addHeaderView(headerView);
+        }
+        listView.setAdapter(adapter);
+    }
+
+    private void addHead07(String methodName, ArrayList<String> titles) {
+        switch (methodName) {
+            case "GDDTQEZUX":
+            case "GDQEZUX":
+            case "GDQEZX":
+            case "GDDTQSZUX":
+            case "GDQSZUX":
+            case "GDQSZX":
+                titles.add("大小");
+                titles.add("单双");
+                break;
+            case "GDRX2":
+            case "GDRX3":
+            case "GDRX4":
+            case "GDRX5":
+            case "GDRX6":
+            case "GDRX7":
+                break;
+        }
+    }
+
+    private void addHead06(ArrayList<String> titles) {
+        titles.add("大小");
+        titles.add("单双");
+    }
+
+    private void addHead05(String methodName, ArrayList<String> titles) {
+        switch (methodName) {
+            case "HZDS"://和值单双
+                titles.add("单双");
+                break;
+            case "HZ810"://和值810
+            case "HZWX"://和值五行
+            case "KNJOH"://奇偶和
+            case "KNSZX"://上中下
+                titles.add("形态");
+                break;
+            default://
+
+                break;
+        }
+    }
+
+    private void addHead04(String methodName, ArrayList<String> titles) {
+
+        switch (methodName) {
+            case "GYHZ"://冠亚和
+                titles.add("冠");
+                titles.add("亚");
+                titles.add("季");
+                titles.add("四");
+                titles.add("五");
+                titles.add("六");
+                titles.add("七");
+                titles.add("八");
+                titles.add("九");
+                titles.add("十");
+                titles.add("和值");
+                break;
+            default://
+                titles.add("冠");
+                titles.add("亚");
+                titles.add("季");
+                titles.add("四");
+                titles.add("五");
+                titles.add("六");
+                titles.add("七");
+                titles.add("八");
+                titles.add("九");
+                titles.add("十");
+                break;
+        }
+    }
+
+    private void addHead03(String methodName, ArrayList<String> titles) {
+        switch (methodName) {
+            case "SXDW":
+            case "YMBDW"://一码不定位
+            case "EMBDW"://二码不定位
+                titles.add("大小");
+                titles.add("单双");
+                break;
+            case "EXZX"://后二直选
+            case "EXZUX"://后二组选
+            case "QEZX"://前二直选
+            case "QEZUX"://前二组选
+                titles.add("大小");
+                titles.add("单双");
+                break;
+            case "SXZX"://直选
+                titles.add("大小");
+                titles.add("单双");
+                break;
+            case "SXHZ"://直选和值
+                titles.add("和值");
+                titles.add("组选");
+                break;
+            case "SXZS"://
+            case "SXZL"://组六
+            case "SXHHZX"://
+            case "SXZXHZ"://组选和值
+                titles.add("和值");
+                titles.add("组选");
+                break;
+            case "EXDXDS"://后二大小单双
+            case "QEDXDS"://前二大小单双
+                titles.add("大小");
+                titles.add("单双");
+                break;
+        }
+    }
+
+    private void addHead02(String methodName, ArrayList<String> titles) {
+        switch (methodName) {
+            case "TMZX":
+            case "TMSX"://特码生肖
+            case "TMSB"://特码色波
+                titles.add("生肖");
+                titles.add("色波");
+                break;
+            case "TMWS"://特码尾数
+                titles.add("生肖");
+                titles.add("尾数");
+                break;
+            case "TMDXDS"://特码大小单双
+                titles.add("大小");
+                titles.add("单双");
+                break;
+            case "ZMZX1"://ZMZX2
+            case "ZMZX2"://ZMZX2
+            case "ZMZX3"://ZMZX2
+            case "ZMZX4"://ZMZX2
+            case "ZMZX5"://ZMZX2
+            case "ZMZX6"://ZMZX2
+            case "ZMRX"://ZMZX2
+            case "ZTYX"://ZMZX2
+            case "ZTWS"://ZTWS
+            case "ERLX"://ZMZX2
+            case "SNLX"://ZMZX2
+            case "SILX"://ZMZX2
+            case "SIELM"://ZMZX2
+            case "SISLM"://ZMZX2
+            case "SISILM"://ZMZX2
+            case "SSLM"://ZMZX2
+            case "EELM"://ZMZX2
+            case "SELM"://ZMZX2
+            case "ZTYM"://ZMZX2
+
+            case "ZTBZ5"://ZMZX2
+            case "ZTBZ6"://ZMZX2
+            case "ZTBZ7"://ZMZX2
+            case "ZTBZ8"://ZMZX2
+            case "ZTBZ9"://ZMZX2
+            case "ZTBZ10"://ZMZX2
+                titles.add("正一");
+                titles.add("正二");
+                titles.add("正三");
+                titles.add("正四");
+                titles.add("正五");
+                titles.add("正六");
+                titles.add("特码");
+                break;
+            case "ZTHZDXDS"://正特和值大小单双
+                titles.add("和值");
+                titles.add("形态");
+                break;
+            case "ZONGX"://总肖
+                titles.add("总肖");
+                titles.add("单双");
+                break;
+        }
+    }
+
+    private void addHead01(String methodName, ArrayList<String> titles) {
+        switch (methodName) {
+            case "WXDW"://定位胆
+                /* 时时彩*/
+            case "QEDXDS"://前二大小单双
+            case "EXDXDS"://后二大小单双
+            case "QSDXDS"://前三大小单双
+            case "ZSDXDS"://中三大小单双
+            case "SXDXDS"://后三大小单双
+
+                /*时时彩 任选*/
+            case "REZX"://任二直选
+            case "RSZX"://
+            case "RSIZX"://
+            case "REZUX"://
+            case "RSZS"://
+            case "RSZL"://
+            case "RSHHZX"://
+
+                /*时时彩 不定胆*/
+            case "YMBDW"://后三一码不定位
+            case "EMBDW"://后三二码不定位
+            case "QSYMBDW"://前三一码不定位
+            case "QSEMBDW"://前三二码不定位
+            case "ZSYMBDW"://中三一码不定位
+            case "ZSEMBDW"://中三二码不定位
+            case "SXYMBDW"://四星一码不定位
+            case "SXEMBDW"://四星二码不定位
+            case "WXYMBDW"://五星一码不定位
+            case "WXEMBDW"://五星二码不定位
+            case "WXSMBDW"://五星三码不定位
+
+            case "SDQSDWD"://SDWXDWD  五星定位胆   11选5的
+                /*  11选5的*/
+            case "SDWXDWD":// SDWXDWD 五星定位胆   11选5的
+                /*11选5 前二*/
+            case "SDQEZX"://前二直选
+            case "SDQEZUX"://前二组选
+            case "SDDTQEZUX"://前二组选胆拖
+                /*11选5 后二*/
+            case "SDEXZX"://后二直选
+            case "SDEXZUX"://SDEXZUX
+            case "SDDTEXZUX"://后二组选胆拖
+                /*11选5  前三*/
+            case "SDQSZX"://前三直选
+            case "SDQSZUX"://前三组选
+            case "SDDTQSZUX"://前三组选胆拖
+                /*11选5 后三*/
+            case "SDSXZX"://后三直选
+            case "SDSXZUX"://后三组选
+            case "SDDTSXZUX"://后三组选胆拖
+                /*11选5 不定位胆*/
+            case "SDQSBDW"://前三不定位胆
+                /*11选5 乐选*/
+            case "SDLX2"://乐选二
+            case "SDLX3"://乐选三
+            case "SDLX4"://
+            case "SDLX5"://
+                /*11选5 任选*/
+            case "SDRX1"://任选一中一
+            case "SDRX2"://
+            case "SDRX3"://
+            case "SDRX4"://
+            case "SDRX5"://
+            case "SDRX6"://任选六中五
+            case "SDRX7"://任选七中五
+            case "SDRX8"://任选八中五
+                /*11选5 任选胆拖*/
+            case "SDDTRX1":
+            case "SDDTRX2"://任选二中二胆拖
+            case "SDDTRX3"://任选三中三胆拖
+            case "SDDTRX4"://
+            case "SDDTRX5"://
+            case "SDDTRX6"://
+            case "SDDTRX7"://
+            case "SDDTRX8"://任选八中五胆拖
+                titles.add("大小");
+                titles.add("单双");
+                break;
+            /* 时时彩*/
+            case "EXZX"://后二直选
+            case "EXLX"://后二连选
+            case "EXZUX"://EXZUX
+            case "EXZUXBD"://后二包胆
+            case "EXBD"://后二包点
+            case "EXHZ"://后二和值
+                /* 时时彩*/
+            case "QEZX"://前二直选
+            case "QELX"://前二连选
+            case "QEZUX"://前二组选
+            case "QEZUXBD"://前二包胆
+            case "QEBD"://前二包点
+            case "QEHZ"://前二和值
+                /* 快三的 二不同号*/
+            case "JSEBT"://二不同号
+            case "JSSBT"://三不同号
+            case "JSHZ"://和值
+            case "CYBUC"://猜1不出
+            case "CEBUC"://猜2不出
+            case "CSBUC"://
+            case "CYBIC"://猜1必出
+            case "CEBIC"://猜2必出
+            case "CSBIC":
+            case "JSDX"://大小
+            case "JSDS":
+                titles.add("和值");
+                titles.add("大小");
+                titles.add("单双");
+                break;
+            /*  时时彩*/
+            case "EXKD"://后二跨度
+            case "QEKD"://前二跨度
+            case "QSKD"://前三跨度
+            case "ZSKD":
+            case "SXKD"://后三跨度
+                titles.add("和值");
+                titles.add("跨度");
+                titles.add("大小");
+                break;
+            /*  时时彩*/
+            case "QSBD"://前三包点
+            case "ZSBD"://中三包点
+            case "SXBD"://后三包点
+                titles.add("和值");
+                titles.add("和大小");
+                titles.add("和单双");
+                break;
+            /*  时时彩*/
+            case "WXHZDXDS"://五星大小单双
+                titles.add("和值");
+                titles.add("和大小");
+                titles.add("和单双");
+                break;
+            /*  时时彩*/
+            case "QSIZX"://前四直选
+            case "SIXZX"://后四直选
+                titles.add("和值");
+                titles.add("和尾");
+                titles.add("跨度");
+                break;
+            /*  时时彩*/
+            case "WXHZ"://五星和值
+                titles.add("和值");
+                titles.add("和单双");
+                titles.add("和尾");
+                break;
+            /*  时时彩*/
+            case "RELHH"://龙虎和
+                titles.add("万\n千");
+                titles.add("万\n百");
+                titles.add("万\n十");
+                titles.add("万\n个");
+                titles.add("千\n百");
+                titles.add("千\n十");
+                titles.add("千\n个");
+                titles.add("百\n十");
+                titles.add("百\n个");
+                titles.add("十\n个");
+                break;
+            /*  时时彩*/
+            case "NIUNIU"://龙虎和
+                titles.add("和值");
+                titles.add("牛牛");
+                break;
+            /*  时时彩*/
+            case "QSZX"://前三直选
+            case "QSLX"://前三连选
+            case "QSZS"://前三组三
+            case "QSZL"://前三组六
+            case "QSHHZX"://前三混合组选
+            case "QSZUXBD"://前三包胆
+            case "QSHZ"://前三和值
+            case "QSZXHZ"://组选和值   P3组选
+                /*  时时彩*/
+            case "ZSZX"://中三直选
+            case "ZSLX":
+            case "ZSZS":
+            case "ZSZL":
+            case "ZSHHZX":
+            case "ZSZUXBD":
+                /*  时时彩*/
+            case "ZSHZ"://后三直选
+            case "SXLX"://后三连选
+            case "SXZS"://后三组三
+            case "SXZL"://后三组六
+            case "SXHHZX"://后三混合组选
+            case "SXZUXBD"://后三包胆
+            case "HSZUXBD"://后三包胆
+                titles.add("和值");
+                titles.add("组选");
+                titles.add("大小");
+                break;
+            case "SXHZ"://后三和值
+                if (lottery.getLotteryType() == 1)//时时彩
+                {
+                    titles.add("和值");
+                    titles.add("组选");
+                    titles.add("大小");
+                    break;
+                } else {
+                    titles.add("和值");
+                    titles.add("组选");
+                    break;
+                }
+            case "SXZX"://后三直选
+                if (lottery.getLotteryType() == 1)//时时彩
+                {
+                    titles.add("和值");
+                    titles.add("组选");
+                    titles.add("大小");
+                    break;
+                } else {
+                    titles.add("和值");
+                    titles.add("组选");
+                    break;
+                }
+                /*  时时彩*/
+            case "QSIZUX4"://前四直选
+            case "QSIZUX6"://
+            case "QSIZUX12":
+            case "QSIZUX24":
+                /*  时时彩*/
+            case "ZUX4"://后四组选4
+            case "ZUX6"://后四组选6
+            case "ZUX12"://后四组选12
+            case "ZUX24"://后四组选24
+                titles.add("和值");
+                titles.add("组选");
+                titles.add("跨度");
+                break;
+            /*  时时彩*/
+            case "WXZX"://五星直选
+            case "WXLX"://五星连选
+            case "ZUX5"://组选5
+            case "ZUX10"://组选10
+            case "ZUX20"://组选20
+            case "ZUX30"://组选30
+            case "ZUX60"://组选60
+            case "ZUX120"://组选120
+                /*  时时彩*/
+            case "YFFS"://一帆风顺
+            case "HSCS"://好事成双
+            case "SXBX"://
+            case "SJFC"://四季发财
+                titles.add("和值");
+                titles.add("跨度");
+                titles.add("组选");
+                break;
+            /* 11选5*/
+            case "SDDDS"://定单双
+                titles.add("定单双");
+                break;
+            /* 11选5*/
+            case "SDCZW"://猜中位
+                titles.add("中位数");
+                titles.add("单双");
+                break;
+            /*快三 二同号*/
+            case "JSETDX"://二同号单选
+            case "JSSTDX"://三同号单选
+            case "JSETFX"://二同号复选
+            case "JSSTTX"://三同号通选
+            case "JSSLTX"://三连号通选
+                titles.add("和值");
+                titles.add("大小");
+                titles.add("形态");
+                break;
+            /*快三 颜色*/
+            case "JSYS":
+                titles.add("和值");
+                titles.add("大小");
+                titles.add("颜色");
+                break;
+            default:
+        }
+    }
+
+    private View getHeader4(String methodName) {
+        View header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result4, null);
+        TextView head_01 = header.findViewById(R.id.head_01);
+        TextView head_02 = header.findViewById(R.id.head_02);
+        switch (methodName) {
+            case "TMZX":
+            case "TMSX"://特码生肖
+            case "TMSB"://特码色波
+                head_01.setText("生肖");
+                head_02.setText("色波");
+                break;
+            case "TMWS"://特码尾数
+                head_01.setText("生肖");
+                head_02.setText("尾数");
+                break;
+            case "TMDXDS"://特码大小单双
+                head_01.setText("大小");
+                head_02.setText("单双");
+                break;
+            case "ZTHZDXDS"://正特和值大小单双
+                head_01.setText("和值");
+                head_02.setText("形态");
+                break;
+            case "ZONGX"://总肖
+                head_01.setText("总肖");
+                head_02.setText("单双");
+                break;
+        }
+        return header;
+    }
+
+    private View getHeader2() {
+        View header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result2, null);
+        return header;
+    }
+
+    private View getHeader1(ArrayList<String> strings) {
+        View header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result1, null);
+        TextView head_01 = header.findViewById(R.id.head_01);
+        if (strings.size() > 0) {
+            head_01.setText(strings.get(0));
+            head_01.setVisibility(View.VISIBLE);
+        }
+
+        return header;
+    }
+
+    /**
+     * 标题：彩种、开奖、大小、单双 By Ace
+     *
+     * @return
+     */
+    private View getHeader(ArrayList<String> strings) {
+        View header = null;
+        if (lottery.getLotteryType() == 1 && methodName.equals("WXDW")) {//定位胆 //时时彩)
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result3, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDWXDWD")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        }
+        /*  11选5 任选
+           case "SDRX1"://任选一中一
+           case "SDRX2"://
+           case "SDRX3"://
+           case "SDRX4"://
+           case "SDRX5"://
+           case "SDRX6"://任选六中五
+           case "SDRX7"://任选七中五
+           case "SDRX8"://任选八中五*/
+        else if (lottery.getLotteryType() == 2 && methodName.equals("SDRX1")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDRX2")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDRX3")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDRX4")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDRX5")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDRX6")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDRX7")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDRX8")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        }
+        /*  *//*11选5 任选胆拖*//*
+        case "SDDTRX1":
+        case "SDDTRX2"://任选二中二胆拖
+        case "SDDTRX3"://任选三中三胆拖
+        case "SDDTRX4"://
+        case "SDDTRX5"://
+        case "SDDTRX6"://
+        case "SDDTRX7"://
+        case "SDDTRX8"://任选八中五胆拖*/
+        else if (lottery.getLotteryType() == 2 && methodName.equals("SDDTRX1")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDDTRX2")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDDTRX3")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDDTRX4")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDDTRX5")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDDTRX6")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDDTRX7")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 2 && methodName.equals("SDDTRX8")) {//定位胆 ////11选5 SDWXDWD 五星定位胆   11选5的
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result7, null);
+        } else if (lottery.getLotteryType() == 8) { //PK10（PK10分分彩、PK10二分彩、北京PK10）
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result5, null);
+        } else {
+            header = LayoutInflater.from(getActivity()).inflate(R.layout.header_result, null);
+        }
+
+        TextView code_tv = header.findViewById(R.id.code_tv);
+        View code_view = header.findViewById(R.id.code_view);
+        if (lottery.getLotteryType() == 3) {
+            switch (methodName) {
+                case "ZMZX1"://ZMZX2
+                case "ZMZX2"://ZMZX2
+                case "ZMZX3"://ZMZX2
+                case "ZMZX4"://ZMZX2
+                case "ZMZX5"://ZMZX2
+                case "ZMZX6"://ZMZX2
+                case "ZMRX"://ZMZX2
+                case "ZTYX"://ZMZX2
+                case "ZTWS"://ZTWS
+                case "ERLX"://ZMZX2
+                case "SNLX"://ZMZX2
+                case "SILX"://ZMZX2
+                case "SIELM"://ZMZX2
+                case "SISLM"://ZMZX2
+                case "SISILM"://ZMZX2
+                case "SSLM"://ZMZX2
+                case "EELM"://ZMZX2
+                case "SELM"://ZMZX2
+                case "ZTYM"://ZMZX2
+
+                case "ZTBZ5"://ZMZX2
+                case "ZTBZ6"://ZMZX2
+                case "ZTBZ7"://ZMZX2
+                case "ZTBZ8"://ZMZX2
+                case "ZTBZ9"://ZMZX2
+                case "ZTBZ10"://ZMZX2
+                    code_tv.setVisibility(View.GONE);
+                    code_view.setVisibility(View.GONE);
+                    break;
+                default:
+                    code_tv.setVisibility(View.VISIBLE);
+                    code_view.setVisibility(View.VISIBLE);
+            }
+
+        } else if (lottery.getLotteryType() == 8) { //PK10（PK10分分彩、PK10二分彩、北京PK10）
+            code_tv.setVisibility(View.GONE);
+            code_view.setVisibility(View.GONE);
+        } else {
+            code_tv.setVisibility(View.VISIBLE);
+            code_view.setVisibility(View.VISIBLE);
+        }
+
+        LinearLayout layout = header.findViewById(R.id.layout);
+        //for (String s : strings)
+        for (int i = 0, size = strings.size(); i < size; i++) {
+            TextView textView = new TextView(getActivity());
+            ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
+            textView.setLayoutParams(layoutParams);
+            //textView.setPadding(UiUtils.px2dip(getActivity(),5),0,0,0);
+            textView.setText(strings.get(i));
+            textView.setTextColor(getResources().getColor(R.color.app_font_ash_color));
+            textView.setGravity(Gravity.CENTER);
+            layout.addView(textView);
+
+            if (i < size - 1) {
+                View divideLine = new View(getActivity());
+                layoutParams = new LinearLayout.LayoutParams(UiUtils.getPixelsFromDp(getActivity(), 1), ViewGroup
+                        .LayoutParams.MATCH_PARENT);
+                divideLine.setLayoutParams(layoutParams);
+                divideLine.setBackgroundColor(getResources().getColor(R.color.divide));
+                layout.addView(divideLine);
+            }
+        }
+
+        return header;
+    }
+
+    private void applyArguments() {
+        lottery = (Lottery) getArguments().getSerializable("lottery");
+    }
+
+    private void loadCodeList(boolean withCache, int page) {
+        if (isLoading) {
+            return;
+        }
+        this.page = page;
+        LotteriesHistoryCommand command = new LotteriesHistoryCommand();
+        command.setLotteryID(lottery.getLotteryId());
+        command.setCurPage(this.page);
+        TypeToken typeToken = new TypeToken<RestResponse<LotteryHistoryCode>>() {
+        };
+        RestRequest restRequest = RestRequestManager.createRequest(getActivity(), command, typeToken, restCallback,
+                LIST_HISTORY_CODE_ID, this);
+        if (withCache) {
+            RestResponse restResponse = restRequest.getCache();
+            if (restResponse != null && restResponse.getData() instanceof LotteryHistoryCode) {
+                items.addAll(((LotteryHistoryCode) restResponse.getData()).getIssue());
+                totalCount = items.size();
+                adapter.setData(items);
+            } else {
+                adapter.setData(null);
+            }
+        }
+        restRequest.execute();
+    }
+
+    private RestCallback restCallback = new RestCallback() {
+        @Override
+        public boolean onRestComplete(RestRequest request, RestResponse response) {
+            if (request.getId() == LIST_HISTORY_CODE_ID) {
+                if (response.getData() == null || !(response.getData() instanceof LotteryHistoryCode)) {
+                    items.clear();
+                } else {
+                    totalCount = ((LotteryHistoryCode) response.getData()).getTotalNum();
+                    if (page == FIRST_PAGE) {
+                        items.clear();
+                    }
+                    items.addAll(((LotteryHistoryCode) response.getData()).getIssue());
+                }
+                adapter.setData(items);
+            }
+            return true;
+        }
+
+        @Override
+        public boolean onRestError(RestRequest request, int errCode, String errDesc) {
+            if (errCode == 7003) {
+                Toast.makeText(getActivity(), "正在更新服务器请稍等", Toast.LENGTH_LONG).show();
+                return true;
+            } else if (errCode == 7006) {
+                CustomDialog dialog = PromptManager.showCustomDialog(getActivity(), "重新登录", errDesc, "重新登录", errCode);
+                dialog.setCancelable(false);
+                dialog.show();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onRestStateChanged(RestRequest request, @RestRequest.RestState int state) {
+            if (request.getId() == LIST_HISTORY_CODE_ID) {
+                refreshLayout.setRefreshing(state == RestRequest.RUNNING);
+                isLoading = state == RestRequest.RUNNING;
+            }
+        }
+    };
+}
