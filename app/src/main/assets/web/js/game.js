@@ -738,6 +738,13 @@ function isLegalCode(codes) {
                 });
                 isDup = singleNum > 1 ? 1 : 0;
                 break;
+           case 'SDWXHZ':
+                parts = codes[0].split('_');
+                $.each(parts, function (k, v) {
+                    singleNum += helper.SDWXHZ[v];
+                });
+                isDup = singleNum > 1 ? 1 : 0;
+                break;
            case 'QWMC'://猜前五
            case 'HWMC'://猜后五
            case 'CCW'://猜车位
@@ -1444,6 +1451,40 @@ var helper = {
                 24: 2,
                 25: 2,
                 26: 1
+            },
+            //11选5 和值数
+            SDWXHZ: {
+                15: 1,
+                16: 1,
+                17: 2,
+                18: 3,
+                19: 5,
+                20: 7,
+                21: 10,
+                22: 12,
+                23: 16,
+                24: 19,
+                25: 23,
+                26: 25,
+                27: 29,
+                28: 30,
+                29: 32,
+                30: 32,
+                31: 32,
+                32: 30,
+                33: 29,
+                34: 25,
+                35: 23,
+                36: 19,
+                37: 16,
+                38: 12,
+                39: 10,
+                40: 7,
+                41: 5,
+                42: 3,
+                43: 2,
+                44: 1,
+                45: 1
             },
             //冠亚和值
             GYHZ: {

@@ -97,6 +97,8 @@ public class GameConfig {
                     return new SdddsGame (method);//无手工录入
                 }else  if (name.equals ("RELH")) {
                     return new SyxwRELHGame (method,lottery);//RELH  龙虎
+                }else  if (name.equals ("SDWXHZ")) {
+                    return new SyxwSDWXHZGame (method);//SDWXHZ  和值数
                 }
                 else {
                     return new SyxwCommonGame (method);
