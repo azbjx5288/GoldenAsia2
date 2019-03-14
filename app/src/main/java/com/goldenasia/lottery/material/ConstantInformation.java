@@ -132,6 +132,7 @@ public class ConstantInformation {
     public static String sigle_pick = "";
 
     public static String luDanLastCheck = "ludanlastcheck";
+    public static String luDanLastCheck2 = "ludanlastcheck2";//11选5龙虎
 
     //购物车中的数据
 //    public static List<Ticket> ticketList = new ArrayList<>();

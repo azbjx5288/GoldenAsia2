@@ -537,6 +537,12 @@ public class TextMultipleGame extends Game {
         createPicklayout(game, new String[]{"五星和值大小单双"}, digitText, false, ConstantInformation.NO_YILOU_AND_LENGRE);
     }
 
+    public static void SDHZDXDS(Game game) {
+        TYPE = TYPE_LMGYH;
+        createPicklayout(game, new String[]{"大小单双"}, digitText, false, ConstantInformation.NO_YILOU_AND_LENGRE);
+    }
+
+
     //五星和值大小单双随机 WXHZDXDSRandom
     public static void WXHZDXDSRandom(Game game) {
         for (PickNumber pickNumber : game.pickNumbers)

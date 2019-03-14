@@ -39,6 +39,7 @@ public class GameConfig {
             case "HZWX":
             case "KNJOH":
             case "KNSZX": //上中下
+            case "SDHZDXDS"://11选5  和值大小单双
                 return new TextMultipleGame (method);
             case "JSYS": //颜色
                 return new KuaiSanYS (method);
@@ -94,7 +95,10 @@ public class GameConfig {
             case 57://57//内蒙古11选5*/
                 if (name.equals ("SDDDS")) {
                     return new SdddsGame (method);//无手工录入
-                } else {
+                }else  if (name.equals ("RELH")) {
+                    return new SyxwRELHGame (method,lottery);//RELH  龙虎
+                }
+                else {
                     return new SyxwCommonGame (method);
                 }
             case 1:

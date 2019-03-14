@@ -901,7 +901,10 @@ function isLegalCode(codes) {
                singleNum=codes[0].length;
                isDup = singleNum > 1 ? 1 : 0;
                break;
-
+           case 'SDHZDXDS'://11选5 和值大小单双
+               singleNum=codes[0].length;
+               isDup = singleNum > 1 ? 1 : 0;
+               break;
            case 'REZUX':
                singleNum=C(codes[0].length,2)*C(codes[1].length,2);
                isDup = singleNum > 1 ? 1 : 0;
@@ -914,6 +917,12 @@ function isLegalCode(codes) {
                    isDup = 1;
                 }
                break;
+           case 'RELH'://11选5 龙虎 RELH
+               if(codes[0].length>0){
+                  singleNum = 1;
+                  isDup = 1;
+               }
+              break;
            case 'RSIZX':
                singleNum=C(codes[0].length,2)*codes[1].length;
                isDup = singleNum > 1 ? 1 : 0;

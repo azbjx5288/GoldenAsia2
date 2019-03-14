@@ -17,6 +17,31 @@ import java.util.TreeMap;
 
 public class SscLHHLuDan {
 
+    public static List<List<String>> getLongHuHeList2(int char01, int char02) {
+        Map<String,String> map = sortMapByKey(ConstantInformation.HISTORY_CODE_MAP);
+        List<List<String>> dataList = new ArrayList<>();
+        List<String> arrList = new ArrayList<>();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String value=entry.getValue();
+            String[]  values=value.split(" ");
+
+            String singleString = getLHH(Integer.parseInt(values[char01]), Integer.parseInt(values[char02]));
+            if (arrList.size() > 0) {
+                if (arrList.contains(singleString)) {
+                    arrList.add(singleString);
+                } else {
+                    dataList.add(arrList);
+                    arrList = new ArrayList<>();
+                    arrList.add(singleString);
+                }
+            } else {
+                arrList = new ArrayList<>();
+                arrList.add(singleString);
+            }
+        }
+        return dataList;
+    }
+
     public static List<List<String>> getLongHuHeList(int char01, int char02) {
         /*List<String> list = ConstantInformation.HISTORY_CODE_LIST;
         List<List<String>> dataList = new ArrayList<>();
