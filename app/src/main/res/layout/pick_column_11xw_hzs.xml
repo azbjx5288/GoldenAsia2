@@ -80,6 +80,7 @@
         app:textColor="@color/app_main"
         app:textSize="18sp"
         app:uncheckedDrawable="@drawable/bg_special_complete_circle_defalut_ball"
-        app:verticalGap="10dp" />
+        app:verticalGap="10dp"
+        app:limitCount="11"/>
 
 </LinearLayout>

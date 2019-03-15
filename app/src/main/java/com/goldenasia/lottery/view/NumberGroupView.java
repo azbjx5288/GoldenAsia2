@@ -1,6 +1,7 @@
 package com.goldenasia.lottery.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,6 +18,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.goldenasia.lottery.R;
+import com.goldenasia.lottery.component.CustomDialog;
+import com.goldenasia.lottery.component.DialogLayout;
+import com.goldenasia.lottery.game.PromptManager;
 import com.goldenasia.lottery.material.Calculation;
 import com.goldenasia.lottery.material.ConstantInformation;
 import com.goldenasia.lottery.util.DisplayUtil;
@@ -71,6 +75,8 @@ public class NumberGroupView extends View {
     private int MIN_LENGRE = 0;//冷热中最大的数
     private int YILOU_HEIGHT = 0;//遗漏冷热数字的高度
 
+    private int mlimitCount=Integer.MAX_VALUE;
+
     public NumberGroupView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs);
@@ -95,6 +101,7 @@ public class NumberGroupView extends View {
         maxNumber = attribute.getInt(R.styleable.NumberGroupView_maxNumber, 9);
         minNumber = attribute.getInt(R.styleable.NumberGroupView_minNumber, 0);
         column = attribute.getInt(R.styleable.NumberGroupView_column, 5);
+        mlimitCount=attribute.getInt(R.styleable.NumberGroupView_limitCount, Integer.MAX_VALUE);
         attribute.recycle();
 
         paint = new TextPaint();
@@ -264,6 +271,7 @@ public class NumberGroupView extends View {
         int yiLouHeight = ConstantInformation.YI_LOU_IS_SHOW ? YILOU_HEIGHT : 0;
         int lengReHeight = ConstantInformation.LENG_RE_IS_SHOW ? YILOU_HEIGHT : 0;
 
+
         for (int i = 0, count = maxNumber - minNumber + 1; i < count; i++) {
             x = i % column * (itemSize + horizontalGap);
             y = i / column * (itemSize + verticalGap);
@@ -275,6 +283,28 @@ public class NumberGroupView extends View {
                     checkedArray.clear();
                 }
                 lastPick = i + minNumber;
+
+                //限制最大数量对话框开始
+                if(!pickList.contains(lastPick)){
+                    if(pickList.size()>=mlimitCount){
+                        //当前最多只能选择11个号码
+                        CustomDialog.Builder builder = new CustomDialog.Builder(getContext());
+                        builder.setMessage("当前最多只能选择11个号码");
+                        builder.setTitle("信息");
+                        builder.setLayoutSet(DialogLayout.SINGLE);
+                        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.dismiss();
+                                return ;
+                            }
+                        });
+                        builder.create().show();
+                        return ;
+                    }
+                }
+                //限制最大数量对话框结束
+
                 checkedArray.put(i + minNumber, !checkedArray.get(i + minNumber));
                 if (checkedArray.get(lastPick))
                     pickList.add(lastPick);

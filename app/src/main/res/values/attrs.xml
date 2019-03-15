@@ -61,6 +61,7 @@
         <attr name="maxNumber" format="integer" />
         <attr name="minNumber" format="integer" />
         <attr name="column" format="integer" />
+        <attr name="limitCount" format="integer" />
     </declare-styleable>
 
     <!--数量视图-->
